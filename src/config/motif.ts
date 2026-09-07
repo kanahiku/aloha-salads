@@ -8,10 +8,8 @@
  * 1. Drop a new SVG in `src/assets/images/patterns/` (black shape, white ground).
  * 2. Point `pattern` at that file.
  * 3. Toggle which sections show it, plus fade / tile size / repeat.
- * 4. Colors and opacity stay in `src/components/CustomStyles.astro`
+ * 4. Colors and opacity stay in `src/brand.ts`
  *    (`--aw-color-motif-*`, `--aw-opacity-motif-*`).
- *
- * R&C defaults below: roof chevrons on hero + dark + CTA, cover, top fade.
  */
 import type { ImageMetadata } from 'astro';
 import patternSrc from '~/assets/images/patterns/simple.svg';
@@ -23,19 +21,19 @@ export const MOTIF = {
   /** Black-on-white SVG used as a CSS mask. Swap this file per client. */
   pattern: patternSrc as ImageMetadata,
 
-  /** Where the motif appears. Grey/white are off for R&C. */
+  /** Where the motif appears. Off by default — enable from Figma / brand. */
   sections: {
-    hero: true,
-    dark: true,
+    hero: false,
+    dark: false,
     grey: false,
     white: false,
-    cta: true,
+    cta: false,
   } satisfies Record<MotifSection, boolean>,
 
   fade: 'top-to-bottom' as MotifFade,
 
   /**
-   * CSS mask-size. `cover` = one large field (R&C).
+   * CSS mask-size. `cover` = one large field.
    * Use `400px` (or `320px 320px`) with `repeat: 'repeat'` for a tighter tile.
    */
   size: 'cover',

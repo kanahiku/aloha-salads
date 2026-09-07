@@ -3,6 +3,7 @@ import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
 import MotifLayer from '~/components/ui/MotifLayer.astro';
 import { MOTIF, MOTIF_COLOR_VARS, MOTIF_OPACITY_VARS } from '~/config/motif';
 import { PRIMARY_CTA_LABEL } from '~/config/cta';
+import { CONTACT } from '~/config/contact';
 
 export interface Props {
   title: string;
@@ -45,15 +46,15 @@ const {
 
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-t-2 border-black pt-8">
         <div class="text-[15px] md:text-[16px] font-medium leading-[180%] text-black/70">
-          <p class="font-semibold text-black text-[16px] md:text-[17px]">R&amp;C Roofing Contractors</p>
-          <p>3302 Campbell Ave, Honolulu, HI 96815</p>
-          <p>(808) 888-2524</p>
+          <p class="font-semibold text-black text-[16px] md:text-[17px]">{CONTACT.businessName}</p>
+          <p>{CONTACT.address.street}, {CONTACT.address.cityLine}</p>
+          <p><a href={CONTACT.phone.href} class="hover:underline">{CONTACT.phone.display}</a></p>
           {extraLines?.map((line) => (
             <p set:html={line} />
           ))}
           {license && <p>{license}</p>}
-          {showAfterHoursNote && (
-            <p class="mt-2 text-[13px] md:text-[14px] italic">After-hours roofing concern? Use the online chat to contact the team.</p>
+          {showAfterHoursNote && extraLines.length === 0 && (
+            <p class="mt-2 text-[13px] md:text-[14px] italic">Need help after hours? Use the contact form or the online chat.</p>
           )}
         </div>
         <div class="flex flex-col gap-1.5 w-full sm:w-auto sm:max-w-xs">

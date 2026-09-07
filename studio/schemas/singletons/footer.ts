@@ -29,7 +29,7 @@ export const siteFooter = defineType({
       name: 'footNote',
       title: 'Footer Note (copyright)',
       type: 'string',
-      description: 'e.g. © 2026 R&C Roofing. All rights reserved.',
+      description: 'e.g. © 2026 Your Company. All rights reserved.',
     }),
   ],
   preview: {

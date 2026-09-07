@@ -242,6 +242,15 @@
         "vendors": {
           "type": "object",
           "properties": {
+            "googleTagManager": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": ["string", "null"]
+                }
+              },
+              "required": ["id"]
+            },
             "googleAnalytics": {
               "type": "object",
               "properties": {

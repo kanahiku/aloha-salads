@@ -1,22 +1,24 @@
+# AstroWind plumbing (i18n, blog flags, UI). Client identity is NOT here.
+# Edit src/config/site.ts for name, URL, GTM, and Search Console.
+
 site:
-  name: R&C Roofing
-  site: 'https://roofinspectionhawaii.com'
+  name: Your Company
+  site: 'https://example.com'
   base: '/'
   trailingSlash: false
-
-  googleSiteVerificationId: mVkD6aA1QxxRzrvp1axFDrFNoyzDEuUHpNJiahPzRZI
+  googleSiteVerificationId: ''
 
 # Default SEO metadata
 metadata:
   title:
-    default: R&C Roofing
-    template: '%s — R&C Roofing'
-  description: 'Professional roofing services including inspections, repairs, replacements, and insurance claim help. HAAG Certified. Serving homeowners, property managers, and contractors.'
+    default: Your Company
+    template: '%s — Your Company'
+  description: 'Replace this description from the client Figma / SEO brief.'
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: R&C Roofing
+    site_name: Your Company
     images:
       - url: '~/assets/images/logo.webp'
         width: 1024
@@ -33,30 +35,30 @@ i18n:
 
 apps:
   blog:
-    isEnabled: false
+    isEnabled: true
     postsPerPage: 6
 
     post:
       isEnabled: true
-      permalink: '/%slug%' # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
+      permalink: '/%slug%'
       robots:
         index: true
 
     list:
       isEnabled: true
-      pathname: 'blog' # Blog main path, you can change this to "articles" (/articles)
+      pathname: 'blog'
       robots:
         index: true
 
     category:
       isEnabled: true
-      pathname: 'category' # Category main path /category/some-category, you can change this to "group" (/group/some-category)
+      pathname: 'category'
       robots:
         index: true
 
     tag:
       isEnabled: true
-      pathname: 'tag' # Tag main path /tag/some-tag, you can change this to "topics" (/topics/some-category)
+      pathname: 'tag'
       robots:
         index: false
 
@@ -65,12 +67,10 @@ apps:
 
 analytics:
   vendors:
-    # GTM container — leave empty on sites that do not use Tag Manager.
-    # If GA4 is loaded inside GTM, keep googleAnalytics.id null to avoid double-counting.
     googleTagManager:
-      id: GTM-WGVFVT5Z
+      id: ''
     googleAnalytics:
-      id: null # or "G-XXXXXXXXXX" — only if GA4 is NOT fired from GTM
+      id: null
 
 ui:
-  theme: 'light' # Values: "system" | "light" | "dark" | "light:only" | "dark:only"
+  theme: 'light'

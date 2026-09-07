@@ -4,11 +4,12 @@ import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
 import SectionBg from '~/components/ui/SectionBg.astro';
 import Hero2 from '~/components/widgets/Hero2.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
+import { CONTACT } from '~/config/contact';
+import { PRIMARY_CTA_LABEL } from '~/config/cta';
 
 const metadata = {
-  title: 'Privacy Policy | R&C Roofing Contractors',
-  description:
-    'Read the R&C Roofing Contractors Privacy Policy, including how customer information is handled, SMS messaging consent, opt-out instructions, support, and carrier disclosures.',
+  title: `Privacy Policy | ${CONTACT.businessName}`,
+  description: `How ${CONTACT.businessName} collects, uses, and protects information from the website, contact form, and messaging programs.`,
   ignoreTitleTemplate: true,
 };
 
@@ -23,7 +24,7 @@ const linkClass = 'text-heading font-medium hover:underline';
   <Hero2>
     <Fragment slot="title">Privacy Policy</Fragment>
     <Fragment slot="subtitle">
-      R&amp;C Roofing Contractors values your privacy and is committed to handling customer information and communications
+      {CONTACT.businessName} values your privacy and is committed to handling customer information and communications
       responsibly. This Privacy Policy explains how we collect, use, and protect your information when you visit our
       website, submit a contact form, or opt into our messaging programs.
     </Fragment>
@@ -37,8 +38,8 @@ const linkClass = 'text-heading font-medium hover:underline';
       <section>
         <h2 class={headingClass}>Information We Collect</h2>
         <p class={bodyClass}>
-          When you request an estimate, schedule an inspection, or contact us through our website, we collect personal
-          information that you voluntarily provide. This information includes:
+          When you contact us through our website, we collect personal information that you voluntarily provide. This
+          information includes:
         </p>
         <ul class={listClass}>
           <li>Name</li>
@@ -51,44 +52,43 @@ const linkClass = 'text-heading font-medium hover:underline';
       <section>
         <h2 class={headingClass}>How We Use Your Information</h2>
         <p class={bodyClass}>
-          The information you provide is used specifically to fulfill your requests and facilitate our services. We use
-          this data to respond to your inquiries, provide accurate roofing estimates, schedule site visits, and
-          communicate with you regarding your property or project.
+          The information you provide is used to fulfill your requests and facilitate our services. We use this data to
+          respond to your inquiries, provide estimates, schedule visits, and communicate with you about your project.
         </p>
       </section>
 
       <section>
         <h2 class={headingClass}>Cookies and Website Analytics</h2>
         <p class={bodyClass}>
-          Our website uses cookies and standard web analytics tools to help us understand how visitors interact with our
-          site. This allows us to monitor website performance and improve the overall user experience. These tools may
-          collect non-identifying information such as your browser type, device information, and page views. You can
-          choose to manage or disable cookies at any time through your individual web browser settings.
+          Our website uses cookies and standard web analytics tools (including Google Tag Manager when configured) to
+          help us understand how visitors interact with our site. These tools may collect non-identifying information
+          such as your browser type, device information, and page views. You can manage or disable cookies through your
+          web browser settings.
         </p>
       </section>
 
       <section>
         <h2 class={headingClass}>Privacy Commitment and Data Sharing</h2>
         <p class={bodyClass}>
-          Your privacy is our priority. End-user information, including personal details and phone numbers collected
-          through our website, will not be shared with, sold to, or traded with third parties or affiliates for marketing
-          or promotional purposes. Information is only utilized for the purposes described in this policy and in
-          connection with the services you request from us.
+          End-user information, including personal details and phone numbers collected through our website, will not be
+          shared with, sold to, or traded with third parties or affiliates for marketing or promotional purposes.
+          Information is only used for the purposes described in this policy and in connection with the services you
+          request from us.
         </p>
       </section>
 
       <section>
         <h2 class={headingClass}>SMS Messaging Consent</h2>
         <p class={bodyClass}>
-          By agreeing to receive SMS messages from R&amp;C Roofing Contractors, you consent to receive text messages for
-          purposes that may include:
+          By agreeing to receive SMS messages from {CONTACT.businessName}, you consent to receive text messages that may
+          include:
         </p>
         <ul class={listClass}>
           <li>Appointment-related communications</li>
           <li>Customer service communications</li>
           <li>Billing-related communications</li>
           <li>Marketing communications</li>
-          <li>Other communications related to your interaction with R&amp;C Roofing Contractors</li>
+          <li>Other communications related to your interaction with {CONTACT.businessName}</li>
         </ul>
         <p class={`${bodyClass} mt-4`}>
           Message frequency may vary depending on the type of communication and your interaction with us.
@@ -98,10 +98,9 @@ const linkClass = 'text-heading font-medium hover:underline';
       <section>
         <h2 class={headingClass}>How to Opt Out of SMS Messages</h2>
         <p class={bodyClass}>
-          You can cancel the SMS messaging service at any time. Simply reply STOP to the number that sent you the
-          message. After sending STOP, you will receive a message confirming that you have been unsubscribed. Once
-          unsubscribed, you will no longer receive SMS messages from us through that messaging program. If you wish to
-          receive SMS messages again in the future, you may opt in again through the applicable sign-up process.
+          You can cancel the SMS messaging service at any time. Reply STOP to the number that sent you the message.
+          After sending STOP, you will receive a confirmation and will no longer receive SMS messages from that
+          messaging program. You may opt in again later through the applicable sign-up process.
         </p>
       </section>
 
@@ -109,8 +108,8 @@ const linkClass = 'text-heading font-medium hover:underline';
         <h2 class={headingClass}>Carrier and Message Cost Disclosures</h2>
         <p class={bodyClass}>
           Wireless carriers are not responsible for delayed or undelivered messages. Message and data rates may apply to
-          messages sent to or received from R&amp;C Roofing Contractors. For questions about your text messaging or data
-          plan, please contact your wireless service provider.
+          messages sent to or received from {CONTACT.businessName}. For questions about your text messaging or data
+          plan, contact your wireless service provider.
         </p>
       </section>
 
@@ -118,21 +117,18 @@ const linkClass = 'text-heading font-medium hover:underline';
         <h2 class={headingClass}>Questions About Your Privacy</h2>
         <div class={`${bodyClass} space-y-5`}>
           <p>
-            R&amp;C Roofing Contractors is committed to making your interactions with us secure and respectful of your
-            privacy. If you are experiencing an issue with our messaging program, you can reply HELP to any text message
-            for assistance.
+            If you are experiencing an issue with our messaging program, reply HELP to any text message for assistance.
           </p>
           <p>
-            If you have questions or concerns about how your information is handled, or if you need to update your
-            contact preferences, please contact us directly:
+            If you have questions about how your information is handled, or need to update your contact preferences,
+            please contact us:
           </p>
           <p>
-            R&amp;C Roofing Contractors<br />
-            3302 Campbell Ave<br />
-            Honolulu, HI 96815<br />
-            Email: <a class={linkClass} href="mailto:info@safehomeservice.com">info@safehomeservice.com</a><br />
-            Phone: <a class={linkClass} href="tel:+18088882524">(808) 888-2524</a><br />
-            Alternate Phone: <a class={linkClass} href="tel:+18082163256">(808) 216-3256</a>
+            {CONTACT.businessName}<br />
+            {CONTACT.address.street}<br />
+            {CONTACT.address.cityLine}<br />
+            Email: <a class={linkClass} href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a><br />
+            Phone: <a class={linkClass} href={CONTACT.phone.href}>{CONTACT.phone.display}</a>
           </p>
         </div>
       </section>
@@ -143,7 +139,8 @@ const linkClass = 'text-heading font-medium hover:underline';
   </WidgetWrapper>
 
   <CTABanner
-    title="Need Help With Your Roof?"
-    subtitle="If you have questions about a roofing project, or want to understand the condition of your roof, R&amp;C Roofing Contractors can help."
+    title="Questions?"
+    subtitle={`If you have questions about this policy or about working with ${CONTACT.businessName}, contact us.`}
+    ctaText={PRIMARY_CTA_LABEL}
   />
 </Layout>

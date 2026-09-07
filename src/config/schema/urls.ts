@@ -1,7 +1,7 @@
-import { SITE } from 'astrowind:config';
+import { siteOrigin as originFromConfig } from '~/config/site';
 
 export function siteOrigin(): string {
-  return String(SITE.site || '').replace(/\/$/, '');
+  return originFromConfig();
 }
 
 export function absoluteUrl(path: string): string {

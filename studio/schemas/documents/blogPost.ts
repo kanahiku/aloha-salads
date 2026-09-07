@@ -49,7 +49,7 @@ export const blogPost = defineType({
       title: 'Author',
       type: 'string',
       group: 'content',
-      initialValue: 'R&C Roofing Contractors',
+      initialValue: 'Your Company',
     }),
     defineField({
       name: 'image',

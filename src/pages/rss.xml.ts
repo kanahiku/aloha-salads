@@ -1,8 +1,10 @@
+export const prerender = false;
+
 import { getRssString } from '@astrojs/rss';
 
-import { SITE, METADATA, APP_BLOG } from 'astrowind:config';
-import { fetchPosts } from '~/utils/blog';
-import { getPermalink } from '~/utils/permalinks';
+import { APP_BLOG } from 'astrowind:config';
+import { getBlogPosts } from '~/lib/content';
+import { site, siteOrigin } from '~/config/site';
 
 export const GET = async () => {
   if (!APP_BLOG.isEnabled) {
@@ -12,21 +14,22 @@ export const GET = async () => {
     });
   }
 
-  const posts = await fetchPosts();
+  const posts = await getBlogPosts();
+  const origin = siteOrigin();
 
   const rss = await getRssString({
-    title: `${SITE.name}’s Blog`,
-    description: METADATA?.description || '',
-    site: import.meta.env.SITE,
+    title: `${site.name}’s Blog`,
+    description: site.description,
+    site: origin,
 
     items: posts.map((post) => ({
-      link: getPermalink(post.permalink, 'post'),
+      link: `${origin}/blog/${post.slug}`,
       title: post.title,
       description: post.excerpt,
-      pubDate: post.publishDate,
+      pubDate: new Date(post.publishDate),
     })),
 
-    trailingSlash: SITE.trailingSlash,
+    trailingSlash: site.trailingSlash,
   });
 
   return new Response(rss, {

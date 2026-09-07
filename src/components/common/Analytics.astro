@@ -1,8 +1,8 @@
 ---
-import { ANALYTICS } from 'astrowind:config';
+import { site } from '~/config/site';
 
-const id = ANALYTICS?.vendors?.googleAnalytics?.id ? String(ANALYTICS.vendors.googleAnalytics.id) : '';
-const partytown = !!ANALYTICS?.vendors?.googleAnalytics?.partytown;
+const id = site.analytics.googleAnalyticsId.trim();
+const partytown = true;
 const scriptType = partytown ? 'text/partytown' : undefined;
 ---
 

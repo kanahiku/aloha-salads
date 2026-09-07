@@ -1,6 +1,4 @@
-import { SITE } from 'astrowind:config';
-
-const FALLBACK_ORIGIN = 'https://roofinspectionhawaii.com';
+import { site, siteOrigin } from '~/config/site';
 
 function hostnameOf(value: string): string | null {
   try {
@@ -20,11 +18,11 @@ function isTemporaryHost(hostname: string): boolean {
 }
 
 /**
- * Canonical public origin (apex or www from site config).
+ * Canonical public origin (apex or www from src/config/site.ts).
  * Never returns a Vercel preview/staging host — those must not appear in sitemaps.
  */
 export function canonicalSiteOrigin(): string {
-  const candidates = [typeof SITE.site === 'string' ? SITE.site : '', import.meta.env.SITE_URL ?? '', FALLBACK_ORIGIN];
+  const candidates = [site.url, import.meta.env.SITE_URL ?? ''];
 
   for (const raw of candidates) {
     const origin = raw.replace(/\/+$/, '');
@@ -34,12 +32,13 @@ export function canonicalSiteOrigin(): string {
     return origin;
   }
 
-  return FALLBACK_ORIGIN;
+  return siteOrigin();
 }
 
 export function indexableHosts(): Set<string> {
   const hosts = new Set<string>();
-  const hostname = hostnameOf(canonicalSiteOrigin()) ?? 'roofinspectionhawaii.com';
+  const hostname = hostnameOf(canonicalSiteOrigin());
+  if (!hostname) return hosts;
   hosts.add(hostname);
   if (hostname.startsWith('www.')) {
     hosts.add(hostname.slice(4));
@@ -51,8 +50,7 @@ export function indexableHosts(): Set<string> {
 
 /**
  * Indexing is allowed only on the real domain. Temp hosts (*.vercel.app, localhost)
- * stay noindex/disallow. Connecting roofinspectionhawaii.com lifts the block automatically;
- * no env flag to forget at launch.
+ * stay noindex/disallow.
  */
 export function isIndexableHost(hostHeader: string | null | undefined): boolean {
   if (!hostHeader) return false;

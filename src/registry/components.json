@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "name": "agency-web-patterns",
+  "description": "Inventory of widgets Figma MCP can reuse. Not a content-to-layout generator.",
+  "sourceOfTruth": {
+    "tokens": "src/brand.ts",
+    "buildDoc": "ONBOARDING.md",
+    "theme": "src/config/theme.ts"
+  },
+  "patterns": [
+    {
+      "id": "P-01",
+      "name": "Hero",
+      "figmaNames": ["Hero", "Hero / Split", "Page Hero", "Hero Section", "Masthead"],
+      "shape": "h1 + paragraphs + optional CTA + optional side image + optional badges",
+      "component": "Hero2",
+      "import": "~/components/widgets/Hero2.astro",
+      "props": { "variant": "split" },
+      "slots": ["title", "subtitle", "content", "image", "bg"]
+    },
+    {
+      "id": "P-02",
+      "name": "Intro + columns",
+      "figmaNames": ["Features", "Benefits", "Intro Columns", "Value Props"],
+      "shape": "h2 + intro + 2–4 item columns, no image",
+      "component": "WidgetWrapper + Headline + InfoCard",
+      "import": "~/components/ui/InfoCard.astro",
+      "itemCount": [2, 3, 4]
+    },
+    {
+      "id": "P-03",
+      "name": "Split content + image",
+      "figmaNames": ["Split", "Content / Image", "About Split", "Text + Image"],
+      "shape": "h2 + paragraphs + side image + optional CTA",
+      "component": "Content",
+      "import": "~/components/widgets/Content.astro",
+      "slots": ["content", "bg"],
+      "notes": "Always include a side image. Flip isReversed from the previous split."
+    },
+    {
+      "id": "P-04",
+      "name": "Heading + CTA row",
+      "figmaNames": ["Section Header CTA", "Heading Row"],
+      "shape": "h2 sharing a row with a button",
+      "component": "Headline + Button",
+      "composable": true
+    },
+    {
+      "id": "P-05",
+      "name": "Linked service cards",
+      "figmaNames": ["Service Cards", "Card Grid", "Services Grid"],
+      "shape": "2, 3, 4, or 6 cards with per-card links",
+      "component": "ServiceCard",
+      "import": "~/components/ui/ServiceCard.astro",
+      "itemCount": [2, 3, 4, 6],
+      "notes": "Never 5 cards. Pin CTA with flex-col h-full + mt-auto."
+    },
+    {
+      "id": "P-06",
+      "name": "Icon-point band",
+      "figmaNames": ["Icon Band", "Icon Row", "Three Points", "Five Points"],
+      "shape": "3 or 5 unlinked icon + title + desc, one row",
+      "component": "IconPointBand",
+      "import": "~/components/ui/IconPointBand.astro",
+      "itemCount": [3, 5]
+    },
+    {
+      "id": "P-07",
+      "name": "Compact info cards",
+      "figmaNames": ["Spec Cards", "Stats Cards", "Quick Facts"],
+      "shape": "4 compact info cards, one row",
+      "component": "InfoCard",
+      "import": "~/components/ui/InfoCard.astro",
+      "itemCount": [4]
+    },
+    {
+      "id": "P-08",
+      "name": "Process / timeline",
+      "figmaNames": ["Timeline", "Process", "Steps", "How It Works"],
+      "shape": "h2 + ordered steps + optional image",
+      "component": "Timeline",
+      "import": "~/components/ui/Timeline.astro"
+    },
+    {
+      "id": "P-09",
+      "name": "Gallery / projects",
+      "figmaNames": ["Gallery", "Projects", "Portfolio", "Work Grid"],
+      "shape": "grid of project cards",
+      "component": "ProjectCard / ProjectsSection",
+      "import": "~/components/widgets/ProjectsSection.astro"
+    },
+    {
+      "id": "P-10",
+      "name": "FAQ accordion",
+      "figmaNames": ["FAQ", "FAQs", "Accordion", "Questions"],
+      "shape": "list of Q&A pairs, no cards",
+      "component": "FAQs",
+      "import": "~/components/widgets/FAQs.astro"
+    },
+    {
+      "id": "P-11",
+      "name": "Testimonials",
+      "figmaNames": ["Testimonials", "Reviews", "Quotes"],
+      "shape": "quotes with name and role",
+      "component": "Testimonials",
+      "import": "~/components/widgets/Testimonials.astro"
+    },
+    {
+      "id": "P-12",
+      "name": "Final CTA banner",
+      "figmaNames": ["CTA", "CTA Banner", "Contact Banner", "Get Started"],
+      "shape": "page-ending conversion card",
+      "component": "CTABanner",
+      "import": "~/components/widgets/CTABanner.astro",
+      "notes": "Last section on every page."
+    },
+    {
+      "id": "P-13",
+      "name": "Full-width editorial",
+      "figmaNames": ["Editorial", "Narrative", "Longform"],
+      "shape": "h2 + multiple paragraphs, no image or columns",
+      "component": "WidgetWrapper + Headline",
+      "notes": "Do not use for heading + para + CTA — that is P-03."
+    },
+    {
+      "id": "P-14",
+      "name": "Icon-point text grid",
+      "figmaNames": ["Icon Grid", "2x2 Points", "Four Points"],
+      "shape": "4 unlinked icon + title + desc, 2 × 2 text, no cards",
+      "component": "IconPointGrid",
+      "import": "~/components/ui/IconPointGrid.astro",
+      "itemCount": [4]
+    },
+    {
+      "id": "P-15",
+      "name": "Blog cards",
+      "figmaNames": ["Blog List", "Articles", "Related Posts"],
+      "shape": "article cards in a wrapping grid",
+      "component": "BlogCard",
+      "import": "~/components/ui/BlogCard.astro"
+    },
+    {
+      "id": "P-16",
+      "name": "Blog article",
+      "figmaNames": ["Blog Post", "Article", "Journal Entry"],
+      "shape": "sidebar + sequential article body",
+      "component": "blog article template",
+      "import": "~/pages/blog/[slug]/index.astro"
+    }
+  ]
+}

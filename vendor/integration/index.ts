@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import type { AstroConfig, AstroIntegration } from 'astro';
 
+import { site } from '../../src/config/site';
 import configBuilder, { type Config } from './utils/configBuilder';
 import loadConfig from './utils/loadConfig';
 
@@ -27,6 +28,28 @@ export default ({ config: _themeConfig = 'src/config.yaml' } = {}): AstroIntegra
 
         const rawJsonConfig = (await loadConfig(_themeConfig)) as Config;
         const { SITE, I18N, METADATA, APP_BLOG, UI, ANALYTICS } = configBuilder(rawJsonConfig);
+
+        SITE.name = site.name;
+        SITE.site = site.url;
+        SITE.trailingSlash = site.trailingSlash;
+        SITE.googleSiteVerificationId = site.analytics.googleSiteVerificationId;
+
+        if (METADATA.title) {
+          METADATA.title.default = site.name;
+          METADATA.title.template = `%s — ${site.name}`;
+        }
+        METADATA.description = site.description;
+        if (METADATA.openGraph) {
+          METADATA.openGraph.site_name = site.name;
+        }
+
+        ANALYTICS.vendors.googleTagManager = {
+          id: site.analytics.googleTagManagerId || undefined,
+        };
+        ANALYTICS.vendors.googleAnalytics = {
+          ...ANALYTICS.vendors.googleAnalytics,
+          id: site.analytics.googleAnalyticsId || undefined,
+        };
 
         updateConfig({
           site: SITE.site,
@@ -62,6 +85,7 @@ export default ({ config: _themeConfig = 'src/config.yaml' } = {}): AstroIntegra
 
         if (typeof _themeConfig === 'string') {
           addWatchFile(new URL(_themeConfig, config.root));
+          addWatchFile(new URL('src/config/site.ts', config.root));
 
           buildLogger.info(`Astrowind \`${_themeConfig}\` has been loaded.`);
         } else {

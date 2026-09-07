@@ -1,12 +1,12 @@
 ---
-import { ANALYTICS } from 'astrowind:config';
+import { site } from '~/config/site';
 
 export interface Props {
   placement: 'head' | 'body';
 }
 
 const { placement } = Astro.props;
-const rawId = ANALYTICS?.vendors?.googleTagManager?.id ? String(ANALYTICS.vendors.googleTagManager.id).trim() : '';
+const rawId = site.analytics.googleTagManagerId.trim();
 const gtmId = /^GTM-[A-Z0-9]+$/i.test(rawId) ? rawId : '';
 ---
 

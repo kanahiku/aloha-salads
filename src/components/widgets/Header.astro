@@ -147,7 +147,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
                     </button>
                     </div>
                     {columns?.length ? (
-                    <div class="dropdown-menu mega-menu hidden md:backdrop-blur-md rounded md:absolute md:top-full md:left-1/2 md:-mt-1 pl-4 md:pl-0 font-medium md:bg-[#111111] md:w-[900px] md:max-w-[calc(100vw-2rem)] md:z-50 drop-shadow-xl">
+                    <div class="dropdown-menu mega-menu hidden md:backdrop-blur-md rounded md:absolute md:top-full md:left-1/2 md:-mt-1 pl-4 md:pl-0 font-medium md:bg-card-dark md:w-[900px] md:max-w-[calc(100vw-2rem)] md:z-50 drop-shadow-xl">
                       <div class="mega-menu-columns flex flex-col md:grid md:gap-8 md:p-5" style={`--mega-columns: ${columns.length}`}>
                         {columns.map((col) => (
                           <div class="min-w-0">
@@ -174,7 +174,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
                       </div>
                     </div>
                     ) : (
-                    <ul class="dropdown-menu hidden md:backdrop-blur-md rounded md:absolute pl-4 md:pl-0 font-medium md:bg-[#111111] md:min-w-[200px] drop-shadow-xl">
+                    <ul class="dropdown-menu hidden md:backdrop-blur-md rounded md:absolute pl-4 md:pl-0 font-medium md:bg-card-dark md:min-w-[200px] drop-shadow-xl">
                       {childLinks?.map(({ text: text2, href: href2, links: links2 }) => (
                         <li class:list={[{ 'relative group/nested': links2?.length }]}>
                           <a
@@ -194,7 +194,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
                             )}
                           </a>
                           {links2?.length && (
-                            <ul class="hidden md:absolute md:left-full md:top-0 group-hover/nested:md:block pl-4 md:pl-0 md:backdrop-blur-md rounded font-medium md:bg-[#111111] md:min-w-[200px] drop-shadow-xl">
+                            <ul class="hidden md:absolute md:left-full md:top-0 group-hover/nested:md:block pl-4 md:pl-0 md:backdrop-blur-md rounded font-medium md:bg-card-dark md:min-w-[200px] drop-shadow-xl">
                               {links2.map(({ text: text3, href: href3 }) => (
                                 <li>
                                   <a

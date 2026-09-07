@@ -1,6 +1,7 @@
 ---
 import type { Form as Props } from '~/types';
 import Button from '~/components/ui/Button.astro';
+import { CONTACT } from '~/config/contact';
 import { FORM_ENDPOINT, SITE_SLUG, TURNSTILE_SITE_KEY } from '~/lib/forms';
 
 const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } = Astro.props;
@@ -14,6 +15,7 @@ const fieldClass =
   data-endpoint={FORM_ENDPOINT}
   data-site={SITE_SLUG}
   data-turnstile-sitekey={TURNSTILE_SITE_KEY}
+  data-phone={CONTACT.phone.display}
 >
   {
     inputs &&
@@ -232,7 +234,10 @@ const fieldClass =
           throw new Error();
         }
       } catch {
-        status.textContent = 'Something went wrong. Please try again or call (808) 888-2524.';
+        const phone = form.dataset.phone;
+        status.textContent = phone
+          ? `Something went wrong. Please try again or call ${phone}.`
+          : 'Something went wrong. Please try again.';
         status.className = 'mt-4 text-left text-[14px] md:text-[15px] font-medium text-red-700';
       } finally {
         if (submitButton) submitButton.disabled = false;

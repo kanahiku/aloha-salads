@@ -1,5 +1,7 @@
 ---
-import { SITE } from 'astrowind:config';
+import { site } from '~/config/site';
 ---
 
-{SITE.googleSiteVerificationId && <meta name="google-site-verification" content={SITE.googleSiteVerificationId} />}
+{site.analytics.googleSiteVerificationId && (
+  <meta name="google-site-verification" content={site.analytics.googleSiteVerificationId} />
+)}

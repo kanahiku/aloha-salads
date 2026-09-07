@@ -130,6 +130,50 @@
   border-color: var(--aw-color-card-border-light);
 }
 
+/* ── Outlined card (white bg + subtle border — clean/modern) ── */
+@utility bg-card-outlined {
+  background-color: var(--aw-color-bg-card-outlined);
+}
+
+@utility border-card-outlined {
+  border-color: var(--aw-color-card-border-outlined);
+}
+
+@utility text-card-heading-outlined {
+  color: var(--aw-color-card-heading-outlined);
+}
+
+@utility text-card-body-outlined {
+  color: var(--aw-color-card-body-outlined);
+}
+
+@utility text-card-link-outlined {
+  color: var(--aw-color-card-link-outlined);
+}
+
+/* ── Glass card (frosted semi-transparent — for dark sections) ── */
+@utility bg-card-glass {
+  background-color: var(--aw-color-bg-card-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@utility border-card-glass {
+  border-color: var(--aw-color-card-border-glass);
+}
+
+@utility text-card-heading-glass {
+  color: var(--aw-color-card-heading-glass);
+}
+
+@utility text-card-body-glass {
+  color: var(--aw-color-card-body-glass);
+}
+
+@utility text-card-link-glass {
+  color: var(--aw-color-card-link-glass);
+}
+
 @utility text-page {
   color: var(--aw-color-text-page);
 }

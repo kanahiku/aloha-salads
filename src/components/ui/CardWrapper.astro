@@ -1,6 +1,18 @@
 ---
+import type { CardVariant } from '~/config/theme';
+
 export interface Props {
-  variant?: 'dark' | 'light';
+  /**
+   * Visual style of this card.
+   *
+   * 'dark'     — bg-[#222] + accent border + white text   (bold / trade)
+   * 'light'    — yellow-tint bg + no border + dark text   (warm / soft)
+   * 'outlined' — white bg + subtle border + dark text     (clean / modern)
+   * 'glass'    — semi-transparent + backdrop blur + white (frosted / editorial)
+   *
+   * Default comes from THEME.card.onGrey / onWhite / onDark in src/config/theme.ts.
+   */
+  variant?: CardVariant;
   size?: 'sm' | 'md' | 'lg';
   border?: boolean;
   href?: string;
@@ -23,14 +35,18 @@ const sizeClasses = {
   lg: 'p-5 md:p-6',
 };
 
-const variantClasses = {
+const variantClasses: Record<CardVariant, string> = {
   dark: 'bg-card-dark',
   light: 'bg-card-light',
+  outlined: 'bg-card-outlined',
+  glass: 'bg-card-glass',
 };
 
-const borderClasses = {
+const borderClasses: Record<CardVariant, string> = {
   dark: border ? 'border border-card-dark' : '',
   light: border ? 'border border-card-light' : '',
+  outlined: border ? 'border border-card-outlined' : '',
+  glass: border ? 'border border-card-glass' : '',
 };
 
 const baseClasses = [

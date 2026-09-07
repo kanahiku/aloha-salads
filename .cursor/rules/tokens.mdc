@@ -1,0 +1,20 @@
+---
+description: Colors, fonts, and radius live only in src/brand.ts. Never hardcode hex in components or pages.
+alwaysApply: true
+---
+
+# Brand tokens
+
+`src/brand.ts` is the only look file. `CustomStyles.astro` injects `brandStylesheet()`. `astro.config.ts` reads `brandFontConfig()` for Google Fonts.
+
+## From Figma
+
+- If the file has Variables or a Design System frame: copy color, type, and radius into `brand`.
+- If it does not: walk a few representative frames, collect the most-used fills, text styles (family, weight, size), and corner radius. Map those into `brand.colors`, `brand.fonts`, `brand.radius`. Do not create a token per one-off swatch.
+
+## In code
+
+- Components and pages use Tailwind tokens / CSS variables (`text-heading`, `text-muted`, `bg-card-dark`, `bg-section-grey`, `bg-cta`, `text-accent`).
+- Never hardcode hex (`#222`, `#FAFAFA`, gold, navy) in widgets or pages.
+- Changing a site's look = edit `src/brand.ts` (plus logo/favicons). Do not add a visual-system rule file per client.
+- Name, URL, GTM, and Search Console live in `src/config/site.ts`. Phone and address live in `src/config/contact.ts`.

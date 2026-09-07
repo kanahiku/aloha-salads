@@ -16,6 +16,7 @@ import type { AstroIntegration } from 'astro';
 
 import astrowind from './vendor/integration';
 
+import { brandFontConfig } from './src/brand';
 import { readingTimeRemarkPlugin, responsiveTablesRehypePlugin } from './src/utils/frontmatter';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -37,27 +38,7 @@ export default defineConfig({
     },
   }),
 
-  redirects: {
-    '/insurance-claim-help': '/claims',
-    '/insurance-claim-help/how-the-claim-process-works': '/claims/how-the-claim-process-works',
-    '/insurance-claim-help/denied-or-underpaid-claims': '/claims/denied-or-underpaid-claims',
-    '/my-roof-is-leaking': '/roof-problems/my-roof-is-leaking',
-    '/storm-damage-on-my-roof': '/roof-problems/storm-damage-on-my-roof',
-    '/my-roof-is-at-end-of-life': '/roof-problems/my-roof-is-at-end-of-life',
-    '/my-insurance-claim-was-denied': '/roof-problems/my-insurance-claim-was-denied',
-    '/buying-or-selling-a-home': '/roof-problems/buying-or-selling-a-home',
-    '/preparing-for-hurricane-season': '/roof-problems/preparing-for-hurricane-season',
-    '/roof-inspections/pre-listing-sellers-roof-inspection': '/roof-inspections/pre-listing-roof-inspection',
-    '/roof-inspection': '/roof-inspections',
-    '/services/roofing-materials/tile-roofing-clay-and-concrete': '/services/roofing-materials/tile-roofing',
-    '/services/roofing-materials/slate-and-rubber-slate-roofing': '/services/roofing-materials/slate-roofing',
-    '/privacy': '/privacy-policy',
-    '/terms': '/terms-of-service',
-    '/accessibility-statement': '/accessibility',
-    '/about/reviews': '/reviews',
-    '/about/gallery': '/about/our-story',
-    '/gallery': '/about/our-story',
-  },
+  redirects: {},
 
   // Prefetch links as they enter the viewport for snappier navigations
   // (works together with <ClientRouter />, which enables prefetch by default).
@@ -66,28 +47,10 @@ export default defineConfig({
     defaultStrategy: 'viewport',
   },
 
-  // Native Fonts API: self-hosts + subsets + preloads fonts and generates
-  // metric-adjusted fallbacks. DM Sans for headings, Manrope for body text.
-  fonts: [
-    {
-      provider: fontProviders.google(),
-      name: 'DM Sans',
-      cssVariable: '--font-dm-sans',
-      weights: ['400'],
-      styles: ['normal'],
-      subsets: ['latin'],
-      fallbacks: ['sans-serif'],
-    },
-    {
-      provider: fontProviders.google(),
-      name: 'Manrope',
-      cssVariable: '--font-manrope',
-      weights: ['200 800'],
-      styles: ['normal'],
-      subsets: ['latin'],
-      fallbacks: ['sans-serif'],
-    },
-  ],
+  fonts: brandFontConfig().map((font) => ({
+    ...font,
+    provider: fontProviders.google(),
+  })),
 
   integrations: [
     sitemap({

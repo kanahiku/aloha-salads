@@ -193,6 +193,8 @@ const SERVICE_PAGE_QUERY = /* groq */ `
       ctaHref,
       linkText,
       linkHref,
+      surface,
+      isReversed,
       sources,
       imagePlaceholder,
       "image": {
@@ -267,6 +269,7 @@ const SPLIT_PROJECTION = /* groq */ `
   ctaHref,
   linkText,
   linkHref,
+  isReversed,
   imagePlaceholder,
   "image": {
     ${IMAGE_PROJECTION}
@@ -629,10 +632,9 @@ function normalizeBlogPost(post: SanityBlogPost): BlogPost {
           ]
         : [],
     ctaBanner: {
-      title: 'Need This Looked at on Your Roof?',
-      subtitle:
-        'R&C Roofing Contractors can inspect the roof, document what is going on, and help you decide what work should come next.',
-      ctaText: 'Schedule Consultation',
+      title: 'Get in touch',
+      subtitle: 'Replace this banner copy from the Figma file.',
+      ctaText: 'Contact Us',
       ctaHref: '/contact',
     },
     body,

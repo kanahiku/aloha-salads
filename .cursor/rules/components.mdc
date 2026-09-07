@@ -1,0 +1,13 @@
+---
+description: Reuse existing widgets. Do not fork components per page or dump one-off Figma markup.
+alwaysApply: true
+---
+
+# Component reuse
+
+Before creating a component, check `src/registry/components.json` and `src/components/`.
+
+- Reuse an existing widget when the Figma frame is that shape (hero, split + image, FAQ, quotes, gallery, steps, CTA band, cards). Restyle via `brand.ts` tokens and props — do not fork Hero/FAQ/cards per page.
+- New unique Figma UI → one new component, then add it to `src/registry/components.json` (`id`, `figmaNames`, `shape`, `component`, `import`). Never paste one-off markup into a page file.
+- Do not pick layouts from item counts (band vs grid vs cards). Figma already decided.
+- Cards with a link or button: card `flex flex-col h-full`, body `flex-1`, CTA `mt-auto` so links line up regardless of copy length.

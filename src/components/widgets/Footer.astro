@@ -2,6 +2,7 @@
 import { Icon } from 'astro-icon/components';
 import { getHomePermalink } from '~/utils/permalinks';
 import Logo from '~/components/Logo.astro';
+import { CONTACT } from '~/config/contact';
 import { contactAddress, contactDirectionsHref, contactPhone } from '~/data/pages/contact';
 
 interface Link {
@@ -61,7 +62,7 @@ const { socialLinks = [], secondaryLinks = [], links = [], footNote = '', theme 
           </a>
         </div>
         <address class="not-italic text-[14px] md:text-[15px] font-normal leading-[160%] text-white/60 mb-4">
-          <p class="font-medium text-white text-[15px] md:text-[16px] mb-1">R&amp;C Roofing Contractors</p>
+          <p class="font-medium text-white text-[15px] md:text-[16px] mb-1">{CONTACT.businessName}</p>
           <p>
             <a
               href={contactDirectionsHref}

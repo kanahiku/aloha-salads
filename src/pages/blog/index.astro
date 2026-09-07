@@ -5,6 +5,7 @@ import SectionBg from '~/components/ui/SectionBg.astro';
 import BlogCard from '~/components/ui/BlogCard.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { getBlogPosts } from '~/lib/content';
+import { CONTACT } from '~/config/contact';
 import { PRIMARY_CTA_LABEL } from '~/config/cta';
 
 export const prerender = false;
@@ -12,9 +13,8 @@ export const prerender = false;
 const posts = await getBlogPosts();
 
 const metadata = {
-  title: 'Blogs | R&C Roofing Contractors',
-  description:
-    'Read roofing articles from R&C Roofing Contractors on inspections, repairs, replacements, storm damage, and insurance claims for Oahu properties.',
+  title: `Blog | ${CONTACT.businessName}`,
+  description: `Articles and updates from ${CONTACT.businessName}.`,
   ignoreTitleTemplate: true,
 };
 ---
@@ -35,7 +35,7 @@ const metadata = {
         </div>
       ) : (
         <p class="text-[16px] md:text-[17px] font-normal leading-[160%] text-muted">
-          New roofing articles will appear here as they are published.
+          New articles will appear here as they are published.
         </p>
       )
     }
@@ -45,8 +45,8 @@ const metadata = {
   </WidgetWrapper>
 
   <CTABanner
-    title="Have a Roofing Question of Your Own?"
-    subtitle="If you are dealing with a leak, an aging roof, storm damage, or another roofing concern, start by finding out what condition the roof is in."
+    title="Have a question?"
+    subtitle={`Contact ${CONTACT.businessName} and we will follow up.`}
     ctaText={PRIMARY_CTA_LABEL}
   />
 </Layout>

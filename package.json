@@ -1,7 +1,7 @@
 {
-  "name": "randc-roofing",
+  "name": "agency-web",
   "version": "1.0.0",
-  "description": "R&C Roofing website (Astro + Tailwind).",
+  "description": "Generic Astro website starter. Implement pages from Figma MCP.",
   "type": "module",
   "private": true,
   "engines": {

@@ -1,5 +1,5 @@
-/** Shown under every primary conversion CTA sitewide. */
-export const PRIMARY_CTA_NOTE = 'Free inspection and estimate. Written reports available for a fee.';
+/** Shown under every primary conversion CTA sitewide. Empty hides the note. */
+export const PRIMARY_CTA_NOTE = '';
 
 /** Primary conversion button label sitewide. */
-export const PRIMARY_CTA_LABEL = 'Schedule Consultation';
+export const PRIMARY_CTA_LABEL = 'Contact Us';

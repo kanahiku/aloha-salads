@@ -17,7 +17,7 @@ import { Icon } from 'astro-icon/components';
 import ReviewsGrid from '~/components/widgets/ReviewsGrid.astro';
 import type { ServiceSection } from '~/lib/content/types';
 import type { ReviewSource } from '~/lib/reviews';
-import { cardVariant, introClass, isDarkSurface, pointVariant, sectionSurface } from '~/lib/content/sectionTheme';
+import { cardVariant, introClass, isDarkSurface, pointVariant } from '~/lib/content/sectionTheme';
 
 export interface Props {
   sections: ServiceSection[];
@@ -25,18 +25,8 @@ export interface Props {
 
 const { sections } = Astro.props;
 
-const splitIndexes = sections
-  .map((section, index) => (section._type === 'splitContentSection' ? index : -1))
-  .filter((index) => index >= 0);
-
-function isSplitReversed(index: number) {
-  return splitIndexes.indexOf(index) % 2 === 0;
-}
-
 function iconLayout(section: Extract<ServiceSection, { _type: 'iconPointsSection' }>) {
-  if (section.layout === 'grid' || section.layout === 'band') return section.layout;
-  const count = section.items?.length ?? 0;
-  return count === 3 || count === 5 ? 'band' : 'grid';
+  return section.layout === 'band' ? 'band' : 'grid';
 }
 
 function cardGridClass(count: number) {
@@ -65,7 +55,7 @@ function reviewSources(section: ServiceSection): ReviewSource[] {
 
 {
   sections.map((section, index) => {
-    const surface = sectionSurface(index);
+    const surface = ('surface' in section && section.surface) || 'white';
     const isDark = isDarkSurface(surface);
     const introColor = introClass(surface);
     const hasIntro = 'intro' in section && Boolean(section.intro);
@@ -73,7 +63,7 @@ function reviewSources(section: ServiceSection): ReviewSource[] {
     if (section._type === 'splitContentSection') {
       return (
         <Content
-          isReversed={isSplitReversed(index)}
+          isReversed={'isReversed' in section ? Boolean(section.isReversed) : false}
           isDark={isDark}
           title={section.heading}
           classes={isDark ? { title: 'text-white' } : undefined}
@@ -224,16 +214,16 @@ function reviewSources(section: ServiceSection): ReviewSource[] {
               <table class="w-full min-w-[720px] border-separate border-spacing-0 text-left font-sans">
                 <thead>
                   <tr>
-                    <th class="bg-[#222] text-white font-sans font-medium text-[16px] leading-[160%] px-4 md:px-5 py-3 md:py-4 rounded-tl-lg border-r border-accent">
+                    <th class="bg-card-dark text-white font-sans font-medium text-[16px] leading-[160%] px-4 md:px-5 py-3 md:py-4 rounded-tl-lg border-r border-accent">
                       {section.featureLabel}
                     </th>
-                    <th class="bg-[#222] text-white font-sans font-medium text-[16px] leading-[160%] px-4 md:px-5 py-3 md:py-4 border-r border-accent">
+                    <th class="bg-card-dark text-white font-sans font-medium text-[16px] leading-[160%] px-4 md:px-5 py-3 md:py-4 border-r border-accent">
                       {section.column1}
                     </th>
-                    <th class="bg-[#222] text-white font-sans font-medium text-[16px] leading-[160%] px-4 md:px-5 py-3 md:py-4 border-r border-accent">
+                    <th class="bg-card-dark text-white font-sans font-medium text-[16px] leading-[160%] px-4 md:px-5 py-3 md:py-4 border-r border-accent">
                       {section.column2}
                     </th>
-                    <th class="bg-[#222] text-accent font-sans font-medium text-[16px] leading-[160%] px-4 md:px-5 py-3 md:py-4 rounded-tr-lg">
+                    <th class="bg-card-dark text-accent font-sans font-medium text-[16px] leading-[160%] px-4 md:px-5 py-3 md:py-4 rounded-tr-lg">
                       {section.column3}
                     </th>
                   </tr>
@@ -331,7 +321,7 @@ function reviewSources(section: ServiceSection): ReviewSource[] {
               <div
                 class:list={[
                   'rounded-lg p-6 flex flex-col h-full',
-                  surface === 'white' ? 'bg-card-light' : 'border border-accent/60 bg-[#222]',
+                  surface === 'white' ? 'bg-card-light' : 'border border-accent/60 bg-card-dark',
                 ]}
               >
                 <p

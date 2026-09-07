@@ -4,11 +4,15 @@ import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
 import SectionBg from '~/components/ui/SectionBg.astro';
 import Hero2 from '~/components/widgets/Hero2.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
+import { CONTACT } from '~/config/contact';
+import { PRIMARY_CTA_LABEL } from '~/config/cta';
+import { siteHost } from '~/config/site';
+
+const host = siteHost();
 
 const metadata = {
-  title: 'Terms of Service | R&C Roofing Contractors',
-  description:
-    'Read the R&C Roofing Contractors Terms of Service for roofinspectionhawaii.com, including website use, estimates, insurance claim information, and how to contact us.',
+  title: `Terms of Service | ${CONTACT.businessName}`,
+  description: `Terms of Service for ${host}, operated by ${CONTACT.businessName}.`,
   ignoreTitleTemplate: true,
 };
 
@@ -23,8 +27,7 @@ const linkClass = 'text-heading font-medium hover:underline';
   <Hero2>
     <Fragment slot="title">Terms of Service</Fragment>
     <Fragment slot="subtitle">
-      Effective date: September 4, 2026<br />
-      Last updated: September 4, 2026
+      Last updated: September 8, 2026
     </Fragment>
     <Fragment slot="bg">
       <SectionBg variant="hero" />
@@ -36,28 +39,24 @@ const linkClass = 'text-heading font-medium hover:underline';
       <section>
         <h2 class={headingClass}>1. Acceptance of these terms</h2>
         <p class={bodyClass}>
-          These Terms of Service govern your use of roofinspectionhawaii.com, operated by R&amp;C Roofing Contractors (doing
-          business as R&amp;C Roofing), referred to here as "we," "us," or "our." By accessing or using this website, you
-          agree to these terms. If you do not agree, please do not use the site.
+          These Terms of Service govern your use of {host}, operated by {CONTACT.businessName}, referred to here as
+          "we," "us," or "our." By accessing or using this website, you agree to these terms. If you do not agree,
+          please do not use the site.
         </p>
       </section>
 
       <section>
         <h2 class={headingClass}>2. About this website</h2>
         <p class={bodyClass}>
-          This website provides general information about our roof inspections, repairs, replacements, and related
-          roofing services on Oahu and allows visitors to contact us. Using this website, submitting a form, or
-          communicating with us through the site does not by itself create a service agreement or a professional
-          relationship between you and us. A relationship begins only when we and you sign a written agreement.
+          This website provides general information about our services and allows visitors to contact us. Using this
+          website, submitting a form, or communicating with us through the site does not by itself create a service
+          agreement. A relationship begins only when we and you sign a written agreement.
         </p>
       </section>
 
       <section>
         <h2 class={headingClass}>3. Use of this website</h2>
-        <p class={bodyClass}>
-          You may use this website for lawful purposes and to learn about or inquire about our services. You agree not
-          to:
-        </p>
+        <p class={bodyClass}>You may use this website for lawful purposes. You agree not to:</p>
         <ul class={listClass}>
           <li>Use the site in a way that violates any applicable law or regulation</li>
           <li>Attempt to gain unauthorized access to the site, its servers, or any connected systems</li>
@@ -66,44 +65,23 @@ const linkClass = 'text-heading font-medium hover:underline';
           <li>Submit false, misleading, or fraudulent information through any form on the site</li>
         </ul>
         <p class={`${bodyClass} mt-4`}>
-          We may restrict or suspend access to the site at any time, without notice, if we reasonably believe use of the
-          site breaches these terms.
+          We may restrict or suspend access to the site at any time if we reasonably believe use of the site breaches
+          these terms.
         </p>
       </section>
 
       <section>
         <h2 class={headingClass}>4. Service information, pricing, and estimates</h2>
-        <div class={`${bodyClass} space-y-5`}>
-          <p>
-            We try to keep the information on this website accurate and current, but content may become out of date and
-            may contain errors or omissions. Descriptions of services, availability, timelines, and any pricing shown on
-            this site are for general information only and are not binding offers.
-          </p>
-          <p>
-            Any estimate or quote becomes binding only when provided in writing, specific to your property or project,
-            and signed by both parties. Warranty terms, scope of work, and payment terms are governed by that signed
-            agreement and not by this website. Photographs, case studies, and testimonials show previous work and do not
-            guarantee any particular result on your project. Where this website states that a service is offered at no
-            charge, such as an inspection or an estimate, that offer applies as described on the relevant page and may be
-            subject to service area, scheduling, and property access.
-          </p>
-        </div>
-      </section>
-
-      <section>
-        <h2 class={headingClass}>5. Insurance claim information</h2>
         <p class={bodyClass}>
-          Pages on this website that describe insurance claims, adjuster processes, or estimating software are general
-          information only. We are roofing contractors, not public adjusters, insurance agents, or attorneys, and
-          nothing on this site is insurance, legal, or claims advice. We do not negotiate claims on your behalf or
-          represent you before your insurer. Your coverage, your claim outcome, and any payment are determined by your
-          policy and your insurance company. Any estimate we prepare reflects our assessment of the work, not a
-          prediction of what your insurer will approve.
+          We try to keep the information on this website accurate, but content may become out of date and may contain
+          errors. Descriptions of services, availability, timelines, and any pricing shown on this site are for general
+          information only and are not binding offers. Any estimate or quote becomes binding only when provided in
+          writing and signed by both parties.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>6. Contact forms and submissions</h2>
+        <h2 class={headingClass}>5. Contact forms and submissions</h2>
         <p class={bodyClass}>
           When you submit a form on this website, you are asking us to contact you about our services, and you agree
           that we may respond by email, phone, or text using the details you provide. Please do not submit sensitive
@@ -114,7 +92,7 @@ const linkClass = 'text-heading font-medium hover:underline';
       </section>
 
       <section>
-        <h2 class={headingClass}>7. Text messages</h2>
+        <h2 class={headingClass}>6. Text messages</h2>
         <p class={bodyClass}>
           If you provide a mobile number and opt in, we may send text messages about your inquiry, appointment, or
           project. Message and data rates may apply, and message frequency varies. Reply STOP to any message to opt out,
@@ -123,138 +101,69 @@ const linkClass = 'text-heading font-medium hover:underline';
       </section>
 
       <section>
-        <h2 class={headingClass}>8. Third-party links and embedded content</h2>
+        <h2 class={headingClass}>7. Third-party links and embedded content</h2>
         <p class={bodyClass}>
-          This website may link to, or embed content from, third-party services such as maps, scheduling tools, chat, and
-          review platforms. We do not control those services and are not responsible for their content, availability,
-          accuracy, or privacy practices. Your use of a third-party service is governed by that provider's own terms.
+          This website may link to, or embed content from, third-party services such as maps, analytics, and review
+          platforms. We do not control those services and are not responsible for their content, availability, or
+          privacy practices. Your use of a third-party service is governed by that provider's own terms.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>9. Cookies</h2>
+        <h2 class={headingClass}>8. Cookies</h2>
         <p class={bodyClass}>
           This website may use cookies and similar technologies to operate the site, remember your preferences, and
           understand how the site is used. You can control cookies through your browser settings. See our
-          <a class={linkClass} href="/privacy-policy">Privacy Policy</a> for more detail on the information we collect.
+          <a class={linkClass} href="/privacy-policy">Privacy Policy</a> for more detail.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>10. Intellectual property</h2>
-        <div class={`${bodyClass} space-y-5`}>
-          <p>
-            Unless stated otherwise, the content on this website, including text, images, graphics, layout, and design,
-            is owned by R&amp;C Roofing Contractors or used with permission, and is protected by copyright and other
-            intellectual property laws. You may view and print pages for your own personal or internal business use. You
-            may not reproduce, distribute, modify, or create derivative works from site content without our written
-            permission.
-          </p>
-          <p>
-            Trademarks, certification marks, and logos belonging to third parties, including manufacturers, trade
-            associations, and rating or review organizations, remain the property of their respective owners and appear
-            on this site only to identify those organizations.
-          </p>
-        </div>
-      </section>
-
-      <section>
-        <h2 class={headingClass}>11. Copyright complaints</h2>
+        <h2 class={headingClass}>9. Intellectual property</h2>
         <p class={bodyClass}>
-          If you believe content on this website infringes your copyright, contact us at
-          <a class={linkClass} href="mailto:info@safehomeservice.com">info@safehomeservice.com</a> with a description of
-          the work, the location of the material on our site, your contact details, a statement that you believe the use
-          is unauthorized, and a statement that the information in your notice is accurate. We will review the notice
-          and remove or disable access to the material where appropriate. If material of yours was removed in error, you
-          may contact us at the same address to respond.
+          Unless stated otherwise, the content on this website is owned by {CONTACT.businessName} or used with
+          permission. You may view and print pages for your own personal or internal business use. You may not
+          reproduce, distribute, or create derivative works from site content without our written permission.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>12. Disclaimer of warranties</h2>
-        <div class={`${bodyClass} space-y-5`}>
-          <p>
-            To the maximum extent permitted by applicable law, this website and its content are provided on an "as is"
-            and "as available" basis, without warranties of any kind, whether express or implied, including implied
-            warranties of merchantability, fitness for a particular purpose, and non-infringement. We do not warrant
-            that the site will be uninterrupted, secure, or free of errors, or that any information on it is complete or
-            current.
-          </p>
-          <p>Nothing in this section limits any warranty given in a signed agreement for services we perform for you.</p>
-        </div>
-      </section>
-
-      <section>
-        <h2 class={headingClass}>13. Limitation of liability</h2>
-        <div class={`${bodyClass} space-y-5`}>
-          <p>
-            To the maximum extent permitted by applicable law, R&amp;C Roofing Contractors and its owners, employees, and
-            contractors will not be liable for any indirect, incidental, special, consequential, or punitive damages, or
-            for any loss of profits, revenue, data, or business, arising out of or relating to your use of this website.
-            Where liability cannot be excluded, our total liability relating to this website is limited to one hundred
-            United States dollars (USD 100).
-          </p>
-          <p>
-            Some jurisdictions do not allow certain limitations of liability, so parts of this section may not apply to
-            you. Nothing in this section limits or affects any obligation, warranty, or liability arising under a signed
-            agreement for services we perform at your property.
-          </p>
-        </div>
-      </section>
-
-      <section>
-        <h2 class={headingClass}>14. Indemnification</h2>
-        <div class={`${bodyClass} space-y-5`}>
-          <p>
-            You agree to indemnify and hold harmless R&amp;C Roofing Contractors and its owners, employees, and
-            contractors from any claims, losses, liabilities, and reasonable legal fees arising from your misuse of this
-            website or your breach of these terms.
-          </p>
-          <p>
-            Nothing in this section limits or affects any obligation, warranty, or liability arising under a signed
-            agreement for services we perform at your property.
-          </p>
-        </div>
-      </section>
-
-      <section>
-        <h2 class={headingClass}>15. Changes to these terms</h2>
+        <h2 class={headingClass}>10. Disclaimer of warranties</h2>
         <p class={bodyClass}>
-          We may update these terms from time to time. The current version is always posted on this page with its
-          effective date. Continued use of the site after an update means you accept the revised terms.
+          To the maximum extent permitted by applicable law, this website and its content are provided on an "as is" and
+          "as available" basis, without warranties of any kind. Nothing in this section limits any warranty given in a
+          signed agreement for services we perform for you.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>16. Governing law and venue</h2>
+        <h2 class={headingClass}>11. Limitation of liability</h2>
         <p class={bodyClass}>
-          These terms are governed by the laws of the State of Hawaii, without regard to its conflict of laws rules. Any
-          dispute relating to these terms or to this website will be brought in the state or federal courts located in
-          Honolulu County, Hawaii, and you consent to the jurisdiction of those courts.
+          To the maximum extent permitted by applicable law, {CONTACT.businessName} and its owners, employees, and
+          contractors will not be liable for any indirect, incidental, special, consequential, or punitive damages
+          arising out of your use of this website. Where liability cannot be excluded, our total liability relating to
+          this website is limited to one hundred United States dollars (USD 100).
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>17. General</h2>
+        <h2 class={headingClass}>12. Changes to these terms</h2>
         <p class={bodyClass}>
-          If any provision of these terms is found unenforceable, the remaining provisions stay in effect. Our failure
-          to enforce any provision is not a waiver of it. These terms, together with any signed agreement between us,
-          form the entire agreement regarding your use of this website.
+          We may update these terms from time to time. The current version is always posted on this page. Continued use
+          of the site after an update means you accept the revised terms.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>18. Contact</h2>
-        <div class={`${bodyClass} space-y-5`}>
-          <p>Questions about these terms can be sent to:</p>
-          <p>
-            R&amp;C Roofing Contractors<br />
-            3302 Campbell Ave<br />
-            Honolulu, HI 96815<br />
-            Email: <a class={linkClass} href="mailto:info@safehomeservice.com">info@safehomeservice.com</a><br />
-            Phone: <a class={linkClass} href="tel:+18088882524">(808) 888-2524</a>
-          </p>
-        </div>
+        <h2 class={headingClass}>13. Contact</h2>
+        <p class={bodyClass}>
+          Questions about these terms can be sent to:<br /><br />
+          {CONTACT.businessName}<br />
+          {CONTACT.address.street}<br />
+          {CONTACT.address.cityLine}<br />
+          Email: <a class={linkClass} href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a><br />
+          Phone: <a class={linkClass} href={CONTACT.phone.href}>{CONTACT.phone.display}</a>
+        </p>
       </section>
     </div>
     <Fragment slot="bg">
@@ -263,7 +172,8 @@ const linkClass = 'text-heading font-medium hover:underline';
   </WidgetWrapper>
 
   <CTABanner
-    title="Need Help With Your Roof?"
-    subtitle="If you have questions about a roofing project, or want to understand the condition of your roof, R&amp;C Roofing Contractors can help."
+    title="Questions?"
+    subtitle={`If you have questions about these terms or about working with ${CONTACT.businessName}, contact us.`}
+    ctaText={PRIMARY_CTA_LABEL}
   />
 </Layout>

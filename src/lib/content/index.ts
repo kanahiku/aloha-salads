@@ -20,6 +20,7 @@ import {
 } from './sanity';
 import { blogPosts as localBlogPosts } from '../../data/pages/blogPosts';
 import { contactHelpOptions as localContactHelpOptions } from '../../data/pages/contact';
+import { navigationData } from '../../data/navigation';
 
 export async function getHomeContent(): Promise<HomePageContent> {
   const page = await getSanityHomeContent();
@@ -29,12 +30,22 @@ export async function getHomeContent(): Promise<HomePageContent> {
   return page;
 }
 
-export async function getContactPage(): Promise<ContactPageContent> {
-  return getSanityContactPage();
+export async function getContactPage(): Promise<ContactPageContent | null> {
+  try {
+    return await getSanityContactPage();
+  } catch (error) {
+    console.warn('Sanity contact page unavailable; using local form fallback.', error);
+    return null;
+  }
 }
 
-export async function getReviewsPage(): Promise<ReviewsPageContent> {
-  return getSanityReviewsPage();
+export async function getReviewsPage(): Promise<ReviewsPageContent | null> {
+  try {
+    return await getSanityReviewsPage();
+  } catch (error) {
+    console.warn('Sanity reviews page unavailable; using live review feed fallback.', error);
+    return null;
+  }
 }
 
 export async function getContactHelpOptions() {
@@ -47,60 +58,11 @@ export async function getContactHelpOptions() {
   return localContactHelpOptions;
 }
 
-export async function getNavigationContent(): Promise<NavigationContent> {
-  const nav = await getSanityNavigationContent();
-  if (!nav?.header || !nav?.footer) {
-    throw new Error('Sanity navigation or footer document is missing.');
-  }
-  return stripHiddenNavLinks(ensureLegalFooterLinks(ensureBlogNav(nav)));
-}
-
 const LEGAL_FOOTER_LINKS = [
   { text: 'Privacy Policy', href: '/privacy-policy' },
   { text: 'Terms of Service', href: '/terms-of-service' },
   { text: 'Accessibility', href: '/accessibility' },
 ];
-
-const HIDDEN_NAV_HREFS = new Set(['/about/gallery', '/gallery']);
-
-function navHrefKey(href?: string) {
-  if (!href) return '';
-  const path = href.trim();
-  if (!path) return '';
-  return path.replace(/\/+$/, '') || '/';
-}
-
-function isHiddenNavHref(href?: string) {
-  return HIDDEN_NAV_HREFS.has(navHrefKey(href));
-}
-
-function stripHiddenNavLinks(nav: NavigationContent): NavigationContent {
-  const stripItems = <T extends { href?: string }>(items?: T[]) =>
-    (items ?? []).filter((item) => !isHiddenNavHref(item.href));
-
-  return {
-    ...nav,
-    header: {
-      ...nav.header,
-      links: stripItems(nav.header.links).map((link) => ({
-        ...link,
-        links: link.links ? stripItems(link.links) : undefined,
-        columns: link.columns?.map((column) => ({
-          ...column,
-          links: stripItems(column.links),
-        })),
-      })),
-    },
-    footer: {
-      ...nav.footer,
-      links: nav.footer.links.map((column) => ({
-        ...column,
-        links: stripItems(column.links),
-      })),
-      secondaryLinks: stripItems(nav.footer.secondaryLinks),
-    },
-  };
-}
 
 function ensureLegalFooterLinks(nav: NavigationContent): NavigationContent {
   const existing = nav.footer.secondaryLinks ?? [];
@@ -117,41 +79,16 @@ function ensureLegalFooterLinks(nav: NavigationContent): NavigationContent {
   };
 }
 
-function ensureBlogNav(nav: NavigationContent): NavigationContent {
-  const blogLink = { text: 'Blog', href: '/blog' };
-
-  const headerLinks = (() => {
-    const withoutAboutBlog = nav.header.links.map((link) => {
-      if (link.text !== 'About' || !link.links) return link;
-      return { ...link, links: link.links.filter((item) => item.href !== '/blog') };
-    });
-
-    if (withoutAboutBlog.some((link) => link.href === '/blog' || link.text === 'Blog')) {
-      return withoutAboutBlog;
+export async function getNavigationContent(): Promise<NavigationContent> {
+  try {
+    const nav = await getSanityNavigationContent();
+    if (nav?.header && nav?.footer) {
+      return ensureLegalFooterLinks(nav);
     }
-
-    const contactIndex = withoutAboutBlog.findIndex((item) => item.href === '/contact' || item.text === 'Contact');
-    if (contactIndex >= 0) {
-      return [...withoutAboutBlog.slice(0, contactIndex), blogLink, ...withoutAboutBlog.slice(contactIndex)];
-    }
-    return [...withoutAboutBlog, blogLink];
-  })();
-
-  const footerLinks = nav.footer.links.map((column) => {
-    if (column.title !== 'Company') return column;
-    if (column.links.some((item) => item.href === '/blog')) return column;
-    const next = [...column.links];
-    const contactIndex = next.findIndex((item) => item.href === '/contact');
-    if (contactIndex >= 0) next.splice(contactIndex, 0, blogLink);
-    else next.push(blogLink);
-    return { ...column, links: next };
-  });
-
-  return {
-    ...nav,
-    header: { ...nav.header, links: headerLinks },
-    footer: { ...nav.footer, links: footerLinks },
-  };
+  } catch (error) {
+    console.warn('Sanity navigation unavailable; using local fallback.', error);
+  }
+  return ensureLegalFooterLinks(navigationData);
 }
 
 export async function findServicePage(slug: string): Promise<ServicePageContent | null> {
@@ -183,7 +120,15 @@ export async function getBlogPostSlugs(): Promise<string[]> {
   return [...new Set([...localSlugs, ...sanitySlugs])];
 }
 
-const STATIC_PATHS = ['/', '/blog', '/contact', '/reviews', '/privacy-policy', '/terms-of-service', '/accessibility'];
+const STATIC_PATHS = [
+  '/',
+  '/blog',
+  '/contact',
+  '/reviews',
+  '/privacy-policy',
+  '/terms-of-service',
+  '/accessibility',
+];
 
 export async function getPublicContentPaths(): Promise<string[]> {
   const [pageSlugs, postSlugs] = await Promise.all([getServicePageSlugs(), getBlogPostSlugs()]);
@@ -191,7 +136,7 @@ export async function getPublicContentPaths(): Promise<string[]> {
     ...STATIC_PATHS,
     ...pageSlugs.map((slug) => `/${slug.replace(/^\/+/, '')}`),
     ...postSlugs.map((slug) => `/blog/${slug.replace(/^\/+/, '')}`),
-  ].filter((path) => !isHiddenNavHref(path));
+  ];
 }
 
 export function getBlogPermalink(slug: string): string {

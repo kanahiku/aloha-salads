@@ -1,9 +1,4 @@
-import type { HomePageContent, NavigationContent } from './types';
-
-export async function getLocalHomeContent(): Promise<HomePageContent> {
-  const { homePageData } = await import('../../data/pages/home');
-  return homePageData;
-}
+import type { NavigationContent } from './types';
 
 export async function getLocalNavigationContent(): Promise<NavigationContent> {
   const { navigationData } = await import('../../data/navigation');

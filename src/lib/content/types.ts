@@ -290,6 +290,7 @@ export interface SplitContentSection {
   linkHref?: string;
   image?: ContentImage;
   imagePlaceholder?: string;
+  isReversed?: boolean;
 }
 
 export interface QuoteCardItem {
@@ -309,7 +310,7 @@ export interface PageFaqs {
   items: Array<{ title: string; description: string }>;
 }
 
-export type ServiceSection =
+export type ServiceSection = (
   | IconPointsSection
   | TimelineSection
   | LinkedCardsSection
@@ -321,7 +322,8 @@ export type ServiceSection =
   | YelpReviewsSection
   | LiveReviewsSection
   | SplitContentSection
-  | QuoteCardsSection;
+  | QuoteCardsSection
+) & { surface?: 'white' | 'grey' | 'dark' };
 
 export interface ServicePageContent {
   title: string;

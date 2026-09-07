@@ -6,8 +6,8 @@ import { schemaTypes } from './schemas';
 import { structure } from './structure';
 
 export default defineConfig({
-  name: 'rc-roofing',
-  title: 'R&C Roofing',
+  name: 'agency-site',
+  title: 'Studio',
 
   // Fill in your Project ID and dataset after creating the project on sanity.io
   projectId: process.env.SANITY_STUDIO_PROJECT_ID ?? '',

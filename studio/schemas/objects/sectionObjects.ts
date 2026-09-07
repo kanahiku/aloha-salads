@@ -14,6 +14,22 @@ const introField = defineField({
   rows: 3,
 });
 
+const surfaceField = defineField({
+  name: 'surface',
+  title: 'Background',
+  type: 'string',
+  options: {
+    list: [
+      { title: 'White', value: 'white' },
+      { title: 'Grey', value: 'grey' },
+      { title: 'Dark', value: 'dark' },
+    ],
+    layout: 'radio',
+  },
+  initialValue: 'white',
+  description: 'Match the Figma frame. Do not auto-cycle colors.',
+});
+
 export const linkedCard = defineType({
   name: 'linkedCard',
   title: 'Linked card',
@@ -130,6 +146,7 @@ export const iconPointsSection = defineType({
   title: 'Icon points',
   type: 'object',
   fields: [
+    surfaceField,
     headingField,
     introField,
     defineField({
@@ -138,7 +155,7 @@ export const iconPointsSection = defineType({
       type: 'string',
       options: {
         list: [
-          { title: 'Auto (3 or 5 = band, otherwise 2×2 grid)', value: 'auto' },
+          { title: 'Choose in Figma (default grid)', value: 'auto' },
           { title: '2×2 text grid', value: 'grid' },
           { title: 'One-row band', value: 'band' },
         ],
@@ -168,6 +185,7 @@ export const timelineSection = defineType({
   title: 'Timeline / process',
   type: 'object',
   fields: [
+    surfaceField,
     headingField,
     introField,
     defineField({
@@ -191,13 +209,14 @@ export const linkedCardsSection = defineType({
   title: 'Linked cards / directory',
   type: 'object',
   fields: [
+    surfaceField,
     headingField,
     introField,
     defineField({
       name: 'display',
       title: 'Display',
       type: 'string',
-      description: 'Use directory rows when there are 5 items (never a 5-card grid).',
+      description: 'Card grid or stacked directory rows — match the Figma frame.',
       options: {
         list: [
           { title: 'Card grid', value: 'cards' },
@@ -228,6 +247,7 @@ export const infoCardsSection = defineType({
   title: 'Info cards',
   type: 'object',
   fields: [
+    surfaceField,
     headingField,
     introField,
     defineField({
@@ -251,6 +271,7 @@ export const editorialSection = defineType({
   title: 'Editorial (full width)',
   type: 'object',
   fields: [
+    surfaceField,
     headingField,
     defineField({
       name: 'paragraphs',
@@ -292,6 +313,7 @@ export const comparisonTableSection = defineType({
   title: 'Comparison table',
   type: 'object',
   fields: [
+    surfaceField,
     headingField,
     introField,
     defineField({
@@ -357,6 +379,7 @@ export const bulletCardsSection = defineType({
   title: 'Bullet cards',
   type: 'object',
   fields: [
+    surfaceField,
     headingField,
     introField,
     defineField({
@@ -388,6 +411,7 @@ export const checklistSection = defineType({
   title: 'Checklist',
   type: 'object',
   fields: [
+    surfaceField,
     headingField,
     introField,
     defineField({
@@ -425,6 +449,7 @@ export const yelpReviewsSection = defineType({
   description:
     'Shows the latest Yelp reviews (up to 3) from the API. Saved review IDs are ignored. Prefer “Live reviews” to mix Google and Yelp.',
   fields: [
+    surfaceField,
     headingField,
     introField,
     defineField({
@@ -450,6 +475,7 @@ export const liveReviewsSection = defineType({
   description:
     'Latest Google (up to 3 shown of 5 fetched) and/or Yelp (up to 3) reviews, with View all links to each platform.',
   fields: [
+    surfaceField,
     headingField,
     introField,
     defineField({
@@ -481,7 +507,15 @@ export const splitContentSection = defineType({
   title: 'Split content (text + image)',
   type: 'object',
   fields: [
+    surfaceField,
     headingField,
+    defineField({
+      name: 'isReversed',
+      title: 'Image on the left',
+      type: 'boolean',
+      initialValue: false,
+      description: 'Match Figma. Default is image on the right.',
+    }),
     defineField({
       name: 'paragraphs',
       title: 'Paragraphs',
@@ -543,6 +577,7 @@ export const quoteCardsSection = defineType({
   title: 'Quote cards',
   type: 'object',
   fields: [
+    surfaceField,
     headingField,
     introField,
     defineField({

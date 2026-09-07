@@ -3,62 +3,29 @@ import Layout from '~/layouts/PageLayout.astro';
 import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
 import Headline from '~/components/ui/Headline.astro';
 import SectionBg from '~/components/ui/SectionBg.astro';
-import Button from '~/components/ui/Button.astro';
-import { Icon } from 'astro-icon/components';
-import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
-import HeroSubtitle from '~/components/ui/HeroSubtitle.astro';
 import Hero2 from '~/components/widgets/Hero2.astro';
-import Content from '~/components/widgets/Content.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
-import RelatedBlogs from '~/components/widgets/RelatedBlogs.astro';
 import ReviewsGrid from '~/components/widgets/ReviewsGrid.astro';
-import Image from '~/components/common/Image.astro';
-import ArtDirectedImage from '~/components/ui/ArtDirectedImage.astro';
 import { getReviewsPage } from '~/lib/content';
-import { aboutHrefs } from '~/data/pages/about';
+import { CONTACT } from '~/config/contact';
+import { PRIMARY_CTA_LABEL } from '~/config/cta';
+
+export const prerender = false;
 
 const page = await getReviewsPage();
-const heroImage = page.hero.image;
-const heroImageMobile = page.hero.imageMobile;
-const galleryPreviews = Array.from({ length: 4 }, (_, index) => page.gallerySection.previewImages?.[index]);
-const galleryCtaHref = page.gallerySection.ctaHref || aboutHrefs.gallery;
-const galleryCta =
-  page.gallerySection.ctaText && galleryCtaHref !== aboutHrefs.gallery && galleryCtaHref !== '/gallery'
-    ? { variant: 'ghost-light' as const, text: page.gallerySection.ctaText, href: galleryCtaHref }
-    : undefined;
 
 const metadata = {
-  title: page.meta.title,
-  description: page.meta.description,
+  title: page?.meta.title || `Reviews | ${CONTACT.businessName}`,
+  description: page?.meta.description || `Read recent Google and Yelp reviews for ${CONTACT.businessName}.`,
   ignoreTitleTemplate: true,
 };
 ---
 
 <Layout metadata={metadata}>
   <Hero2>
-    <Fragment slot="title">{page.hero.title}</Fragment>
+    <Fragment slot="title">{page?.hero.title || 'Reviews'}</Fragment>
     <Fragment slot="subtitle">
-      <HeroSubtitle visualSubheading={page.hero.visualSubheading} subtitle={page.hero.subtitle} />
-    </Fragment>
-    <Fragment slot="image">
-      {
-        heroImage || heroImageMobile ? (
-          <ArtDirectedImage
-            desktop={heroImage}
-            mobile={heroImageMobile}
-            class="w-full h-full object-cover"
-            widths={[400, 768, 1200]}
-            sizes="(max-width: 768px) 100vw, 50vw"
-            loading="eager"
-            width={700}
-            height={700}
-            layout="cover"
-            format="webp"
-          />
-        ) : (
-          <HeroImagePlaceholder label={page.hero.imagePlaceholder || 'Customer and project photo placeholder'} />
-        )
-      }
+      {page?.hero.subtitle || `What people are saying about ${CONTACT.businessName}.`}
     </Fragment>
     <Fragment slot="bg">
       <SectionBg variant="hero" />
@@ -66,13 +33,13 @@ const metadata = {
   </Hero2>
 
   <WidgetWrapper containerClass="max-w-[1400px] mx-auto">
-    <Headline title={page.liveReviews.heading} classes={{ container: 'mb-[9px]' }} />
+    <Headline title={page?.liveReviews.heading || 'Recent reviews'} classes={{ container: 'mb-[9px]' }} />
     {
-      page.liveReviews.intro && (
+      page?.liveReviews.intro ? (
         <p class="text-[16px] md:text-[17px] font-normal leading-[160%] text-muted text-left max-w-3xl mb-[30px]">
           {page.liveReviews.intro}
         </p>
-      )
+      ) : null
     }
     <ReviewsGrid showHeader={false} sources={['google', 'yelp']} variant="dark" showCta={false} />
     <Fragment slot="bg">
@@ -80,90 +47,13 @@ const metadata = {
     </Fragment>
   </WidgetWrapper>
 
-  <WidgetWrapper containerClass="max-w-[1400px] mx-auto" isDark={true}>
-    <Headline isDark={true} title={page.platforms.heading} classes={{ container: 'mb-[9px]' }} />
-    {
-      page.platforms.intro && (
-        <p class="text-[16px] md:text-[17px] font-normal leading-[160%] text-white/70 text-left max-w-3xl mb-[30px]">
-          {page.platforms.intro}
-        </p>
-      )
-    }
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
-      {
-        page.platforms.items.map((card) => (
-          <div class="rounded-lg border border-accent/60 bg-[#222] p-4 md:p-5 flex flex-col h-full">
-            {card.icon && (
-              <div class="mb-4 w-10 h-10 rounded-md border border-accent/60 flex items-center justify-center">
-                <Icon name={card.icon} class="w-5 h-5 text-accent" aria-hidden="true" />
-              </div>
-            )}
-            <h3 class="text-[18px] md:text-[20px] font-medium leading-[130%] mb-2 text-white">{card.title}</h3>
-            <p class="text-[14px] md:text-[15px] font-normal leading-[160%] text-white/60 flex-1">{card.ratingNote}</p>
-            <div class="mt-auto pt-4">
-              <Button variant="ghost-dark" text={card.linkText} href={card.href} target="_blank" />
-            </div>
-          </div>
-        ))
-      }
-    </div>
-    <Fragment slot="bg">
-      <SectionBg variant="dark" />
-    </Fragment>
-  </WidgetWrapper>
-
-  <Content
-    isReversed
-    imageFit="framed"
-    title={page.gallerySection.heading}
-    callToAction={galleryCta}
-  >
-    <Fragment slot="content">
-      {
-        page.gallerySection.paragraphs.map((paragraph, index) => (
-          <p class:list={[index > 0 && 'mt-4', 'text-muted']}>{paragraph}</p>
-        ))
-      }
-    </Fragment>
-    <Fragment slot="image">
-      <div class="grid grid-cols-2 gap-3">
-        {
-          galleryPreviews.map((image, index) =>
-            image ? (
-              <div class="rounded-md overflow-hidden aspect-square">
-                <Image
-                  src={image.src}
-                  alt={image.alt || `Gallery preview ${index + 1}`}
-                  class="w-full h-full object-cover"
-                  widths={[280, 480, 720]}
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                  width={480}
-                  height={480}
-                  layout="cover"
-                  format="webp"
-                />
-              </div>
-            ) : (
-              <HeroImagePlaceholder label={`Gallery preview ${index + 1}`} />
-            )
-          )
-        }
-      </div>
-    </Fragment>
-    <Fragment slot="bg">
-      <SectionBg variant="white" />
-    </Fragment>
-  </Content>
-
-  <RelatedBlogs pageSlug="reviews" surface="grey" />
-
   <CTABanner
-    title={page.ctaBanner.title}
-    subtitle={page.ctaBanner.subtitle}
-    ctaText={page.ctaBanner.ctaText}
-    ctaHref={page.ctaBanner.ctaHref}
-    extraLines={page.ctaBanner.extraLines}
-    license={page.ctaBanner.license}
-    showAfterHoursNote={page.ctaBanner.showAfterHoursNote}
+    title={page?.ctaBanner.title || 'Have a project in mind?'}
+    subtitle={page?.ctaBanner.subtitle || `Contact ${CONTACT.businessName} and we will follow up.`}
+    ctaText={page?.ctaBanner.ctaText || PRIMARY_CTA_LABEL}
+    ctaHref={page?.ctaBanner.ctaHref}
+    extraLines={page?.ctaBanner.extraLines}
+    license={page?.ctaBanner.license}
+    showAfterHoursNote={page?.ctaBanner.showAfterHoursNote}
   />
 </Layout>

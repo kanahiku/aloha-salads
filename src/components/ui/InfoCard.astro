@@ -1,12 +1,13 @@
 ---
 import { Icon } from 'astro-icon/components';
 import CardWrapper from './CardWrapper.astro';
+import type { CardVariant } from '~/config/theme';
 
 export interface Props {
   title: string;
   description: string;
   icon?: string;
-  variant?: 'dark' | 'light';
+  variant?: CardVariant;
   size?: 'sm' | 'md' | 'lg';
   border?: boolean;
   class?: string;
@@ -22,10 +23,27 @@ const {
   class: className = '',
 } = Astro.props;
 
-const headingClass = variant === 'dark' ? 'text-card-heading-dark' : 'text-card-heading-light';
-const bodyClass = variant === 'dark' ? 'text-card-body-dark' : 'text-card-body-light';
-const iconMark =
-  variant === 'dark' ? 'border border-accent/60' : 'bg-[#222]';
+const headingClass: Record<CardVariant, string> = {
+  dark: 'text-card-heading-dark',
+  light: 'text-card-heading-light',
+  outlined: 'text-card-heading-outlined',
+  glass: 'text-card-heading-glass',
+}[variant];
+
+const bodyClass: Record<CardVariant, string> = {
+  dark: 'text-card-body-dark',
+  light: 'text-card-body-light',
+  outlined: 'text-card-body-outlined',
+  glass: 'text-card-body-glass',
+}[variant];
+
+// Icon mark: dark bg square for light cards; accent-bordered square for dark/glass
+const iconMark: Record<CardVariant, string> = {
+  dark: 'border border-accent/60',
+  light: 'bg-card-dark',
+  outlined: 'bg-card-dark',
+  glass: 'border border-accent/60',
+}[variant];
 ---
 
 <CardWrapper variant={variant} size={size} border={border} class={className}>

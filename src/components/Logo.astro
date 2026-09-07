@@ -1,6 +1,7 @@
 ---
 import { twMerge } from 'tailwind-merge';
 import logoImg from '~/assets/images/logo.webp';
+import { CONTACT } from '~/config/contact';
 
 interface Props {
   class?: string;
@@ -11,7 +12,7 @@ const { class: className } = Astro.props;
 
 <img
   src={logoImg.src}
-  alt="R&C Roofing"
+  alt={CONTACT.businessName}
   width={logoImg.width}
   height={logoImg.height}
   class={twMerge('h-8 md:h-9 w-auto max-w-[240px] object-contain object-left shrink-0', className)}

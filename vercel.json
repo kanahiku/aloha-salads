@@ -28,11 +28,11 @@
       "missing": [
         {
           "type": "host",
-          "value": "roofinspectionhawaii.com"
+          "value": "example.com"
         },
         {
           "type": "host",
-          "value": "www.roofinspectionhawaii.com"
+          "value": "www.example.com"
         }
       ],
       "headers": [

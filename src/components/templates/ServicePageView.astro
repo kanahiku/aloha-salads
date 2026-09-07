@@ -3,7 +3,6 @@ import Layout from '~/layouts/PageLayout.astro';
 import SectionBg from '~/components/ui/SectionBg.astro';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 import HeroSubtitle from '~/components/ui/HeroSubtitle.astro';
-import InspectionFeeBanner from '~/components/ui/InspectionFeeBanner.astro';
 import Hero2 from '~/components/widgets/Hero2.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
@@ -11,7 +10,7 @@ import CmsSections from '~/components/widgets/CmsSections.astro';
 import ArtDirectedImage from '~/components/ui/ArtDirectedImage.astro';
 import { getServicePage } from '~/lib/content';
 import type { ServicePageContent } from '~/lib/content/types';
-import { isDarkSurface, sectionSurface } from '~/lib/content/sectionTheme';
+import { isDarkSurface } from '~/lib/content/sectionTheme';
 import RelatedBlogs from '~/components/widgets/RelatedBlogs.astro';
 
 export interface Props {
@@ -39,15 +38,12 @@ const heroActions = [
 
 const heroImage = page.hero.image;
 const heroImageMobile = page.hero.imageMobile;
-const faqSurface = sectionSurface(page.sections.length);
-const relatedSurface = sectionSurface(page.sections.length + (page.faqs ? 1 : 0));
-const showInspectionFeeBanner = slug.startsWith('roof-inspections/');
+const faqSurface = 'white' as const;
+const relatedSurface = 'white' as const;
 ---
 
 <Layout metadata={metadata}>
-  {showInspectionFeeBanner && <InspectionFeeBanner />}
-
-  <Hero2 actions={heroActions.length ? heroActions : undefined} overlapHeader={!showInspectionFeeBanner}>
+  <Hero2 actions={heroActions.length ? heroActions : undefined}>
     <Fragment slot="title">{page.hero.title}</Fragment>
     <Fragment slot="subtitle">
       <HeroSubtitle visualSubheading={page.hero.visualSubheading} subtitle={page.hero.subtitle} />
