@@ -4,7 +4,7 @@ site:
   base: '/'
   trailingSlash: false
 
-  googleSiteVerificationId:
+  googleSiteVerificationId: mVkD6aA1QxxRzrvp1axFDrFNoyzDEuUHpNJiahPzRZI
 
 # Default SEO metadata
 metadata:
@@ -65,8 +65,12 @@ apps:
 
 analytics:
   vendors:
+    # GTM container — leave empty on sites that do not use Tag Manager.
+    # If GA4 is loaded inside GTM, keep googleAnalytics.id null to avoid double-counting.
+    googleTagManager:
+      id: GTM-WGVFVT5Z
     googleAnalytics:
-      id: null # or "G-XXXXXXXXXX"
+      id: null # or "G-XXXXXXXXXX" — only if GA4 is NOT fired from GTM
 
 ui:
   theme: 'light' # Values: "system" | "light" | "dark" | "light:only" | "dark:only"

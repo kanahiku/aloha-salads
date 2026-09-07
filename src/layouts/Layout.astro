@@ -12,6 +12,8 @@ import ApplyColorMode from '~/components/common/ApplyColorMode.astro';
 import Metadata from '~/components/common/Metadata.astro';
 import SiteVerification from '~/components/common/SiteVerification.astro';
 import Analytics from '~/components/common/Analytics.astro';
+import GoogleTagManager from '~/components/common/GoogleTagManager.astro';
+import JsonLd from '~/components/common/JsonLd.astro';
 import Intersect from '~/components/common/Intersect.astro';
 
 // Comment the line below to disable View Transitions
@@ -30,6 +32,7 @@ const { language, textDirection } = I18N;
 <!doctype html>
 <html lang={language} dir={textDirection} class="2xl:text-[20px]">
   <head>
+    <GoogleTagManager placement="head" />
     <CommonMeta />
     <Favicons />
     <Font cssVariable="--font-dm-sans" preload />
@@ -39,6 +42,7 @@ const { language, textDirection } = I18N;
     <Metadata {...metadata} />
     <SiteVerification />
     <Analytics />
+    <JsonLd />
 
     <link rel="preconnect" href="https://images.unsplash.com" />
 
@@ -47,6 +51,7 @@ const { language, textDirection } = I18N;
   </head>
 
   <body class="antialiased text-default bg-page tracking-tight font-normal text-[16px] md:text-[17px] leading-[160%]">
+    <GoogleTagManager placement="body" />
     <slot />
 
     <Intersect />

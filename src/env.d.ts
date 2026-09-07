@@ -28,3 +28,7 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+interface Window {
+  __gtmLoaded?: boolean;
+}
