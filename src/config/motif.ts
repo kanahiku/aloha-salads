@@ -12,14 +12,13 @@
  *    (`--aw-color-motif-*`, `--aw-opacity-motif-*`).
  */
 import type { ImageMetadata } from 'astro';
-import patternSrc from '~/assets/images/patterns/simple.svg';
 
 export type MotifFade = 'top-to-bottom' | 'bottom-to-top' | 'none';
 export type MotifSection = 'hero' | 'dark' | 'grey' | 'white' | 'cta';
 
 export const MOTIF = {
   /** Black-on-white SVG used as a CSS mask. Swap this file per client. */
-  pattern: patternSrc as ImageMetadata,
+  pattern: undefined as ImageMetadata | undefined,
 
   /** Where the motif appears. Off by default — enable from Figma / brand. */
   sections: {

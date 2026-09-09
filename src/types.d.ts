@@ -167,7 +167,7 @@ export interface Disclaimer {
 
 // COMPONENTS
 export interface CallToAction extends Omit<HTMLAttributes<'a'>, 'slot'> {
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'ghost-light' | 'ghost-dark' | 'link';
+  variant?: 'primary' | 'ghost' | 'secondary' | 'tertiary' | 'ghost-light' | 'ghost-dark' | 'link';
   text?: string;
   icon?: string;
   classes?: Record<string, string>;
@@ -194,6 +194,13 @@ export interface Form {
   description?: string;
 }
 
+export interface HeroWord {
+  text: string;
+  italic?: boolean;
+  /** Vertical alignment in the words-row hero (Figma Peak / Slope / Floor). */
+  align?: 'start' | 'center' | 'end';
+}
+
 // WIDGETS
 export interface Hero extends Omit<Headline, 'classes'>, Omit<Widget, 'isDark' | 'classes'> {
   content?: string;
@@ -201,12 +208,16 @@ export interface Hero extends Omit<Headline, 'classes'>, Omit<Widget, 'isDark' |
   image?: string | unknown;
   /** Optional phone-only crop. Falls back to `image` below the `md` breakpoint. */
   imageMobile?: string | unknown;
-  /** `split` = text + full-height side image. `overlay` = full-width CMS photo, text left. */
-  variant?: 'split' | 'overlay';
+  /** `split` = text + side image. `overlay` = photo + headline/CTAs. `words` = photo + three positioned words. `page` = light gradient + title left / lede right. `title` = photo + centered h1 (Figma 64:935 Chapters). */
+  variant?: 'split' | 'overlay' | 'words' | 'page' | 'title' | 'split-dark';
+  /** Three-word overlay hero (e.g. Peak. Slope. Floor.). Used when `variant="words"`. */
+  words?: HeroWord[];
   /** Image on the left when `variant="split"`. Default is image right. */
   isReversed?: boolean;
   /** Pull hero under the sticky header. Disable when another block sits above the hero. */
   overlapHeader?: boolean;
+  /** `variant="page"` only — stack title and subtitle vertically (flex-col) instead of side-by-side. Figma node 121:15 Books hero. */
+  stacked?: boolean;
 }
 
 export interface Team extends Omit<Headline, 'classes'>, Widget {

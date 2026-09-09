@@ -95,13 +95,13 @@ const descTypography = 'text-[14px] md:text-[15px] font-normal leading-[160%] mt
                 {iconName && (
                   <div
                     class={twMerge(
-                      'w-10 h-10 rounded-md flex items-center justify-center shrink-0 relative z-10',
+                      'size-9 sm:size-10 rounded-md flex items-center justify-center shrink-0 relative z-10',
                       iconBoxClass,
                       iconClass,
                       itemClasses?.icon
                     )}
                   >
-                    <Icon name={iconName} class:list={['w-5 h-5', iconGlyphClass]} />
+                    <Icon name={iconName} class:list={['size-3.5 sm:size-5', iconGlyphClass]} />
                   </div>
                 )}
                 {!isLast && (

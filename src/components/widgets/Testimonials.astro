@@ -1,85 +1,163 @@
 ---
-import Headline from '~/components/ui/Headline.astro';
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
-import Button from '~/components/ui/Button.astro';
-import Image from '~/components/common/Image.astro';
-import type { Testimonials as Props } from '~/types';
+/**
+ * Testimonials — infinite scrolling quote marquee (Figma node 2:1305).
+ *
+ * Visual spec:
+ *   Full-width dark navy→teal gradient section.
+ *   Centered header: eyebrow + h2 with optional inline coloured span.
+ *   Horizontal marquee of Card variant="testimonial" cards — pure CSS animation.
+ *   Edge fade: CSS mask fades cards in/out at left + right.
+ *   Pauses on hover.
+ *
+ * Implementation:
+ *   Cards are rendered TWICE in the DOM. CSS @keyframes marquee translates the
+ *   track from 0 → -50% (exactly one full set width), then loops seamlessly.
+ *   No JavaScript required — 100% GPU-accelerated.
+ *
+ * Props:
+ *   eyebrow     — small uppercase label above the heading
+ *   headingHtml — heading HTML (allows <span class="text-secondary">…</span>)
+ *   heading     — plain-text fallback if headingHtml is not provided
+ *   testimonials — array of { testimonial, name } items
+ *   id          — section anchor
+ */
+
+import Card from '~/components/ui/Card.astro';
+import Heading from '~/components/ui/Heading.astro';
+
+export interface TestimonialItem {
+  testimonial?: string;
+  /** Attribution line — "Name, Age · Location · Duration" */
+  name?: string;
+  job?: string;
+}
+
+export interface Props {
+  eyebrow?: string;
+  /** Heading HTML — supports inline <span class="text-secondary"> for coloured words. */
+  headingHtml?: string;
+  heading?: string;
+  testimonials?: TestimonialItem[];
+  id?: string;
+}
 
 const {
-  title = '',
-  subtitle = '',
-  tagline = '',
+  eyebrow,
+  headingHtml,
+  heading,
   testimonials = [],
-  callToAction,
-
   id,
-  isDark = false,
-  cardClass,
-  classes = {},
-  bg = await Astro.slots.render('bg'),
 } = Astro.props;
 
-// Use CSS variable-based classes unless cardClass is explicitly provided
-const cardBg = cardClass ?? (isDark
-  ? 'border border-testimonial-card-dark bg-testimonial-card-dark backdrop-blur-sm'
-  : 'border border-testimonial-card-light bg-testimonial-card-light');
-const textColor = isDark ? 'text-testimonial-dark' : 'text-testimonial-light';
-const nameColor = isDark ? 'text-testimonial-name-dark' : 'text-testimonial-name-light';
-const jobColor = isDark ? 'text-testimonial-job-dark' : 'text-testimonial-job-light';
-const hrColor = isDark ? 'border-testimonial-hr-dark' : 'border-testimonial-hr-light';
+// Duplicate cards for seamless loop: translate -50% = one full set → perfect join
+const doubled = [...testimonials, ...testimonials];
 ---
 
-<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-[1400px] mx-auto ${classes?.container ?? ''}`} bg={bg}>
-  <Headline title={title} subtitle={subtitle} tagline={tagline} isDark={isDark} classes={classes?.headline} />
+<section
+  {...id ? { id } : {}}
+  class="not-prose relative w-full overflow-hidden py-16 md:py-24"
+  style="background: linear-gradient(95.38deg, var(--aw-color-bg-section-dark) 5.27%, var(--aw-color-primary) 97.29%)"
+>
 
-  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    {
-      testimonials &&
-        testimonials.map(({ title, testimonial, name, job, image }) => (
-          <div class="flex h-auto intersect-once motion-safe:md:intersect:animate-fade motion-safe:md:opacity-0 intersect-quarter">
-            <div class:list={['flex flex-col p-4 md:p-6 rounded-md', cardBg]}>
-              {title && <h2 class="text-lg font-medium leading-6 pb-4">{title}</h2>}
-              {testimonial && (
-                <blockquote class="flex-auto">
-                  <p class:list={[textColor]}>" {testimonial} "</p>
-                </blockquote>
-              )}
-
-              <hr class:list={['my-4', hrColor]} />
-
-              <div class="flex items-center">
-                {image && (
-                  <div class="h-10 w-10 rounded-full border border-slate-200 dark:border-slate-600">
-                    {typeof image === 'string' ? (
-                      <Fragment set:html={image} />
-                    ) : (
-                      <Image
-                        class="h-10 w-10 rounded-full border border-slate-200 dark:border-slate-600 min-w-full min-h-full"
-                        width={40}
-                        height={40}
-                        layout="fixed"
-                        format="webp"
-                        {...image}
-                      />
-                    )}
-                  </div>
-                )}
-
-                <div class="grow ml-3 rtl:ml-0 rtl:mr-3">
-                  {name && <p class:list={['text-base font-semibold', nameColor]}>{name}</p>}
-                  {job && <p class:list={['text-xs', jobColor]}>{job}</p>}
-                </div>
-              </div>
-            </div>
-          </div>
-        ))
-    }
+  {/* ── Centered header ── */}
+  <div class="mx-auto w-full max-w-container px-5 sm:px-8 md:px-16 lg:px-[120px]">
+    <div class="flex flex-col items-center gap-4 text-center">
+      {eyebrow && (
+        <Heading variant="eyebrow" color="white">{eyebrow}</Heading>
+      )}
+      {headingHtml
+        ? <Heading variant="h2" color="inherit" class="text-page" html={headingHtml} />
+        : heading && (
+            <Heading variant="h2" color="inherit" class="text-page">{heading}</Heading>
+          )
+      }
+    </div>
   </div>
-  {
-    callToAction && (
-      <div class="flex justify-start w-fit mt-8 md:mt-12 font-medium">
-        <Button {...callToAction} />
+
+  {/* ── Marquee track with edge fade mask ── */}
+  {doubled.length > 0 && (
+    <div class="testimonials-mask mt-10 md:mt-16"
+      aria-hidden="false"
+    >
+      <div class="testimonials-track flex items-stretch gap-4">
+        {doubled.map((item) => (
+          <div class="testimonials-slide shrink-0 w-[min(20rem,calc(100vw-2.5rem))] md:w-[512px]">
+            <Card
+              variant="testimonial"
+              quote={item.testimonial}
+              label={item.name}
+            />
+          </div>
+        ))}
       </div>
-    )
+    </div>
+  )}
+
+</section>
+
+<style>
+  /* Edge fade mask */
+  .testimonials-mask {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black 24px,
+      black calc(100% - 24px),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black 24px,
+      black calc(100% - 24px),
+      transparent 100%
+    );
   }
-</WidgetWrapper>
+
+  @media (min-width: 768px) {
+    .testimonials-mask {
+      -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        black 80px,
+        black calc(100% - 80px),
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        black 80px,
+        black calc(100% - 80px),
+        transparent 100%
+      );
+    }
+  }
+
+  /* Marquee animation: translate exactly -50% = one full set of cards */
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .testimonials-track {
+    /* width = 2 × (N cards × 512px + (N-1) gaps × 16px) — wide enough to loop */
+    width: max-content;
+    animation: marquee 30s linear infinite;
+  }
+
+  /* Pause on hover */
+  .testimonials-mask:hover .testimonials-track {
+    animation-play-state: paused;
+  }
+
+  /* Equal-height cards */
+  .testimonials-slide {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .testimonials-slide > * {
+    flex: 1;
+  }
+</style>

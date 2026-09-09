@@ -1,9 +1,31 @@
 ---
-import { Icon } from 'astro-icon/components';
-import { getHomePermalink } from '~/utils/permalinks';
+/**
+ * Site footer — same on every page.
+ *
+ * Structure (fixed, from Figma):
+ *   full-bleed photo background
+ *   └─ max-w-container content column
+ *      ├─ CTA card (eyebrow + heading + body + primary button)
+ *      └─ logo + tagline + legal links | nav columns
+ *
+ * Copy lives in src/config/cta.ts.
+ * Background image: src/assets/images/footer-bg.png.
+ * Do NOT fork this component per page.
+ */
 import Logo from '~/components/Logo.astro';
-import { CONTACT } from '~/config/contact';
-import { contactAddress, contactDirectionsHref, contactPhone } from '~/data/pages/contact';
+import Button from '~/components/ui/Button.astro';
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+import { getHomePermalink } from '~/utils/permalinks';
+import { site } from '~/config/site';
+import {
+  FOOTER_CTA_BODY,
+  FOOTER_CTA_EYEBROW,
+  FOOTER_CTA_HREF,
+  FOOTER_CTA_LABEL,
+  FOOTER_CTA_TITLE,
+} from '~/config/cta';
+import footerBg from '~/assets/images/footer-bg.png';
 
 interface Link {
   text?: string;
@@ -20,131 +42,93 @@ interface Links {
 export interface Props {
   links: Array<Links>;
   secondaryLinks: Array<Link>;
-  socialLinks: Array<Link>;
+  socialLinks?: Array<Link>;
   footNote?: string;
   theme?: string;
+  tagline?: string;
 }
 
-const { socialLinks = [], secondaryLinks = [], links = [], footNote = '', theme = 'light' } = Astro.props;
+const {
+  secondaryLinks = [],
+  links = [],
+  tagline = site.footerTagline,
+} = Astro.props;
 ---
 
-<footer class:list={[{ dark: theme === 'dark' }, 'relative border-t border-white/10 not-prose']}>
-  <div class="bg-black absolute inset-0 pointer-events-none" aria-hidden="true"></div>
-  <div class="absolute inset-0 pointer-events-none overflow-hidden opacity-[0.025]" aria-hidden="true">
-    <svg 
-      class="w-full h-full"
-      viewBox="0 0 1440 800" 
-      fill="none" 
-      xmlns="http://www.w3.org/2000/svg"
-      preserveAspectRatio="xMidYMid slice"
-      style="fill: #ffffff;"
-    >
-      <g clip-path="url(#roofClipFooter)">
-        <path d="M184.257 0L163.851 20.401L143.445 0L123.039 20.401L102.624 0L0 102.602H14.411L102.624 14.408L115.83 27.61L51.019 92.414H51.01L40.829 102.602H96.051L106.233 92.414H106.242L143.445 55.211L190.846 102.602H246.069L171.06 27.61L184.257 14.408L262.289 92.414L272.479 102.602H286.89L184.257 0ZM91.822 92.414H65.43L123.039 34.818L136.235 48.011L91.822 92.414ZM130.248 27.61L143.453 14.408L156.65 27.601L143.445 40.803L130.248 27.61ZM221.468 92.414H195.067L150.654 48.011L163.851 34.809L221.468 92.414Z" transform="translate(0,350) scale(2)" />
-        <path d="M184.257 0L163.851 20.401L143.445 0L123.039 20.401L102.624 0L0 102.602H14.411L102.624 14.408L115.83 27.61L51.019 92.414H51.01L40.829 102.602H96.051L106.233 92.414H106.242L143.445 55.211L190.846 102.602H246.069L171.06 27.61L184.257 14.408L262.289 92.414L272.479 102.602H286.89L184.257 0ZM91.822 92.414H65.43L123.039 34.818L136.235 48.011L91.822 92.414ZM130.248 27.61L143.453 14.408L156.65 27.601L143.445 40.803L130.248 27.61ZM221.468 92.414H195.067L150.654 48.011L163.851 34.809L221.468 92.414Z" transform="translate(580,350) scale(2)" />
-        <path d="M184.257 0L163.851 20.401L143.445 0L123.039 20.401L102.624 0L0 102.602H14.411L102.624 14.408L115.83 27.61L51.019 92.414H51.01L40.829 102.602H96.051L106.233 92.414H106.242L143.445 55.211L190.846 102.602H246.069L171.06 27.61L184.257 14.408L262.289 92.414L272.479 102.602H286.89L184.257 0ZM91.822 92.414H65.43L123.039 34.818L136.235 48.011L91.822 92.414ZM130.248 27.61L143.453 14.408L156.65 27.601L143.445 40.803L130.248 27.61ZM221.468 92.414H195.067L150.654 48.011L163.851 34.809L221.468 92.414Z" transform="translate(1160,350) scale(2)" />
-      </g>
-      <defs>
-        <clipPath id="roofClipFooter">
-          <rect width="1440" height="800" />
-        </clipPath>
-      </defs>
-    </svg>
+<footer class="relative not-prose w-full overflow-hidden">
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <img
+      src={footerBg.src}
+      alt=""
+      width={footerBg.width}
+      height={footerBg.height}
+      class="absolute inset-0 h-full w-full object-cover object-center"
+      loading="lazy"
+      decoding="async"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-heading/20 to-heading/50"></div>
   </div>
-  <div
-    class="relative max-w-[1400px] mx-auto px-4 sm:px-6 text-white intersect-once intersect-quarter intersect-no-queue motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
-  >
-    <div class="grid grid-cols-12 gap-4 gap-y-8 sm:gap-8 py-8 md:py-12">
-      <div class="col-span-12 lg:col-span-4">
-        <div class="mb-4">
-          <a class="inline-block" href={getHomePermalink()}>
-            <Logo />
-          </a>
-        </div>
-        <address class="not-italic text-[14px] md:text-[15px] font-normal leading-[160%] text-white/60 mb-4">
-          <p class="font-medium text-white text-[15px] md:text-[16px] mb-1">{CONTACT.businessName}</p>
-          <p>
-            <a
-              href={contactDirectionsHref}
-              class="hover:text-white transition duration-150 ease-in-out"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {contactAddress.line1}<br />
-              {contactAddress.city}
-            </a>
-          </p>
-          <p class="mt-2">
-            <a href={contactPhone.href} class="hover:text-white transition duration-150 ease-in-out">
-              {contactPhone.text}
-            </a>
-          </p>
-        </address>
-        <div class="text-sm text-white/50 flex gap-1">
-          {
-            secondaryLinks.map(({ text, href }, index) => (
-              <>
-                {index !== 0 ? ' · ' : ''}
-                <a
-                  class="text-white/50 hover:text-white transition duration-150 ease-in-out"
-                  href={href}
-                  set:html={text}
-                />
-              </>
-            ))
-          }
-        </div>
-      </div>
-      {
-        links.map(({ title, links }) => (
-          <div class="col-span-6 md:col-span-3 lg:col-span-2">
-            <div class="text-white font-medium mb-2">{title}</div>
-            {links && Array.isArray(links) && links.length > 0 && (
-              <ul class="text-sm">
-                {links.map(({ text, href, ariaLabel }) => (
-                  <li class="mb-2">
-                    <a
-                      class="text-white/60 hover:text-white transition duration-150 ease-in-out"
-                      href={href}
-                      aria-label={ariaLabel}
-                    >
-                      <Fragment set:html={text} />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        ))
-      }
-    </div>
-    <div class="md:flex md:items-center md:justify-between py-6 md:py-8 border-t border-white/10">
-      {
-        socialLinks?.length ? (
-          <ul class="flex mb-4 md:order-1 -ml-2 md:ml-4 md:mb-0 rtl:ml-0 rtl:-mr-2 rtl:md:ml-0 rtl:md:mr-4">
-            {socialLinks.map(({ ariaLabel, href, text, icon }) => (
-              <li>
-                <a
-                  class="text-white/60 hover:text-white focus:outline-none focus:ring-4 focus:ring-white/20 rounded-lg text-sm p-2.5 inline-flex items-center transition duration-150 ease-in-out"
-                  aria-label={ariaLabel}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {icon && <Icon name={icon} class="w-5 h-5" />}
-                  <Fragment set:html={text} />
-                </a>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          ''
-        )
-      }
 
-      <div class="text-sm text-white/40">
-        <Fragment set:html={footNote} />
+  <div
+    class="relative mx-auto flex w-full max-w-container flex-col gap-10 px-5 py-10 sm:px-8 md:gap-16 md:px-16 md:py-16 lg:px-[120px]"
+  >
+    <div
+      class="flex w-full flex-col items-start gap-8 rounded-[var(--aw-radius-xl)] bg-gradient-to-r from-cta to-cta-end p-8 md:flex-row md:gap-16 md:p-16"
+    >
+      <div class="flex shrink-0 flex-col items-start gap-4">
+        <Heading variant="eyebrow" color="inherit" class="text-tan opacity-50">{FOOTER_CTA_EYEBROW}</Heading>
+        <Heading variant="h2" color="inherit" class="text-tan" html={FOOTER_CTA_TITLE} />
       </div>
+      <div class="flex min-w-0 flex-1 flex-col items-start justify-center gap-8">
+        <Text color="inherit" class="text-tan-body" html={FOOTER_CTA_BODY} />
+        <Button variant="secondary" text={FOOTER_CTA_LABEL} href={FOOTER_CTA_HREF} class="w-full" />
+      </div>
+    </div>
+
+    <div class="flex w-full flex-col items-start justify-between gap-10 md:flex-row md:gap-16">
+      <div class="flex w-full max-w-[243px] shrink-0 flex-col items-start gap-4">
+        <a class="inline-block" href={getHomePermalink()}>
+          <Logo class="h-[95px] w-[132px] max-w-none mix-blend-soft-light" width={132} height={95} />
+        </a>
+        <Text variant="small" color="white">{tagline}</Text>
+        {
+          secondaryLinks.length > 0 && (
+            <p class="text-small font-sans text-white/50">
+              {secondaryLinks.map(({ text, href }, index) => (
+                <>
+                  {index !== 0 ? ' · ' : ''}
+                  <a class="hover:text-white transition duration-150 ease-in-out" href={href} set:html={text} />
+                </>
+              ))}
+            </p>
+          )
+        }
+      </div>
+
+      <nav class="flex flex-wrap items-start gap-10 text-white sm:gap-16 lg:flex-nowrap" aria-label="Footer">
+        {
+          links.map(({ title, links: items }) => (
+            <div class="flex flex-col items-start gap-4">
+              {title && <Heading variant="eyebrow" color="white">{title}</Heading>}
+              {items && Array.isArray(items) && items.length > 0 && (
+                <ul class="flex flex-col items-start gap-2 text-small font-sans font-medium">
+                  {items.map(({ text, href, ariaLabel }) => (
+                    <li>
+                      <a
+                        class="text-white hover:text-white/80 transition duration-150 ease-in-out"
+                        href={href}
+                        aria-label={ariaLabel}
+                      >
+                        <Fragment set:html={text} />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))
+        }
+      </nav>
     </div>
   </div>
 </footer>

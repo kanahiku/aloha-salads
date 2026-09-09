@@ -9,7 +9,7 @@ export type CardVariant = 'dark' | 'light' | 'outlined' | 'glass';
 
 export type SectionVariant = 'white' | 'grey' | 'dark';
 
-export type HeroVariant = 'split' | 'overlay';
+export type HeroVariant = 'split' | 'overlay' | 'words' | 'page';
 
 export const THEME = {
   card: {

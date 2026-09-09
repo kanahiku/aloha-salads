@@ -1,0 +1,47 @@
+---
+/**
+ * Single quote / pullquote card section.
+ *
+ * Layout (Figma 121:1715):
+ *   bg-page outer, px-[120px] py-[64px]
+ *   Inner card: gradient bg (from-transparent → section-grey), rounded-tl/tr-[64px], p-[64px]
+ *   Large quote-mark SVG (mix-blend-overlay), h2 Fraunces quote, eyebrow attribution
+ *
+ * Used on the about page. Register in components.json as P-38 SingleQuote.
+ */
+
+interface Props {
+  quote: string;
+  attribution: string;
+  id?: string;
+}
+
+const { quote, attribution, id } = Astro.props;
+
+/* Large double-quote mark — mix-blend-mode:overlay, off-white fill */
+const quoteMarkSvg = `<svg viewBox="0 0 96 76" fill="none" xmlns="http://www.w3.org/2000/svg" width="96" height="76" aria-hidden="true"><g opacity="0.5" style="mix-blend-mode:overlay"><path d="M22.0 39.0C27.9 39.0 32.3 40.6 35.2 43.8C38.1 47.0 39.5 50.9 39.5 55.5C39.5 60.6 37.6 64.9 33.8 68.4C30.0 71.9 25.3 73.6 19.7 73.6C13.5 73.6 8.4 71.3 4.4 66.8C0.4 62.3 -1.5 55.1 -1.5 45.1C-1.5 35.7 0.1 27.9 3.4 21.8C6.9 15.4 11.4 10.5 16.8 7.1C22.2 3.6 27.7 1.2 33.3 0.2C35.4 -0.2 37.0 -0.2 38.1 0.4C39.2 0.9 39.9 1.8 40.1 3.1C40.4 4.3 40.1 5.5 39.2 6.6C38.3 7.6 36.5 8.6 33.8 9.7C29.1 11.5 25.0 14.0 21.5 17.2C18.0 20.3 15.5 23.6 13.8 27.0C12.2 30.4 11.4 33.7 11.4 37.0C11.4 38.8 11.8 40.2 12.6 41.2C13.5 42.2 15.2 42.7 17.8 42.7H22.0H22.0ZM73.5 39.0C79.4 39.0 83.8 40.6 86.7 43.8C89.6 47.0 91.0 50.9 91.0 55.5C91.0 60.6 89.1 64.9 85.3 68.4C81.5 71.9 76.8 73.6 71.2 73.6C65.0 73.6 59.9 71.3 55.9 66.8C51.9 62.3 50.0 55.1 50.0 45.1C50.0 35.7 51.6 27.9 54.9 21.8C58.4 15.4 62.9 10.5 68.3 7.1C73.7 3.6 79.2 1.2 84.8 0.2C86.9 -0.2 88.5 -0.2 89.6 0.4C90.7 0.9 91.4 1.8 91.6 3.1C91.9 4.3 91.6 5.5 90.7 6.6C89.8 7.6 88.0 8.6 85.3 9.7C80.6 11.5 76.5 14.0 73.0 17.2C69.5 20.3 67.0 23.6 65.3 27.0C63.7 30.4 62.9 33.7 62.9 37.0C62.9 38.8 63.3 40.2 64.1 41.2C65.0 42.2 66.7 42.7 69.3 42.7H73.5Z" fill="#E7DFD1"/></g></svg>`;
+---
+
+<section
+  class="not-prose w-full bg-page"
+  {...id ? { id } : {}}
+>
+  <div class="mx-auto max-w-container px-5 py-10 sm:px-8 sm:py-12 md:px-16 md:py-16 lg:px-[120px] lg:py-[64px]">
+    <div class="flex flex-col items-center gap-6 rounded-tl-[64px] rounded-tr-[64px] bg-gradient-to-t from-section-grey to-transparent p-10 sm:p-12 md:p-16 lg:p-[64px]">
+
+      {/* Large quote mark — mix-blend-overlay */}
+      <span class="mix-blend-overlay" set:html={quoteMarkSvg} />
+
+      {/* Quote text */}
+      <p class="text-center font-heading text-h2 font-normal leading-none text-heading">
+        {quote}
+      </p>
+
+      {/* Attribution */}
+      <p class="font-sans text-eyebrow uppercase tracking-[0.06em] text-eyebrow">
+        {attribution}
+      </p>
+
+    </div>
+  </div>
+</section>

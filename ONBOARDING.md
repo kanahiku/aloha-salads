@@ -2,17 +2,19 @@
 
 This is the only doc you need. Clone this repo, fill the files below, implement the Figma file, connect the stack, deploy.
 
-The site is **Astro v7 + Tailwind v4 + Sanity + Vercel**. Every client keeps the same stack (CMS, forms/Resend, GTM, Search Console, reviews, blog, legal). What changes is identity, tokens, and page frames from Figma.
+The site is **Astro v7 + Tailwind v4 + Sanity + Vercel**. Every client keeps the same stack (CMS, forms/Resend, GTM, Search Console, reviews, blog, legal). What changes is identity, the design system, and page frames from Figma.
 
 **Do not invent layout from a content brief.** Figma is the design source of truth.
 
+When a Figma file arrives, build in this order — never skip ahead to full pages:
+
 ```
-Figma file
-  → tokens into src/brand.ts
-  → identity into src/config/site.ts + contact.ts + social.ts + cta.ts
-  → implement each page frame (reuse widgets; add a component only when the frame is new)
-  → fill .env, connect Sanity / forms / GTM / GSC
-  → npm run build, then deploy
+1. Design system   →  src/brand.ts (colors, type, radius) + site/contact identity
+2. Atoms           →  restyle Button, Headline, inputs, cards to match Figma
+3. Sections        →  one reusable widget per pattern (FAQ, hero, CTA, …)
+4. Pages           →  compose those widgets; do not paste unique markup
+5. Connect         →  .env, Sanity, forms, GTM, GSC
+6. npm run build, deploy
 ```
 
 ---
@@ -58,7 +60,7 @@ Do not put client details in `src/config.yaml` (that file is AstroWind plumbing)
 
 ### `src/brand.ts`
 
-If Figma has Variables or a Design System frame: copy color, type, and radius into `brand.colors`, `brand.fonts`, `brand.radius`.
+If Figma has Variables or a Design System frame: copy color, type (desktop **and** mobile when both exist), and radius into `brand`. See the `tokens` rule — only derive mobile type if Figma has no mobile type.
 
 If it does not: walk a few representative frames. Collect the most-used fills, text styles (family, weight), and corner radius. Skip one-off swatches.
 
@@ -82,36 +84,75 @@ export const site = {
 
 ---
 
-## 3. Build pages from Figma
+## 3. Figma build order
 
-Authenticate the Figma MCP if tools are missing (`mcp_auth`). Then for each page frame, top to bottom:
+Authenticate the Figma MCP if tools are missing (`mcp_auth`). Then stop after each phase until it matches Figma. Do not start composing homepage sections before atoms look right.
 
-1. Screenshot + structure.
-2. Create or update `src/pages/[route]/index.astro`.
-3. Match backgrounds, type, spacing, image side, and item counts from the frame — not from a canned color cycle.
-4. Copy and images come from Figma (or CMS fields filled to match it).
+### Phase 1 — Design system
 
-Check `src/registry/components.json` before adding a file.
+Find Variables, a Design System / Foundations frame, or walk a few representative screens.
 
-| If the frame is… | Use |
+Put the result in `src/brand.ts`:
+
+- Colors (accent, heading, muted, page, section, CTA, buttons)
+- Fonts (heading + body family, weights) — `astro.config.ts` reads `brandFontConfig()`
+- Radius
+
+Also fill identity: `src/config/site.ts`, `contact.ts`, `social.ts`, `cta.ts`, logo, favicons.
+
+Do not create a token per one-off swatch. Do not hardcode hex in components.
+
+### Phase 2 — Atoms
+
+Restyle the shared primitives in `src/components/ui/` so they match Figma. These are used everywhere — get them right before sections.
+
+| Atom | File |
 |---|---|
-| Hero / masthead | `Hero2` |
-| Text + side image | `Content` |
-| FAQ accordion | `FAQs` |
-| Quotes | `Testimonials` |
-| Gallery / projects | `ProjectsSection` / `ProjectCard` |
-| Ordered steps | `Timeline` |
-| Linked cards | `ServiceCard` |
-| Heading + description cards | `InfoCard` |
-| Page-ending CTA | `CTABanner` |
+| Buttons | `src/components/ui/Button.astro` (`primary`, `secondary`, `ghost-light`, `ghost-dark`, `link`) |
+| Headings | `src/components/ui/Headline.astro` |
+| Form fields | `src/components/ui/Form.astro` |
+| Cards | `InfoCard`, `ServiceCard`, `CardWrapper` |
+| Icon + text | `IconPoint.astro` |
 
-If nothing matches: add **one** component, register it in `components.json`, then use it. Do not paste one-off markup into a page file.
+Change look via `brand.ts` tokens and these files. Do **not** add `HomeButton.astro` or a second FAQ toggle. If Figma shows a new atom (chip, badge, tab), add **one** primitive and reuse it.
+
+### Phase 3 — Sections (standard widgets)
+
+One pattern = one component, used on every page that needs it.
+
+| Figma section | Component | Use it for |
+|---|---|---|
+| Hero / masthead | `Hero2` | Every page hero |
+| FAQ accordion | `FAQs` | Home, services, contact — same component, different `items` |
+| Quotes | `Testimonials` | |
+| Text + side image | `Content` | |
+| Steps / process | `Timeline` | |
+| Gallery | `ProjectsSection` | |
+| Linked cards | `ServiceCard` | |
+| Heading + desc cards | `InfoCard` | |
+| Page-ending CTA | `CTABanner` | Last band on pages that need it |
+| Header / footer | `Header`, `Footer` | Site chrome |
+
+Inventory: `src/registry/components.json`.
+
+If Figma’s FAQ (or hero, CTA, …) differs from the current widget, **restyle that widget** until it matches. Do not fork `HomeFAQ` / `ServicesFAQ`. Props and slots carry copy and optional light/dark — not a new file.
+
+New unique section shape → one new widget, register it, then use it on every page that has that shape. Never paste the markup into a page file.
 
 Cards with a link: card `flex flex-col h-full`, body `flex-1`, CTA `mt-auto`.
 
-Sanity CMS pages (services and similar) render through the catch-all `src/pages/[...blog]/index.astro` — you do not need a new Astro file per CMS slug.
+### Phase 4 — Pages
 
-Always-on routes (restyle from Figma, do not delete): `/contact`, `/reviews`, `/blog`, `/privacy-policy`, `/terms-of-service`, `/accessibility`.
+For each Figma page frame, top to bottom:
+
+1. Screenshot + structure.
+2. Compose `src/pages/[route]/index.astro` from the widgets in phase 3.
+3. Match backgrounds, spacing, image side, and item counts from the frame.
+4. Copy and images come from Figma or CMS fields filled to match it.
+
+Sanity CMS pages render through `src/pages/[...blog]/index.astro` — no new Astro file per CMS slug.
+
+Always-on routes (restyle, do not delete): `/contact`, `/reviews`, `/blog`, `/privacy-policy`, `/terms-of-service`, `/accessibility`.
 
 ---
 
@@ -267,9 +308,12 @@ CNAME   www   cname.vercel-dns.com    DNS only
 
 ## 10. Go-live checklist
 
-- [ ] `src/brand.ts`, `site.ts`, `contact.ts`, `social.ts`, `cta.ts` filled
+- [ ] Design system in `src/brand.ts` matches Figma (color, type, radius)
+- [ ] Atoms restyled (Button, Headline, form, cards) — no per-page forks
+- [ ] Sections are shared widgets (one FAQ, one hero, one CTA band)
+- [ ] Pages composed from those widgets
+- [ ] `src/config/site.ts`, `contact.ts`, `social.ts`, `cta.ts` filled
 - [ ] Logo + favicons replaced
-- [ ] Figma pages implemented; widgets reused
 - [ ] `npm run build` succeeds
 - [ ] `/contact` submits; lead in D1; email arrives
 - [ ] GTM container firing
@@ -283,6 +327,8 @@ CNAME   www   cname.vercel-dns.com    DNS only
 ## Do not
 
 - Invent section order, card counts, or palette from a copy doc
+- Skip atoms and jump straight to full-page markup
+- Fork FAQ / Button / Hero per page (`HomeFAQ`, `ServicesFAQ`, …)
 - Delete Sanity, forms, GTM, GSC, reviews, blog, or legal wiring
 - Hardcode hex in components
 - Put Resend / Turnstile secrets on Vercel

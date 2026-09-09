@@ -39,7 +39,7 @@ const variant = cardVariant(surface);
 
 {
   related.length > 0 && (
-    <WidgetWrapper containerClass="max-w-[1400px] mx-auto" isDark={isDark}>
+    <WidgetWrapper containerClass="max-w-container mx-auto" isDark={isDark}>
       <Headline isDark={isDark} title={title} classes={{ container: 'mb-[30px]' }} />
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {related.map((item) => (

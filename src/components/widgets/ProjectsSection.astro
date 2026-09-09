@@ -1,6 +1,7 @@
 ---
 import Headline from '~/components/ui/Headline.astro';
 import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import Button from '~/components/ui/Button.astro';
 import Image from '~/components/common/Image.astro';
 
 export interface Project {
@@ -52,12 +53,9 @@ const titleColor = isDark ? 'text-projects-title-dark' : 'text-projects-title-li
 const descColor = isDark ? 'text-projects-desc-dark' : 'text-projects-desc-light';
 const placeholderBg = isDark ? 'bg-black/40' : 'bg-gray-100 dark:bg-slate-800';
 const placeholderText = isDark ? 'text-white/20' : 'text-gray-300 dark:text-slate-600';
-
-// CTA button class
-const ctaClass = isDark ? 'btn-ghost-dark' : 'btn-secondary';
 ---
 
-<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-[1400px] mx-auto ${classes?.container ?? ''}`} bg={bg}>
+<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-container mx-auto ${classes?.container ?? ''}`} bg={bg}>
   {(title || subtitle) && (
     <Headline title={title} subtitle={subtitle} isDark={isDark} classes={classes?.headline} />
   )}
@@ -107,7 +105,13 @@ const ctaClass = isDark ? 'btn-ghost-dark' : 'btn-secondary';
 
   {showCta && ctaText && ctaHref && (
     <div class="mt-8 md:mt-10">
-      <a href={ctaHref} class={ctaClass}>{ctaText}</a>
+      <Button
+        variant={isDark ? 'ghost' : 'secondary'}
+        tone={isDark ? 'dark' : undefined}
+        text={ctaText}
+        href={ctaHref}
+        hideNote={true}
+      />
     </div>
   )}
 </WidgetWrapper>

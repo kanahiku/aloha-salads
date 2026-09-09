@@ -23,7 +23,7 @@ const toggleBase = isDark ? 'border-faq-toggle-dark text-faq-toggle-dark' : 'bor
 const toggleActive = 'group-open:border-accent group-open:text-accent';
 ---
 
-<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-[1400px] mx-auto ${classes?.container ?? ''}`} bg={bg}>
+<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-container mx-auto ${classes?.container ?? ''}`} bg={bg}>
   <Headline title={title} subtitle={subtitle} tagline={tagline} isDark={isDark} classes={classes?.headline} />
 
   {

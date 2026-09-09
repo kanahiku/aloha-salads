@@ -39,7 +39,7 @@ const metadata = {
     </Fragment>
   </Hero2>
 
-  <WidgetWrapper id="message" containerClass="max-w-[1400px] mx-auto">
+  <WidgetWrapper id="message" containerClass="max-w-container mx-auto">
     <Headline title={page?.form.heading || 'Send a message'} classes={{ container: 'mb-[9px]' }} />
     <p class="text-[16px] md:text-[17px] font-normal leading-[160%] text-muted text-left max-w-3xl mb-[30px]">
       {page?.form.intro || 'Use the form and we will follow up by email or phone.'}
@@ -86,7 +86,8 @@ const metadata = {
         </div>
         <div class="mt-6">
           <Button
-            variant="ghost-light"
+            variant="ghost"
+            tone="light"
             text={page?.form.directionsLabel || 'Get Directions'}
             href={mapsDirectionsHref(mapsQuery)}
             target="_blank"
@@ -104,8 +105,5 @@ const metadata = {
     subtitle={page?.ctaBanner.subtitle || `Reach ${CONTACT.businessName} and we will take it from there.`}
     ctaText={page?.ctaBanner.ctaText || PRIMARY_CTA_LABEL}
     ctaHref={page?.ctaBanner.ctaHref}
-    extraLines={page?.ctaBanner.extraLines}
-    license={page?.ctaBanner.license}
-    showAfterHoursNote={page?.ctaBanner.showAfterHoursNote}
   />
 </Layout>

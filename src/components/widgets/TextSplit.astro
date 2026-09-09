@@ -1,0 +1,64 @@
+---
+/**
+ * TextSplit — reusable 2-column text-split section (Figma pattern 2:271 and recurrences).
+ *
+ * Visual spec (Figma):
+ *   bg-page full-width section, p-[120px] outer, gap-[120px] between columns, items-center.
+ *   LEFT  flex-1 — eyebrow (optional) + h2 heading
+ *   RIGHT flex-1 — any rich content via <slot /> (paragraphs, links, lists…)
+ *
+ * Usage on any page:
+ *   <TextSplit eyebrow="Accept, and change" heading="Half of this is not your problem.">
+ *     <Text>First paragraph…</Text>
+ *     <Text class="mt-[1.3em]">Second paragraph…</Text>
+ *   </TextSplit>
+ *
+ * Props:
+ *   eyebrow     — optional eyebrow label above the heading
+ *   heading     — plain-text heading (use headingHtml for inline accents/spans)
+ *   headingHtml — raw HTML heading string (takes precedence over heading)
+ *   id          — section anchor id
+ *   compact     — true = 64px vertical padding (Figma 64:983); default is 120px
+ *   class       — extra classes on the outer <section>
+ */
+
+import Heading from '~/components/ui/Heading.astro';
+
+export interface Props {
+  eyebrow?: string;
+  heading?: string;
+  headingHtml?: string;
+  id?: string;
+  compact?: boolean;
+  class?: string;
+}
+
+const { eyebrow, heading, headingHtml, id, compact = false, class: className = '' } = Astro.props;
+---
+
+<section {...id ? { id } : {}} class:list={['bg-page not-prose w-full', className]}>
+  <div
+    class:list={[
+      'mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-16 lg:px-[120px]',
+      compact ? 'lg:py-16' : 'lg:py-[120px]',
+    ]}
+  >
+    <div class="flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-[120px]">
+
+      {/* ── LEFT — eyebrow + heading ── */}
+      <div class="flex min-w-0 flex-1 flex-col gap-4">
+        {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}
+        {headingHtml
+          ? <Heading variant="h2" html={headingHtml} />
+          : heading && <Heading variant="h2">{heading}</Heading>
+        }
+      </div>
+
+      {/* ── RIGHT — caller supplies any rich content ── */}
+      <div class="flex min-w-0 flex-1 flex-col">
+        <slot />
+      </div>
+
+    </div>
+  </div>
+</section>

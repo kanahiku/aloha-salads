@@ -1,5 +1,6 @@
 ---
 import Layout from '~/layouts/Layout.astro';
+import Button from '~/components/ui/Button.astro';
 import { getHomePermalink } from '~/utils/permalinks';
 
 Astro.response.status = 404;
@@ -19,7 +20,7 @@ const title = `Error 404`;
         <p class="mt-4 mb-8 text-lg text-muted dark:text-slate-400">
           But don't worry, you can find plenty of other things on our homepage.
         </p>
-        <a rel="noopener noreferrer" href={getHomePermalink()} class="btn ml-4">Back to homepage</a>
+        <Button variant="primary" text="Back to homepage" href={getHomePermalink()} hideNote={true} />
       </div>
     </div>
   </section>

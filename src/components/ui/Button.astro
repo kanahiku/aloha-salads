@@ -1,12 +1,46 @@
 ---
+/**
+ * Button atom — single component for all CTA variants.
+ *
+ * Hover animation lives on the `.btn` / `.btn-*` utilities in tailwind.css
+ * (200ms ease, fill/color swap, 1px lift). Do not add per-page hover classes.
+ *
+ * Variants:
+ *   primary    → solid filled button  (main conversion action)
+ *   ghost      → transparent / bordered button  (secondary action)
+ *                  tone="dark"  (default) → white-border glass for photo / dark sections
+ *                  tone="light"           → dark-border for light / grey sections
+ *   secondary  → alias used by the CTA card (same style as primary on cta-bg)
+ *   link       → inline text link with underline-on-hover
+ *
+ * Backward-compat aliases: 'ghost-dark' and 'ghost-light' still resolve correctly
+ * so existing data objects (actions arrays, CMS entries) don't need updating.
+ *
+ * Usage:
+ *   <Button variant="primary" text="Find your weakest link" href="/contact" />
+ *   <Button variant="ghost" text="How aging works" href="/#how" />
+ *   <Button variant="ghost" tone="light" text="Learn more" href="/about" />
+ *   <Button variant="link" text="Read more" href="/blog" />
+ */
 import { Icon } from 'astro-icon/components';
 import { twMerge } from 'tailwind-merge';
-import type { CallToAction as Props } from '~/types';
+import type { CallToAction } from '~/types';
 import CTANote from '~/components/ui/CTANote.astro';
 import { PRIMARY_CTA_NOTE } from '~/config/cta';
 
+export interface Props extends CallToAction {
+  /**
+   * Controls ghost button surface.
+   * tone="dark"  → white-border glass  (default — for hero / dark / photo sections)
+   * tone="light" → dark-border          (for light / grey sections)
+   * Only used when variant="ghost".
+   */
+  tone?: 'dark' | 'light';
+}
+
 const {
   variant = 'secondary',
+  tone = 'dark',
   target,
   text = Astro.slots.render('default'),
   icon = '',
@@ -17,18 +51,20 @@ const {
   ...rest
 } = Astro.props;
 
-const variants: Record<string, string> = {
-  primary: 'btn-primary',
-  secondary: 'btn-secondary',
-  tertiary: 'btn-secondary',
-  'ghost-light': 'btn-ghost-light',
-  'ghost-dark': 'btn-ghost-dark',
-  link: 'btn-link',
+// Resolve ghost based on tone; keep legacy aliases for data-driven action arrays.
+const variantClass: Record<string, string> = {
+  primary:      'btn-primary',
+  secondary:    'btn-secondary',
+  tertiary:     'btn-secondary',
+  ghost:        tone === 'light' ? 'btn-ghost-light' : 'btn-ghost-dark',
+  'ghost-dark':  'btn-ghost-dark',   // backward compat
+  'ghost-light': 'btn-ghost-light',  // backward compat
+  link:         'btn-link',
 };
 
 const showNote = variant === 'primary' && !hideNote && Boolean(PRIMARY_CTA_NOTE);
 const isNativeButton = type === 'button' || type === 'submit' || type === 'reset';
-const buttonClass = twMerge(variants[variant] || '', className, showNote && 'w-auto self-start');
+const buttonClass = twMerge(variantClass[variant] ?? '', className, showNote && 'w-auto self-start');
 ---
 
 {
@@ -40,7 +76,7 @@ const buttonClass = twMerge(variants[variant] || '', className, showNote && 'w-a
           {icon && <Icon name={icon} class="w-5 h-5 ml-1 -mr-1.5 rtl:mr-1 rtl:-ml-1.5 inline-block" />}
         </button>
       ) : (
-        <a class={buttonClass} {...(target ? { target: target, rel: 'noopener noreferrer' } : {})} {...rest}>
+        <a class={buttonClass} {...(target ? { target, rel: 'noopener noreferrer' } : {})} {...rest}>
           <Fragment set:html={text} />
           {icon && <Icon name={icon} class="w-5 h-5 ml-1 -mr-1.5 rtl:mr-1 rtl:-ml-1.5 inline-block" />}
         </a>
@@ -53,7 +89,7 @@ const buttonClass = twMerge(variants[variant] || '', className, showNote && 'w-a
       {icon && <Icon name={icon} class="w-5 h-5 ml-1 -mr-1.5 rtl:mr-1 rtl:-ml-1.5 inline-block" />}
     </button>
   ) : (
-    <a class={buttonClass} {...(target ? { target: target, rel: 'noopener noreferrer' } : {})} {...rest}>
+    <a class={buttonClass} {...(target ? { target, rel: 'noopener noreferrer' } : {})} {...rest}>
       <Fragment set:html={text} />
       {icon && <Icon name={icon} class="w-5 h-5 ml-1 -mr-1.5 rtl:mr-1 rtl:-ml-1.5 inline-block" />}
     </a>

@@ -15,50 +15,86 @@
 export const brand = {
   fonts: {
     heading: {
-      name: 'DM Sans',
-      cssVariable: '--font-dm-sans',
+      name: 'Fraunces',
+      cssVariable: '--font-fraunces',
       weights: ['400'] as string[],
-      styles: ['normal'] as string[],
+      styles: ['normal', 'italic'] as string[],
       subsets: ['latin'] as string[],
+      fallbacks: ['serif'] as string[],
     },
     body: {
-      name: 'Manrope',
-      cssVariable: '--font-manrope',
-      weights: ['200 800'] as string[],
-      styles: ['normal'] as string[],
+      name: 'Hanken Grotesk',
+      cssVariable: '--font-hanken-grotesk',
+      weights: ['300', '400', '500'] as string[],
+      styles: ['normal', 'italic'] as string[],
       subsets: ['latin'] as string[],
+      fallbacks: ['sans-serif'] as string[],
     },
   },
 
+  /** From Homepage (node 1:3). Repeating fills only — not one-off photo colors. */
   colors: {
-    accent: '#EDD974',
-    accentHover: '#D4BC57',
-    heading: '#222222',
-    muted: '#444444',
-    page: '#FFFFFF',
-    sectionGrey: '#FAFAFA',
-    sectionDark: '#000000',
-    cardDark: '#222222',
-    ctaBg: '#F5ECBD',
-    primary: '#4F5E65',
-    secondary: '#A2AFB5',
-    navy: '#082244',
+    accent: '#567F9B',
+    accentHover: '#7BA3BD',
+    heading: '#1E2A30',
+    muted: '#45555D',
+    eyebrow: '#64727A',
+    page: '#F5F4EF',
+    sectionGrey: '#D2E1EA',
+    sectionDark: '#1B2A32',
+    card: '#FAFAF8',
+    cardMist: '#E4EDF2',
+    cardDark: '#2C4A5B',
+    ctaBg: '#E8DFCF',
+    ctaEnd: '#CFB28A',
+    ctaTan: '#B29A77',
+    tanText: '#665844',
+    tanBody: '#332C22',
+    ctaPink: '#F2E4E4',
+    ctaPinkText: '#BD7B7B',
+    featureCard: '#F1F5F8',
+    primary: '#2C4A5B',
+    secondary: '#7BA3BD',
+    navy: '#1B2A32',
     white: '#FFFFFF',
-    black: '#000000',
+    cream: '#F5F4EF',
+    nav: '#1D1D1D',
+    black: '#1E2A30',
+  },
+
+  type: {
+    /**
+     * Desktop `size` + phone `mobile` from Figma when the file has both.
+     * Fallback (this file — desktop type only): h1 ~50%, h2 ~60%, h3 ~65%, h4 ~80%; body unchanged.
+     */
+    h1: { size: '100px', mobile: '48px', lineHeight: '1', tracking: '0' },
+    h2: { size: '52px', mobile: '32px', lineHeight: '1', tracking: '0' },
+    h3: { size: '36px', mobile: '24px', lineHeight: '1', tracking: '0' },
+    /** Card / subsection titles. */
+    h4: { size: '28px', mobile: '22px', lineHeight: '1.2', tracking: '0' },
+    body: { size: '14px', lineHeight: '1.3', tracking: '0' },
+    bodyLg: { size: '16px', lineHeight: '1.3', tracking: '0' },
+    button: { size: '16px', lineHeight: '1.25', tracking: '0' },
+    eyebrow: { size: '14px', lineHeight: '1', tracking: '0.06em' },
+    small: { size: '12px', lineHeight: '1.3', tracking: '0' },
+    caption: { size: '11px', lineHeight: '1.3', tracking: '0' },
   },
 
   radius: {
-    base: '0px',
-    full: '0px',
+    base: '12px',
+    lg: '16px',
+    xl: '32px',
+    hero: '64px',
+    full: '9999px',
   },
 
   motif: {
-    heroOpacity: 0.1,
-    darkOpacity: 0.12,
-    greyOpacity: 0.08,
-    whiteOpacity: 0.08,
-    ctaOpacity: 0.02,
-    ctaColor: '#000000',
+    heroOpacity: 0,
+    darkOpacity: 0,
+    greyOpacity: 0,
+    whiteOpacity: 0,
+    ctaOpacity: 0,
+    ctaColor: '#1E2A30',
   },
 } as const;
 
@@ -88,7 +124,7 @@ export function rgb(hex: string, alpha?: number): string {
 }
 
 function rootVars(b: Brand): string {
-  const { colors: c, fonts: f, radius: r, motif: m } = b;
+  const { colors: c, fonts: f, radius: r, motif: m, type: t } = b;
   const accent = rgb(c.accent);
   const accentHover = rgb(c.accentHover);
   const heading = rgb(c.heading);
@@ -96,8 +132,30 @@ function rootVars(b: Brand): string {
 
   return `
     --aw-font-sans: var(${f.body.cssVariable});
-    --aw-font-serif: var(${f.body.cssVariable});
+    --aw-font-serif: var(${f.heading.cssVariable});
     --aw-font-heading: var(${f.heading.cssVariable});
+
+    --aw-text-h1: ${t.h1.size};
+    --aw-text-h1-mobile: ${t.h1.mobile};
+    --aw-leading-h1: ${t.h1.lineHeight};
+    --aw-text-h2: ${t.h2.size};
+    --aw-text-h2-mobile: ${t.h2.mobile};
+    --aw-leading-h2: ${t.h2.lineHeight};
+    --aw-text-h3: ${t.h3.size};
+    --aw-text-h3-mobile: ${t.h3.mobile};
+    --aw-leading-h3: ${t.h3.lineHeight};
+    --aw-text-h4: ${t.h4.size};
+    --aw-text-h4-mobile: ${t.h4.mobile};
+    --aw-leading-h4: ${t.h4.lineHeight};
+    --aw-text-body: ${t.body.size};
+    --aw-leading-body: ${t.body.lineHeight};
+    --aw-text-body-lg: ${t.bodyLg.size};
+    --aw-text-button: ${t.button.size};
+    --aw-text-eyebrow: ${t.eyebrow.size};
+    --aw-tracking-eyebrow: ${t.eyebrow.tracking};
+    --aw-text-small: ${t.small.size};
+    --aw-leading-small: ${t.small.lineHeight};
+    --aw-text-caption: ${t.caption.size};
 
     --aw-color-primary: ${rgb(c.primary)};
     --aw-color-secondary: ${rgb(c.secondary)};
@@ -107,13 +165,24 @@ function rootVars(b: Brand): string {
     --aw-color-text-heading: ${heading};
     --aw-color-text-default: ${muted};
     --aw-color-text-muted: ${muted};
+    --aw-color-text-eyebrow: ${rgb(c.eyebrow)};
     --aw-color-bg-page: ${rgb(c.page)};
     --aw-color-bg-section-white: ${rgb(c.page)};
     --aw-color-bg-section-grey: ${rgb(c.sectionGrey)};
     --aw-color-bg-section-dark: ${rgb(c.sectionDark)};
+    --aw-color-bg-card: ${rgb(c.card)};
     --aw-color-bg-card-dark: ${rgb(c.cardDark)};
-    --aw-color-bg-card-light: ${rgb(c.accent, 0.5)};
+    --aw-color-bg-card-light: ${rgb(c.cardMist)};
+    --aw-color-bg-feature-card: ${rgb(c.featureCard)};
     --aw-color-bg-cta: ${rgb(c.ctaBg)};
+    --aw-color-bg-cta-end: ${rgb(c.ctaEnd)};
+    --aw-color-text-tan: ${rgb(c.tanText)};
+    --aw-color-text-tan-body: ${rgb(c.tanBody)};
+    --aw-color-bg-cta-pink: ${rgb(c.ctaPink)};
+    --aw-color-text-cta-pink: ${rgb(c.ctaPinkText)};
+    --aw-shadow-card-mist: 4px 4px 30px rgb(0 0 0 / 5%), 3px 3px 0 ${rgb(c.cardMist)};
+    --aw-shadow-card-pink: 4px 4px 30px rgb(0 0 0 / 5%), 3px 3px 0 ${rgb(c.ctaPink)};
+    --aw-color-nav-glass: ${rgb(c.nav, 0.25)};
 
     --aw-color-card-heading-dark: ${rgb(c.white)};
     --aw-color-card-body-dark: ${rgb(c.white, 0.6)};
@@ -138,36 +207,36 @@ function rootVars(b: Brand): string {
     --aw-color-card-body-glass: ${rgb(c.white, 0.7)};
     --aw-color-card-link-glass: var(--aw-color-accent);
 
-    --aw-color-btn-primary-bg: var(--aw-color-accent);
-    --aw-color-btn-primary-text: ${rgb(c.black)};
-    --aw-color-btn-primary-border: var(--aw-color-accent);
-    --aw-color-btn-primary-bg-hover: var(--aw-color-accent-hover);
-    --aw-color-btn-primary-text-hover: ${rgb(c.black)};
-    --aw-color-btn-primary-border-hover: var(--aw-color-accent-hover);
+    --aw-color-btn-primary-bg: ${rgb(c.primary)};
+    --aw-color-btn-primary-text: ${rgb(c.white)};
+    --aw-color-btn-primary-border: ${rgb(c.primary)};
+    --aw-color-btn-primary-bg-hover: ${rgb(c.navy)};
+    --aw-color-btn-primary-text-hover: ${rgb(c.white)};
+    --aw-color-btn-primary-border-hover: ${rgb(c.navy)};
 
-    --aw-color-btn-secondary-bg: transparent;
-    --aw-color-btn-secondary-text: ${rgb(c.black)};
-    --aw-color-btn-secondary-border: ${rgb(c.black)};
-    --aw-color-btn-secondary-bg-hover: ${rgb(c.black)};
+    --aw-color-btn-secondary-bg: ${rgb(c.ctaTan)};
+    --aw-color-btn-secondary-text: ${rgb(c.white)};
+    --aw-color-btn-secondary-border: ${rgb(c.ctaEnd)};
+    --aw-color-btn-secondary-bg-hover: ${rgb(c.tanText)};
     --aw-color-btn-secondary-text-hover: ${rgb(c.white)};
-    --aw-color-btn-secondary-border-hover: ${rgb(c.black)};
+    --aw-color-btn-secondary-border-hover: ${rgb(c.tanText)};
 
     --aw-color-btn-ghost-light-bg: transparent;
-    --aw-color-btn-ghost-light-text: ${rgb(c.black)};
-    --aw-color-btn-ghost-light-border: ${rgb(c.black)};
-    --aw-color-btn-ghost-light-bg-hover: ${rgb(c.black)};
-    --aw-color-btn-ghost-light-text-hover: ${rgb(c.white)};
-    --aw-color-btn-ghost-light-border-hover: ${rgb(c.black)};
+    --aw-color-btn-ghost-light-text: ${heading};
+    --aw-color-btn-ghost-light-border: ${heading};
+    --aw-color-btn-ghost-light-bg-hover: ${heading};
+    --aw-color-btn-ghost-light-text-hover: ${rgb(c.cream)};
+    --aw-color-btn-ghost-light-border-hover: ${heading};
 
-    --aw-color-btn-ghost-dark-bg: transparent;
+    --aw-color-btn-ghost-dark-bg: ${rgb(c.primary, 0.2)};
     --aw-color-btn-ghost-dark-text: ${rgb(c.white)};
-    --aw-color-btn-ghost-dark-border: var(--aw-color-accent);
-    --aw-color-btn-ghost-dark-bg-hover: var(--aw-color-accent);
-    --aw-color-btn-ghost-dark-text-hover: ${rgb(c.black)};
-    --aw-color-btn-ghost-dark-border-hover: var(--aw-color-accent);
+    --aw-color-btn-ghost-dark-border: ${rgb(c.cream)};
+    --aw-color-btn-ghost-dark-bg-hover: ${rgb(c.primary, 0.35)};
+    --aw-color-btn-ghost-dark-text-hover: ${rgb(c.white)};
+    --aw-color-btn-ghost-dark-border-hover: ${rgb(c.cream)};
 
-    --aw-color-btn-link: var(--aw-color-accent);
-    --aw-color-btn-link-hover: var(--aw-color-accent-hover);
+    --aw-color-btn-link: ${rgb(c.primary)};
+    --aw-color-btn-link-hover: ${accent};
 
     --aw-color-headline-light: var(--aw-color-text-heading);
     --aw-color-headline-dark: ${rgb(c.white)};
@@ -187,7 +256,7 @@ function rootVars(b: Brand): string {
     --aw-color-timeline-title-dark: ${rgb(c.white)};
     --aw-color-timeline-desc-dark: ${rgb(c.white, 0.6)};
 
-    --aw-color-testimonial-card-bg-light: ${rgb(c.accent, 0.5)};
+    --aw-color-testimonial-card-bg-light: ${rgb(c.card)};
     --aw-color-testimonial-card-border-light: transparent;
     --aw-color-testimonial-text-light: var(--aw-color-text-muted);
     --aw-color-testimonial-name-light: var(--aw-color-text-heading);
@@ -201,7 +270,7 @@ function rootVars(b: Brand): string {
     --aw-color-testimonial-job-dark: ${rgb(c.white, 0.5)};
     --aw-color-testimonial-hr-dark: ${rgb(c.white, 0.1)};
 
-    --aw-color-faq-border-light: ${rgb(c.accent, 0.45)};
+    --aw-color-faq-border-light: ${rgb(c.secondary, 0.45)};
     --aw-color-faq-question-light: var(--aw-color-text-heading);
     --aw-color-faq-answer-light: var(--aw-color-text-muted);
     --aw-color-faq-toggle-border-light: rgb(209 213 219);
@@ -215,7 +284,7 @@ function rootVars(b: Brand): string {
     --aw-color-faq-toggle-text-dark: ${rgb(c.white, 0.5)};
     --aw-color-faq-toggle-active-dark: var(--aw-color-accent);
 
-    --aw-color-projects-card-bg-light: ${rgb(c.accent, 0.5)};
+    --aw-color-projects-card-bg-light: ${rgb(c.card)};
     --aw-color-projects-card-border-light: transparent;
     --aw-color-projects-title-light: var(--aw-color-text-heading);
     --aw-color-projects-desc-light: var(--aw-color-text-muted);
@@ -239,11 +308,14 @@ function rootVars(b: Brand): string {
     --aw-opacity-motif-white: ${m.whiteOpacity};
     --aw-opacity-motif-cta: ${m.ctaOpacity};
 
-    --aw-shadow-card: none;
-    --aw-shadow-header: 0 0.25rem 3.5rem 0 color-mix(in srgb, var(--aw-color-accent) 16%, transparent);
-    --aw-border-card: rgba(255, 255, 255, 0.16);
+    --aw-shadow-card: 4px 4px 30px rgb(0 0 0 / 5%), 3px 3px 0 ${rgb(c.secondary)};
+    --aw-shadow-header: 0 0.25rem 3.5rem 0 color-mix(in srgb, var(--aw-color-text-heading) 8%, transparent);
+    --aw-border-card: ${rgb(c.secondary, 0.16)};
 
     --aw-radius: ${r.base};
+    --aw-radius-lg: ${r.lg};
+    --aw-radius-xl: ${r.xl};
+    --aw-radius-hero: ${r.hero};
     --aw-radius-full: ${r.full};
   `.trim();
 }
@@ -254,7 +326,7 @@ function darkVars(b: Brand): string {
 
   return `
     --aw-font-sans: var(${f.body.cssVariable});
-    --aw-font-serif: var(${f.body.cssVariable});
+    --aw-font-serif: var(${f.heading.cssVariable});
     --aw-font-heading: var(${f.heading.cssVariable});
 
     --aw-color-primary: ${accent};
@@ -358,6 +430,6 @@ export function brandFontConfig() {
     weights: font.weights,
     styles: font.styles,
     subsets: font.subsets,
-    fallbacks: ['sans-serif'] as string[],
+    fallbacks: font.fallbacks,
   }));
 }

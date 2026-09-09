@@ -10,7 +10,7 @@ import { site } from '~/config/site';
 export const business: BusinessSchema = {
   idFragment: 'localbusiness',
   name: CONTACT.businessName,
-  businessType: 'LocalBusiness',
+  businessType: 'Organization',
   telephone: CONTACT.phone.schema,
   email: CONTACT.email,
   priceRange: '$$',

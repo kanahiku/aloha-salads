@@ -49,8 +49,8 @@ const iconMark: Record<CardVariant, string> = {
 <CardWrapper variant={variant} size={size} border={border} class={className}>
   {
     icon && (
-      <div class:list={['mb-4 w-10 h-10 rounded-md flex items-center justify-center shrink-0', iconMark]}>
-        <Icon name={icon} class="w-5 h-5 text-accent" aria-hidden="true" />
+      <div class:list={['mb-4 size-9 sm:size-10 rounded-md flex items-center justify-center shrink-0', iconMark]}>
+        <Icon name={icon} class="size-3.5 sm:size-5 text-accent" aria-hidden="true" />
       </div>
     )
   }

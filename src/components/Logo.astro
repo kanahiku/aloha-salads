@@ -1,21 +1,23 @@
 ---
 import { twMerge } from 'tailwind-merge';
-import logoImg from '~/assets/images/logo.webp';
+import logoImg from '~/assets/images/logo.svg';
 import { CONTACT } from '~/config/contact';
 
 interface Props {
   class?: string;
+  width?: number;
+  height?: number;
 }
 
-const { class: className } = Astro.props;
+const { class: className, width = 43, height = 31 } = Astro.props;
 ---
 
 <img
   src={logoImg.src}
   alt={CONTACT.businessName}
-  width={logoImg.width}
-  height={logoImg.height}
-  class={twMerge('h-8 md:h-9 w-auto max-w-[240px] object-contain object-left shrink-0', className)}
+  width={width}
+  height={height}
+  class={twMerge('h-8 w-auto max-w-[240px] object-contain object-left shrink-0', className)}
   loading="eager"
   decoding="async"
 />

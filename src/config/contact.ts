@@ -24,18 +24,19 @@ export const CONTACT = {
   email: 'hello@example.com',
 
   address: {
-    street: '123 Main Street',
-    city: 'City',
-    state: 'ST',
-    zip: '00000',
+    street: '',
+    city: 'Kailua',
+    state: 'HI',
+    zip: '',
     country: 'US',
     /** "City, ST ZIP" — used in footer and CTABanner one-liner. */
     get cityLine() {
-      return `${this.city}, ${this.state} ${this.zip}`;
+      const zip = this.zip ? ` ${this.zip}` : '';
+      return `${this.city}, ${this.state}${zip}`;
     },
     /** Full one-line address — used as Google Maps query string. */
     get oneLiner() {
-      return `${this.street}, ${this.city}, ${this.state} ${this.zip}`;
+      return [this.street, this.city, this.state, this.zip].filter(Boolean).join(', ');
     },
     /** Google Maps embed URL. */
     get mapsEmbedSrc() {
@@ -56,5 +57,5 @@ export const CONTACT = {
     },
   ],
 
-  areaServed: 'Your service area',
+  areaServed: 'Hawaiian Islands',
 } as const;

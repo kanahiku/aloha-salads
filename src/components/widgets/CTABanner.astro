@@ -1,66 +1,102 @@
 ---
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
-import MotifLayer from '~/components/ui/MotifLayer.astro';
-import { MOTIF, MOTIF_COLOR_VARS, MOTIF_OPACITY_VARS } from '~/config/motif';
-import { PRIMARY_CTA_LABEL } from '~/config/cta';
-import { CONTACT } from '~/config/contact';
+/**
+ * CTABanner — mid-page CTA band (Figma node 2:304/2:323).
+ *
+ * Visual spec:
+ *   Dark navy gradient pill (rounded-full), two-column layout.
+ *   Left:  eyebrow (muted) + h2 heading (cream)
+ *   Right: body text + frosted CTA box [ghost button + italic disclaimer]
+ *
+ *   Background: linear-gradient(100.7°, sectionDark → primary)
+ *   CTA box: bg-page/5 p-3 rounded-[16px]
+ *   Button: ghost/dark variant (bg-primary/20, border-cream, text-white) + backdrop-blur
+ *
+ * Usage:
+ *   <CTABanner
+ *     eyebrow="Know where to aim"
+ *     title="Find your weakest link."
+ *     subtitle="Ninety-six questions, one at a time, about ten minutes. …"
+ *     ctaText="Understand the model"
+ *     ctaHref="/start"
+ *     disclaimer="Nothing you enter is sent anywhere. …"
+ *   />
+ *
+ * Note: Old template props (showAfterHoursNote, license, extraLines) are accepted
+ * but ignored — kept only for TypeScript backward-compat during page migration.
+ */
+
+import Button from '~/components/ui/Button.astro';
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
 
 export interface Props {
+  eyebrow?: string;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   ctaText?: string;
   ctaHref?: string;
+  disclaimer?: string;
+  id?: string;
+
+  /** @deprecated Legacy template props — accepted but ignored. */
   showAfterHoursNote?: boolean;
+  /** @deprecated Legacy template prop — accepted but ignored. */
   license?: string;
+  /** @deprecated Legacy template props — accepted but ignored. */
   extraLines?: string[];
 }
 
 const {
+  eyebrow,
   title,
   subtitle,
-  ctaText = PRIMARY_CTA_LABEL,
+  ctaText = 'Get started',
   ctaHref = '/contact',
-  showAfterHoursNote = false,
-  license,
-  extraLines = [],
+  disclaimer,
+  id,
 } = Astro.props;
 ---
 
-<WidgetWrapper containerClass="max-w-[1400px] mx-auto">
-  <div class="relative w-full p-8 md:p-12 rounded-md overflow-hidden bg-cta">
-    {MOTIF.sections.cta && (
-      <MotifLayer
-        color={MOTIF_COLOR_VARS.cta}
-        opacityFallback={MOTIF_OPACITY_VARS.cta}
-        class="rounded-md"
-      />
-    )}
-    
-    <div class="relative z-10">
-      <div class="text-left mb-[30px]">
-        <h2 class="text-[26px] md:text-[40px] font-normal leading-[110%] tracking-tighter font-heading text-black mb-[20px]">
-          {title}
-        </h2>
-        <p class="text-[16px] md:text-[17px] font-normal leading-[160%] text-black/70" set:html={subtitle} />
+<section {...id ? { id } : {}} class="bg-page not-prose w-full py-8 md:py-16">
+  <div class="mx-auto w-full max-w-container px-5 sm:px-8 md:px-16 lg:px-[120px]">
+
+    <div
+      class="flex w-full flex-col items-start gap-8 rounded-[32px] px-6 py-10 md:flex-row md:items-center md:gap-16 md:rounded-full md:px-[96px] md:py-[64px]"
+      style="background: linear-gradient(100.7deg, var(--aw-color-bg-section-dark) 5.27%, var(--aw-color-primary) 97.29%);"
+    >
+
+      {/* ── LEFT column: eyebrow + heading ── */}
+      <div class="flex min-w-0 flex-1 flex-col gap-4">
+        {eyebrow && (
+          <Heading variant="eyebrow" color="white">{eyebrow}</Heading>
+        )}
+        <Heading variant="h2" color="inherit" class="text-white">{title}</Heading>
       </div>
 
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-t-2 border-black pt-8">
-        <div class="text-[15px] md:text-[16px] font-medium leading-[180%] text-black/70">
-          <p class="font-semibold text-black text-[16px] md:text-[17px]">{CONTACT.businessName}</p>
-          <p>{CONTACT.address.street}, {CONTACT.address.cityLine}</p>
-          <p><a href={CONTACT.phone.href} class="hover:underline">{CONTACT.phone.display}</a></p>
-          {extraLines?.map((line) => (
-            <p set:html={line} />
-          ))}
-          {license && <p>{license}</p>}
-          {showAfterHoursNote && extraLines.length === 0 && (
-            <p class="mt-2 text-[13px] md:text-[14px] italic">Need help after hours? Use the contact form or the online chat.</p>
+      {/* ── RIGHT column: body + CTA container ── */}
+      <div class="flex min-w-0 flex-1 flex-col gap-8">
+        {subtitle && (
+          <Text color="inherit" class="text-white">{subtitle}</Text>
+        )}
+
+        {/* Frosted CTA box */}
+        <div class="flex flex-col items-start gap-4 rounded-[var(--aw-radius-lg)] bg-page/5 p-3 sm:flex-row sm:items-center">
+          <Button
+            variant="ghost"
+            tone="dark"
+            text={ctaText}
+            href={ctaHref}
+            class="w-full shrink-0 backdrop-blur-[10px] sm:w-auto"
+            hideNote={true}
+          />
+          {disclaimer && (
+            <p class="font-sans text-[11px] italic leading-[1.3] text-white/60">
+              {disclaimer}
+            </p>
           )}
         </div>
-        <div class="flex flex-col gap-1.5 w-full sm:w-auto sm:max-w-xs">
-          <a href={ctaHref} class="inline-flex w-auto self-start sm:self-end items-center justify-center px-6 py-3 rounded-md bg-black text-white font-semibold text-[15px] leading-snug hover:bg-zinc-900 transition-colors duration-200">{ctaText}</a>
-        </div>
       </div>
+
     </div>
   </div>
-</WidgetWrapper>
+</section>

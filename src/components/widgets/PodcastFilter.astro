@@ -1,0 +1,83 @@
+---
+/**
+ * PodcastFilter — centered roadmap intro + filter pills.
+ * Figma node 121:1169.
+ *
+ * Content is passed from the page file — never baked in.
+ */
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+
+export interface FilterTab {
+  label: string;
+  id: string;
+}
+
+export interface Props {
+  eyebrow?: string;
+  heading: string;
+  description?: string;
+  tabs: FilterTab[];
+  id?: string;
+}
+
+const { eyebrow, heading, description, tabs = [], id } = Astro.props;
+---
+
+<section
+  {...id ? { id } : {}}
+  class="not-prose w-full bg-page"
+>
+  <div class="mx-auto flex w-full max-w-container flex-col items-center gap-8 px-5 py-10 sm:px-8 md:gap-16 md:px-16 md:py-16 lg:px-[120px]">
+    <div class="flex w-full flex-col items-center gap-8 text-center">
+      <div class="flex max-w-[806px] flex-col items-center gap-4">
+        {eyebrow && (
+          <Heading variant="eyebrow">{eyebrow}</Heading>
+        )}
+        <Heading variant="h2">{heading}</Heading>
+      </div>
+      {description && (
+        <Text class="max-w-[718px]">{description}</Text>
+      )}
+    </div>
+
+    <div
+      class="flex max-w-[933px] flex-wrap items-center justify-center gap-3"
+      role="tablist"
+      aria-label="Filter episodes by system"
+    >
+      {tabs.map((tab, i) => (
+        <button
+          role="tab"
+          aria-selected={i === 0 ? 'true' : 'false'}
+          data-filter={tab.id}
+          class:list={[
+            'podcast-filter-tab cursor-pointer rounded-[12px] border px-6 py-4 font-sans text-body-lg uppercase tracking-[0.06em] leading-none whitespace-nowrap transition-colors',
+            i === 0
+              ? 'border-primary bg-accent text-page'
+              : 'border-primary bg-transparent text-primary hover:bg-primary/10',
+          ]}
+        >
+          {tab.label}
+        </button>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.podcast-filter-tab');
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach((t) => {
+        t.setAttribute('aria-selected', 'false');
+        t.classList.remove('bg-accent', 'text-page');
+        t.classList.add('bg-transparent', 'text-primary', 'hover:bg-primary/10');
+      });
+      tab.setAttribute('aria-selected', 'true');
+      tab.classList.add('bg-accent', 'text-page');
+      tab.classList.remove('bg-transparent', 'text-primary', 'hover:bg-primary/10');
+    });
+  });
+</script>

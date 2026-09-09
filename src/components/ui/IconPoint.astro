@@ -30,12 +30,12 @@ const isStart = align === 'start';
 >
   <div
     class:list={[
-      'w-10 h-10 rounded-md flex items-center justify-center shrink-0',
+      'size-9 sm:size-10 rounded-md flex items-center justify-center shrink-0',
       isStack ? 'mb-4' : 'mt-0.5',
       iconMark,
     ]}
   >
-    <Icon name={icon} class="w-5 h-5 text-accent" aria-hidden="true" />
+    <Icon name={icon} class="size-3.5 sm:size-5 text-accent" aria-hidden="true" />
   </div>
   <div class="min-w-0 w-full">
     <h3 class:list={['text-[16px] md:text-[18px] font-sans font-medium leading-[130%] mb-0.5', headingClass]}>

@@ -1,0 +1,126 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import Header from '~/components/widgets/Header.astro';
+import BooksGrid from '~/components/widgets/BooksGrid.astro';
+import BookSeriesFeature from '~/components/widgets/BookSeriesFeature.astro';
+import GuideBookGrid from '~/components/widgets/GuideBookGrid.astro';
+import MediaAppearances from '~/components/widgets/MediaAppearances.astro';
+import { site } from '~/config/site';
+import { navigationData } from '~/data/navigation';
+import { getBooks } from '~/lib/content';
+
+const metadata = {
+  title: `Books | ${site.name}`,
+  description:
+    'Books by Dr. Robert Peterson MD — organized across three series: foundational textbooks, the Rebellious Aging Guidebooks, and Bargaining with Aging.',
+  ignoreTitleTemplate: true,
+};
+
+const header = navigationData.header;
+const books = await getBooks();
+const guidebookBooks = books.filter((book) => book.series === 'guidebook');
+const textbook = books.find((book) => book.series === 'textbook');
+const bargaining = books.find((book) => book.series === 'bargaining');
+
+const toFeature = (book?: (typeof books)[number]) =>
+  book
+    ? {
+        slug: book.slug,
+        title: book.title,
+        subtitle: book.subtitle,
+        description: book.description ?? '',
+        image: book.image,
+        tags: book.badges,
+        buyButtons: book.ctas,
+        publisherNote: book.publisherNote,
+      }
+    : undefined;
+
+const textbookBook = toFeature(textbook);
+const bargainingBook = toFeature(bargaining);
+
+const guideBooks = guidebookBooks.map((book) => ({
+  slug: book.slug,
+  title: book.title,
+  subtitle: book.subtitle,
+  description: book.description,
+  image: book.image,
+  tags: book.badges,
+  buyButtons: book.ctas,
+  publisherNote: book.publisherNote,
+  podcastHref: book.podcastHref,
+}));
+
+// ── Media appearances ─────────────────────────────────────────────────────────
+const mediaQuote = '"A comprehensive and accessible guide to integrated wellness that challenges conventional health wisdom."';
+const appearances = [
+  { quote: mediaQuote },
+  { quote: '"Dr. Peterson\'s approach to cognitive longevity represents a paradigm shift in how we think about aging and brain health."' },
+  { quote: mediaQuote },
+  { quote: '"An essential read for anyone who wants to understand the science behind healthy aging — and act on it."' },
+];
+---
+
+<Layout metadata={metadata}>
+  <Fragment slot="header" />
+
+  <!-- Hero — gradient bg, "Books by Dr. Robert Peterson MD" -->
+  <Hero2
+    variant="page"
+    stacked
+    overlapHeader={false}
+    title="Books by <br />Dr. Robert Peterson MD"
+    subtitle="Organized across three series — foundational textbooks, the Rebellious Aging Guidebooks, and Bargaining with Aging."
+  >
+    <Header
+      slot="nav"
+      embedded
+      isSticky={false}
+      links={header.links}
+      actions={header.actions}
+    />
+  </Hero2>
+
+  <!-- Books with filter tabs + grid -->
+  <BooksGrid id="books-grid" books={books} />
+
+  <!-- Textbook Series — dark gradient, featured book -->
+  <BookSeriesFeature
+    id="textbook-series"
+    eyebrow="Series"
+    heading="Textbook Series"
+    description="Foundational, evidence-based references for clinicians and serious students of longevity medicine."
+    book={textbookBook}
+  />
+
+  <!-- Rebellious Aging Guidebook Series — light grid of book cards -->
+  <GuideBookGrid
+    id="guidebook-series"
+    eyebrow="Series"
+    heading="Rebellious Aging Guidebook Series"
+    description="A twenty-eight-part series — one guidebook per part of the body — offering practical, evidence-based guides for living long and well on your own terms."
+    books={guideBooks}
+  />
+
+  <!-- Bargaining with Aging Series — dark gradient, rounded bottom, featured book -->
+  <BookSeriesFeature
+    id="bargaining-series"
+    eyebrow="Series"
+    heading="Bargaining with Aging Series"
+    description="Honest reckonings with the trade-offs, risks, and unknowns of growing older."
+    book={bargainingBook}
+    roundedBottom
+  />
+
+  <!-- As Seen In — horizontal scroll media appearances -->
+  <MediaAppearances
+    id="media-appearances"
+    eyebrow="Media Appearances"
+    heading="As Seen In"
+    subtitle="Featured insights on longevity medicine and cognitive health"
+    appearances={appearances}
+    cta={{ text: 'View All Media Appearances', href: '#' }}
+  />
+
+</Layout>

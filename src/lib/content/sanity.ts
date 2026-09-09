@@ -7,6 +7,9 @@ import {
 import type {
   BlogContentBlock,
   BlogPost,
+  Book,
+  BookCta,
+  BookSeries,
   ContactPageContent,
   ContentImage,
   FormHelpOption,
@@ -737,4 +740,78 @@ export async function getSanityServicePageSlugs(): Promise<string[]> {
 export async function getSanityBlogPostSlugs(): Promise<string[]> {
   const slugs = await sanityClient.fetch<string[]>(BLOG_POST_SLUGS_QUERY);
   return (slugs ?? []).filter((slug): slug is string => typeof slug === 'string' && slug.length > 0);
+}
+
+type SanityBook = {
+  _id: string;
+  slug?: string;
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  image?: FetchedImage | null;
+  badges?: string[] | null;
+  publisher?: { name?: string; year?: number } | null;
+  ctas?: { _key?: string; label?: string; href?: string }[] | null;
+  podcastHref?: string | null;
+  series?: string | null;
+  order?: number | null;
+};
+
+const BOOKS_QUERY = /* groq */ `
+  *[_type == "book" && defined(slug.current)] | order(order asc, title asc) {
+    _id,
+    "slug": slug.current,
+    title,
+    subtitle,
+    description,
+    "image": {
+      ${IMAGE_PROJECTION}
+    },
+    badges,
+    publisher { name, year },
+    ctas[] { _key, label, href },
+    podcastHref,
+    series,
+    order
+  }
+`;
+
+const BOOK_SERIES: BookSeries[] = ['textbook', 'guidebook', 'bargaining'];
+
+function isBookSeries(value: string | null | undefined): value is BookSeries {
+  return BOOK_SERIES.includes(value as BookSeries);
+}
+
+function normalizeBook(doc: SanityBook): Book | null {
+  if (!doc._id || !doc.slug || !doc.title) return null;
+
+  const ctas: BookCta[] = (doc.ctas ?? [])
+    .filter((cta): cta is { _key?: string; label: string; href: string } => Boolean(cta?.label && cta?.href))
+    .map((cta) => ({ _key: cta._key, label: cta.label, href: cta.href }));
+
+  const publisherName = doc.publisher?.name?.trim();
+  const publisherYear = doc.publisher?.year;
+  const publisherNote = [publisherName, publisherYear].filter(Boolean).join(' · ') || undefined;
+
+  return {
+    _id: doc._id,
+    slug: doc.slug,
+    title: doc.title,
+    subtitle: doc.subtitle || undefined,
+    description: doc.description || undefined,
+    image: resolveContentImage(doc.image),
+    badges: (doc.badges ?? []).filter((badge): badge is string => Boolean(badge?.trim())),
+    publisherName,
+    publisherYear,
+    publisherNote,
+    ctas,
+    podcastHref: doc.podcastHref || undefined,
+    series: isBookSeries(doc.series) ? doc.series : 'guidebook',
+    order: typeof doc.order === 'number' ? doc.order : 0,
+  };
+}
+
+export async function getSanityBooks(): Promise<Book[]> {
+  const docs = await sanityClient.fetch<SanityBook[]>(BOOKS_QUERY);
+  return (docs ?? []).map(normalizeBook).filter((book): book is Book => Boolean(book));
 }

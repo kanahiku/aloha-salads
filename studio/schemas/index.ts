@@ -7,6 +7,7 @@ import { reviewsPage } from './singletons/reviewsPage';
 import { lead } from './documents/lead';
 import { servicePage } from './documents/servicePage';
 import { blogPost } from './documents/blogPost';
+import { book } from './documents/book';
 
 // Navigation objects
 import { navLink, navSubLink } from './objects/navLink';
@@ -59,6 +60,7 @@ export const schemaTypes = [
   reviewsPage,
   servicePage,
   blogPost,
+  book,
   lead,
 
   // Objects — nav

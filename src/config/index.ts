@@ -15,5 +15,13 @@ export { SOCIAL } from './social';
 export { THEME } from './theme';
 export type { CardVariant, SectionVariant, HeroVariant } from './theme';
 export { MOTIF, MOTIF_COLOR_VARS, MOTIF_OPACITY_VARS, motifFadeMask, parseMotifOpacity } from './motif';
-export { PRIMARY_CTA_LABEL, PRIMARY_CTA_NOTE } from './cta';
+export {
+  PRIMARY_CTA_LABEL,
+  PRIMARY_CTA_NOTE,
+  FOOTER_CTA_EYEBROW,
+  FOOTER_CTA_TITLE,
+  FOOTER_CTA_BODY,
+  FOOTER_CTA_LABEL,
+  FOOTER_CTA_HREF,
+} from './cta';
 export { business } from './schema/business';

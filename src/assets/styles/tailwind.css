@@ -6,8 +6,7 @@
 
 @custom-variant intersect (&:not([no-intersect]));
 
-/* Disable faux-bold/italic. Headings use DM Sans Regular; Manrope still has
-   real 200–800 faces for body and UI. */
+/* Disable faux-bold/italic. Headings are Fraunces Regular; body is Hanken Grotesk. */
 @layer base {
   html {
     font-synthesis: none;
@@ -22,12 +21,21 @@
   --color-default: var(--aw-color-text-default);
   --color-muted: var(--aw-color-text-muted);
   --color-heading: var(--aw-color-text-heading);
+  --color-eyebrow: var(--aw-color-text-eyebrow);
+  --color-page: var(--aw-color-bg-page);
+  --color-section-grey: var(--aw-color-bg-section-grey);
+  --color-section-dark: var(--aw-color-bg-section-dark);
+  --color-cta: var(--aw-color-bg-cta);
+  --color-cta-end: var(--aw-color-bg-cta-end);
+  --color-tan: var(--aw-color-text-tan);
+  --color-tan-body: var(--aw-color-text-tan-body);
+  --max-width-container: 1440px;
 
   --font-sans:
     var(--aw-font-sans, ui-sans-serif), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
   --font-serif: var(--aw-font-serif, ui-serif), ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-  --font-heading: var(--aw-font-heading, ui-sans-serif), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--aw-font-heading, ui-serif), ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
 
   --shadow-card: var(--aw-shadow-card);
   --shadow-header: var(--aw-shadow-header);
@@ -42,6 +50,7 @@
   --radius-3xl: var(--aw-radius);
   --radius-4xl: var(--aw-radius);
   --radius-full: var(--aw-radius-full);
+  --radius-hero: var(--aw-radius-hero);
 
   --animate-fade: fadeInUp 1s both;
 
@@ -57,9 +66,76 @@
   }
 }
 
+@utility max-w-container {
+  max-width: 1440px;
+}
+
 @utility font-heading {
   font-family: var(--font-heading);
   font-weight: 400;
+  font-variation-settings: 'SOFT' 0, 'WONK' 1;
+}
+
+@utility text-h1 {
+  font-size: var(--aw-text-h1-mobile);
+  line-height: var(--aw-leading-h1);
+  @media (min-width: 768px) {
+    font-size: var(--aw-text-h1);
+  }
+}
+
+@utility text-h2 {
+  font-size: var(--aw-text-h2-mobile);
+  line-height: var(--aw-leading-h2);
+  @media (min-width: 768px) {
+    font-size: var(--aw-text-h2);
+  }
+}
+
+@utility text-h3 {
+  font-size: var(--aw-text-h3-mobile);
+  line-height: var(--aw-leading-h3);
+  @media (min-width: 768px) {
+    font-size: var(--aw-text-h3);
+  }
+}
+
+@utility text-h4 {
+  font-size: var(--aw-text-h4-mobile);
+  line-height: var(--aw-leading-h4);
+  @media (min-width: 768px) {
+    font-size: var(--aw-text-h4);
+  }
+}
+
+@utility text-body {
+  font-size: var(--aw-text-body);
+  line-height: var(--aw-leading-body);
+}
+
+@utility text-body-lg {
+  font-size: var(--aw-text-body-lg);
+  line-height: var(--aw-leading-body);
+}
+
+@utility type-eyebrow {
+  font-size: var(--aw-text-eyebrow);
+  letter-spacing: var(--aw-tracking-eyebrow);
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+@utility text-small {
+  font-size: var(--aw-text-small);
+  line-height: var(--aw-leading-small);
+}
+
+@utility bg-surface {
+  background-color: var(--aw-color-bg-card);
+}
+
+@utility bg-nav-glass {
+  background-color: var(--aw-color-nav-glass);
 }
 
 @utility bg-page {
@@ -94,8 +170,38 @@
   background-color: var(--aw-color-bg-card-light);
 }
 
+@utility bg-feature-card {
+  background-color: var(--aw-color-bg-feature-card);
+}
+
 @utility bg-cta {
   background-color: var(--aw-color-bg-cta);
+}
+
+@utility bg-cta-pink {
+  background-color: var(--aw-color-bg-cta-pink);
+}
+
+@utility text-cta-pink {
+  color: var(--aw-color-text-cta-pink);
+}
+
+@utility shadow-card-mist {
+  box-shadow: var(--aw-shadow-card-mist);
+}
+
+@utility shadow-card-pink {
+  box-shadow: var(--aw-shadow-card-pink);
+}
+
+/* Flat offset-only mist shadow — used by schedule cards (Figma: 3px 3px 0 #E4EDF2, no blur) */
+@utility shadow-mist-offset {
+  box-shadow: 3px 3px 0 0 var(--aw-color-bg-card-light);
+}
+
+/* Subtle page-coloured glow behind display text (e.g. bucket numbers, pullquotes) */
+@utility text-shadow-page {
+  text-shadow: 0 0 40px var(--aw-color-bg-page);
 }
 
 @utility text-card-heading-dark {
@@ -373,8 +479,28 @@
   @apply rounded-lg border border-white/16 shadow-card;
 }
 
+/* Site-wide CTA hover — used by Button.astro via btn / btn-* utilities.
+   Color tokens per variant; motion (200ms ease + 1px lift) is shared. */
 @utility btn {
-  @apply inline-flex items-center justify-center rounded-md border-2 font-sans font-semibold text-center text-[15px] leading-snug transition py-3 px-6 ease-in duration-200 cursor-pointer;
+  @apply inline-flex items-center justify-center rounded-md border font-sans font-medium text-center leading-snug py-4 px-6 cursor-pointer;
+  font-size: var(--aw-text-button);
+  transition-property: background-color, color, border-color, box-shadow, transform;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  &:hover {
+    transform: translateY(-1px);
+  }
+  &:active {
+    transform: translateY(0);
+    transition-duration: 80ms;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    transition-property: background-color, color, border-color;
+    &:hover,
+    &:active {
+      transform: none;
+    }
+  }
 }
 
 @utility btn-primary {
@@ -414,7 +540,7 @@
 }
 
 @utility btn-ghost-dark {
-  @apply btn;
+  @apply btn backdrop-blur-[10px];
   background-color: var(--aw-color-btn-ghost-dark-bg);
   color: var(--aw-color-btn-ghost-dark-text);
   border-color: var(--aw-color-btn-ghost-dark-border);
@@ -426,8 +552,11 @@
 }
 
 @utility btn-link {
-  @apply inline-flex items-center font-sans font-medium text-[14px] md:text-[15px] cursor-pointer transition duration-200;
+  @apply inline-flex items-center font-sans font-medium text-[14px] md:text-[15px] cursor-pointer;
   color: var(--aw-color-btn-link);
+  transition-property: color, text-decoration-color;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   &:hover {
     color: var(--aw-color-btn-link-hover);
     text-decoration: underline;
@@ -443,22 +572,13 @@
 }
 
 #header.scroll > div:first-child {
-  @apply bg-black md:bg-black/90 md:backdrop-blur-md;
+  @apply bg-section-dark md:backdrop-blur-md;
   box-shadow: var(--aw-shadow-header);
 }
 .dark #header.scroll > div:first-child,
 #header.scroll.dark > div:first-child {
-  @apply bg-black md:bg-black/90 border-b border-white/10;
+  @apply bg-section-dark border-b border-white/10;
   box-shadow: var(--aw-shadow-header);
-}
-
-#header.expanded nav {
-  position: fixed;
-  top: 70px;
-  left: 0;
-  right: 0;
-  bottom: 0 !important;
-  padding: 0 12px;
 }
 
 @media (max-width: 767px) {
@@ -485,6 +605,18 @@ nav > ul > li > div > a.aw-link-active,
 nav > ul > li > div > a.aw-link-active:hover,
 nav > ul > li > div > button.aw-link-active {
   color: var(--aw-color-accent);
+}
+
+[data-nav='embedded'] nav a.aw-link-active,
+[data-nav='embedded'] nav a.aw-link-active:hover {
+  color: var(--aw-color-bg-cta);
+  text-shadow: 2px 2px 4px rgb(0 0 0 / 10%);
+}
+
+[data-mobile-panel] a.aw-link-active,
+[data-mobile-panel] a.aw-link-active:hover {
+  background-color: rgb(255 255 255 / 10%);
+  color: var(--aw-color-bg-cta);
 }
 
 /* Dropdown option hover — subtle yellow, distinct from active */

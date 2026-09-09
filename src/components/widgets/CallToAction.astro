@@ -25,7 +25,7 @@ const {
 } = Astro.props;
 ---
 
-<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-[1400px] mx-auto ${classes?.container ?? ''}`} bg={bg}>
+<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-container mx-auto ${classes?.container ?? ''}`} bg={bg}>
   <div
     class="w-full text-left p-6 rounded-md shadow-xl dark:shadow-none dark:border dark:border-slate-600"
   >

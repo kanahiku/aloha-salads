@@ -41,7 +41,7 @@ const isBleed = hasImage && imageFit === 'bleed';
 <WidgetWrapper
   id={id}
   isDark={isDark}
-  containerClass={`max-w-[1400px] mx-auto ${isBleed ? 'px-0 py-0 md:px-0 md:py-0 lg:py-0' : ''} ${isAfterContent ? 'pt-0 md:pt-0 lg:pt-0' : ''} ${classes?.container ?? ''}`}
+  containerClass={`max-w-container mx-auto ${isBleed ? 'px-0 py-0 md:px-0 md:py-0 lg:py-0' : ''} ${isAfterContent ? 'pt-0 md:pt-0 lg:pt-0' : ''} ${classes?.container ?? ''}`}
   bg={bg}
 >
   {!hasImage && (

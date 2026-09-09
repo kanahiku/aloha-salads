@@ -5,12 +5,47 @@ alwaysApply: true
 
 # Brand tokens
 
+Phase 1 of every Figma build. Do not restyle buttons or compose pages until `src/brand.ts` matches the file.
+
 `src/brand.ts` is the only look file. `CustomStyles.astro` injects `brandStylesheet()`. `astro.config.ts` reads `brandFontConfig()` for Google Fonts.
 
 ## From Figma
 
 - If the file has Variables or a Design System frame: copy color, type, and radius into `brand`.
 - If it does not: walk a few representative frames, collect the most-used fills, text styles (family, weight, size), and corner radius. Map those into `brand.colors`, `brand.fonts`, `brand.radius`. Do not create a token per one-off swatch.
+
+## Type
+
+Map Figma styles into `brand.type` roles, then only use `Heading` / `Text` (or `text-h1`–`text-h4`). Never hardcode `text-[52px]` in widgets.
+
+| Role | Use |
+|---|---|
+| `h1` | Hero / display |
+| `h2` | Section heading |
+| `h3` | Pullquote / numbered title |
+| `h4` | Card / subsection title |
+| `body-lg` | Lede, hero subtitle |
+| `body` | Paragraph |
+| `eyebrow` | All-caps label |
+| `small` | Card body, footnotes |
+| `caption` | Metadata |
+
+**Prefer Figma.** Most files ship a design system for **desktop and mobile**. Copy both:
+
+- `size` ← desktop (usually 1440)
+- `mobile` ← phone / mobile type styles
+
+Do **not** invent mobile sizes when Figma already has them.
+
+**Fallback only** if there is no mobile type (no mobile Variables, no mobile Design System, no mobile text styles):
+
+- `h1.mobile` ≈ 50% of desktop `h1`
+- `h2.mobile` ≈ 60% of desktop `h2`
+- `h3.mobile` ≈ 65% of desktop `h3`
+- `h4.mobile` ≈ 80% of desktop `h4`
+- `body`, `bodyLg`, `button`, `eyebrow`, `small`, `caption` — same as desktop
+
+This file used that fallback (100/52/36/28 → 48/32/24/22) because the Figma file had desktop type only.
 
 ## In code
 

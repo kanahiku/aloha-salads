@@ -1,0 +1,80 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import Header from '~/components/widgets/Header.astro';
+import TextSplit from '~/components/widgets/TextSplit.astro';
+import ChaptersList from '~/components/widgets/ChaptersList.astro';
+import DuoCards from '~/components/widgets/DuoCards.astro';
+import Text from '~/components/ui/Text.astro';
+import Button from '~/components/ui/Button.astro';
+import { site } from '~/config/site';
+import { navigationData } from '~/data/navigation';
+import locationBgImg from '~/assets/images/location-bg.png';
+import { chapterLocations } from '~/data/chapters';
+
+const metadata = {
+  title: `Chapters | ${site.name}`,
+  description:
+    'Seven ohana across the islands, meeting every week. Member-run, not a wellness brand. First three visits are always free.',
+  ignoreTitleTemplate: true,
+};
+
+const header = navigationData.header;
+---
+
+<Layout metadata={metadata}>
+  <Fragment slot="header" />
+
+  <!-- TODO: replace hero background with <Image> when asset is ready -->
+  <Hero2 variant="title" overlapHeader={false} title="Chapters">
+    <Header
+      slot="nav"
+      embedded
+      isSticky={false}
+      links={header.links}
+      actions={header.actions}
+    />
+  </Hero2>
+
+  <TextSplit compact heading="Come home.">
+    <Text>
+      Seven ohana across the islands, meeting every week. Dues are kept low on purpose — we are member-run, not a wellness brand. First three visits are always free. Bring a friend, an empty water bottle, and something to put lunch in.
+    </Text>
+    <Button
+      variant="primary"
+      text="Book your free first visit"
+      href="/contact"
+      hideNote
+      class="mt-8 self-start"
+    />
+  </TextSplit>
+
+  <ChaptersList
+    id="our-locations"
+    eyebrow="Our locations"
+    bgImage={locationBgImg}
+    locations={chapterLocations}
+    footerNote="First three visits are always free. Bring a friend, an empty water bottle, and something to put lunch in."
+    footerLink={{ text: "See all seven chapters.", href: "/chapters" }}
+  />
+
+  <DuoCards
+    id="start-a-chapter"
+    cards={[
+      {
+        variant: 'dark',
+        eyebrow: 'Not near a chapter?',
+        heading: 'Start one.',
+        body: 'Waimea began with four people and a text thread. The network provides the curriculum, the coach vetting, the lecture calendar and the insurance. You provide the neighbourhood.',
+        cta: { text: 'Apply to start a chapter', href: '/contact' },
+      },
+      {
+        variant: 'outlined',
+        eyebrow: 'Phase 3',
+        heading: 'Activities directory',
+        body: 'Walking groups, pickleball, cooking classes, volunteer shifts and local services — categorised by the four pillars — will nest here at /chapters/activities/. The URL is reserved in Phase 1 so nothing gets migrated later.',
+        cta: { text: 'View all', href: '/chapters/activities' },
+      },
+    ]}
+  />
+</Layout>

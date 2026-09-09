@@ -45,21 +45,24 @@ const lockToWidth = size === 'cover' || size === 'contain';
 const motifSize = lockToWidth ? '100% auto' : size;
 const motifPosition = lockToWidth ? 'top' : position;
 
-const motifStyle = [
-  `opacity: ${opacityValue}`,
-  `background-color: ${color}`,
-  `-webkit-mask-image: url('${pattern.src}')`,
-  `mask-image: url('${pattern.src}')`,
-  `-webkit-mask-size: ${motifSize}`,
-  `mask-size: ${motifSize}`,
-  `-webkit-mask-repeat: ${repeat}`,
-  `mask-repeat: ${repeat}`,
-  `-webkit-mask-position: ${motifPosition}`,
-  `mask-position: ${motifPosition}`,
-  `-webkit-mask-mode: ${maskMode}`,
-  `mask-mode: ${maskMode}`,
-].join('; ');
+const motifStyle = pattern
+  ? [
+      `opacity: ${opacityValue}`,
+      `background-color: ${color}`,
+      `-webkit-mask-image: url('${pattern.src}')`,
+      `mask-image: url('${pattern.src}')`,
+      `-webkit-mask-size: ${motifSize}`,
+      `mask-size: ${motifSize}`,
+      `-webkit-mask-repeat: ${repeat}`,
+      `mask-repeat: ${repeat}`,
+      `-webkit-mask-position: ${motifPosition}`,
+      `mask-position: ${motifPosition}`,
+      `-webkit-mask-mode: ${maskMode}`,
+      `mask-mode: ${maskMode}`,
+    ].join('; ')
+  : '';
 ---
+{pattern && (
 
 <div
   class:list={['absolute inset-0 overflow-hidden pointer-events-none', className]}
@@ -68,3 +71,4 @@ const motifStyle = [
 >
   <div class="absolute inset-0" style={motifStyle}></div>
 </div>
+)}

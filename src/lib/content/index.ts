@@ -1,5 +1,7 @@
 import type {
   BlogPost,
+  Book,
+  BookSeries,
   ContactPageContent,
   HomePageContent,
   NavigationContent,
@@ -10,6 +12,7 @@ import {
   getSanityBlogPost,
   getSanityBlogPosts,
   getSanityBlogPostSlugs,
+  getSanityBooks,
   getSanityContactHelpOptions,
   getSanityContactPage,
   getSanityHomeContent,
@@ -200,6 +203,15 @@ export async function getBlogPostsRelatedTo(pageSlug: string): Promise<BlogPost[
   return posts.filter((post) => post.relatedPages.includes(key)).slice(0, 3);
 }
 
+export async function getBooks(): Promise<Book[]> {
+  try {
+    return await getSanityBooks();
+  } catch (error) {
+    console.warn('Sanity books unavailable.', error);
+    return [];
+  }
+}
+
 export async function getRelatedBlogPosts(post: BlogPost, max = 3): Promise<BlogPost[]> {
   const keys = new Set(post.relatedPages);
   if (!keys.size) return [];
@@ -219,6 +231,8 @@ export async function getRelatedBlogPosts(post: BlogPost, max = 3): Promise<Blog
 
 export type {
   BlogPost,
+  Book,
+  BookSeries,
   ContactPageContent,
   HomePageContent,
   NavigationContent,

@@ -1,5 +1,6 @@
 ---
 import type { TocItem } from '~/lib/content/blogArticle';
+import Button from '~/components/ui/Button.astro';
 import CTANote from '~/components/ui/CTANote.astro';
 import { PRIMARY_CTA_LABEL } from '~/config/cta';
 
@@ -78,12 +79,13 @@ const isSticky = variant === 'sticky';
       <div class:list={['rounded-lg bg-card-light p-5', toc.length > 0 && 'mt-8']}>
         <p class="text-[18px] md:text-[20px] font-sans font-medium leading-[130%] text-heading mb-4">{ctaTitle}</p>
         <div class="flex flex-col gap-1.5">
-          <a
+          <Button
+            variant="primary"
+            text={PRIMARY_CTA_LABEL}
             href={ctaHref}
-            class="inline-flex w-auto self-start items-center justify-center px-5 py-3 rounded-md bg-black text-white font-semibold text-[14px] leading-snug hover:bg-zinc-900 transition-colors duration-200"
-          >
-            {PRIMARY_CTA_LABEL}
-          </a>
+            hideNote={true}
+            class="w-auto self-start"
+          />
           <CTANote />
         </div>
       </div>

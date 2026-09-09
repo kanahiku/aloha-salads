@@ -32,7 +32,7 @@ const metadata = {
     </Fragment>
   </Hero2>
 
-  <WidgetWrapper containerClass="max-w-[1400px] mx-auto">
+  <WidgetWrapper containerClass="max-w-container mx-auto">
     <Headline title={page?.liveReviews.heading || 'Recent reviews'} classes={{ container: 'mb-[9px]' }} />
     {
       page?.liveReviews.intro ? (
@@ -52,8 +52,5 @@ const metadata = {
     subtitle={page?.ctaBanner.subtitle || `Contact ${CONTACT.businessName} and we will follow up.`}
     ctaText={page?.ctaBanner.ctaText || PRIMARY_CTA_LABEL}
     ctaHref={page?.ctaBanner.ctaHref}
-    extraLines={page?.ctaBanner.extraLines}
-    license={page?.ctaBanner.license}
-    showAfterHoursNote={page?.ctaBanner.showAfterHoursNote}
   />
 </Layout>

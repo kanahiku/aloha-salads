@@ -492,3 +492,30 @@ export interface BlogContentCallout {
   calloutType: 'tip' | 'info' | 'warning' | 'note';
   text: string;
 }
+
+// ─── Books ────────────────────────────────────────────────────────────────────
+
+export type BookSeries = 'textbook' | 'guidebook' | 'bargaining';
+
+export interface BookCta {
+  _key?: string;
+  label: string;
+  href: string;
+}
+
+export interface Book {
+  _id: string;
+  slug: string;
+  title: string;
+  subtitle?: string;
+  description?: string;
+  image?: ContentImage;
+  badges: string[];
+  publisherName?: string;
+  publisherYear?: number;
+  publisherNote?: string;
+  ctas: BookCta[];
+  podcastHref?: string;
+  series: BookSeries;
+  order: number;
+}

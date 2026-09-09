@@ -20,6 +20,7 @@ import Intersect from '~/components/common/Intersect.astro';
 import { ClientRouter } from 'astro:transitions';
 
 import type { MetaData as MetaDataType } from '~/types';
+import { brandFontConfig } from '~/brand';
 
 export interface Props {
   metadata?: MetaDataType;
@@ -27,16 +28,16 @@ export interface Props {
 
 const { metadata = {} } = Astro.props;
 const { language, textDirection } = I18N;
+const fonts = brandFontConfig();
 ---
 
 <!doctype html>
-<html lang={language} dir={textDirection} class="2xl:text-[20px]">
+<html lang={language} dir={textDirection}>
   <head>
     <GoogleTagManager placement="head" />
     <CommonMeta />
     <Favicons />
-    <Font cssVariable="--font-dm-sans" preload />
-    <Font cssVariable="--font-manrope" preload />
+    {fonts.map((font) => <Font cssVariable={font.cssVariable} preload />)}
     <CustomStyles />
     <ApplyColorMode />
     <Metadata {...metadata} />
@@ -50,7 +51,7 @@ const { language, textDirection } = I18N;
     <ClientRouter fallback="swap" />
   </head>
 
-  <body class="antialiased text-default bg-page tracking-tight font-normal text-[16px] md:text-[17px] leading-[160%]">
+  <body class="antialiased text-default bg-page font-sans font-normal text-body">
     <GoogleTagManager placement="body" />
     <slot />
 

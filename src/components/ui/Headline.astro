@@ -20,9 +20,8 @@ const {
   subtitle: subtitleClass = '',
 } = classes;
 
-// Typography classes (consistent across light/dark)
-const titleTypography = 'text-[26px] md:text-[40px] font-normal leading-[110%] tracking-tighter font-heading';
-const subtitleTypography = 'text-[16px] md:text-[17px] font-normal leading-[160%]';
+const titleTypography = 'text-h2 font-normal font-heading leading-none';
+const subtitleTypography = 'text-body font-normal';
 
 // Color classes based on isDark
 const titleColor = isDark ? 'text-headline-dark' : 'text-headline-light';
@@ -33,7 +32,7 @@ const subtitleColor = isDark ? 'text-headline-subtitle-dark' : 'text-headline-su
   (title || subtitle || tagline) && (
     <div class={twMerge('mb-[30px] text-left', containerClass)}>
       {tagline && (
-        <p class="text-base text-secondary dark:text-blue-200 font-bold tracking-wide uppercase" set:html={tagline} />
+        <p class="type-eyebrow text-eyebrow font-sans mb-3" set:html={tagline} />
       )}
       {title && (
         <h2

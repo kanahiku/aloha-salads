@@ -1,5 +1,5 @@
 ---
-description: Figma MCP is the design source for every site. Do not invent layout from copy.
+description: Figma MCP builds in order — design system, then atoms, then shared sections, then pages.
 alwaysApply: true
 ---
 
@@ -7,13 +7,20 @@ alwaysApply: true
 
 Every new website arrives as a Figma file. Copy briefs do not pick layout, section order, card counts, image side, or palette.
 
+Build in this order. Do not compose full pages before tokens and atoms match Figma.
+
+1. **Design system** — `src/brand.ts` (colors, fonts, radius). See the `tokens` rule.
+2. **Atoms** — restyle `Button`, `Headline`, `Form`, cards in `src/components/ui/` to match Figma. No per-page forks.
+3. **Sections** — one widget per pattern (`FAQs`, `Hero2`, `CTABanner`, …). Restyle the existing file; do not add `HomeFAQ`.
+4. **Pages** — `src/pages/[route]/index.astro` only composes those widgets.
+
 ## Source of truth
 
 1. Authenticate the Figma MCP server if tools are unavailable (`mcp_auth`).
-2. Extract tokens first (see `tokens` rule) into `src/brand.ts`.
-3. Walk each page frame top to bottom: screenshot + structure via MCP.
-4. Implement `src/pages/[route]/index.astro` to match the frame (backgrounds, type, spacing, image side, item counts).
-5. Reuse an existing widget when the frame is that shape; otherwise add one new component and register it (see `components` rule).
+2. Extract tokens first (see the `tokens` rule) into `src/brand.ts`. Copy desktop **and** mobile type from Figma when both exist. Fill `src/config/site.ts` + `contact.ts`.
+3. Restyle atoms (`Button`, `Headline`, inputs, cards) until they match Figma components.
+4. Restyle or add **one** section widget per repeating pattern. Register new widgets (see `components` rule).
+5. Walk each page frame top to bottom: screenshot + structure. Compose the page from those widgets (backgrounds, type, spacing, image side, item counts from Figma).
 6. After page work, run `npm run build` and fix errors before finishing.
 
 ## Always-on stack
@@ -26,3 +33,5 @@ Keep Sanity, Resend/forms (`/contact`), GTM, Search Console, JSON-LD, reviews, b
 - Apply a canned section color cycle (white → grey → dark, or any other)
 - Auto-flip split images, ban 5-card grids, or force icon-point bands from item counts
 - Implement a page before tokens are in `src/brand.ts` when the Figma file has a distinct palette/type
+- Skip atoms / dump unique markup into a page file
+- Fork a section per route (`HomeFAQ`, `AboutHero`, `ServicesCTA`)

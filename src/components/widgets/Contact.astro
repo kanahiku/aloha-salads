@@ -20,7 +20,7 @@ const {
 } = Astro.props;
 ---
 
-<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-[1400px] mx-auto ${classes?.container ?? ''}`} bg={bg}>
+<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-container mx-auto ${classes?.container ?? ''}`} bg={bg}>
   <Headline title={title} classes={{ container: subtitle ? 'mb-[9px]' : 'mb-[30px]' }} />
 
   {
