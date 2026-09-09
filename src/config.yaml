@@ -2,8 +2,8 @@
 # Edit src/config/site.ts for name, URL, GTM, and Search Console.
 
 site:
-  name: Your Company
-  site: 'https://example.com'
+  name: Rebellious Aging
+  site: 'https://rebelliousaging.com'
   base: '/'
   trailingSlash: false
   googleSiteVerificationId: ''
@@ -11,18 +11,18 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: Your Company
-    template: '%s — Your Company'
-  description: 'Replace this description from the client Figma / SEO brief.'
+    default: Rebellious Aging
+    template: '%s — Rebellious Aging'
+  description: 'Member-led clubs across the Hawaiian Islands teaching the basics of longevity — how aging works, and what you can do about it.'
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: Your Company
+    site_name: Rebellious Aging
     images:
-      - url: '~/assets/images/logo.webp'
-        width: 1024
-        height: 124
+      - url: '~/assets/images/og-image.jpg'
+        width: 1200
+        height: 630
     type: website
   twitter:
     handle: ''
