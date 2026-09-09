@@ -81,18 +81,6 @@ const HOME_QUERY = /* groq */ `
       subtitle,
       "services": services[] { title, description, linkText, linkHref }
     },
-    oahuConditions {
-      title,
-      paragraph1,
-      "cards": cards[] { title, description, icon },
-      ctaText,
-      ctaHref
-    },
-    roofDamageProcess {
-      heading,
-      disclaimer,
-      "steps": steps[] { title, description, icon }
-    },
     faqs {
       title,
       "items": items[] { question, answer }

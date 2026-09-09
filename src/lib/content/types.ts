@@ -127,20 +127,6 @@ export interface HomePageContent {
     services: ServiceItem[];
   };
 
-  oahuConditions: {
-    title: string;
-    paragraph1: string;
-    cards: InfoCardItem[];
-    ctaText: string;
-    ctaHref: string;
-  };
-
-  roofDamageProcess: {
-    heading: string;
-    disclaimer: string;
-    steps: TimelineStep[];
-  };
-
   faqs: {
     title: string;
     items: FAQItem[];

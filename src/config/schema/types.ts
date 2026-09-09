@@ -41,7 +41,7 @@ export interface AreaServed {
 }
 
 export interface BusinessSchema {
-  /** Fragment used in the business @id, e.g. "roofingcontractor". */
+  /** Fragment used in the business @id, e.g. "organization". */
   idFragment: string;
   name: string;
   businessType: string;

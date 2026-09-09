@@ -12,8 +12,6 @@ export const homePage = defineType({
     { name: 'statsBar', title: 'Stats Bar' },
     { name: 'whyInspect', title: 'Intro split' },
     { name: 'servicesSection', title: 'Services Section' },
-    { name: 'oahuConditions', title: 'Feature cards' },
-    { name: 'roofDamageProcess', title: 'Process' },
     { name: 'faqs', title: 'FAQs' },
     { name: 'ctaBanner', title: 'CTA Banner' },
   ],
@@ -42,14 +40,12 @@ export const homePage = defineType({
           name: 'titleLine1',
           title: 'Heading Line 1',
           type: 'string',
-          description: 'e.g. "Hawaii\'s Roof"',
           validation: (r) => r.required(),
         }),
         defineField({
           name: 'titleLine2',
           title: 'Heading Line 2',
           type: 'string',
-          description: 'e.g. "Inspection Specialists"',
           validation: (r) => r.required(),
         }),
         defineField({
@@ -109,7 +105,7 @@ export const homePage = defineType({
     // ── Why Inspect ───────────────────────────────────────────────────────────
     defineField({
       name: 'whyInspect',
-      title: 'Why Start With a Roof Inspection?',
+      title: 'Intro Split Section',
       type: 'object',
       group: 'whyInspect',
       fields: [
@@ -154,49 +150,6 @@ export const homePage = defineType({
           type: 'array',
           of: [{ type: 'serviceItem' }],
           description: 'Add, remove, or reorder services. Each becomes a card.',
-        }),
-      ],
-    }),
-
-    // ── Oahu Conditions ───────────────────────────────────────────────────────
-    defineField({
-      name: 'oahuConditions',
-      title: 'Oahu Roofing Conditions Section',
-      type: 'object',
-      group: 'oahuConditions',
-      fields: [
-        defineField({ name: 'title', title: 'Section Title', type: 'string', validation: (r) => r.required() }),
-        defineField({ name: 'paragraph1', title: 'Intro Paragraph', type: 'text', rows: 4, validation: (r) => r.required() }),
-        defineField({
-          name: 'cards',
-          title: 'Condition Cards',
-          type: 'array',
-          of: [{ type: 'infoCardItem' }],
-        }),
-        defineField({ name: 'ctaText', title: 'CTA Label', type: 'string' }),
-        defineField({ name: 'ctaHref', title: 'CTA URL', type: 'string' }),
-      ],
-    }),
-
-    // ── Roof Damage Process ────────────────────────────────────────────────────
-    defineField({
-      name: 'roofDamageProcess',
-      title: 'The Roof Damage Process',
-      type: 'object',
-      group: 'roofDamageProcess',
-      fields: [
-        defineField({ name: 'heading', title: 'Section Heading', type: 'string', validation: (r) => r.required() }),
-        defineField({
-          name: 'disclaimer',
-          title: 'Disclaimer',
-          type: 'text',
-          rows: 3,
-        }),
-        defineField({
-          name: 'steps',
-          title: 'Process Steps',
-          type: 'array',
-          of: [{ type: 'timelineStep' }],
         }),
       ],
     }),
