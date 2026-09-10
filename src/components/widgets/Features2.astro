@@ -72,7 +72,7 @@ const headlineClasses = isDark
                 <span
                   class:list={[
                     'mt-auto pt-4 font-medium text-[14px] md:text-[15px] card-link',
-                    callToAction.class || (isDark ? 'text-accent' : 'text-heading'),
+                    callToAction.class || (isDark ? 'text-page hover:text-accent-hover' : 'btn-link'),
                   ]}
                 >
                   {callToAction.text}

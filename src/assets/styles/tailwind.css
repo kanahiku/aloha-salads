@@ -23,6 +23,7 @@
   --color-heading: var(--aw-color-text-heading);
   --color-eyebrow: var(--aw-color-text-eyebrow);
   --color-page: var(--aw-color-bg-page);
+  --color-page-end: var(--aw-color-bg-page-end);
   --color-section-grey: var(--aw-color-bg-section-grey);
   --color-section-dark: var(--aw-color-bg-section-dark);
   --color-cta: var(--aw-color-bg-cta);
@@ -140,6 +141,13 @@
 
 @utility bg-page {
   background-color: var(--aw-color-bg-page);
+}
+
+@utility bg-page-wash {
+  background-color: var(--aw-color-bg-page);
+  background-image: linear-gradient(to bottom, var(--aw-color-bg-page), var(--aw-color-bg-page-end));
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 
 @utility bg-dark {
@@ -482,7 +490,7 @@
 /* Site-wide CTA hover — used by Button.astro via btn / btn-* utilities.
    Color tokens per variant; motion (200ms ease + 1px lift) is shared. */
 @utility btn {
-  @apply inline-flex items-center justify-center rounded-md border font-sans font-medium text-center leading-snug py-4 px-6 cursor-pointer;
+  @apply inline-flex items-center justify-center rounded-xl border font-sans font-semibold text-center leading-none py-3.5 px-6 cursor-pointer tracking-[0.01em];
   font-size: var(--aw-text-button);
   transition-property: background-color, color, border-color, box-shadow, transform;
   transition-duration: 200ms;
@@ -552,8 +560,9 @@
 }
 
 @utility btn-link {
-  @apply inline-flex items-center font-sans font-medium text-[14px] md:text-[15px] cursor-pointer;
+  @apply inline-flex items-center font-sans font-semibold text-[14px] md:text-[15px] cursor-pointer;
   color: var(--aw-color-btn-link);
+  text-underline-offset: 2px;
   transition-property: color, text-decoration-color;
   transition-duration: 200ms;
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
@@ -568,7 +577,7 @@
 }
 
 @utility tag-pill {
-  @apply inline-flex items-center rounded-full bg-accent/20 border border-accent px-2.5 py-0.5 font-heading font-normal text-[11px] md:text-[12px] leading-[18px] text-black dark:bg-accent/15 dark:border-accent dark:text-black;
+  @apply inline-flex items-center rounded-full bg-primary/20 border border-primary/30 px-2.5 py-0.5 font-heading font-normal text-[11px] md:text-[12px] leading-[18px] text-primary dark:bg-primary/20 dark:border-white/20 dark:text-white/80;
 }
 
 #header.scroll > div:first-child {
@@ -664,7 +673,7 @@ nav > ul > li > div > button.aw-link-active {
 
 /* Linked-card hover: underline the URL when the card is hovered. No lift or bounce. */
 @utility card-link {
-  @apply underline underline-offset-[3px] decoration-2 decoration-transparent transition-[text-decoration-color] duration-200 group-hover:decoration-current;
+  @apply underline underline-offset-[3px] decoration-2 decoration-transparent transition-[color,text-decoration-color] duration-200 group-hover:decoration-current;
 }
 
 .dd *:first-child {

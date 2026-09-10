@@ -5,6 +5,8 @@ import type {
   ContactPageContent,
   HomePageContent,
   NavigationContent,
+  PodcastEpisode,
+  PodcastPartGroup,
   ReviewsPageContent,
   ServicePageContent,
 } from './types';
@@ -13,6 +15,8 @@ import {
   getSanityBlogPosts,
   getSanityBlogPostSlugs,
   getSanityBooks,
+  getSanityPodcastEpisodes,
+  groupEpisodesByPart,
   getSanityContactHelpOptions,
   getSanityContactPage,
   getSanityHomeContent,
@@ -67,6 +71,35 @@ const LEGAL_FOOTER_LINKS = [
   { text: 'Accessibility', href: '/accessibility' },
 ];
 
+const HIDDEN_NAV_HREFS = new Set(['/chapters', '/guidebooks']);
+const HIDDEN_NAV_LABELS = new Set(['chapters', 'guidebooks', 'guidebook series']);
+
+function isHiddenNavLink(link: { text: string; href?: string }): boolean {
+  return (
+    (link.href != null && HIDDEN_NAV_HREFS.has(link.href)) ||
+    HIDDEN_NAV_LABELS.has(link.text.toLowerCase())
+  );
+}
+
+function hidePagesFromUi(nav: NavigationContent): NavigationContent {
+  return {
+    ...nav,
+    header: {
+      ...nav.header,
+      links: nav.header.links.filter((link) => !isHiddenNavLink(link)),
+    },
+    footer: {
+      ...nav.footer,
+      links: nav.footer.links
+        .filter((column) => column.title.toLowerCase() !== 'chapters')
+        .map((column) => ({
+          ...column,
+          links: column.links.filter((link) => !isHiddenNavLink(link)),
+        })),
+    },
+  };
+}
+
 function ensureLegalFooterLinks(nav: NavigationContent): NavigationContent {
   const existing = nav.footer.secondaryLinks ?? [];
   const byHref = new Map(existing.map((link) => [link.href, link]));
@@ -86,12 +119,12 @@ export async function getNavigationContent(): Promise<NavigationContent> {
   try {
     const nav = await getSanityNavigationContent();
     if (nav?.header && nav?.footer) {
-      return ensureLegalFooterLinks(nav);
+      return hidePagesFromUi(ensureLegalFooterLinks(nav));
     }
   } catch (error) {
     console.warn('Sanity navigation unavailable; using local fallback.', error);
   }
-  return ensureLegalFooterLinks(navigationData);
+  return hidePagesFromUi(ensureLegalFooterLinks(navigationData));
 }
 
 export async function findServicePage(slug: string): Promise<ServicePageContent | null> {
@@ -236,6 +269,19 @@ export type {
   ContactPageContent,
   HomePageContent,
   NavigationContent,
+  PodcastEpisode,
+  PodcastPartGroup,
   ReviewsPageContent,
   ServicePageContent,
 };
+
+export { groupEpisodesByPart };
+
+export async function getPodcastEpisodes(): Promise<PodcastEpisode[]> {
+  try {
+    return await getSanityPodcastEpisodes();
+  } catch (error) {
+    console.warn('Sanity podcast episodes unavailable.', error);
+    return [];
+  }
+}

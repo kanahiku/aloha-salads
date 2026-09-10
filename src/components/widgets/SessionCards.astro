@@ -31,7 +31,7 @@ export interface Props {
 const { eyebrow, cards = [], id } = Astro.props;
 ---
 
-<section {...id ? { id } : {}} class="bg-page not-prose w-full py-12 md:py-16">
+<section {...id ? { id } : {}} class="not-prose w-full py-12 md:py-16">
   <div class="mx-auto flex w-full max-w-container flex-col gap-8 px-5 sm:px-8 md:px-16 lg:px-[120px]">
     {eyebrow && (
       <Heading variant="eyebrow" color="inherit" class="text-accent">

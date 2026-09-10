@@ -32,7 +32,7 @@ const fonts = brandFontConfig();
 ---
 
 <!doctype html>
-<html lang={language} dir={textDirection}>
+<html lang={language} dir={textDirection} class="min-h-dvh bg-page-wash">
   <head>
     <GoogleTagManager placement="head" />
     <CommonMeta />
@@ -51,7 +51,7 @@ const fonts = brandFontConfig();
     <ClientRouter fallback="swap" />
   </head>
 
-  <body class="antialiased text-default bg-page font-sans font-normal text-body">
+  <body class="antialiased text-default bg-page-wash min-h-dvh font-sans font-normal text-body">
     <GoogleTagManager placement="body" />
     <slot />
 

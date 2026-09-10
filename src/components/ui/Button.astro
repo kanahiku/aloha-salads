@@ -6,12 +6,9 @@
  * (200ms ease, fill/color swap, 1px lift). Do not add per-page hover classes.
  *
  * Variants:
- *   primary    → solid filled button  (main conversion action)
- *   ghost      → transparent / bordered button  (secondary action)
- *                  tone="dark"  (default) → white-border glass for photo / dark sections
- *                  tone="light"           → dark-border for light / grey sections
- *   secondary  → alias used by the CTA card (same style as primary on cta-bg)
- *   link       → inline text link with underline-on-hover
+ *   primary / secondary / tertiary / ghost → same filled navy CTA
+ *     (COLOR-PALETTE.html Current CTA: #2C4A5B → hover #1B2A32, white type)
+ *   link → inline text link (navy → accent underline)
  *
  * Backward-compat aliases: 'ghost-dark' and 'ghost-light' still resolve correctly
  * so existing data objects (actions arrays, CMS entries) don't need updating.
@@ -39,7 +36,7 @@ export interface Props extends CallToAction {
 }
 
 const {
-  variant = 'secondary',
+  variant = 'primary',
   tone = 'dark',
   target,
   text = Astro.slots.render('default'),

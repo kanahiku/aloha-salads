@@ -45,6 +45,15 @@ export const structure = (S: StructureBuilder) =>
           ])
         ),
 
+      S.listItem()
+        .title('Podcast Episodes')
+        .schemaType('podcastEpisode')
+        .child(
+          S.documentTypeList('podcastEpisode').title('Podcast Episodes').defaultOrdering([
+            { field: 'order', direction: 'asc' },
+          ])
+        ),
+
       S.divider(),
 
       S.listItem()

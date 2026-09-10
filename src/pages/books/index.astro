@@ -34,6 +34,7 @@ const toFeature = (book?: (typeof books)[number]) =>
         tags: book.badges,
         buyButtons: book.ctas,
         publisherNote: book.publisherNote,
+        podcastHref: book.podcastHref,
       }
     : undefined;
 
@@ -124,3 +125,27 @@ const appearances = [
   />
 
 </Layout>
+
+<script>
+  /**
+   * Reliable hash-scroll for deep links like /books#book-hair-scalp.
+   */
+  function scrollToHash() {
+    const hash = window.location.hash;
+    if (!hash) return;
+    const target = document.querySelector(hash);
+    if (!target) return;
+    const headerEl = document.getElementById('header');
+    const offset = headerEl ? headerEl.offsetHeight + 24 : 112;
+    const top = target.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  if (document.readyState === 'complete') {
+    scrollToHash();
+  } else {
+    window.addEventListener('load', scrollToHash, { once: true });
+  }
+
+  document.addEventListener('astro:page-load', scrollToHash);
+</script>

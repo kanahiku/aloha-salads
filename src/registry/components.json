@@ -505,7 +505,7 @@
         "eyebrow": "episode count label",
         "heading": "h2 category title",
         "description": "centered body under the heading",
-        "episodes": "PodcastEpisodeItem[] — { title, tag, description, ctaText?, ctaHref? }",
+        "episodes": "PodcastEpisodeItem[] — { slug?, title, tag?, description?, ctaText?, ctaHref?, status?, spotifyUrl?, youtubeUrl? }",
         "tone": "light (default) | dark",
         "id": "section anchor"
       },

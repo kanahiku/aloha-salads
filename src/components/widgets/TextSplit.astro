@@ -36,7 +36,7 @@ export interface Props {
 const { eyebrow, heading, headingHtml, id, compact = false, class: className = '' } = Astro.props;
 ---
 
-<section {...id ? { id } : {}} class:list={['bg-page not-prose w-full', className]}>
+<section {...id ? { id } : {}} class:list={['not-prose w-full', className]}>
   <div
     class:list={[
       'mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-16 lg:px-[120px]',

@@ -14,7 +14,7 @@ const { post, variant = 'dark' } = Astro.props;
 const href = getBlogPermalink(post.slug);
 const headingClass = variant === 'dark' ? 'text-card-heading-dark' : 'text-card-heading-light';
 const bodyClass = variant === 'dark' ? 'text-card-body-dark' : 'text-card-body-light';
-const linkClass = variant === 'dark' ? 'text-card-link-dark' : 'text-card-link-light';
+const linkClass = variant === 'dark' ? 'text-card-link-dark hover:text-accent-hover' : 'btn-link';
 const dateClass = variant === 'dark' ? 'text-white/50' : 'text-muted';
 const placeholderClass = variant === 'dark' ? 'bg-[#111] text-white/25' : 'bg-gray-100 text-gray-300';
 const publishDate = new Date(post.publishDate);

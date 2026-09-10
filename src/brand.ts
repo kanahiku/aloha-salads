@@ -25,7 +25,7 @@ export const brand = {
     body: {
       name: 'Hanken Grotesk',
       cssVariable: '--font-hanken-grotesk',
-      weights: ['300', '400', '500'] as string[],
+      weights: ['300', '400', '500', '600'] as string[],
       styles: ['normal', 'italic'] as string[],
       subsets: ['latin'] as string[],
       fallbacks: ['sans-serif'] as string[],
@@ -74,7 +74,7 @@ export const brand = {
     h4: { size: '28px', mobile: '22px', lineHeight: '1.2', tracking: '0' },
     body: { size: '14px', lineHeight: '1.3', tracking: '0' },
     bodyLg: { size: '16px', lineHeight: '1.3', tracking: '0' },
-    button: { size: '16px', lineHeight: '1.25', tracking: '0' },
+    button: { size: '14px', lineHeight: '1.25', tracking: '0' },
     eyebrow: { size: '14px', lineHeight: '1', tracking: '0.06em' },
     small: { size: '12px', lineHeight: '1.3', tracking: '0' },
     caption: { size: '11px', lineHeight: '1.3', tracking: '0' },
@@ -123,6 +123,49 @@ export function rgb(hex: string, alpha?: number): string {
   return `rgb(${channels} / ${a})`;
 }
 
+/** Per-variant CTA colors matching COLOR-PALETTE.html. */
+function ctaButtonVars(c: Brand['colors']): string {
+  // Primary: #2C4A5B → hover #1B2A32, white text
+  const primary = `
+    --aw-color-btn-primary-bg: ${rgb(c.primary)};
+    --aw-color-btn-primary-text: ${rgb(c.white)};
+    --aw-color-btn-primary-border: ${rgb(c.primary)};
+    --aw-color-btn-primary-bg-hover: ${rgb(c.navy)};
+    --aw-color-btn-primary-text-hover: ${rgb(c.white)};
+    --aw-color-btn-primary-border-hover: ${rgb(c.navy)};`;
+
+  // Secondary: #B29A77 (ctaTan) → hover #665844 (tanText), white text
+  const secondary = `
+    --aw-color-btn-secondary-bg: ${rgb(c.ctaTan)};
+    --aw-color-btn-secondary-text: ${rgb(c.white)};
+    --aw-color-btn-secondary-border: ${rgb(c.ctaTan)};
+    --aw-color-btn-secondary-bg-hover: ${rgb(c.tanText)};
+    --aw-color-btn-secondary-text-hover: ${rgb(c.white)};
+    --aw-color-btn-secondary-border-hover: ${rgb(c.tanText)};`;
+
+  // Ghost on light: transparent, #1E2A30 border+text → hover #2C4A5B bg, white text
+  const ghostLight = `
+    --aw-color-btn-ghost-light-bg: transparent;
+    --aw-color-btn-ghost-light-text: ${rgb(c.black)};
+    --aw-color-btn-ghost-light-border: ${rgb(c.black)};
+    --aw-color-btn-ghost-light-bg-hover: ${rgb(c.primary)};
+    --aw-color-btn-ghost-light-text-hover: ${rgb(c.white)};
+    --aw-color-btn-ghost-light-border-hover: ${rgb(c.primary)};`;
+
+  // Ghost on dark/photos: white glass default → brighter white glass hover.
+  // Using white-based opacity instead of primary-based because #2C4A5B at 20-35%
+  // on navy #1B2A32 produces near-zero visible contrast. White tint scales clearly.
+  const ghostDark = `
+    --aw-color-btn-ghost-dark-bg: ${rgb(c.primary, 0.2)};
+    --aw-color-btn-ghost-dark-text: ${rgb(c.cream)};
+    --aw-color-btn-ghost-dark-border: ${rgb(c.cream)};
+    --aw-color-btn-ghost-dark-bg-hover: rgba(255 255 255 / 0.25);
+    --aw-color-btn-ghost-dark-text-hover: ${rgb(c.cream)};
+    --aw-color-btn-ghost-dark-border-hover: ${rgb(c.cream)};`;
+
+  return [primary, secondary, ghostLight, ghostDark].join('');
+}
+
 function rootVars(b: Brand): string {
   const { colors: c, fonts: f, radius: r, motif: m, type: t } = b;
   const accent = rgb(c.accent);
@@ -167,6 +210,7 @@ function rootVars(b: Brand): string {
     --aw-color-text-muted: ${muted};
     --aw-color-text-eyebrow: ${rgb(c.eyebrow)};
     --aw-color-bg-page: ${rgb(c.page)};
+    --aw-color-bg-page-end: ${rgb(c.white)};
     --aw-color-bg-section-white: ${rgb(c.page)};
     --aw-color-bg-section-grey: ${rgb(c.sectionGrey)};
     --aw-color-bg-section-dark: ${rgb(c.sectionDark)};
@@ -186,11 +230,11 @@ function rootVars(b: Brand): string {
 
     --aw-color-card-heading-dark: ${rgb(c.white)};
     --aw-color-card-body-dark: ${rgb(c.white, 0.6)};
-    --aw-color-card-link-dark: var(--aw-color-accent);
+    --aw-color-card-link-dark: ${rgb(c.cream)};
 
     --aw-color-card-heading-light: var(--aw-color-text-heading);
     --aw-color-card-body-light: var(--aw-color-text-muted);
-    --aw-color-card-link-light: var(--aw-color-text-heading);
+    --aw-color-card-link-light: var(--aw-color-btn-link);
 
     --aw-color-card-border-dark: ${rgb(c.accent, 0.6)};
     --aw-color-card-border-light: transparent;
@@ -199,41 +243,15 @@ function rootVars(b: Brand): string {
     --aw-color-card-border-outlined: ${rgb(c.black, 0.12)};
     --aw-color-card-heading-outlined: var(--aw-color-text-heading);
     --aw-color-card-body-outlined: var(--aw-color-text-muted);
-    --aw-color-card-link-outlined: var(--aw-color-text-heading);
+    --aw-color-card-link-outlined: var(--aw-color-btn-link);
 
     --aw-color-bg-card-glass: ${rgb(c.white, 0.08)};
     --aw-color-card-border-glass: ${rgb(c.white, 0.15)};
     --aw-color-card-heading-glass: ${rgb(c.white)};
     --aw-color-card-body-glass: ${rgb(c.white, 0.7)};
-    --aw-color-card-link-glass: var(--aw-color-accent);
+    --aw-color-card-link-glass: ${rgb(c.cream)};
 
-    --aw-color-btn-primary-bg: ${rgb(c.primary)};
-    --aw-color-btn-primary-text: ${rgb(c.white)};
-    --aw-color-btn-primary-border: ${rgb(c.primary)};
-    --aw-color-btn-primary-bg-hover: ${rgb(c.navy)};
-    --aw-color-btn-primary-text-hover: ${rgb(c.white)};
-    --aw-color-btn-primary-border-hover: ${rgb(c.navy)};
-
-    --aw-color-btn-secondary-bg: ${rgb(c.ctaTan)};
-    --aw-color-btn-secondary-text: ${rgb(c.white)};
-    --aw-color-btn-secondary-border: ${rgb(c.ctaEnd)};
-    --aw-color-btn-secondary-bg-hover: ${rgb(c.tanText)};
-    --aw-color-btn-secondary-text-hover: ${rgb(c.white)};
-    --aw-color-btn-secondary-border-hover: ${rgb(c.tanText)};
-
-    --aw-color-btn-ghost-light-bg: transparent;
-    --aw-color-btn-ghost-light-text: ${heading};
-    --aw-color-btn-ghost-light-border: ${heading};
-    --aw-color-btn-ghost-light-bg-hover: ${heading};
-    --aw-color-btn-ghost-light-text-hover: ${rgb(c.cream)};
-    --aw-color-btn-ghost-light-border-hover: ${heading};
-
-    --aw-color-btn-ghost-dark-bg: ${rgb(c.primary, 0.2)};
-    --aw-color-btn-ghost-dark-text: ${rgb(c.white)};
-    --aw-color-btn-ghost-dark-border: ${rgb(c.cream)};
-    --aw-color-btn-ghost-dark-bg-hover: ${rgb(c.primary, 0.35)};
-    --aw-color-btn-ghost-dark-text-hover: ${rgb(c.white)};
-    --aw-color-btn-ghost-dark-border-hover: ${rgb(c.cream)};
+    ${ctaButtonVars(c)}
 
     --aw-color-btn-link: ${rgb(c.primary)};
     --aw-color-btn-link-hover: ${accent};
@@ -338,6 +356,7 @@ function darkVars(b: Brand): string {
     --aw-color-text-default: rgb(226 232 240);
     --aw-color-text-muted: ${rgb(c.secondary)};
     --aw-color-bg-page: ${rgb(c.navy)};
+    --aw-color-bg-page-end: ${rgb(c.navy)};
     --aw-color-bg-section-white: ${rgb(c.navy)};
     --aw-color-bg-section-grey: rgb(12 45 90);
     --aw-color-bg-section-dark: ${rgb(c.black)};
@@ -356,36 +375,9 @@ function darkVars(b: Brand): string {
     --aw-color-card-border-dark: ${rgb(c.accent, 0.6)};
     --aw-color-card-border-light: ${rgb(c.accent, 0.5)};
 
-    --aw-color-btn-primary-bg: var(--aw-color-accent);
-    --aw-color-btn-primary-text: ${rgb(c.black)};
-    --aw-color-btn-primary-border: var(--aw-color-accent);
-    --aw-color-btn-primary-bg-hover: var(--aw-color-accent-hover);
-    --aw-color-btn-primary-text-hover: ${rgb(c.black)};
-    --aw-color-btn-primary-border-hover: var(--aw-color-accent-hover);
-
-    --aw-color-btn-secondary-bg: transparent;
-    --aw-color-btn-secondary-text: ${rgb(c.white)};
-    --aw-color-btn-secondary-border: ${rgb(c.white)};
-    --aw-color-btn-secondary-bg-hover: ${rgb(c.white)};
-    --aw-color-btn-secondary-text-hover: ${rgb(c.black)};
-    --aw-color-btn-secondary-border-hover: ${rgb(c.white)};
-
-    --aw-color-btn-ghost-light-bg: transparent;
-    --aw-color-btn-ghost-light-text: ${rgb(c.black)};
-    --aw-color-btn-ghost-light-border: ${rgb(c.black)};
-    --aw-color-btn-ghost-light-bg-hover: ${rgb(c.black)};
-    --aw-color-btn-ghost-light-text-hover: ${rgb(c.white)};
-    --aw-color-btn-ghost-light-border-hover: ${rgb(c.black)};
-
-    --aw-color-btn-ghost-dark-bg: transparent;
-    --aw-color-btn-ghost-dark-text: ${rgb(c.white)};
-    --aw-color-btn-ghost-dark-border: var(--aw-color-accent);
-    --aw-color-btn-ghost-dark-bg-hover: var(--aw-color-accent);
-    --aw-color-btn-ghost-dark-text-hover: ${rgb(c.black)};
-    --aw-color-btn-ghost-dark-border-hover: var(--aw-color-accent);
-
-    --aw-color-btn-link: var(--aw-color-accent);
-    --aw-color-btn-link-hover: var(--aw-color-accent-hover);
+    ${ctaButtonVars(c)}
+    --aw-color-btn-link: ${rgb(c.primary)};
+    --aw-color-btn-link-hover: ${accent};
 
     --aw-color-motif-hero: var(--aw-color-accent);
     --aw-color-motif-dark: var(--aw-color-accent);

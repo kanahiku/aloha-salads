@@ -86,8 +86,7 @@ function reviewSources(section: ServiceSection): ReviewSource[] {
                 <a
                   href={section.linkHref}
                   class:list={[
-                    'font-medium text-[14px] md:text-[15px] hover:underline',
-                    isDark ? 'text-accent' : 'text-heading',
+                    isDark ? 'font-semibold text-page hover:text-accent-hover hover:underline' : 'btn-link',
                   ]}
                 >
                   {section.linkText}

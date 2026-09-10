@@ -10,12 +10,11 @@ import CTABanner from '~/components/widgets/CTABanner.astro';
 import PillarSection from '~/components/widgets/PillarSection.astro';
 import ScheduleSection from '~/components/widgets/ScheduleSection.astro';
 import Testimonials from '~/components/widgets/Testimonials.astro';
-import WrittenWorkSection from '~/components/widgets/WrittenWorkSection.astro';
 import Text from '~/components/ui/Text.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
 import { PRIMARY_CTA_LABEL } from '~/config/cta';
-import heroHome from '~/assets/images/hero-bg.png';
+import heroHome from '~/assets/images/home-hero.png';
 import whyUrgentImg from '~/assets/images/why-urgent.png';
 import locationBgImg from '~/assets/images/location-bg.png';
 import { chapterLocations } from '~/data/chapters';
@@ -81,7 +80,7 @@ const bucketOnePillars = [
     subtitle="The interventions with the strongest evidence in longevity medicine are also the cheapest — and almost nobody does them, because there is nothing to sell. Start by finding out where you actually stand. Then fill the first bucket. Everything else can wait its turn."
     actions={[
       { variant: 'primary', text: PRIMARY_CTA_LABEL, href: '/contact' },
-      { variant: 'ghost', text: 'How aging works', href: '/#how-aging-works' },
+      { variant: 'ghost', text: 'How aging works', href: '/how-aging-works' },
     ]}
     image={{
       ...heroHome,
@@ -151,7 +150,7 @@ const bucketOnePillars = [
     <Text class="mt-[1.3em]">
       <strong class="font-bold text-default">The wisdom to know the difference is the whole product.</strong>
       {' '}
-      <a href="/how-aging-works" class="font-bold text-accent underline decoration-solid underline-offset-2">What's fixed, what isn't.</a>
+      <a href="/how-aging-works" class="btn-link">What's fixed, what isn't.</a>
     </Text>
   </TextSplit>
 
@@ -194,8 +193,6 @@ const bucketOnePillars = [
     eyebrow="Our locations"
     bgImage={locationBgImg}
     locations={chapterLocations}
-    footerNote="First three visits are always free. Bring a friend, an empty water bottle, and something to put lunch in."
-    footerLink={{ text: "See all seven chapters.", href: "/chapters" }}
   />
 
   <TextSplit
@@ -211,43 +208,11 @@ const bucketOnePillars = [
     </Text>
     <a
       href="/guidebooks/bucket-02"
-      class="mt-[1.3em] inline-block font-sans text-[14px] font-bold leading-[1.3] text-accent underline decoration-solid underline-offset-2"
+      class="btn-link mt-[1.3em]"
     >
       What to ask, and what to ask about first.
     </a>
   </TextSplit>
-
-  <WrittenWorkSection
-    id="written-work"
-    eyebrow="The written work"
-    heading="Seven ways to understand what's actually happening."
-    cards={[
-      {
-        iconType: 'calendar',
-        label: 'Next Session',
-        title: 'Sleep after sixty — glymphatic clearance and the dementia question',
-        description: 'Dr. Aaron Lim, Sleep Medicine. Twenty-four sessions a year, per chapter. No stages. No selling.',
-        ctaText: 'Explore',
-        ctaHref: '/sessions/sleep',
-      },
-      {
-        iconType: 'book',
-        label: 'Books',
-        title: 'Seven titles, and the textbooks behind them.',
-        description: 'Trajectories · The Weakest Link · Black Swans · Wealthy, Healthy and Wise, plus the Rebellious Aging textbooks and guidebooks. Print and EPUB.',
-        ctaText: 'Explore',
-        ctaHref: '/books',
-      },
-    ]}
-    featuredCard={{
-      iconType: 'book',
-      label: 'Books',
-      title: 'Seven titles, and the textbooks behind them.',
-      description: 'Trajectories · The Weakest Link · Black Swans · Wealthy, Healthy and Wise, plus the Rebellious Aging textbooks and guidebooks. Print and EPUB.',
-      ctaText: 'Explore',
-      ctaHref: '/books',
-    }}
-  />
 
   <Testimonials
     id="voices-from-ohana"

@@ -6,6 +6,7 @@ import PodcastFilter from '~/components/widgets/PodcastFilter.astro';
 import PodcastEpisodes from '~/components/widgets/PodcastEpisodes.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
+import { getPodcastEpisodes, groupEpisodesByPart } from '~/lib/content';
 
 const metadata = {
   title: `Podcast | ${site.name}`,
@@ -16,21 +17,26 @@ const metadata = {
 
 const header = navigationData.header;
 
-const filterTabs = [
-  { label: 'Head & Senses', id: 'head-senses' },
-  { label: 'Core & Vital Systems', id: 'core-vital' },
-  { label: 'Structural & Movement', id: 'structural' },
-  { label: 'Cellular & Deep Biology', id: 'cellular' },
-];
+// ── Fetch from Sanity ─────────────────────────────────────────────────────────
+const allEpisodes = await getPodcastEpisodes();
+const partGroups = groupEpisodesByPart(allEpisodes);
 
-const sampleEpisode = {
-  title: 'Brain',
-  tag: 'head & senses',
-  description:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
-  ctaText: 'Read the guidebook',
-  ctaHref: '/guidebooks',
+// ── Filter tabs (derived from parts) ─────────────────────────────────────────
+const partSlugMap: Record<number, string> = {
+  1: 'head-senses',
+  2: 'core-vital',
+  3: 'structural',
+  4: 'reproductive',
+  5: 'cellular',
 };
+
+const filterTabs = partGroups.map((g) => ({
+  label: g.partName,
+  id: partSlugMap[g.part] ?? `part-${g.part}`,
+}));
+
+// ── Alternate section tones ───────────────────────────────────────────────────
+const tones: Array<'dark' | 'light'> = ['dark', 'light', 'dark', 'light', 'dark'];
 ---
 
 <Layout metadata={metadata}>
@@ -58,23 +64,56 @@ const sampleEpisode = {
     heading="Every system. Every stereotype. One by one."
     description="The full series rolls out over the coming months. Here's the incredible roadmap ahead — organized by the systems they reclaim. Subscribe on your platform of choice so you never miss a drop."
     tabs={filterTabs}
+    spotifyUrl="https://open.spotify.com/show/4LCLzLyHPMz5XLSVV7p76b"
+    youtubeUrl="https://www.youtube.com/playlist?list=PLQUCiiZHRPVc"
   />
 
-  <PodcastEpisodes
-    id="head-senses-dark"
-    tone="dark"
-    eyebrow="8 episodes"
-    heading="Head & Senses"
-    description="How perception, cognition, and identity evolve — and how to keep them sharp."
-    episodes={[sampleEpisode]}
-  />
-
-  <PodcastEpisodes
-    id="head-senses-light"
-    tone="light"
-    eyebrow="8 episodes"
-    heading="Head & Senses"
-    description="How perception, cognition, and identity evolve — and how to keep them sharp."
-    episodes={[sampleEpisode]}
-  />
+  {partGroups.map((group, i) => (
+    <PodcastEpisodes
+      id={partSlugMap[group.part] ?? `part-${group.part}`}
+      tone={tones[i] ?? 'light'}
+      eyebrow={`${group.episodes.length} episode${group.episodes.length !== 1 ? 's' : ''}`}
+      heading={group.partName}
+      description={group.partDescription}
+      episodes={group.episodes.map((ep) => ({
+        slug: ep.slug,
+        title: ep.title,
+        tag: group.partName,
+        description: ep.description,
+        ctaText: 'Read the guidebook',
+        ctaHref: ep.guidebookHref ?? '/books',
+        status: ep.status,
+        spotifyUrl: ep.spotifyUrl,
+        youtubeUrl: ep.youtubeUrl,
+      }))}
+    />
+  ))}
 </Layout>
+
+<script>
+  /**
+   * Reliable hash-scroll for deep links like /podcast#episode-hair-scalp.
+   * Runs after the full page paint so elements are in layout and the sticky
+   * header height is measurable before we scroll.
+   */
+  function scrollToHash() {
+    const hash = window.location.hash;
+    if (!hash) return;
+    const target = document.querySelector(hash);
+    if (!target) return;
+    const headerEl = document.getElementById('header');
+    const offset = headerEl ? headerEl.offsetHeight + 24 : 112;
+    const top = target.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  // Fire after first paint
+  if (document.readyState === 'complete') {
+    scrollToHash();
+  } else {
+    window.addEventListener('load', scrollToHash, { once: true });
+  }
+
+  // Also handle Astro view-transition navigations
+  document.addEventListener('astro:page-load', scrollToHash);
+</script>

@@ -8,6 +8,8 @@ import CredentialsSection from '~/components/widgets/CredentialsSection.astro';
 import PublicationsSection from '~/components/widgets/PublicationsSection.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
+import robertImg from '~/assets/images/robert.png';
+import microscopeImg from '~/assets/images/microscope.png';
 
 const metadata = {
   title: `About Dr. Peterson — ${site.name}`,
@@ -21,13 +23,17 @@ const header = navigationData.header;
 <Layout metadata={metadata}>
   <Fragment slot="header" />
 
-  {/* ── Hero: dark split with portrait placeholder ── */}
+  {/* ── Hero: dark split with portrait ── */}
   <Hero2
     variant="split-dark"
     overlapHeader={false}
     tagline="About Dr. Peterson"
     title="Medicine for the<br />Long Game"
     content="Dr. Robert Peterson has spent his career helping patients combat aging — first as a plastic surgeon and now as a longevity expert. With a background in engineering and pharmacology, he is now focused on how we age, what can be done about it, and what gives the most &ldquo;bang for the buck.&rdquo;"
+    image={{
+      ...robertImg,
+      alt: 'Portrait of Dr. Robert Peterson',
+    }}
   >
     <Header
       slot="nav"
@@ -39,7 +45,11 @@ const header = navigationData.header;
   </Hero2>
 
   {/* ── Story & Philosophy: image left + text right ── */}
-  <AboutStory id="story" />
+  <AboutStory
+    id="story"
+    image={microscopeImg}
+    imageAlt="Gloved hands holding a sample dish under a laboratory microscope"
+  />
 
   {/* ── Pullquote card ── */}
   <SingleQuote

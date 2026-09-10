@@ -505,3 +505,30 @@ export interface Book {
   series: BookSeries;
   order: number;
 }
+
+// ─── Podcast ──────────────────────────────────────────────────────────────────
+
+export type PodcastEpisodeStatus = 'live' | 'coming-soon';
+
+export interface PodcastEpisode {
+  _id: string;
+  slug: string;
+  title: string;
+  description?: string;
+  status: PodcastEpisodeStatus;
+  order: number;
+  part: number;
+  partName: string;
+  partDescription?: string;
+  spotifyUrl?: string;
+  youtubeUrl?: string;
+  guidebookHref?: string;
+}
+
+/** Episodes grouped by part number (1–5). */
+export type PodcastPartGroup = {
+  part: number;
+  partName: string;
+  partDescription?: string;
+  episodes: PodcastEpisode[];
+};

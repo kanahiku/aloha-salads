@@ -15,6 +15,11 @@ const metadata = {
 
 const header = navigationData.header;
 
+const GUIDEBOOKS_PAGE_HIDDEN = true;
+if (GUIDEBOOKS_PAGE_HIDDEN) {
+  return Astro.redirect('/');
+}
+
 const sessionCopy = {
   label: 'Apr 22 · Kailua chapter',
   title: 'Exercise is a drug. What dose, and when?',

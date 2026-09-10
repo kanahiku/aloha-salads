@@ -20,6 +20,7 @@
 import Heading from '~/components/ui/Heading.astro';
 import Button from '~/components/ui/Button.astro';
 import Image from '~/components/common/Image.astro';
+import { Icon } from 'astro-icon/components';
 
 export interface BuyButton {
   _key?: string;
@@ -58,7 +59,7 @@ const {
 
 <section
   {...id ? { id } : {}}
-  class="not-prose w-full bg-page"
+  class="not-prose w-full"
 >
   <div class="mx-auto flex w-full max-w-container flex-col gap-10 px-5 py-10 sm:px-8 md:gap-16 md:px-16 md:py-[120px] lg:px-[120px]">
   <!-- Header row -->
@@ -115,7 +116,7 @@ const {
             {book.tags && book.tags.length > 0 && (
               <div class="flex flex-wrap gap-2">
                 {book.tags.map((tag) => (
-                  <span class="bg-card-dark font-sans text-body text-white/90 rounded-full px-4 py-2 drop-shadow-sm">
+                  <span class="bg-accent border border-accent font-sans text-[11px] tracking-[0.04em] uppercase text-white rounded-full px-3 py-1">
                     {tag}
                   </span>
                 ))}
@@ -123,11 +124,15 @@ const {
             )}
 
             <div class="mt-auto flex flex-col gap-3">
+              {book.publisherNote && (
+                <p class="font-sans type-eyebrow text-[11px] tracking-[0.06em] uppercase text-eyebrow">{book.publisherNote}</p>
+              )}
               {book.buyButtons && book.buyButtons.length > 0 && (
                 <div class="flex flex-wrap gap-3">
                   {book.buyButtons.map((btn) => (
                     <Button
                       variant="ghost"
+                      tone="light"
                       tone="light"
                       text={btn.label}
                       href={btn.href ?? '#'}
@@ -138,16 +143,13 @@ const {
                 </div>
               )}
               {book.podcastHref && (
-                <Button
-                  variant="link"
-                  text="Listen to the matching podcast episode"
+                <a
                   href={book.podcastHref}
-                  hideNote={true}
-                  class="self-start"
-                />
-              )}
-              {book.publisherNote && (
-                <p class="font-sans type-eyebrow text-[11px] tracking-[0.06em] uppercase text-eyebrow">{book.publisherNote}</p>
+                  class="btn-link gap-1.5 self-start"
+                >
+                  <Icon name="tabler:headphones" class="w-4 h-4 shrink-0" />
+                  <span>Listen to the matching podcast episode</span>
+                </a>
               )}
             </div>
           </div>

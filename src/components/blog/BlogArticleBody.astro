@@ -199,7 +199,7 @@ const h3Class = 'text-[16px] md:text-[18px] font-sans font-medium leading-[130%]
               <p class="mt-4">
                 <a
                   href={section.linkHref}
-                  class="text-heading font-medium text-[14px] md:text-[15px] hover:underline"
+                  class="btn-link"
                 >
                   {section.linkText}
                 </a>
@@ -421,13 +421,15 @@ const h3Class = 'text-[16px] md:text-[18px] font-sans font-medium leading-[130%]
    * so we target these with plain CSS inside the article wrapper.
    */
   div :global(a) {
-    color: var(--aw-color-text-heading);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    transition: opacity 0.15s;
+    color: var(--aw-color-btn-link);
+    font-weight: 600;
+    text-decoration: none;
+    text-underline-offset: 2px;
+    transition: color 0.2s cubic-bezier(0.22, 1, 0.36, 1);
   }
   div :global(a:hover) {
-    opacity: 0.75;
+    color: var(--aw-color-btn-link-hover);
+    text-decoration: underline;
   }
   div :global(strong) {
     font-weight: 600;

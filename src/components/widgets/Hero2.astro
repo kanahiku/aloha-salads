@@ -14,7 +14,7 @@ import ArtDirectedImage from '~/components/ui/ArtDirectedImage.astro';
 import CTAActions from '~/components/ui/CTAActions.astro';
 import Text from '~/components/ui/Text.astro';
 import Heading from '~/components/ui/Heading.astro';
-import overlayImage from '~/assets/images/hero-bg.png';
+import overlayImage from '~/assets/images/home-hero.png';
 import type { ContentImage } from '~/lib/content/types';
 
 import type { Hero as Props } from '~/types';
@@ -95,10 +95,13 @@ const isLocalOverlayImage =
         {isLocalOverlayImage ? (
           <img
             src={image.src}
-            alt={'alt' in image && typeof image.alt === 'string' ? image.alt : 'A person standing on a rocky ridge with arms open toward a stormy sky'}
+            alt={'alt' in image && typeof image.alt === 'string' ? image.alt : ''}
             width={typeof image.width === 'number' ? image.width : 1440}
             height={typeof image.height === 'number' ? image.height : 800}
-            class="absolute inset-0 h-full w-full object-cover object-center"
+            class:list={[
+              'absolute inset-0 h-full w-full object-cover',
+              isTitle ? 'object-bottom' : 'object-center',
+            ]}
             loading="eager"
             fetchpriority="high"
             decoding="async"
@@ -142,7 +145,12 @@ const isLocalOverlayImage =
       </div>
       )}
 
-      <div class="relative z-[2] flex flex-1 flex-col gap-2.5 w-full max-w-container mx-auto px-5 py-6 sm:px-8 md:px-16 lg:px-[120px] lg:py-8">
+      <div
+        class:list={[
+          'relative z-[2] flex flex-1 flex-col w-full max-w-container mx-auto px-5 py-6 sm:px-8 md:px-16 lg:px-[120px] lg:py-8',
+          isSplitDark ? 'gap-16' : 'gap-2.5',
+        ]}
+      >
         <slot name="nav" />
         {overlapHeader && !hasNav && <div class="pt-0 md:pt-[76px] pointer-events-none" />}
 
@@ -204,7 +212,7 @@ const isLocalOverlayImage =
         ) : isSplitDark ? (
         <div class="flex flex-1 items-end gap-8 lg:gap-[48px] pb-0">
           {/* left: text column */}
-          <div class="flex flex-col items-start gap-6 lg:gap-[32px] shrink-0 lg:max-w-[628px] pb-10 pt-8 lg:pb-16 lg:pt-0">
+          <div class="flex flex-col items-start gap-6 lg:gap-[32px] shrink-0 lg:max-w-[628px] pb-10 lg:pb-16">
             {tagline && (
               <Heading variant="eyebrow" color="white" class="opacity-60" html={tagline} />
             )}
@@ -231,8 +239,11 @@ const isLocalOverlayImage =
                   <img
                     src={(image as any).src}
                     alt={(image as any).alt ?? ''}
+                    width={typeof (image as any).width === 'number' ? (image as any).width : undefined}
+                    height={typeof (image as any).height === 'number' ? (image as any).height : undefined}
                     class="w-full h-full object-cover object-top"
                     loading="eager"
+                    decoding="async"
                   />
                 ) : null}
                 <div class="absolute inset-0 bg-gradient-to-b from-transparent from-[62%] to-section-dark" />

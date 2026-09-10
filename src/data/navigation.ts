@@ -6,8 +6,6 @@ export const navigationData: NavigationContent = {
     links: [
       { text: 'How Aging Works', href: '/how-aging-works' },
       { text: 'Four Pillars', href: '/four-pillars' },
-      { text: 'Chapters', href: '/chapters' },
-      { text: 'Guidebooks', href: '/guidebooks' },
       { text: 'Books', href: '/books' },
       { text: 'Podcasts', href: '/podcast' },
       { text: 'About', href: '/about' },
@@ -22,18 +20,7 @@ export const navigationData: NavigationContent = {
         links: [
           { text: 'How Aging Works', href: '/how-aging-works' },
           { text: 'Four Pillars', href: '/four-pillars' },
-          { text: 'Guidebook Series', href: '/guidebooks' },
           { text: 'Journal Club', href: '/#journal-club' },
-        ],
-      },
-      {
-        title: 'chapters',
-        links: [
-          { text: 'Kailua', href: '/#kailua' },
-          { text: 'Honolulu', href: '/#honolulu' },
-          { text: 'Hilo • Kona', href: '/#hilo-kona' },
-          { text: 'Maui', href: '/#maui' },
-          { text: 'Waimea', href: '/#waimea' },
         ],
       },
       {

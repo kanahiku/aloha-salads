@@ -10,6 +10,9 @@ import type {
   Book,
   BookCta,
   BookSeries,
+  PodcastEpisode,
+  PodcastEpisodeStatus,
+  PodcastPartGroup,
   ContactPageContent,
   ContentImage,
   FormHelpOption,
@@ -802,4 +805,84 @@ function normalizeBook(doc: SanityBook): Book | null {
 export async function getSanityBooks(): Promise<Book[]> {
   const docs = await sanityClient.fetch<SanityBook[]>(BOOKS_QUERY);
   return (docs ?? []).map(normalizeBook).filter((book): book is Book => Boolean(book));
+}
+
+// ─── Podcast ──────────────────────────────────────────────────────────────────
+
+const PODCAST_EPISODES_QUERY = /* groq */ `
+  *[_type == "podcastEpisode"] | order(order asc) {
+    _id,
+    "slug": slug.current,
+    title,
+    description,
+    status,
+    order,
+    part,
+    partName,
+    partDescription,
+    spotifyUrl,
+    youtubeUrl,
+    guidebookHref,
+  }
+`;
+
+type SanityPodcastEpisode = {
+  _id: string;
+  slug: string;
+  title: string;
+  description?: string;
+  status: string;
+  order: number;
+  part: number;
+  partName: string;
+  partDescription?: string;
+  spotifyUrl?: string;
+  youtubeUrl?: string;
+  guidebookHref?: string;
+};
+
+function isPodcastStatus(s: unknown): s is PodcastEpisodeStatus {
+  return s === 'live' || s === 'coming-soon';
+}
+
+function normalizePodcastEpisode(doc: SanityPodcastEpisode): PodcastEpisode | null {
+  if (!doc?._id || !doc.title) return null;
+  return {
+    _id: doc._id,
+    slug: doc.slug || doc._id,
+    title: doc.title,
+    description: doc.description || undefined,
+    status: isPodcastStatus(doc.status) ? doc.status : 'coming-soon',
+    order: typeof doc.order === 'number' ? doc.order : 0,
+    part: typeof doc.part === 'number' ? doc.part : 1,
+    partName: doc.partName || '',
+    partDescription: doc.partDescription || undefined,
+    spotifyUrl: doc.spotifyUrl || undefined,
+    youtubeUrl: doc.youtubeUrl || undefined,
+    guidebookHref: doc.guidebookHref || undefined,
+  };
+}
+
+export async function getSanityPodcastEpisodes(): Promise<PodcastEpisode[]> {
+  const docs = await sanityClient.fetch<SanityPodcastEpisode[]>(PODCAST_EPISODES_QUERY);
+  return (docs ?? [])
+    .map(normalizePodcastEpisode)
+    .filter((ep): ep is PodcastEpisode => Boolean(ep));
+}
+
+/** Returns episodes grouped by part (sorted by part number, then episode order). */
+export function groupEpisodesByPart(episodes: PodcastEpisode[]): PodcastPartGroup[] {
+  const map = new Map<number, PodcastPartGroup>();
+  for (const ep of episodes) {
+    if (!map.has(ep.part)) {
+      map.set(ep.part, {
+        part: ep.part,
+        partName: ep.partName,
+        partDescription: ep.partDescription,
+        episodes: [],
+      });
+    }
+    map.get(ep.part)!.episodes.push(ep);
+  }
+  return [...map.values()].sort((a, b) => a.part - b.part);
 }

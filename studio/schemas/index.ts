@@ -8,6 +8,7 @@ import { lead } from './documents/lead';
 import { servicePage } from './documents/servicePage';
 import { blogPost } from './documents/blogPost';
 import { book } from './documents/book';
+import { podcastEpisode } from './documents/podcastEpisode';
 
 // Navigation objects
 import { navLink, navSubLink } from './objects/navLink';
@@ -61,6 +62,7 @@ export const schemaTypes = [
   servicePage,
   blogPost,
   book,
+  podcastEpisode,
   lead,
 
   // Objects — nav

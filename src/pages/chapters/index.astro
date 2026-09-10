@@ -10,7 +10,13 @@ import Button from '~/components/ui/Button.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
 import locationBgImg from '~/assets/images/location-bg.png';
+import chaptersHero from '~/assets/images/chapters-hero.png';
 import { chapterLocations } from '~/data/chapters';
+
+const CHAPTERS_PAGE_HIDDEN = true;
+if (CHAPTERS_PAGE_HIDDEN) {
+  return Astro.redirect('/');
+}
 
 const metadata = {
   title: `Chapters | ${site.name}`,
@@ -25,8 +31,15 @@ const header = navigationData.header;
 <Layout metadata={metadata}>
   <Fragment slot="header" />
 
-  <!-- TODO: replace hero background with <Image> when asset is ready -->
-  <Hero2 variant="title" overlapHeader={false} title="Chapters">
+  <Hero2
+    variant="title"
+    overlapHeader={false}
+    title="Chapters"
+    image={{
+      ...chaptersHero,
+      alt: 'Silhouettes of people gathered against an evening sky',
+    }}
+  >
     <Header
       slot="nav"
       embedded
@@ -54,8 +67,6 @@ const header = navigationData.header;
     eyebrow="Our locations"
     bgImage={locationBgImg}
     locations={chapterLocations}
-    footerNote="First three visits are always free. Bring a friend, an empty water bottle, and something to put lunch in."
-    footerLink={{ text: "See all seven chapters.", href: "/chapters" }}
   />
 
   <DuoCards

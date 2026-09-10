@@ -4,19 +4,24 @@
  * Dark (121:916): tan wash bg-cta/60, cream cards, dark type.
  * Light (121:1286): white section, same cream cards (Figma 121:1293).
  *
- * Pass a single episode while the grid is still a template; the layout is a
- * 3-col grid so additional cards drop in without a restyle.
+ * Pass the real episodes from Sanity; the layout is a 3-col grid so additional
+ * cards drop in without a restyle.
  */
 import Card from '~/components/ui/Card.astro';
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 
 export interface PodcastEpisodeItem {
+  slug?: string;
   title: string;
-  tag: string;
-  description: string;
+  /** Part label shown as the tag, e.g. "Head & Senses". */
+  tag?: string;
+  description?: string;
   ctaText?: string;
   ctaHref?: string;
+  status?: 'live' | 'coming-soon';
+  spotifyUrl?: string;
+  youtubeUrl?: string;
 }
 
 export interface Props {
@@ -43,8 +48,8 @@ const isDark = tone === 'dark';
 <section
   {...id ? { id } : {}}
   class:list={[
-    'not-prose w-full',
-    isDark ? 'bg-cta/60' : 'bg-white',
+    'not-prose w-full scroll-mt-28',
+    isDark ? 'bg-cta/60' : '',
   ]}
 >
   <div class="mx-auto flex w-full max-w-container flex-col items-center gap-10 px-5 py-10 sm:px-8 md:gap-16 md:px-16 md:py-16 lg:px-[120px]">
@@ -61,15 +66,23 @@ const isDark = tone === 'dark';
     {episodes.length > 0 && (
       <div class="grid w-full grid-cols-1 items-stretch gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {episodes.map((episode) => (
-          <Card
-            variant="podcast"
-            tone={tone}
-            title={episode.title}
-            label={episode.tag}
-            description={episode.description}
-            ctaText={episode.ctaText ?? 'Read the guidebook'}
-            ctaHref={episode.ctaHref ?? '#'}
-          />
+          <div
+            {...episode.slug ? { id: `episode-${episode.slug}` } : {}}
+            class="scroll-mt-28"
+          >
+            <Card
+              variant="podcast"
+              tone={tone}
+              title={episode.title}
+              label={episode.tag}
+              description={episode.description}
+              ctaText={episode.ctaText ?? 'Read the guidebook'}
+              ctaHref={episode.ctaHref ?? '#'}
+              status={episode.status}
+              spotifyUrl={episode.spotifyUrl}
+              youtubeUrl={episode.youtubeUrl}
+            />
+          </div>
         ))}
       </div>
     )}
