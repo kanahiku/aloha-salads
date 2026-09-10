@@ -1,0 +1,50 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import Header from '~/components/widgets/Header.astro';
+import BucketsSection from '~/components/widgets/BucketsSection.astro';
+import CTABanner from '~/components/widgets/CTABanner.astro';
+import { site } from '~/config/site';
+import { navigationData } from '~/data/navigation';
+
+const metadata = {
+  title: `Fill the First Bucket | ${site.name}`,
+  description:
+    'Movement, food, sleep, and connection — the four pillars with the strongest evidence in longevity medicine, and the lowest price tag. Do these before you spend a dollar on anything else.',
+};
+
+const header = navigationData.header;
+---
+
+<Layout metadata={metadata}>
+  <Fragment slot="header" />
+
+  {/* ── Hero — Figma node 176:115 ── */}
+  <Hero2
+    variant="page"
+    overlapHeader={false}
+    title="Fill the<br />first bucket."
+    subtitle={`<p>Then the next one, and the one after that. The buckets do not hold health — they hold resources: your money, your time, your attention, your appointments, your willpower. All five are finite, and where you pour them is the most consequential decision you make about your own aging.</p><p>The order runs from the simplest and cheapest to the most complex and expensive. Do the basics before the fancy stuff.</p>`}
+  >
+    <Header
+      slot="nav"
+      embedded
+      isSticky={false}
+      links={header.links}
+      actions={header.actions}
+    />
+  </Hero2>
+
+  {/* ── Three Buckets Section — Figma node 176:20 ── */}
+  <BucketsSection />
+
+  {/* ── CTA Banner — Figma node 176:227 ── */}
+  <CTABanner
+    id="find-weakest-link"
+    eyebrow="Know where to aim"
+    title="So where does your weakest link fit?"
+    subtitle="It isn't a bucket. Finding your weakest link is free, takes an evening, and its job is to tell you two things: where inside bucket one to concentrate, and what to raise when you get to bucket two. It's the aiming device, not a rung on the ladder."
+    ctaText="Find your weakest link"
+    ctaHref="/contact"
+  />
+</Layout>

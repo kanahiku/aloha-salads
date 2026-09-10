@@ -16,20 +16,13 @@ export const navigationData: NavigationContent = {
   footer: {
     links: [
       {
-        title: 'the work',
+        title: 'Navigation',
         links: [
           { text: 'How Aging Works', href: '/how-aging-works' },
           { text: 'Four Pillars', href: '/four-pillars' },
-          { text: 'Journal Club', href: '/#journal-club' },
-        ],
-      },
-      {
-        title: 'Join',
-        links: [
-          { text: 'First Visit', href: '/#first-visit' },
-          { text: 'Membership', href: '/#membership' },
-          { text: 'Start a chapter', href: '/#start-a-chapter' },
-          { text: 'Books', href: '/#books' },
+          { text: 'Books', href: '/books' },
+          { text: 'Podcasts', href: '/podcast' },
+          { text: 'About', href: '/about' },
           { text: 'Contact', href: '/contact' },
         ],
       },

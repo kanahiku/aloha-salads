@@ -143,9 +143,13 @@
   background-color: var(--aw-color-bg-page);
 }
 
+@utility bg-page-end {
+  background-color: var(--aw-color-bg-page-end);
+}
+
 @utility bg-page-wash {
-  background-color: var(--aw-color-bg-page);
-  background-image: linear-gradient(to bottom, var(--aw-color-bg-page), var(--aw-color-bg-page-end));
+  background-color: var(--aw-color-bg-page-end);
+  background-image: linear-gradient(to bottom, var(--aw-color-bg-page) 0%, var(--aw-color-bg-page-end) 100%);
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }

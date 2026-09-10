@@ -27,7 +27,7 @@ export const podcastEpisode = defineType({
       title: 'Slug',
       type: 'slug',
       group: 'meta',
-      description: 'Used as the anchor on /podcast (e.g. /podcast#hair).',
+      description: 'Used as the page anchor — e.g. slug "hair-scalp" → /podcast#hair-scalp. Books link here using this exact value.',
       options: { source: 'title' },
       validation: (r) => r.required(),
     }),
@@ -108,7 +108,7 @@ export const podcastEpisode = defineType({
       title: 'Matching guidebook link',
       type: 'string',
       group: 'links',
-      description: 'e.g. /books#brain',
+      description: 'Deep-link to the matching book on /books. Use "book-" + the book slug as the anchor — e.g. /books#book-hair-scalp (where "hair-scalp" is the book slug).',
     }),
   ],
 

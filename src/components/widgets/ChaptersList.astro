@@ -15,7 +15,7 @@
  *   <ChaptersList
  *     eyebrow="Our locations"
  *     locations={[
- *       { name: "Kailua ʻohana", memberCount: 142, href: "/chapters/kailua" },
+ *       { name: "Kailua ʻohana", memberCount: 142, href: "https://www.meetup.com/find/?location=us--hi--Kailua&source=EVENTS" },
  *       …
  *     ]}
  *     footerNote="First three visits are always free. Bring a friend, an empty water bottle, and something to put lunch in."
@@ -83,10 +83,13 @@ const {
 
         {/* Location rows */}
         <div class="flex w-full flex-col gap-4">
-          {locations.map((loc) => (
+          {locations.map((loc) => {
+            const isExternal = /^https?:\/\//.test(loc.href);
+            return (
             <a
               href={loc.href}
               class="group flex w-full flex-col items-start gap-4 rounded-[24px] bg-heading/25 px-5 py-5 no-underline backdrop-blur-[3px] transition-colors hover:bg-heading/35 sm:flex-row sm:items-center sm:justify-between sm:rounded-full sm:px-8 sm:py-8"
+              {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             >
               {/* Location name */}
               <span class="min-w-0 font-heading text-h3 font-normal leading-none text-white md:text-h2">
@@ -96,21 +99,6 @@ const {
               {/* Right: badge + arrow */}
               <div class="flex shrink-0 items-center gap-2.5">
 
-                {/* Members badge */}
-                {loc.memberCount !== undefined && (
-                  <div class="flex h-8 items-center gap-1 rounded-full bg-primary px-2.5 py-1 sm:h-12 sm:gap-1.5 sm:px-4 sm:py-2">
-                    {/* People / group icon */}
-                    <svg class="size-3 shrink-0 sm:size-4" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                      <path d="M10.5 8c-.642 0-1.263-.287-1.75-.808-.473-.508-.761-1.185-.812-1.906-.054-.77.18-1.477.661-1.993C9.078 2.778 9.75 2.5 10.5 2.5c.744 0 1.418.283 1.897.797.483.52.718 1.225.664 1.988-.053.722-.341 1.399-.813 1.906C11.763 7.713 11.143 8 10.5 8z"/>
-                      <path d="M14.619 13.5H6.38a.627.627 0 01-.621-.638c.263-1.057.915-1.933 1.885-2.534.86-.533 1.957-.827 3.086-.827 1.152 0 2.219.281 3.085.814.972.598 1.625 1.479 1.887 2.548a.627.627 0 01-.083.324.63.63 0 01-.23.228.627.627 0 01-.37.085z"/>
-                      <path d="M4.593 8.125c-1.1 0-2.066-1.022-2.156-2.279a2.12 2.12 0 01.563-1.676A2.076 2.076 0 014.593 3.5c.625 0 1.188.24 1.591.674.41.44.61 1.034.563 1.672-.09 1.256-1.056 2.279-2.154 2.279z"/>
-                      <path d="M6.645 9.108c-.55-.269-1.263-.403-2.051-.403-.92 0-1.814.24-2.517.675-.797.495-1.334 1.215-1.55 2.085a.625.625 0 00.19.637.628.628 0 00.436.398H4.77a.066.066 0 00.065-.058c.265-1.064.886-1.963 1.804-2.619a.069.069 0 00.004-.115c-.054-.03-.11-.06-.198-.1z"/>
-                    </svg>
-                    <span class="type-eyebrow font-sans text-[11px] text-white sm:text-[12px]">
-                      {loc.memberCount} members
-                    </span>
-                  </div>
-                )}
 
                 {/* Arrow-forward-circle icon */}
                 <div class="size-8 shrink-0 sm:size-12" aria-hidden="true">
@@ -121,7 +109,8 @@ const {
 
               </div>
             </a>
-          ))}
+            );
+          })}
         </div>
 
         {/* Footer note */}

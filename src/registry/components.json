@@ -557,6 +557,24 @@
         "id": "section anchor"
       },
       "notes": "Figma node 121:2085. Three publication series cards in a row. Book icon is the same tile as Card variant=feature (36px mobile / 40px desktop, bookTileSvg)."
+    },
+    {
+      "id": "P-41",
+      "name": "Talk to Your Doctor",
+      "figmaNames": ["Talk to your doctor about it", "Athena Clinic packages", "176:259"],
+      "shape": "2-col: left icon+h3+body rows with muted dividers / right navy→primary packages card overlapping a heading-coloured disclosure tab.",
+      "component": "TalkToDoctor",
+      "import": "~/components/widgets/TalkToDoctor.astro",
+      "props": {
+        "items": "AdviceItem[] — { iconSvg, title, body }",
+        "clinicEyebrow": "uppercase label on the packages card",
+        "clinicHeading": "h2 on the packages card",
+        "packages": "PackageStep[] — { number, body }",
+        "addOnNote": "right-aligned muted note under the steps",
+        "disclosureEyebrow": "uppercase label on the overlapping tab",
+        "disclosure": "small disclosure copy"
+      },
+      "notes": "Figma nodes 176:243 (page hero via Hero2 variant=page) and 176:259 (this widget). Content always passed from the page file."
     }
   ]
 }

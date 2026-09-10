@@ -64,8 +64,6 @@ const tones: Array<'dark' | 'light'> = ['dark', 'light', 'dark', 'light', 'dark'
     heading="Every system. Every stereotype. One by one."
     description="The full series rolls out over the coming months. Here's the incredible roadmap ahead — organized by the systems they reclaim. Subscribe on your platform of choice so you never miss a drop."
     tabs={filterTabs}
-    spotifyUrl="https://open.spotify.com/show/4LCLzLyHPMz5XLSVV7p76b"
-    youtubeUrl="https://www.youtube.com/playlist?list=PLQUCiiZHRPVc"
   />
 
   {partGroups.map((group, i) => (
@@ -91,11 +89,6 @@ const tones: Array<'dark' | 'light'> = ['dark', 'light', 'dark', 'light', 'dark'
 </Layout>
 
 <script>
-  /**
-   * Reliable hash-scroll for deep links like /podcast#episode-hair-scalp.
-   * Runs after the full page paint so elements are in layout and the sticky
-   * header height is measurable before we scroll.
-   */
   function scrollToHash() {
     const hash = window.location.hash;
     if (!hash) return;
@@ -107,13 +100,12 @@ const tones: Array<'dark' | 'light'> = ['dark', 'light', 'dark', 'light', 'dark'
     window.scrollTo({ top, behavior: 'smooth' });
   }
 
-  // Fire after first paint
-  if (document.readyState === 'complete') {
-    scrollToHash();
-  } else {
-    window.addEventListener('load', scrollToHash, { once: true });
-  }
+  // Hard load
+  window.addEventListener('load', () => requestAnimationFrame(() => requestAnimationFrame(scrollToHash)), { once: true });
 
-  // Also handle Astro view-transition navigations
-  document.addEventListener('astro:page-load', scrollToHash);
+  // Astro view-transition: double-rAF ensures layout is fully calculated
+  // after the DOM swap before we measure element positions.
+  document.addEventListener('astro:after-swap', () =>
+    requestAnimationFrame(() => requestAnimationFrame(scrollToHash))
+  );
 </script>

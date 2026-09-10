@@ -193,7 +193,7 @@ const isLocalOverlayImage =
                   stacked
                     ? 'w-full'
                     : typeof title === 'string' && /<br\s*\/?>/i.test(title)
-                      ? 'w-full md:w-[545px]'
+                      ? 'w-full md:w-auto md:whitespace-nowrap'
                       : 'md:whitespace-nowrap',
                 ]}
                 set:html={title}
@@ -210,9 +210,9 @@ const isLocalOverlayImage =
             )}
           </div>
         ) : isSplitDark ? (
-        <div class="flex flex-1 items-end gap-8 lg:gap-[48px] pb-0">
+        <div class="flex flex-1 flex-col lg:flex-row lg:items-end gap-0 lg:gap-[48px] pb-0">
           {/* left: text column */}
-          <div class="flex flex-col items-start gap-6 lg:gap-[32px] shrink-0 lg:max-w-[628px] pb-10 lg:pb-16">
+          <div class="flex flex-col items-start gap-6 lg:gap-[32px] shrink-0 lg:max-w-[628px] pb-8 pt-4 lg:pb-16 lg:pt-0">
             {tagline && (
               <Heading variant="eyebrow" color="white" class="opacity-60" html={tagline} />
             )}
@@ -229,8 +229,8 @@ const isLocalOverlayImage =
               />
             )}
           </div>
-          {/* right: image column — grey placeholder until asset is ready */}
-          <div class="hidden lg:block flex-1 min-w-0 self-stretch">
+          {/* right: image column — visible on all screen sizes */}
+          <div class="w-full h-[320px] sm:h-[400px] lg:h-auto lg:flex-1 lg:min-w-0 lg:self-stretch">
             {hasImage ? (
               <div class="relative w-full h-full overflow-hidden rounded-tl-[32px] rounded-tr-[32px]">
                 {typeof image === 'string' ? (

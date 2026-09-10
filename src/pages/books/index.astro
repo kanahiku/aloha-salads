@@ -127,9 +127,6 @@ const appearances = [
 </Layout>
 
 <script>
-  /**
-   * Reliable hash-scroll for deep links like /books#book-hair-scalp.
-   */
   function scrollToHash() {
     const hash = window.location.hash;
     if (!hash) return;
@@ -141,11 +138,12 @@ const appearances = [
     window.scrollTo({ top, behavior: 'smooth' });
   }
 
-  if (document.readyState === 'complete') {
-    scrollToHash();
-  } else {
-    window.addEventListener('load', scrollToHash, { once: true });
-  }
+  // Hard load
+  window.addEventListener('load', () => requestAnimationFrame(() => requestAnimationFrame(scrollToHash)), { once: true });
 
-  document.addEventListener('astro:page-load', scrollToHash);
+  // Astro view-transition: double-rAF ensures layout is fully calculated
+  // after the DOM swap before we measure element positions.
+  document.addEventListener('astro:after-swap', () =>
+    requestAnimationFrame(() => requestAnimationFrame(scrollToHash))
+  );
 </script>
