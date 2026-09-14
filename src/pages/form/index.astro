@@ -30,7 +30,7 @@ const metadata = {
           <span class="quiz-prog-center" id="prog-tab">Movement and structure</span>
           <span class="quiz-prog-right" id="prog-count">0 of 112 answered</span>
         </div>
-        <div class="quiz-progress-track">
+        <div class="quiz-progress-track" id="prog-track">
           <div class="quiz-progress-fill" id="prog-fill"></div>
           <div class="quiz-progress-remaining" id="prog-remaining"></div>
         </div>
@@ -184,7 +184,7 @@ const metadata = {
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-9.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
         <button class="quiz-nav-continue" id="btn-next" type="button">
-          Continue
+          Next
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
@@ -856,6 +856,64 @@ const metadata = {
   .quiz-measure-input:focus { border-color: #567f9b; }
 
   /* ══════════════════════════════════════════
+     BOOK APPOINTMENT BAR — Figma 160:609
+  ══════════════════════════════════════════ */
+  .quiz-book-cta {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 24px 32px;
+    margin-bottom: 12px;
+    background: #1e2a30;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 32px;
+  }
+  .quiz-book-cta-copy {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .quiz-book-cta-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: #f5f4ef;
+  }
+  .quiz-book-cta-sub {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: rgba(245,244,239,0.8);
+  }
+  .quiz-book-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 16px 24px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(245,244,239,0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #f5f4ef;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.3;
+    text-decoration: none;
+    white-space: nowrap;
+    box-sizing: border-box;
+    transition: background 0.15s;
+  }
+  .quiz-book-cta-btn:hover { background: rgba(245,244,239,0.16); }
+
+  /* ══════════════════════════════════════════
      DELETE CARD
   ══════════════════════════════════════════ */
   .quiz-delete-card {
@@ -957,7 +1015,9 @@ const metadata = {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    width: 140px;
+    min-width: 140px;
+    width: auto;
+    padding: 0 18px;
     min-height: 52px;
     border: none;
     border-radius: 12px;
@@ -1008,6 +1068,17 @@ const metadata = {
     .quiz-opts-three .quiz-opts-btn {
       font-size: 11px;
       padding: 10px 4px;
+    }
+
+    .quiz-book-cta {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 20px;
+      gap: 16px;
+    }
+    .quiz-book-cta-btn {
+      width: 100%;
+      white-space: normal;
     }
   }
 
@@ -1306,7 +1377,9 @@ function sysScore(sid) {
     const v = S.answers[sid + '_' + i];
     if (typeof v === 'number') { s += v; n++; }
   }
-  return n === 3 ? s : null;
+  /* Score any system with at least one answer. Unanswered items count as 0
+     so the 0–9 total stays comparable. "Not answered" is only for n === 0. */
+  return n === 0 ? null : s;
 }
 function band(sc) { return sc === null ? -1 : sc <= 2 ? 0 : sc <= 5 ? 1 : 2; }
 function sysById(id) { return DATA.systems.find(s => s.id === id) || null; }
@@ -1520,7 +1593,6 @@ function buildResults() {
 
   buildMeasured();
   buildHandoff();
-  buildTrend();
 }
 
 function buildMeasured() {
@@ -1549,6 +1621,19 @@ function buildMeasured() {
   });
   mc.appendChild(el('p', 'quiz-small', 'These reference points are population figures, not verdicts about you.'));
   me.appendChild(mc);
+
+  /* Book-an-appointment bar — Figma 160:609 */
+  const book = el('div', 'quiz-book-cta');
+  const copy = el('div', 'quiz-book-cta-copy');
+  copy.appendChild(el('p', 'quiz-book-cta-title', 'Not sure about these questions?'));
+  copy.appendChild(el('p', 'quiz-book-cta-sub', 'Skip them and book an appointment with Athena Clinic.'));
+  const bookBtn = el('a', 'quiz-book-cta-btn', 'Book an appointment');
+  bookBtn.href = 'https://www.athenaclinic.com/contact/';
+  bookBtn.target = '_blank';
+  bookBtn.rel = 'noopener noreferrer';
+  book.appendChild(copy);
+  book.appendChild(bookBtn);
+  me.appendChild(book);
 }
 
 function buildHandoff() {
@@ -1976,34 +2061,6 @@ async function emailSummaryPdf() {
   }
 }
 
-function buildTrend() {
-  const t = document.getElementById('pane-trend');
-  t.innerHTML = '';
-  const c = el('div', 'quiz-card');
-  if (!S.previous) {
-    c.appendChild(el('h3', 'quiz-card-subheading', 'Nothing to compare yet'));
-    c.appendChild(el('p', 'quiz-small', 'One set of answers puts you on a curve. Two sets give the curve a slope, which is the part that matters. Come back in twelve months and this page will compare them.'));
-    const b = el('button', 'quiz-btn-ghost', 'Save this as my baseline');
-    b.type = 'button';
-    b.style.cssText = 'width:100%;margin-top:8px';
-    b.onclick = function() {
-      S.previous = { date: Date.now(), scores: DATA.systems.reduce((a, sy) => { a[sy.id] = sysScore(sy.id); return a; }, {}), radius: JSON.parse(JSON.stringify(S.radius)) };
-      save(); buildTrend();
-    };
-    c.appendChild(b); t.appendChild(c); return;
-  }
-  c.appendChild(el('h3', 'quiz-card-subheading', 'Compared with ' + new Date(S.previous.date).toLocaleDateString()));
-  DATA.systems.forEach(sy => {
-    const now = sysScore(sy.id), was = S.previous.scores[sy.id];
-    if (now === null || was === null || was === undefined || now === was) return;
-    const row = el('div', 'quiz-result-row');
-    row.appendChild(el('div', 'quiz-result-name', sy.label));
-    row.appendChild(el('div', 'quiz-result-tag ' + (now > was ? 'quiz-tag-1' : 'quiz-tag-2'), now > was ? 'more reported' : 'less reported'));
-    c.appendChild(row);
-  });
-  t.appendChild(c);
-}
-
 /* ═════════════════════════════ NAVIGATION ═════════════════════════════ */
 const ORDER = ['home','dom0','dom1','dom2','dom3','dom4','dom5','radius','priority','results'];
 const SECTION_TABS = ['screen','measured','handoff'];
@@ -2033,24 +2090,17 @@ function show(i) {
   const isResults = cur === 'results';
   header.classList.toggle('hidden', isHome);
 
+  /* Question fill bar only — labels stay on Results */
+  const track = document.getElementById('prog-track');
+  if (track) track.classList.toggle('hidden', isResults);
+
   /* Bottom nav */
   const nav = document.getElementById('nav');
   nav.classList.toggle('hidden', isHome);
-  document.getElementById('btn-back').classList.toggle('hidden', at <= 1);
 
   /* main padding top: always matches actual rendered header height so content never hides under it */
   const main = document.getElementById('quiz-main');
   syncMainPadding(isHome);
-
-  const nextBtn = document.getElementById('btn-next');
-  const homeBtn = document.getElementById('btn-home');
-  if (cur !== 'results') {
-    const arrowSvg = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    nextBtn.innerHTML = (cur === 'priority' ? 'See my results' : 'Continue') + ' ' + arrowSvg;
-    nextBtn.classList.remove('hidden');
-    if (homeBtn) homeBtn.classList.add('hidden');
-  }
-  /* btn-back and btn-next handlers are set once at boot and stay context-aware */
 
   /* Update header progress */
   updateHeaderForScreen(cur);
@@ -2060,7 +2110,9 @@ function show(i) {
   if (cur === 'results') {
     S.finished = Date.now(); save();
     buildResults();
-    switchTab('screen', false); /* sets step indicator + nav buttons for step 1 */
+    switchTab('screen', false);
+  } else {
+    syncNav();
   }
 
   updateProgress();
@@ -2108,27 +2160,36 @@ function curTab() {
 }
 
 function switchTab(name, scroll) {
-  const i = SECTION_TABS.indexOf(name);
-
-  /* Panes */
   SECTION_TABS.forEach(t => {
     document.getElementById('pane-' + t).classList.toggle('on', t === name);
   });
-
-  /* Update Next button label + visibility for results steps */
-  const nextBtn = document.getElementById('btn-next');
-  const homeBtn = document.getElementById('btn-home');
-  const arrowRight = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  const last = i === SECTION_TABS.length - 1;
-  if (nextBtn) {
-    nextBtn.classList.toggle('hidden', last);
-    if (!last) nextBtn.innerHTML = 'Next ' + arrowRight;
-  }
-  if (homeBtn) homeBtn.classList.toggle('hidden', !last);
-
+  syncNav();
   if (scroll) {
     document.getElementById('quiz-main').scrollTo(0, 0);
   }
+}
+
+const NAV_ARROW = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function syncNav() {
+  const cur = ORDER[at];
+  const nextBtn = document.getElementById('btn-next');
+  const homeBtn = document.getElementById('btn-home');
+  const backBtn = document.getElementById('btn-back');
+
+  backBtn.classList.toggle('hidden', at <= 1);
+
+  if (cur === 'results') {
+    const last = curTab() === SECTION_TABS.length - 1;
+    nextBtn.classList.toggle('hidden', last);
+    if (homeBtn) homeBtn.classList.toggle('hidden', !last);
+    if (!last) nextBtn.innerHTML = 'Next ' + NAV_ARROW;
+    return;
+  }
+
+  nextBtn.classList.remove('hidden');
+  if (homeBtn) homeBtn.classList.add('hidden');
+  nextBtn.innerHTML = (cur === 'priority' ? 'See my results' : 'Next') + ' ' + NAV_ARROW;
 }
 
 /* Opt-in */
