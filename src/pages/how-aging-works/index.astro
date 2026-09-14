@@ -8,6 +8,7 @@ import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import Image from '~/components/common/Image.astro';
 import whyUrgent from '~/assets/images/why-urgent.png';
+import weStopImg from '~/assets/images/we-stop.png';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
 import { PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
@@ -97,7 +98,12 @@ const conceptCards = [
     />
   </ConceptSplit>
 
-  <TextSplit heading="And then we stop.">
+  <TextSplit
+    heading="And then we stop."
+    withImage
+    imagePlacement="under-heading"
+    imageAspect="568 / 378.667"
+  >
     <Text>
       There is a point past which this is medical care, and we do not deliver medical care. What we do is hand you a shorter, sharper list of things to raise with the person who does, including the ones almost nobody raises, like whether you still need every medication you are taking.
     </Text>
@@ -107,6 +113,17 @@ const conceptCards = [
       href="/talk-to-your-doctor"
       hideNote
       class="mt-8 self-start"
+    />
+    <img
+      slot="image"
+      src={weStopImg.src}
+      width={weStopImg.width}
+      height={weStopImg.height}
+      alt="Hands typing on a laptop with a stethoscope on the desk"
+      class="w-full rounded-[32px] object-cover"
+      style="aspect-ratio: 568 / 378.667;"
+      loading="lazy"
+      decoding="async"
     />
   </TextSplit>
 </Layout>

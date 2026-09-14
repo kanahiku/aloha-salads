@@ -79,7 +79,7 @@
       "import": "~/components/widgets/Hero2.astro",
       "props": { "variant": "overlay | split | words | page | title" },
       "slots": ["title", "subtitle", "content", "image", "bg", "nav"],
-      "notes": "Overlay: full-bleed photo, glass nav slot, headline + CTAs left, lede right. Words: full-bleed photo, glass nav, three positioned h1 words (Figma 62:3 Peak / Slope / Floor). Page: light section-grey→transparent gradient, glass nav, h1 left + 28px Fraunces lede right (Figma 64:829 Four Pillars). Title: photo + centered h1 (Figma 64:935 Chapters). Image side and radius come from Figma."
+      "notes": "Overlay: full-bleed photo, glass nav slot, headline + CTAs left, lede right. Words: full-bleed photo, glass nav, three positioned h1 words (Figma 62:3 Peak / Slope / Floor). Page: light section-grey→transparent gradient, glass nav, h1 left + 28px Fraunces lede right (Figma 64:829 / 176:115). withImage adds a 1200×400 rx-32 band under the title/lede. Title: photo + centered h1 (Figma 64:935 Chapters)."
     },
     {
       "id": "P-02",
@@ -251,8 +251,8 @@
     {
       "id": "P-20",
       "name": "Text Split",
-      "figmaNames": ["Half of this is not your problem.", "2-col text split", "2:271"],
-      "shape": "2-col text split: left eyebrow+h2 / right any rich content (slot) — no image, gap-[120px]",
+      "figmaNames": ["Half of this is not your problem.", "Then talk to your doctor about it.", "And then we stop.", "2-col text split", "2:271", "2:1297", "62:53"],
+      "shape": "2-col split: text-only (heading | body); withImage end (text stack | image); withImage under-heading (heading+image | body). rx 32.",
       "component": "TextSplit",
       "import": "~/components/widgets/TextSplit.astro",
       "props": {
@@ -261,12 +261,16 @@
         "headingHtml": "HTML string — takes precedence (use for accent spans)",
         "id": "section anchor",
         "compact": "true = 64px vertical padding (Figma 64:983 Chapters); default 120px",
+        "withImage": "true = include image placeholder / slot",
+        "imageAspect": "CSS aspect-ratio for the default placeholder (Figma frame size)",
+        "imagePlacement": "end (default, image opposite text) or under-heading (Figma 62:53)",
         "class": "extra classes on <section>"
       },
       "slots": {
-        "default": "right-column content — any Text atoms, lists, links"
+        "default": "body copy — right column, or under the heading when imagePlacement=end",
+        "image": "image or placeholder — defaults to bg-section-grey grey box at imageAspect"
       },
-      "notes": "Figma node 2:271 and any 50/50 text-only split across the site. Content always passed from the page file — never baked in."
+      "notes": "Figma 2:271 (portrait, end), 2:1297 (landscape, end), 62:53 (under-heading). Omit withImage for 50/50 text-only splits. Content always passed from the page file."
     },
     {
       "id": "P-21",

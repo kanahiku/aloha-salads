@@ -32,6 +32,7 @@ const {
   isReversed = false,
   overlapHeader = true,
   stacked = false,
+  withImage = false,
   id,
   bg = await Astro.slots.render('bg'),
 } = Astro.props;
@@ -71,6 +72,13 @@ const isLocalOverlayImage =
   !Array.isArray(image) &&
   'width' in image &&
   'height' in image;
+const isLocalPageImage =
+  isPage &&
+  Boolean(image) &&
+  typeof image === 'object' &&
+  !Array.isArray(image) &&
+  'src' in image &&
+  typeof image.src === 'string';
 ---
 
 {
@@ -182,31 +190,61 @@ const isLocalOverlayImage =
             />
           )
         ) : isPage ? (
-          <div class:list={[
-            'flex w-full flex-1 flex-col items-start py-16 md:py-[120px]',
-            stacked ? 'gap-[72px]' : 'gap-10 md:flex-row md:gap-[72px]',
-          ]}>
-            {title && (
-              <h1
-                class:list={[
-                  'font-heading text-h1 shrink-0 overflow-visible bg-[linear-gradient(var(--aw-color-bg-section-dark)_5%,var(--aw-color-primary)_97%)] bg-clip-text font-normal leading-[1.25] text-transparent [text-box-edge:cap_text] [text-box-trim:trim-start]',
-                  stacked
-                    ? 'w-full'
-                    : typeof title === 'string' && /<br\s*\/?>/i.test(title)
-                      ? 'w-full md:w-auto md:whitespace-nowrap'
-                      : 'md:whitespace-nowrap',
-                ]}
-                set:html={title}
-              />
-            )}
-            {subtitle && (
-              <div
-                class:list={[
-                  'font-heading text-h4 font-normal leading-[1.2] text-muted [&_p+p]:mt-[1.2em]',
-                  stacked ? 'w-full' : 'min-w-0 flex-1',
-                ]}
-                set:html={subtitle}
-              />
+          <div
+            class:list={[
+              'flex w-full flex-1 flex-col py-16 md:py-[120px]',
+              withImage ? 'items-stretch gap-[72px]' : 'items-start',
+            ]}
+          >
+            <div
+              class:list={[
+                'flex w-full flex-col items-start',
+                stacked ? 'gap-[72px]' : 'gap-10 md:flex-row md:gap-[72px]',
+                !withImage && 'flex-1',
+              ]}
+            >
+              {title && (
+                <h1
+                  class:list={[
+                    'font-heading text-h1 shrink-0 overflow-visible bg-[linear-gradient(var(--aw-color-bg-section-dark)_5%,var(--aw-color-primary)_97%)] bg-clip-text font-normal leading-[1.25] text-transparent [text-box-edge:cap_text] [text-box-trim:trim-start]',
+                    stacked
+                      ? 'w-full'
+                      : typeof title === 'string' && /<br\s*\/?>/i.test(title)
+                        ? 'w-full md:w-auto md:whitespace-nowrap'
+                        : 'md:whitespace-nowrap',
+                  ]}
+                  set:html={title}
+                />
+              )}
+              {subtitle && (
+                <div
+                  class:list={[
+                    'font-heading text-h4 font-normal leading-[1.2] text-muted [&_p+p]:mt-[1.2em]',
+                    stacked ? 'w-full' : 'min-w-0 flex-1',
+                  ]}
+                  set:html={subtitle}
+                />
+              )}
+            </div>
+            {withImage && (
+              isLocalPageImage ? (
+                <img
+                  src={image.src}
+                  alt={'alt' in image && typeof image.alt === 'string' ? image.alt : ''}
+                  width={typeof image.width === 'number' ? image.width : 1200}
+                  height={typeof image.height === 'number' ? image.height : 400}
+                  class="w-full rounded-[32px] object-cover"
+                  style="aspect-ratio: 1200 / 400;"
+                  loading="eager"
+                  decoding="async"
+                />
+              ) : (
+                <div
+                  class="w-full rounded-[32px] bg-section-grey"
+                  style="aspect-ratio: 1200 / 400;"
+                  aria-hidden="true"
+                />
+              )
             )}
           </div>
         ) : isSplitDark ? (

@@ -8,6 +8,8 @@ import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
+import fourPillarHero from '~/assets/images/four-pillar-hero.png';
+import weStopImg from '~/assets/images/we-stop.png';
 
 const metadata = {
   title: `Four Pillars | ${site.name}`,
@@ -52,8 +54,13 @@ const conceptCards = [
   <Hero2
     variant="page"
     overlapHeader={false}
+    withImage
     title="Four Pillars"
     subtitle={`<p>Not the introduction. The first treatment. Once you know your weakest link, these are the four things to do before you spend a dollar on anything else. They carry the strongest evidence in the literature and cost, between them, almost nothing.</p><p>Fill the first bucket. Let the surplus flow.</p>`}
+    image={{
+      ...fourPillarHero,
+      alt: 'A cairn of balanced stones on a beach with ocean behind it',
+    }}
   >
     <Header
       slot="nav"
@@ -66,7 +73,12 @@ const conceptCards = [
 
   <ConceptCards cards={conceptCards} />
 
-  <TextSplit heading="What this framework deliberately leaves out.">
+  <TextSplit
+    heading="What this framework deliberately leaves out."
+    withImage
+    imagePlacement="under-heading"
+    imageAspect="568 / 378.667"
+  >
     <Text>
       Peptides. Infusions. Hyperbaric chambers. Proprietary blends. Full-body MRI. A supplement subscription. Most of what the longevity industry sells is a conversation for after the four buckets are full, and almost nobody's are.
     </Text>
@@ -79,6 +91,17 @@ const conceptCards = [
       href="/talk-to-your-doctor"
       hideNote
       class="mt-8 self-start"
+    />
+    <img
+      slot="image"
+      src={weStopImg.src}
+      width={weStopImg.width}
+      height={weStopImg.height}
+      alt="Hands typing on a laptop with a stethoscope on the desk"
+      class="w-full rounded-[32px] object-cover"
+      style="aspect-ratio: 568 / 378.667;"
+      loading="lazy"
+      decoding="async"
     />
   </TextSplit>
 </Layout>

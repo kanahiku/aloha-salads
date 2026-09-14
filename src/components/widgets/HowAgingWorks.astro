@@ -7,7 +7,7 @@
  *   └─ max-w-container two-column layout (stacks on mobile)
  *      ├─ LEFT  shrink-0
  *      │   ├─ eyebrow + h2 (with accent "fancy stuff" span) + body
- *      │   ├─ decorative dashed line (flex spacer)
+ *      │   ├─ dashed line + image (489×326, rx 32) + dashed line + terminal circle
  *      │   └─ h3 pullquote (centered)
  *      └─ RIGHT flex-1
  *          ├─ 3 × Bordered Card (with dashed connectors between)
@@ -25,6 +25,7 @@ import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import Card from '~/components/ui/Card.astro';
+import basicFirstImg from '~/assets/images/basic-first.png';
 
 export interface Props {
   id?: string;
@@ -103,17 +104,37 @@ const buckets = [
         </div>
 
         {/*
-          Spacer — grows to fill all remaining height.
+          Figma 264:8 — dashed line, image, dashed line, terminal circle.
+          Lines stretch (flex-1) so the pullquote stays at the bottom of the
+          left column. Image is 489×326, rx=32, inset ~51px each side (~83%).
           CSS repeating-linear-gradient reproduces the Figma dots exactly:
           8.93px filled dot, 8.93px gap, color #E4E2DA.
           Terminal circle matches Figma r=13.33px.
         */}
-        <div class="hidden min-h-[80px] flex-1 flex-col items-center gap-2.5 self-stretch lg:flex">
+        <div class="flex w-full flex-col items-center gap-2.5 self-stretch lg:min-h-[80px] lg:flex-1">
           <div
-            class="flex-1 w-[3px]"
+            class="hidden min-h-[78px] w-[3px] flex-1 lg:block"
             style="background-image: repeating-linear-gradient(to bottom, #E4E2DA 0, #E4E2DA 8.93px, transparent 8.93px, transparent 17.86px);"
           ></div>
-          <div class="size-[26.67px] shrink-0 rounded-full bg-[#E4E2DA]"></div>
+
+          <img
+            src={basicFirstImg.src}
+            width={basicFirstImg.width}
+            height={basicFirstImg.height}
+            alt="Five people practicing tree pose on yoga mats on a beach"
+            class="w-[83%] max-w-[489px] shrink-0 rounded-[32px] object-cover"
+            style="aspect-ratio: 489 / 326;"
+            loading="lazy"
+            decoding="async"
+          />
+
+          <div class="hidden min-h-[78px] flex-1 flex-col items-center gap-2.5 lg:flex">
+            <div
+              class="w-[3px] flex-1"
+              style="background-image: repeating-linear-gradient(to bottom, #E4E2DA 0, #E4E2DA 8.93px, transparent 8.93px, transparent 17.86px);"
+            ></div>
+            <div class="size-[26.67px] shrink-0 rounded-full bg-[#E4E2DA]"></div>
+          </div>
         </div>
 
         {/* Pullquote — stays at the bottom */}

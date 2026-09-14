@@ -1,25 +1,36 @@
 ---
 /**
- * TextSplit — reusable 2-column text-split section (Figma pattern 2:271 and recurrences).
+ * TextSplit — reusable 2-column section (Figma 2:271 / 2:1297 / 62:53 and recurrences).
  *
  * Visual spec (Figma):
- *   bg-page full-width section, p-[120px] outer, gap-[120px] between columns, items-center.
- *   LEFT  flex-1 — eyebrow (optional) + h2 heading
- *   RIGHT flex-1 — any rich content via <slot /> (paragraphs, links, lists…)
+ *   bg-page full-width section, p-[120px] outer, items-center.
  *
- * Usage on any page:
- *   <TextSplit eyebrow="Accept, and change" heading="Half of this is not your problem.">
- *     <Text>First paragraph…</Text>
- *     <Text class="mt-[1.3em]">Second paragraph…</Text>
- *   </TextSplit>
+ *   Text-only (default):
+ *     LEFT  flex-1 — eyebrow (optional) + h2 heading
+ *     RIGHT flex-1 — any rich content via <slot /> (paragraphs, links, lists…)
+ *     gap-[120px]
+ *
+ *   With image, placement "end" (Figma 2:271 / 2:1297):
+ *     LEFT  flex-1 — eyebrow + h2 + body slot
+ *     RIGHT — image slot (grey placeholder by default)
+ *     Portrait 507×657.445: gap 120px, image max 507px
+ *     Landscape 568×438.667: gap 64px, equal columns
+ *
+ *   With image, placement "under-heading" (Figma 62:53):
+ *     LEFT  flex-1 — heading + image (gap 32px)
+ *     RIGHT flex-1 — body slot
+ *     Image 568×378.667, gap 64px
  *
  * Props:
- *   eyebrow     — optional eyebrow label above the heading
- *   heading     — plain-text heading (use headingHtml for inline accents/spans)
- *   headingHtml — raw HTML heading string (takes precedence over heading)
- *   id          — section anchor id
- *   compact     — true = 64px vertical padding (Figma 64:983); default is 120px
- *   class       — extra classes on the outer <section>
+ *   eyebrow         — optional eyebrow label above the heading
+ *   heading         — plain-text heading (use headingHtml for inline accents/spans)
+ *   headingHtml     — raw HTML heading string (takes precedence over heading)
+ *   id              — section anchor id
+ *   compact         — true = 64px vertical padding (Figma 64:983); default is 120px
+ *   withImage       — true = include the image column / placeholder
+ *   imageAspect     — CSS aspect-ratio for the default placeholder (Figma frame size)
+ *   imagePlacement  — "end" (image opposite the text stack) or "under-heading"
+ *   class           — extra classes on the outer <section>
  */
 
 import Heading from '~/components/ui/Heading.astro';
@@ -30,10 +41,33 @@ export interface Props {
   headingHtml?: string;
   id?: string;
   compact?: boolean;
+  withImage?: boolean;
+  imageAspect?: string;
+  imagePlacement?: 'end' | 'under-heading';
   class?: string;
 }
 
-const { eyebrow, heading, headingHtml, id, compact = false, class: className = '' } = Astro.props;
+const {
+  eyebrow,
+  heading,
+  headingHtml,
+  id,
+  compact = false,
+  withImage = false,
+  imageAspect = '507 / 657.445',
+  imagePlacement = 'end',
+  class: className = '',
+} = Astro.props;
+
+const hasImage = withImage || Astro.slots.has('image');
+const imageUnderHeading = hasImage && imagePlacement === 'under-heading';
+const imageAside = hasImage && !imageUnderHeading;
+const bodyHtml = await Astro.slots.render('default');
+const customImageHtml = Astro.slots.has('image') ? await Astro.slots.render('image') : '';
+
+const [aspectW, aspectH] = imageAspect.split('/').map((n) => Number(n.trim()));
+const isLandscape = Number.isFinite(aspectW) && Number.isFinite(aspectH) && aspectW > aspectH;
+const useNarrowGap = imageUnderHeading || (imageAside && isLandscape);
 ---
 
 <section {...id ? { id } : {}} class:list={['not-prose w-full', className]}>
@@ -43,21 +77,64 @@ const { eyebrow, heading, headingHtml, id, compact = false, class: className = '
       compact ? 'lg:py-16' : 'lg:py-[120px]',
     ]}
   >
-    <div class="flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-[120px]">
+    <div
+      class:list={[
+        'flex flex-col gap-12 lg:flex-row lg:items-center',
+        useNarrowGap ? 'lg:gap-16' : 'lg:gap-[120px]',
+      ]}
+    >
 
-      {/* ── LEFT — eyebrow + heading ── */}
-      <div class="flex min-w-0 flex-1 flex-col gap-4">
-        {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}
-        {headingHtml
-          ? <Heading variant="h2" html={headingHtml} />
-          : heading && <Heading variant="h2">{heading}</Heading>
-        }
+      {/* ── LEFT — heading; body when image is aside; image when under-heading ── */}
+      <div class:list={['flex min-w-0 flex-1 flex-col', hasImage ? 'gap-8' : 'gap-4']}>
+        <div class="flex flex-col gap-4">
+          {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}
+          {headingHtml
+            ? <Heading variant="h2" html={headingHtml} />
+            : heading && <Heading variant="h2">{heading}</Heading>
+          }
+        </div>
+        {imageUnderHeading && (
+          <div class="w-full min-w-0">
+            {customImageHtml ? (
+              <div class="contents" set:html={customImageHtml} />
+            ) : (
+              <>
+                <!-- TODO: replace with <Image> when asset is ready -->
+                <div
+                  class="w-full rounded-[32px] bg-section-grey"
+                  style={`aspect-ratio: ${imageAspect};`}
+                  aria-hidden="true"
+                />
+              </>
+            )}
+          </div>
+        )}
+        {imageAside && <div class="flex flex-col" set:html={bodyHtml} />}
       </div>
 
-      {/* ── RIGHT — caller supplies any rich content ── */}
-      <div class="flex min-w-0 flex-1 flex-col">
-        <slot />
-      </div>
+      {imageAside ? (
+        <div
+          class:list={[
+            'w-full min-w-0 flex-1',
+            !isLandscape && 'lg:max-w-[507px]',
+          ]}
+        >
+          {customImageHtml ? (
+            <div class="contents" set:html={customImageHtml} />
+          ) : (
+            <>
+              <!-- TODO: replace with <Image> when asset is ready -->
+              <div
+                class="w-full rounded-[32px] bg-section-grey"
+                style={`aspect-ratio: ${imageAspect};`}
+                aria-hidden="true"
+              />
+            </>
+          )}
+        </div>
+      ) : (
+        <div class="flex min-w-0 flex-1 flex-col" set:html={bodyHtml} />
+      )}
 
     </div>
   </div>

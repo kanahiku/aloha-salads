@@ -17,6 +17,8 @@ import { PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
 import heroHome from '~/assets/images/home-hero.png';
 import whyUrgentImg from '~/assets/images/why-urgent.png';
 import locationBgImg from '~/assets/images/location-bg.png';
+import halfProblemImg from '~/assets/images/half-problem.png';
+import talkToDoctorImg from '~/assets/images/talk-to-doctor.png';
 import { chapterLocations } from '~/data/chapters';
 import { formatTestimonialAttribution, getTestimonials } from '~/lib/content';
 
@@ -140,6 +142,7 @@ const bucketOnePillars = [
     id="accept-and-change"
     eyebrow="Accept, and change"
     heading="Half of this is not your problem."
+    withImage
   >
     <Text>
       Your eyes are going to stiffen. You will lose distance vision. You can eat perfectly
@@ -156,6 +159,17 @@ const bucketOnePillars = [
       {' '}
       <a href="/how-aging-works" class="btn-link">What's fixed, what isn't.</a>
     </Text>
+    <img
+      slot="image"
+      src={halfProblemImg.src}
+      width={halfProblemImg.width}
+      height={halfProblemImg.height}
+      alt="Person in a white shirt holding a green smoothie with a metal straw"
+      class="w-full rounded-[32px] object-cover"
+      style="aspect-ratio: 507 / 657.445;"
+      loading="lazy"
+      decoding="async"
+    />
   </TextSplit>
 
   <PillarSection
@@ -203,6 +217,8 @@ const bucketOnePillars = [
     id="bucket-02-measure"
     eyebrow="Bucket 02 · Measure, and ask"
     heading="Then talk to your doctor about it."
+    withImage
+    imageAspect="568 / 438.667"
   >
     <Text variant="body" class="text-default">
       Past this point it is medical care, and we do not deliver medical care. What we can do is make sure you walk into that appointment with a much better list: the handful of cheap, high-yield tests almost nobody thinks to ask for, and one question hardly anyone asks at all:
@@ -216,6 +232,17 @@ const bucketOnePillars = [
     >
       What to ask, and what to ask about first.
     </a>
+    <img
+      slot="image"
+      src={talkToDoctorImg.src}
+      width={talkToDoctorImg.width}
+      height={talkToDoctorImg.height}
+      alt="Water bottle, greens powder, kiwi, lettuce, celery, banana, and apple arranged on a green surface"
+      class="w-full rounded-[32px] object-cover"
+      style="aspect-ratio: 568 / 438.667;"
+      loading="lazy"
+      decoding="async"
+    />
   </TextSplit>
 
   <Testimonials
