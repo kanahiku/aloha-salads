@@ -26,7 +26,7 @@ import {
   getSanityServicePageSlugs,
 } from './sanity';
 import { blogPosts as localBlogPosts } from '../../data/pages/blogPosts';
-import { contactHelpOptions as localContactHelpOptions } from '../../data/pages/contact';
+/* contact page removed */
 import { navigationData } from '../../data/navigation';
 
 export async function getHomeContent(): Promise<HomePageContent> {
@@ -55,15 +55,7 @@ export async function getReviewsPage(): Promise<ReviewsPageContent | null> {
   }
 }
 
-export async function getContactHelpOptions() {
-  try {
-    const options = await getSanityContactHelpOptions();
-    if (options.length) return options;
-  } catch (error) {
-    console.warn('Sanity contact help options unavailable; using local fallback.', error);
-  }
-  return localContactHelpOptions;
-}
+/* getContactHelpOptions removed — contact page deleted */
 
 const LEGAL_FOOTER_LINKS = [
   { text: 'Privacy Policy', href: '/privacy-policy' },
@@ -159,7 +151,6 @@ export async function getBlogPostSlugs(): Promise<string[]> {
 const STATIC_PATHS = [
   '/',
   '/blog',
-  '/contact',
   '/reviews',
   '/privacy-policy',
   '/terms-of-service',

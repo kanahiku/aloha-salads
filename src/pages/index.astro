@@ -13,7 +13,7 @@ import Testimonials from '~/components/widgets/Testimonials.astro';
 import Text from '~/components/ui/Text.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
-import { PRIMARY_CTA_LABEL } from '~/config/cta';
+import { PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
 import heroHome from '~/assets/images/home-hero.png';
 import whyUrgentImg from '~/assets/images/why-urgent.png';
 import locationBgImg from '~/assets/images/location-bg.png';
@@ -74,12 +74,13 @@ const bucketOnePillars = [
   <Fragment slot="header" />
 
   <Hero2
+    id="home-hero"
     variant="overlay"
     overlapHeader={false}
-    title="Don't age<br />quietly."
+    title="Rebellious Aging:<br />Finding your<br />weakest link<br />to buy more years<br />of independent living!"
     subtitle="The interventions with the strongest evidence in longevity medicine are also the cheapest — and almost nobody does them, because there is nothing to sell. Start by finding out where you actually stand. Then fill the first bucket. Everything else can wait its turn."
     actions={[
-      { variant: 'primary', text: PRIMARY_CTA_LABEL, href: '/contact' },
+      { variant: 'primary', text: PRIMARY_CTA_LABEL, href: PRIMARY_CTA_HREF },
       { variant: 'ghost', text: 'How aging works', href: '/how-aging-works' },
     ]}
     image={{
@@ -184,7 +185,7 @@ const bucketOnePillars = [
     title="Start the Assessment."
     subtitle="Ninety-six questions, one at a time, about ten minutes. At the end you get the system closest to its floor, and three honest routes to doing something about it."
     ctaText="Understand the model"
-    ctaHref="/start"
+    ctaHref="/how-aging-works"
     disclaimer="Nothing you enter is sent anywhere. It runs entirely in your browser. No account, no email required, no record kept — including by us."
   />
 
@@ -242,3 +243,17 @@ const bucketOnePillars = [
     ]}
   />
 </Layout>
+
+{/* Scope h1 size override to the home hero only — all other pages keep 100px */}
+<style is:global>
+  #home-hero h1 {
+    font-size: 56px;
+    line-height: 1.1;
+  }
+  @media (max-width: 767px) {
+    #home-hero h1 {
+      font-size: 34px;
+      line-height: 1.15;
+    }
+  }
+</style>

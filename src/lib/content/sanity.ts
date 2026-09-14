@@ -628,8 +628,8 @@ function normalizeBlogPost(post: SanityBlogPost): BlogPost {
     ctaBanner: {
       title: 'Get in touch',
       subtitle: 'Replace this banner copy from the Figma file.',
-      ctaText: 'Contact Us',
-      ctaHref: '/contact',
+      ctaText: 'Start the assessment',
+      ctaHref: '/form',
     },
     body,
     contentBlocks,

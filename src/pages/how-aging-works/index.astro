@@ -10,7 +10,7 @@ import Image from '~/components/common/Image.astro';
 import whyUrgent from '~/assets/images/why-urgent.png';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
-import { PRIMARY_CTA_LABEL } from '~/config/cta';
+import { PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
 import howAgingHero from '~/assets/images/how-aging-hero.png';
 
 const metadata = {
@@ -77,7 +77,7 @@ const conceptCards = [
 
   <ConceptSplit
     heading="You cannot stop the decline. You can change its slope — and the whole goal is a slope shallow enough that you never reach the floor before the end of your life."
-    cta={{ text: PRIMARY_CTA_LABEL, href: '/contact' }}
+    cta={{ text: PRIMARY_CTA_LABEL, href: PRIMARY_CTA_HREF }}
     cards={conceptCards}
   >
     <Text>

@@ -1,5 +1,5 @@
 import type { NavigationContent } from '~/lib/content/types';
-import { CONTACT, PRIMARY_CTA_LABEL, SOCIAL } from '~/config';
+import { CONTACT, PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF, SOCIAL } from '~/config';
 
 export const navigationData: NavigationContent = {
   header: {
@@ -10,7 +10,7 @@ export const navigationData: NavigationContent = {
       { text: 'Podcasts', href: '/podcast' },
       { text: 'About', href: '/about' },
     ],
-    actions: [{ variant: 'primary', text: PRIMARY_CTA_LABEL, href: '/contact' }],
+    actions: [{ variant: 'primary', text: PRIMARY_CTA_LABEL, href: PRIMARY_CTA_HREF }],
   },
 
   footer: {
@@ -23,7 +23,6 @@ export const navigationData: NavigationContent = {
           { text: 'Books', href: '/books' },
           { text: 'Podcasts', href: '/podcast' },
           { text: 'About', href: '/about' },
-          { text: 'Contact', href: '/contact' },
         ],
       },
     ],

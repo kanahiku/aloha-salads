@@ -17,6 +17,7 @@ export type { CardVariant, SectionVariant, HeroVariant } from './theme';
 export { MOTIF, MOTIF_COLOR_VARS, MOTIF_OPACITY_VARS, motifFadeMask, parseMotifOpacity } from './motif';
 export {
   PRIMARY_CTA_LABEL,
+  PRIMARY_CTA_HREF,
   PRIMARY_CTA_NOTE,
   FOOTER_CTA_EYEBROW,
   FOOTER_CTA_TITLE,
