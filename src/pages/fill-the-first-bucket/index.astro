@@ -10,7 +10,8 @@ import { navigationData } from '~/data/navigation';
 const metadata = {
   title: `Fill the First Bucket | ${site.name}`,
   description:
-    'Movement, food, sleep, and connection — the four pillars with the strongest evidence in longevity medicine, and the lowest price tag. Do these before you spend a dollar on anything else.',
+    'Movement, food, sleep, and connection: the four pillars with the strongest evidence in longevity medicine, and the lowest price tag. Do these before you spend a dollar on anything else.',
+  ignoreTitleTemplate: true,
 };
 
 const header = navigationData.header;
@@ -24,7 +25,7 @@ const header = navigationData.header;
     variant="page"
     overlapHeader={false}
     title="Fill the<br />first bucket."
-    subtitle={`<p>Then the next one, and the one after that. The buckets do not hold health — they hold resources: your money, your time, your attention, your appointments, your willpower. All five are finite, and where you pour them is the most consequential decision you make about your own aging.</p><p>The order runs from the simplest and cheapest to the most complex and expensive. Do the basics before the fancy stuff.</p>`}
+    subtitle={`<p>Then the next one, and the one after that. The buckets do not hold health. They hold resources: your money, your time, your attention, your appointments, your willpower. All five are finite, and where you pour them is the most consequential decision you make about your own aging.</p><p>The order runs from the simplest and cheapest to the most complex and expensive. Do the basics before the fancy stuff.</p>`}
   >
     <Header
       slot="nav"

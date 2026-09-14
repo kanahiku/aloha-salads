@@ -12,8 +12,8 @@ site:
 metadata:
   title:
     default: Rebellious Aging
-    template: '%s — Rebellious Aging'
-  description: 'Member-led clubs across the Hawaiian Islands teaching the basics of longevity — how aging works, and what you can do about it.'
+    template: '%s | Rebellious Aging'
+  description: 'Member-led clubs across the Hawaiian Islands teaching the basics of longevity: how aging works, and what you can do about it.'
   robots:
     index: true
     follow: true

@@ -63,7 +63,7 @@ const ogSvg = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="1200" 
   <text x="170" y="228" text-anchor="middle" font-family="Georgia,serif" font-size="130" fill="white">RA</text>
   <rect x="308" y="90" width="3" height="200" fill="#567F9B" opacity="0.5"/>
   <text x="340" y="160" font-family="Georgia,serif" font-size="72" fill="white">Rebellious Aging</text>
-  <text x="342" y="220" font-family="Arial,sans-serif" font-size="28" fill="#7BA3BD">The science of living long — on your own terms.</text>
+  <text x="342" y="220" font-family="Arial,sans-serif" font-size="28" fill="#7BA3BD">The science of living long, on your own terms.</text>
   <rect x="0" y="610" width="1200" height="4" fill="#567F9B" opacity="0.35"/>
 </svg>`);
 
@@ -86,7 +86,7 @@ node --env-file=.env scripts/gen-icons.mjs
 metadata:
   title:
     default: Rebellious Aging          # ← client name
-    template: '%s — Rebellious Aging'  # ← client name
+    template: '%s | Rebellious Aging'  # ← client name
   description: '…'                     # ← from Figma / SEO brief
   openGraph:
     site_name: Rebellious Aging        # ← client name

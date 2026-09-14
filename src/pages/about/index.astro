@@ -12,9 +12,10 @@ import robertImg from '~/assets/images/robert.png';
 import microscopeImg from '~/assets/images/microscope.png';
 
 const metadata = {
-  title: `About Dr. Peterson — ${site.name}`,
+  title: `About Dr. Peterson | ${site.name}`,
   description:
-    'Dr. Robert Peterson has spent his career helping patients combat aging — first as a plastic surgeon and now as a longevity expert. Learn about his background, philosophy, and published work.',
+    'Dr. Robert Peterson has spent his career helping patients combat aging, first as a plastic surgeon and now as a longevity expert. Learn about his background, philosophy, and published work.',
+  ignoreTitleTemplate: true,
 };
 
 const header = navigationData.header;
@@ -29,7 +30,7 @@ const header = navigationData.header;
     overlapHeader={false}
     tagline="About Dr. Peterson"
     title="Medicine for the<br />Long Game"
-    content="Dr. Robert Peterson has spent his career helping patients combat aging — first as a plastic surgeon and now as a longevity expert. With a background in engineering and pharmacology, he is now focused on how we age, what can be done about it, and what gives the most &ldquo;bang for the buck.&rdquo;"
+    content="Dr. Robert Peterson has spent his career helping patients combat aging, first as a plastic surgeon and now as a longevity expert. With a background in engineering and pharmacology, he is now focused on how we age, what can be done about it, and what gives the most &ldquo;bang for the buck.&rdquo;"
     image={{
       ...robertImg,
       alt: 'Portrait of Dr. Robert Peterson',
@@ -55,7 +56,7 @@ const header = navigationData.header;
   <SingleQuote
     id="guiding-principle"
     quote="You are only as young as your oldest parts."
-    attribution="— Dr. Robert Peterson"
+    attribution="Dr. Robert Peterson"
   />
 
   {/* ── Medical Credentials / Journey ── */}

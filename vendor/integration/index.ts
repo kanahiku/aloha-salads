@@ -36,7 +36,7 @@ export default ({ config: _themeConfig = 'src/config.yaml' } = {}): AstroIntegra
 
         if (METADATA.title) {
           METADATA.title.default = site.name;
-          METADATA.title.template = `%s — ${site.name}`;
+          METADATA.title.template = `%s | ${site.name}`;
         }
         METADATA.description = site.description;
         if (METADATA.openGraph) {

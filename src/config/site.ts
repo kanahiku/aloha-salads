@@ -14,9 +14,9 @@ export const site = {
   name: 'Rebellious Aging',
   url: 'https://example.com',
   description:
-    'Member-led clubs across the Hawaiian Islands teaching the basics of longevity — how aging works, and what you can do about it.',
+    'Member-led clubs across the Hawaiian Islands teaching the basics of longevity: how aging works, and what you can do about it.',
   footerTagline:
-    'A network of member-led clubs across the Hawaiian Islands practising the foundational science of long life — together.',
+    'A network of member-led clubs across the Hawaiian Islands practising the foundational science of long life, together.',
   trailingSlash: false,
 
   /** Cloudflare Worker `sites.slug`. `PUBLIC_SITE_SLUG` in env overrides this. */

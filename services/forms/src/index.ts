@@ -157,7 +157,7 @@ async function handleSubmit(request: Request, env: Env, origin: string, patterns
         from,
         to: notifyTo,
         replyTo: parsed.email,
-        subject: `New website inquiry — ${parsed.name}`,
+        subject: `New website inquiry: ${parsed.name}`,
         html: emailHtml(site.name, parsed),
         text: emailText(site.name, parsed),
         idempotencyKey: `lead/${site.slug}/${id}`,
@@ -541,7 +541,7 @@ function emailHtml(siteName: string, lead: Submission): string {
     <p>New inquiry from <strong>${escapeHtml(siteName)}</strong></p>
     <p><strong>Name:</strong> ${escapeHtml(lead.name)}</p>
     <p><strong>Email:</strong> ${escapeHtml(lead.email)}</p>
-    <p><strong>Phone:</strong> ${escapeHtml(lead.phone || '—')}</p>
+    <p><strong>Phone:</strong> ${escapeHtml(lead.phone || 'Not provided')}</p>
     <p><strong>Message:</strong></p>
     <p>${escapeHtml(lead.message).replace(/\n/g, '<br />')}</p>
   `;
@@ -552,7 +552,7 @@ function emailText(siteName: string, lead: Submission): string {
     `New inquiry from ${siteName}`,
     `Name: ${lead.name}`,
     `Email: ${lead.email}`,
-    `Phone: ${lead.phone || '—'}`,
+    `Phone: ${lead.phone || 'Not provided'}`,
     '',
     lead.message,
   ].join('\n');
