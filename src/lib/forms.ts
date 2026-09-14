@@ -7,6 +7,11 @@ export const FORM_ENDPOINT =
     ? 'https://massic-forms.kanahiku.workers.dev/submit'
     : 'http://localhost:8787/submit');
 
+const FORM_WORKER_ORIGIN = FORM_ENDPOINT.replace(/\/submit\/?$/, '');
+
+/** Check-up PDF emails. Separate from contact `/submit` so answers are not stored as leads. */
+export const EMAIL_SUMMARY_ENDPOINT = `${FORM_WORKER_ORIGIN}/email-summary`;
+
 export const TURNSTILE_SITE_KEY =
   import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
 

@@ -54,6 +54,16 @@ export const structure = (S: StructureBuilder) =>
           ])
         ),
 
+      S.listItem()
+        .title('Testimonials')
+        .schemaType('testimonial')
+        .child(
+          S.documentTypeList('testimonial').title('Testimonials').defaultOrdering([
+            { field: 'order', direction: 'asc' },
+            { field: 'name', direction: 'asc' },
+          ])
+        ),
+
       S.divider(),
 
       S.listItem()

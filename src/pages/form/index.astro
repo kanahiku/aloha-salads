@@ -2,6 +2,7 @@
 import Layout from '~/layouts/Layout.astro';
 import { getImage } from 'astro:assets';
 import heroPng from '~/assets/images/home-hero.png';
+import { EMAIL_SUMMARY_ENDPOINT, SITE_SLUG, TURNSTILE_SITE_KEY } from '~/lib/forms';
 
 const heroImg = await getImage({ src: heroPng, format: 'webp', quality: 85 });
 
@@ -177,6 +178,10 @@ const metadata = {
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Back
         </button>
+        <a class="quiz-nav-continue hidden" id="btn-home" href="/">
+          Home
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-9.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
         <button class="quiz-nav-continue" id="btn-next" type="button">
           Continue
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -187,7 +192,14 @@ const metadata = {
   </div>
 
   <!-- Print-only summary — outside quiz-root so it is not hidden by it -->
-  <div id="printable" style="display:none"></div>
+  <div id="printable"></div>
+  <div
+    id="quiz-mail-config"
+    hidden
+    data-endpoint={EMAIL_SUMMARY_ENDPOINT}
+    data-site={SITE_SLUG}
+    data-turnstile-sitekey={TURNSTILE_SITE_KEY}
+  ></div>
 </Layout>
 
 <style is:global>
@@ -957,10 +969,47 @@ const metadata = {
     transition: background 0.15s;
   }
   .quiz-nav-continue:hover { background: #3a5f73; }
+  a.quiz-nav-continue { text-decoration: none; box-sizing: border-box; }
 
   /* ══════════════════════════════════════════
      RESPONSIVE
   ══════════════════════════════════════════ */
+
+  /* ── Mobile: fix progress bar + option buttons ── */
+  @media (max-width: 639px) {
+    /* Progress row: hide the center section name so left/right labels have room */
+    .quiz-prog-center { display: none; }
+
+    /* Shrink the left/right progress labels slightly */
+    .quiz-prog-left,
+    .quiz-prog-right {
+      font-size: 10px;
+      letter-spacing: 0.04em;
+    }
+
+    /* Option buttons: 2×2 grid instead of 4-in-a-row */
+    .quiz-opts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-auto-rows: auto;
+    }
+    .quiz-opts-btn {
+      font-size: 12px;
+      padding: 12px 6px;
+      min-height: 56px;
+    }
+
+    /* Radius section: stack to 2-column grid too */
+    .quiz-opts-three {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    .quiz-opts-three .quiz-opts-btn {
+      font-size: 11px;
+      padding: 10px 4px;
+    }
+  }
+
   @media (min-width: 640px) {
     .quiz-main { padding-top: 0; }
     .quiz-screen { padding: 20px 32px 40px; }
@@ -970,8 +1019,22 @@ const metadata = {
   }
 
   /* ══════════════════════════════════════════
-     PRINT
+     PRINT + PDF CAPTURE
   ══════════════════════════════════════════ */
+  #printable { display: none; }
+  #printable.pdf-capture {
+    display: block !important;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 794px;
+    max-width: 100%;
+    background: #fff;
+    z-index: -1;
+    pointer-events: none;
+    overflow: visible;
+  }
+
   @page {
     size: A4;
     margin: 18mm 16mm;   /* breathing room on every page, including page 2+ */
@@ -1000,15 +1063,10 @@ const metadata = {
     }
 
     * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  }
 
-    /* ══════════════════════════════════════
-       SINGLE FONT · SINGLE SIZE throughout
-       Font : Arial, Helvetica, sans-serif
-       Size : 9pt for all body text
-       ══════════════════════════════════════ */
-
-    /* ── wrapper — sets font/size once for entire document ── */
-    .rp-wrap {
+  /* Shared printable document — used by window.print() and html2pdf capture */
+  .rp-wrap {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 9pt;
       font-weight: 400;
@@ -1199,10 +1257,9 @@ const metadata = {
       vertical-align: top;
     }
     .rp-table tr:nth-child(even) td { background: #f7f9fb; }
-    .rp-meas-name   { color: #1B2A32; }
-    .rp-meas-ref    { color: #666; }
-    .rp-meas-result { color: #1B2A32; }
-  }
+  .rp-meas-name   { color: #1B2A32; }
+  .rp-meas-ref    { color: #666; }
+  .rp-meas-result { color: #1B2A32; }
 </style>
 
 
@@ -1498,13 +1555,47 @@ function buildHandoff() {
   h.innerHTML = '';
   const out = el('div', 'quiz-card');
   out.appendChild(el('h3', 'quiz-card-subheading', 'A summary for your clinician'));
-  out.appendChild(el('p', 'quiz-small', 'Download, print, and take it with you. Nothing on this page has been sent anywhere.'));
+  out.appendChild(el('p', 'quiz-small', 'Download or print stays on this device. Emailing the PDF sends it to you — we do not keep a copy of the file or of your answers.'));
   const printBtn = el('button', 'quiz-btn-primary', 'Download / Print this page');
   printBtn.type = 'button';
   printBtn.style.cssText = 'width:100%;margin-top:8px';
   printBtn.onclick = function() { renderPrintable(); window.print(); };
   out.appendChild(printBtn);
+
+  const mailField = el('div', 'quiz-field');
+  mailField.style.marginTop = '18px';
+  const mailLabel = el('label', 'quiz-field-label', 'Email this PDF to me');
+  mailLabel.setAttribute('for', 'handoff-email');
+  const mailInput = document.createElement('input');
+  mailInput.type = 'email';
+  mailInput.id = 'handoff-email';
+  mailInput.placeholder = 'your@email.com';
+  mailInput.autocomplete = 'email';
+  mailInput.inputMode = 'email';
+  mailInput.className = 'quiz-input';
+  mailField.appendChild(mailLabel);
+  mailField.appendChild(mailInput);
+  out.appendChild(mailField);
+
+  const tsSlot = el('div');
+  tsSlot.id = 'handoff-turnstile';
+  tsSlot.style.margin = '8px 0 12px';
+  out.appendChild(tsSlot);
+
+  const mailBtn = el('button', 'quiz-btn-ghost', 'Email me this PDF');
+  mailBtn.type = 'button';
+  mailBtn.id = 'btn-email-pdf';
+  mailBtn.style.cssText = 'width:100%';
+  mailBtn.onclick = function() { emailSummaryPdf(); };
+  out.appendChild(mailBtn);
+
+  const mailMsg = el('p', 'quiz-small');
+  mailMsg.id = 'handoff-mail-msg';
+  mailMsg.style.cssText = 'margin-top:8px;opacity:0.6';
+  out.appendChild(mailMsg);
+
   h.appendChild(out);
+  renderHandoffTurnstile(tsSlot);
 
   const prev = el('div', 'quiz-card');
   prev.appendChild(el('h3', 'quiz-card-subheading', 'What it will contain'));
@@ -1583,7 +1674,7 @@ function renderPrintable() {
 
   /* ── Disclaimer note ── */
   const note = el('p', 'rp-note');
-  note.textContent = 'This document was produced on the patient\'s own device using an anonymous check-up tool at rebelliousaging.org. No answers were transmitted to any server. This is a structured self-report to support a clinical conversation — it is not a diagnostic instrument.';
+  note.textContent = 'This document was produced on the patient\'s own device using a check-up tool at rebelliousaging.org. It is a structured self-report to support a clinical conversation — it is not a diagnostic instrument.';
   w.appendChild(note);
 
   /* ── Priorities ── */
@@ -1698,6 +1789,192 @@ function renderPrintable() {
   p.appendChild(w);
 }
 
+const PDF_FILENAME = 'rebellious-aging-check-up.pdf';
+const HTML2PDF_SRC = 'https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js';
+
+function mailConfig() {
+  const node = document.getElementById('quiz-mail-config');
+  return {
+    endpoint: (node && node.getAttribute('data-endpoint')) || '',
+    site: (node && node.getAttribute('data-site')) || '',
+    turnstileSitekey: (node && node.getAttribute('data-turnstile-sitekey')) || '',
+  };
+}
+
+function loadHtml2Pdf() {
+  if (window.html2pdf) return Promise.resolve(window.html2pdf);
+  return new Promise(function(resolve, reject) {
+    const existing = document.querySelector('script[data-html2pdf]');
+    const done = function() {
+      if (window.html2pdf) resolve(window.html2pdf);
+      else reject(new Error('html2pdf failed to load'));
+    };
+    if (existing) {
+      if (window.html2pdf) { resolve(window.html2pdf); return; }
+      existing.addEventListener('load', done, { once: true });
+      existing.addEventListener('error', function() { reject(new Error('html2pdf failed to load')); }, { once: true });
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = HTML2PDF_SRC;
+    script.async = true;
+    script.dataset.html2pdf = 'true';
+    script.addEventListener('load', done, { once: true });
+    script.addEventListener('error', function() { reject(new Error('html2pdf failed to load')); }, { once: true });
+    document.head.appendChild(script);
+  });
+}
+
+function loadTurnstile() {
+  if (window.turnstile) return Promise.resolve(window.turnstile);
+  return new Promise(function(resolve, reject) {
+    const ready = function() {
+      if (window.turnstile) resolve(window.turnstile);
+      else reject(new Error('Turnstile failed to load'));
+    };
+    const existing = document.querySelector('script[data-turnstile-api]');
+    if (existing) {
+      if (window.turnstile) { resolve(window.turnstile); return; }
+      existing.addEventListener('load', ready, { once: true });
+      existing.addEventListener('error', function() { reject(new Error('Turnstile failed to load')); }, { once: true });
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.async = true;
+    script.dataset.turnstileApi = 'true';
+    script.addEventListener('load', ready, { once: true });
+    script.addEventListener('error', function() { reject(new Error('Turnstile failed to load')); }, { once: true });
+    document.head.appendChild(script);
+  });
+}
+
+let handoffTurnstileId = '';
+
+function renderHandoffTurnstile(slot) {
+  const sitekey = mailConfig().turnstileSitekey;
+  if (!slot || !sitekey) return;
+  loadTurnstile().then(function(api) {
+    if (!slot.isConnected) return;
+    slot.innerHTML = '';
+    handoffTurnstileId = api.render(slot, { sitekey });
+  }).catch(function(err) { console.error(err); });
+}
+
+function blobToBase64(blob) {
+  return new Promise(function(resolve, reject) {
+    const reader = new FileReader();
+    reader.onload = function() {
+      const result = String(reader.result || '');
+      const comma = result.indexOf(',');
+      resolve(comma === -1 ? result : result.slice(comma + 1));
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function() { URL.revokeObjectURL(url); }, 3000);
+}
+
+async function makePdfBlob() {
+  renderPrintable();
+  const node = document.getElementById('printable');
+  const html2pdf = await loadHtml2Pdf();
+  node.classList.add('pdf-capture');
+  try {
+    const source = node.querySelector('.rp-wrap') || node;
+    return await html2pdf()
+      .set({
+        margin: 10,
+        filename: PDF_FILENAME,
+        image: { type: 'jpeg', quality: 0.92 },
+        html2canvas: { scale: 1.5, useCORS: true, backgroundColor: '#ffffff' },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['css', 'legacy'] },
+      })
+      .from(source)
+      .outputPdf('blob');
+  } finally {
+    node.classList.remove('pdf-capture');
+  }
+}
+
+async function emailSummaryPdf() {
+  const emailInput = document.getElementById('handoff-email');
+  const msg = document.getElementById('handoff-mail-msg');
+  const btn = document.getElementById('btn-email-pdf');
+  const cfg = mailConfig();
+  const email = (emailInput && emailInput.value || '').trim();
+
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    if (msg) msg.textContent = 'That does not look like an email address.';
+    return;
+  }
+  if (!cfg.endpoint || !cfg.site) {
+    if (msg) msg.textContent = 'Email is not configured. Download or print instead.';
+    return;
+  }
+
+  const turnstile = window.turnstile;
+  const token = handoffTurnstileId && turnstile ? turnstile.getResponse(handoffTurnstileId) : '';
+  if (!token) {
+    if (msg) msg.textContent = 'Complete the spam check first.';
+    return;
+  }
+
+  if (btn) btn.disabled = true;
+  if (msg) msg.textContent = 'Preparing PDF…';
+
+  let downloaded = false;
+  try {
+    const blob = await makePdfBlob();
+    downloadBlob(blob, PDF_FILENAME);
+    downloaded = true;
+    if (msg) msg.textContent = 'Sending…';
+    const pdf = await blobToBase64(blob);
+    const res = await fetch(cfg.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        site: cfg.site,
+        email: email,
+        filename: PDF_FILENAME,
+        pdf: pdf,
+        turnstileToken: token,
+      }),
+    });
+    const payload = await res.json().catch(function() { return null; });
+    if (res.ok && payload && payload.ok) {
+      if (msg) msg.textContent = 'Sent. A copy also downloaded to this device. We did not keep the file.';
+    } else {
+      throw new Error((payload && payload.error) || 'send failed');
+    }
+  } catch (err) {
+    console.error(err);
+    const detail = err && err.message ? String(err.message) : '';
+    const known = /limit|spam|valid email|too large|Missing PDF/i.test(detail);
+    if (msg) {
+      if (known) msg.textContent = detail;
+      else if (downloaded) msg.textContent = 'Could not email it. The PDF still downloaded — attach that, or use Download / Print.';
+      else msg.textContent = 'Could not build the PDF. Use Download / Print instead.';
+    }
+  } finally {
+    if (btn) btn.disabled = false;
+    if (handoffTurnstileId && window.turnstile) {
+      try { window.turnstile.reset(handoffTurnstileId); } catch (e) {}
+    }
+  }
+}
+
 function buildTrend() {
   const t = document.getElementById('pane-trend');
   t.innerHTML = '';
@@ -1765,10 +2042,12 @@ function show(i) {
   syncMainPadding(isHome);
 
   const nextBtn = document.getElementById('btn-next');
+  const homeBtn = document.getElementById('btn-home');
   if (cur !== 'results') {
     const arrowSvg = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     nextBtn.innerHTML = (cur === 'priority' ? 'See my results' : 'Continue') + ' ' + arrowSvg;
     nextBtn.classList.remove('hidden');
+    if (homeBtn) homeBtn.classList.add('hidden');
   }
   /* btn-back and btn-next handlers are set once at boot and stay context-aware */
 
@@ -1837,15 +2116,14 @@ function switchTab(name, scroll) {
 
   /* Update Next button label + visibility for results steps */
   const nextBtn = document.getElementById('btn-next');
+  const homeBtn = document.getElementById('btn-home');
   const arrowRight = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const last = i === SECTION_TABS.length - 1;
   if (nextBtn) {
-    if (i < SECTION_TABS.length - 1) {
-      nextBtn.classList.remove('hidden');
-      nextBtn.innerHTML = 'Next ' + arrowRight;
-    } else {
-      nextBtn.classList.add('hidden');
-    }
+    nextBtn.classList.toggle('hidden', last);
+    if (!last) nextBtn.innerHTML = 'Next ' + arrowRight;
   }
+  if (homeBtn) homeBtn.classList.toggle('hidden', !last);
 
   if (scroll) {
     document.getElementById('quiz-main').scrollTo(0, 0);

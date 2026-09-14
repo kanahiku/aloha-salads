@@ -13,6 +13,7 @@ import type {
   PodcastEpisode,
   PodcastEpisodeStatus,
   PodcastPartGroup,
+  Testimonial,
   ContactPageContent,
   ContentImage,
   FormHelpOption,
@@ -868,6 +869,48 @@ export async function getSanityPodcastEpisodes(): Promise<PodcastEpisode[]> {
   return (docs ?? [])
     .map(normalizePodcastEpisode)
     .filter((ep): ep is PodcastEpisode => Boolean(ep));
+}
+
+// ─── Testimonials ─────────────────────────────────────────────────────────────
+
+const TESTIMONIALS_QUERY = /* groq */ `
+  *[_type == "testimonial" && defined(quote) && defined(name)] | order(order asc, name asc) {
+    _id,
+    quote,
+    name,
+    age,
+    location,
+    tenure,
+    order
+  }
+`;
+
+type SanityTestimonial = {
+  _id: string;
+  quote?: string;
+  name?: string;
+  age?: number;
+  location?: string;
+  tenure?: string;
+  order?: number;
+};
+
+function normalizeTestimonial(doc: SanityTestimonial): Testimonial | null {
+  if (!doc?._id || !doc.quote?.trim() || !doc.name?.trim() || !doc.tenure?.trim()) return null;
+  return {
+    _id: doc._id,
+    quote: doc.quote.trim(),
+    name: doc.name.trim(),
+    age: typeof doc.age === 'number' ? doc.age : undefined,
+    location: doc.location?.trim() || undefined,
+    tenure: doc.tenure.trim(),
+    order: typeof doc.order === 'number' ? doc.order : 0,
+  };
+}
+
+export async function getSanityTestimonials(): Promise<Testimonial[]> {
+  const docs = await sanityClient.fetch<SanityTestimonial[]>(TESTIMONIALS_QUERY);
+  return (docs ?? []).map(normalizeTestimonial).filter((item): item is Testimonial => Boolean(item));
 }
 
 /** Returns episodes grouped by part (sorted by part number, then episode order). */

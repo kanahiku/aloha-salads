@@ -9,6 +9,7 @@ import type {
   PodcastPartGroup,
   ReviewsPageContent,
   ServicePageContent,
+  Testimonial,
 } from './types';
 import {
   getSanityBlogPost,
@@ -16,6 +17,7 @@ import {
   getSanityBlogPostSlugs,
   getSanityBooks,
   getSanityPodcastEpisodes,
+  getSanityTestimonials,
   groupEpisodesByPart,
   getSanityContactHelpOptions,
   getSanityContactPage,
@@ -264,6 +266,7 @@ export type {
   PodcastPartGroup,
   ReviewsPageContent,
   ServicePageContent,
+  Testimonial,
 };
 
 export { groupEpisodesByPart };
@@ -273,6 +276,20 @@ export async function getPodcastEpisodes(): Promise<PodcastEpisode[]> {
     return await getSanityPodcastEpisodes();
   } catch (error) {
     console.warn('Sanity podcast episodes unavailable.', error);
+    return [];
+  }
+}
+
+export function formatTestimonialAttribution(item: Testimonial): string {
+  const identity = typeof item.age === 'number' ? `${item.name}, ${item.age}` : item.name;
+  return [identity, item.location, item.tenure].filter(Boolean).join(' · ');
+}
+
+export async function getTestimonials(): Promise<Testimonial[]> {
+  try {
+    return await getSanityTestimonials();
+  } catch (error) {
+    console.warn('Sanity testimonials unavailable.', error);
     return [];
   }
 }

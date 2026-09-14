@@ -532,3 +532,15 @@ export type PodcastPartGroup = {
   partDescription?: string;
   episodes: PodcastEpisode[];
 };
+
+// ─── Testimonials ─────────────────────────────────────────────────────────────
+
+export interface Testimonial {
+  _id: string;
+  quote: string;
+  name: string;
+  age?: number;
+  location?: string;
+  tenure: string;
+  order: number;
+}

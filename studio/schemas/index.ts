@@ -9,6 +9,7 @@ import { servicePage } from './documents/servicePage';
 import { blogPost } from './documents/blogPost';
 import { book } from './documents/book';
 import { podcastEpisode } from './documents/podcastEpisode';
+import { testimonial } from './documents/testimonial';
 
 // Navigation objects
 import { navLink, navSubLink } from './objects/navLink';
@@ -63,6 +64,7 @@ export const schemaTypes = [
   blogPost,
   book,
   podcastEpisode,
+  testimonial,
   lead,
 
   // Objects — nav
