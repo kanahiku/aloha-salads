@@ -2,8 +2,8 @@
 # Edit src/config/site.ts for name, URL, GTM, and Search Console.
 
 site:
-  name: Rebellious Aging
-  site: 'https://rebelliousaging.com'
+  name: Aloha Salads
+  site: 'https://example.com'
   base: '/'
   trailingSlash: false
   googleSiteVerificationId: ''
@@ -11,14 +11,14 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: Rebellious Aging
-    template: '%s | Rebellious Aging'
-  description: 'Member-led clubs across the Hawaiian Islands teaching the basics of longevity: how aging works, and what you can do about it.'
+    default: Aloha Salads
+    template: '%s | Aloha Salads'
+  description: 'Island-grown produce, never-frozen local ahi, and bowls built the way you like them. Kailua-born since 2006 — six spots on O‘ahu.'
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: Rebellious Aging
+    site_name: Aloha Salads
     images:
       - url: '~/assets/images/og-image.jpg'
         width: 1200

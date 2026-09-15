@@ -7,14 +7,14 @@
  *   body    → <p>      14 px / lh 1.3   standard paragraph copy  ← default
  *   small   → <p>      12 px / lh 1.3   footnotes, footer taglines
  *   caption → <p>      11 px / lh 1.3   timestamps, metadata
- *   button  → <span>   16 px / lh 1.25  CTA label text without button chrome
+ *   button  → <span>   14 px Norca-Rough CTA label without button chrome
  *                                        (use when you need the exact button font
  *                                         inside a custom control or rich text)
  *
  * color:
  *   muted   → text-muted    ← default for body variants
  *   default → text-default
- *   white   → #fff
+ *   white   → text-page (Figma text/contrast)
  *   inherit → no color class — use class= for a custom token
  *
  * as:  Override the semantic element (e.g. as="span" for inline text).
@@ -61,20 +61,21 @@ const scale: Record<string, string> = {
   body:      'text-body font-normal',
   small:     'text-small font-normal',
   caption:   'text-[11px] leading-[1.3] font-normal',
-  button:    '[font-size:var(--aw-text-button)] leading-[1.25] font-medium',
+  button:    'font-rough [font-size:var(--aw-text-button)] leading-none font-normal',
 };
 
 const colors: Record<string, string> = {
   default: 'text-default',
   muted:   'text-muted',
-  white:   'text-white',
+  white:   'text-page',
   inherit: '',
 };
 
 // twMerge only handles the color + className layer so `text-body-lg` (font-size utility)
 // is never stripped by twMerge's text-* conflict resolution.
 const overrideCls = twMerge(colors[color as string] ?? '', className);
-const cls = ['font-sans', scale[variant as string] ?? '', overrideCls].filter(Boolean).join(' ');
+const face = variant === 'button' ? 'font-rough' : 'font-sans';
+const cls = [face, scale[variant as string] ?? '', overrideCls].filter(Boolean).join(' ');
 ---
 
 {html ? <Tag class={cls} set:html={html} /> : <Tag class={cls}><slot /></Tag>}

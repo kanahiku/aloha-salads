@@ -6,11 +6,10 @@ import { schemaTypes } from './schemas';
 import { structure } from './structure';
 
 export default defineConfig({
-  name: 'agency-site',
-  title: 'Studio',
+  name: 'aloha-salads',
+  title: 'Aloha Salads',
 
-  // Fill in your Project ID and dataset after creating the project on sanity.io
-  projectId: process.env.SANITY_STUDIO_PROJECT_ID ?? '',
+  projectId: process.env.SANITY_STUDIO_PROJECT_ID ?? 'sys9vj6r',
   dataset: process.env.SANITY_STUDIO_DATASET ?? 'production',
 
   plugins: [

@@ -3,15 +3,15 @@
  * Heading atom — one component for every heading level and the eyebrow label.
  *
  * variant  (controls visual scale and default semantic element):
- *   h1      → <h1>   28→100 px / lh 1     hero headlines
- *   h2      → <h2>   26→52 px / lh 1     section headings
- *   h3      → <h3>   20→36 px / lh 1     pullquotes, numbered card titles
- *   h4      → <h4>   18→28 px / lh 1.2   card / subsection titles
- *   eyebrow → <p>    14 px / 0.06em      small all-caps label above a heading
+ *   h1      → <h1>   36→72 px / lh 1     hero headlines (Norca-Rough)
+ *   h2      → <h2>   32→52 px / lh 1     section headings (Norca-Rough)
+ *   h3      → <h3>   20→26 px / lh 1     dish / numbered titles (Norca-Rough)
+ *   h4      → <h4>   20→24 px / lh 1     card / subsection titles (Norca)
+ *   eyebrow → <p>    16 px script        Figma `tag` — Wreck Script, sentence case
  *
  * color:
- *   default  → heading color  (h1–h4) / eyebrow color (eyebrow)
- *   white    → #fff  (h1–h4) / rgba(255 255 255 / 0.6) (eyebrow)
+ *   default  → heading color  (h1–h4) / hibiscus accent (eyebrow)
+ *   white    → cream on photos (h1–h4 and eyebrow)
  *   muted    → text-muted
  *   inherit  → no color class — use class= to pass a custom token (e.g. class="text-tan")
  *
@@ -19,7 +19,7 @@
  *      Useful when hierarchy demands h2 but the design uses h3 sizing.
  *
  * Usage:
- *   <Heading variant="h1">Rebellious Aging: Finding your weakest link to buy more years of independent living!</Heading>
+ *   <Heading variant="h1">Fresh, healthy food that tastes worth coming back for.</Heading>
  *   <Heading variant="h2" html="Two <em>lines</em>" />
  *   <Heading variant="h3" color="white">On a dark section</Heading>
  *   <Heading variant="eyebrow" color="white">Phase 1</Heading>
@@ -53,20 +53,18 @@ const Tag = (asOverride ?? defaultElement[variant as Variant]) as any;
 
 // Visual scale per variant
 const scale: Record<string, string> = {
-  h1:      'text-h1 font-heading font-normal leading-none',
-  h2:      'text-h2 font-heading font-normal leading-none',
-  h3:      'text-h3 font-heading font-normal leading-none',
-  h4:      'text-h4 font-heading font-normal',
-  eyebrow: 'type-eyebrow font-sans',
+  h1:      'text-h1 font-rough font-normal leading-none',
+  h2:      'text-h2 font-rough font-normal leading-none',
+  h3:      'text-h3 font-rough font-normal leading-none',
+  h4:      'text-h4 font-heading font-normal leading-none',
+  eyebrow: 'type-eyebrow font-script',
 };
 
-// Colour — eyebrow "white" is semi-transparent (60 %) to soften against photo bg
 const colorClass = (() => {
   if (color === 'inherit') return '';
   if (color === 'muted')   return 'text-muted';
-  if (color === 'white')   return variant === 'eyebrow' ? 'text-white/60' : 'text-white';
-  // default
-  return variant === 'eyebrow' ? 'text-eyebrow' : 'text-heading';
+  if (color === 'white')   return 'text-page';
+  return variant === 'eyebrow' ? 'text-accent' : 'text-heading';
 })();
 
 // twMerge only handles color vs className so `text-h2` (font-size utility) is

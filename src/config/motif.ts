@@ -1,26 +1,33 @@
 /**
  * Per-site motif (background pattern).
  *
- * This is the brand layer that makes sites look non-identical.
- * Pages keep `<SectionBg variant="hero" />` — they do not import SVGs.
+ * Aloha Salads uses a page-level wallpaper (`PageBg` in Layout): green–blue
+ * gradient + this tile. Sections that should show it stay transparent;
+ * sections that should not, keep a solid fill (`bg-page`, `bg-card`, …).
+ *
+ * Per-section `<SectionBg>` still works — leave `sections` off so the motif
+ * is not painted twice.
  *
  * To restyle a new website:
- * 1. Drop a new SVG in `src/assets/images/patterns/` (black shape, white ground).
+ * 1. Drop a new SVG/PNG in `src/assets/images/patterns/` (black shape, transparent ground).
  * 2. Point `pattern` at that file.
- * 3. Toggle which sections show it, plus fade / tile size / repeat.
- * 4. Colors and opacity stay in `src/brand.ts`
- *    (`--aw-color-motif-*`, `--aw-opacity-motif-*`).
+ * 3. Toggle page vs section, plus fade / tile size / repeat.
+ * 4. Colors and opacity stay in `src/brand.ts`.
  */
 import type { ImageMetadata } from 'astro';
+import leafMotif from '~/assets/images/small-leaf-motif.webp';
 
 export type MotifFade = 'top-to-bottom' | 'bottom-to-top' | 'none';
 export type MotifSection = 'hero' | 'dark' | 'grey' | 'white' | 'cta';
 
 export const MOTIF = {
-  /** Black-on-white SVG used as a CSS mask. Swap this file per client. */
-  pattern: undefined as ImageMetadata | undefined,
+  /** Black-on-transparent tile used as a CSS mask. Swap this file per client. */
+  pattern: leafMotif as ImageMetadata,
 
-  /** Where the motif appears. Off by default — enable from Figma / brand. */
+  /**
+   * Per-section MotifLayer. Leave false — the wallpaper lives on the page
+   * (`PageBg`), and individual sections punch through or cover it.
+   */
   sections: {
     hero: false,
     dark: false,
@@ -29,16 +36,19 @@ export const MOTIF = {
     cta: false,
   } satisfies Record<MotifSection, boolean>,
 
-  fade: 'top-to-bottom' as MotifFade,
+  fade: 'none' as MotifFade,
 
   /**
-   * CSS mask-size. `cover` = one large field.
-   * Use `400px` (or `320px 320px`) with `repeat: 'repeat'` for a tighter tile.
+   * CSS mask-size. Pixel size + `repeat` tiles the produce motif.
+   * Native artboard is 622×1024; 400px wide keeps a dense wallpaper.
    */
-  size: 'cover',
+  size: '622px auto',
 
   /** CSS mask-repeat. Pair with a pixel `size` for wallpaper tiling. */
-  repeat: 'no-repeat',
+  repeat: 'repeat',
+
+  /** Opacity of the page wallpaper leaves (`brand.motif.pageOpacity`). */
+  pageOpacity: 'var(--aw-opacity-motif-page)',
 };
 
 export const MOTIF_COLOR_VARS: Record<Exclude<MotifSection, 'cta'> | 'cta', string> = {

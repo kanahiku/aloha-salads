@@ -27,7 +27,7 @@ export function mapsDirectionsHref(query: string) {
 
 export const contactHelpOptions = [
   { label: 'General inquiry', value: 'general' },
-  { label: 'Request a quote', value: 'quote' },
-  { label: 'Existing project', value: 'existing-project' },
+  { label: 'Catering', value: 'catering' },
+  { label: 'Locations & hours', value: 'locations' },
   { label: 'Other', value: 'other' },
 ];

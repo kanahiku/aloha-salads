@@ -6,7 +6,7 @@
 
 @custom-variant intersect (&:not([no-intersect]));
 
-/* Disable faux-bold/italic. Headings are Fraunces Regular; body is Hanken Grotesk. */
+/* Disable faux-bold/italic. Headings/buttons are Norca-Rough; body is Host Grotesk; tag/quote/ticker are Wreck Script. */
 @layer base {
   html {
     font-synthesis: none;
@@ -24,19 +24,24 @@
   --color-eyebrow: var(--aw-color-text-eyebrow);
   --color-page: var(--aw-color-bg-page);
   --color-page-end: var(--aw-color-bg-page-end);
+  --color-card: var(--aw-color-bg-card);
   --color-section-grey: var(--aw-color-bg-section-grey);
   --color-section-dark: var(--aw-color-bg-section-dark);
   --color-cta: var(--aw-color-bg-cta);
   --color-cta-end: var(--aw-color-bg-cta-end);
   --color-tan: var(--aw-color-text-tan);
   --color-tan-body: var(--aw-color-text-tan-body);
+  --color-gradient-from: var(--aw-color-gradient-from);
+  --color-gradient-to: var(--aw-color-gradient-to);
   --max-width-container: 1440px;
 
   --font-sans:
     var(--aw-font-sans, ui-sans-serif), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-serif: var(--aw-font-serif, ui-serif), ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-  --font-heading: var(--aw-font-heading, ui-serif), ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-serif: var(--aw-font-serif, ui-sans-serif), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--aw-font-heading, ui-sans-serif), ui-sans-serif, system-ui, sans-serif;
+  --font-script: var(--aw-font-script, cursive), cursive;
+  --font-rough: var(--aw-font-rough, ui-sans-serif), ui-sans-serif, system-ui, sans-serif;
 
   --shadow-card: var(--aw-shadow-card);
   --shadow-header: var(--aw-shadow-header);
@@ -74,7 +79,16 @@
 @utility font-heading {
   font-family: var(--font-heading);
   font-weight: 400;
-  font-variation-settings: 'SOFT' 0, 'WONK' 1;
+}
+
+@utility font-script {
+  font-family: var(--font-script);
+  font-weight: 400;
+}
+
+@utility font-rough {
+  font-family: var(--font-rough);
+  font-weight: 400;
 }
 
 @utility text-h1 {
@@ -110,20 +124,64 @@
 }
 
 @utility text-body {
-  font-size: var(--aw-text-body);
+  font-size: var(--aw-text-body-mobile);
   line-height: var(--aw-leading-body);
+  letter-spacing: var(--aw-tracking-body);
+  @media (min-width: 768px) {
+    font-size: var(--aw-text-body);
+  }
 }
 
 @utility text-body-lg {
-  font-size: var(--aw-text-body-lg);
+  font-size: var(--aw-text-body-lg-mobile);
   line-height: var(--aw-leading-body);
+  letter-spacing: var(--aw-tracking-body-lg);
+  @media (min-width: 768px) {
+    font-size: var(--aw-text-body-lg);
+  }
 }
 
 @utility type-eyebrow {
-  font-size: var(--aw-text-eyebrow);
+  font-family: var(--font-script);
+  font-size: var(--aw-text-eyebrow-mobile);
   letter-spacing: var(--aw-tracking-eyebrow);
-  text-transform: uppercase;
   font-weight: 400;
+  line-height: 1;
+  @media (min-width: 768px) {
+    font-size: var(--aw-text-eyebrow);
+  }
+}
+
+@utility type-label {
+  font-family: var(--font-rough);
+  font-size: var(--aw-text-label-mobile);
+  letter-spacing: var(--aw-tracking-label);
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+  @media (min-width: 768px) {
+    font-size: var(--aw-text-label);
+  }
+}
+
+@utility type-ticker {
+  font-family: var(--font-script);
+  font-size: var(--aw-text-ticker-mobile);
+  font-weight: 400;
+  line-height: 1;
+  @media (min-width: 768px) {
+    font-size: var(--aw-text-ticker);
+  }
+}
+
+@utility type-quote {
+  font-family: var(--font-script);
+  font-size: var(--aw-text-quote-mobile);
+  font-weight: 400;
+  line-height: var(--aw-leading-quote);
+  @media (min-width: 768px) {
+    font-size: var(--aw-text-quote);
+  }
 }
 
 @utility text-small {
@@ -132,6 +190,10 @@
 }
 
 @utility bg-surface {
+  background-color: var(--aw-color-bg-card);
+}
+
+@utility bg-card {
   background-color: var(--aw-color-bg-card);
 }
 
@@ -147,11 +209,28 @@
   background-color: var(--aw-color-bg-page-end);
 }
 
+/* Solid fallback on <html> — matches the gradient end so no flash below the fold. */
+@utility bg-wash-end {
+  background-color: var(--aw-color-gradient-to);
+}
+
+/* Main page wash — warm cream gradient, top to bottom. */
 @utility bg-page-wash {
-  background-color: var(--aw-color-bg-page-end);
-  background-image: linear-gradient(to bottom, var(--aw-color-bg-page) 0%, var(--aw-color-bg-page-end) 100%);
+  background-color: var(--aw-color-page-wash-to);
+  background-image: linear-gradient(to bottom, var(--aw-color-page-wash-from) 0%, var(--aw-color-page-wash-to) 100%);
   background-repeat: no-repeat;
   background-size: 100% 100%;
+}
+
+/* Green-band layer — used by PageBg behind the leaf motif. */
+@utility bg-green-wash {
+  background-color: var(--aw-color-gradient-to);
+  background-image: linear-gradient(
+    to bottom,
+    var(--aw-color-gradient-from) 0%,
+    var(--aw-color-gradient-from) 70%,
+    var(--aw-color-gradient-to) 100%
+  );
 }
 
 @utility bg-dark {
@@ -494,7 +573,7 @@
 /* Site-wide CTA hover — used by Button.astro via btn / btn-* utilities.
    Color tokens per variant; motion (200ms ease + 1px lift) is shared. */
 @utility btn {
-  @apply inline-flex items-center justify-center rounded-xl border font-sans font-semibold text-center leading-none py-3.5 px-6 cursor-pointer tracking-[0.01em];
+  @apply inline-flex items-center justify-center rounded-none border-2 font-rough font-normal text-center leading-none py-6 px-7 cursor-pointer;
   font-size: var(--aw-text-button);
   transition-property: background-color, color, border-color, box-shadow, transform;
   transition-duration: 200ms;
@@ -552,7 +631,7 @@
 }
 
 @utility btn-ghost-dark {
-  @apply btn backdrop-blur-[10px];
+  @apply btn;
   background-color: var(--aw-color-btn-ghost-dark-bg);
   color: var(--aw-color-btn-ghost-dark-text);
   border-color: var(--aw-color-btn-ghost-dark-border);
@@ -564,7 +643,7 @@
 }
 
 @utility btn-link {
-  @apply inline-flex items-center font-sans font-semibold text-[14px] md:text-[15px] cursor-pointer;
+  @apply inline-flex items-center font-rough font-normal text-[14px] cursor-pointer;
   color: var(--aw-color-btn-link);
   text-underline-offset: 2px;
   transition-property: color, text-decoration-color;
@@ -582,16 +661,6 @@
 
 @utility tag-pill {
   @apply inline-flex items-center rounded-full bg-primary/20 border border-primary/30 px-2.5 py-0.5 font-heading font-normal text-[11px] md:text-[12px] leading-[18px] text-primary dark:bg-primary/20 dark:border-white/20 dark:text-white/80;
-}
-
-#header.scroll > div:first-child {
-  @apply bg-section-dark md:backdrop-blur-md;
-  box-shadow: var(--aw-shadow-header);
-}
-.dark #header.scroll > div:first-child,
-#header.scroll.dark > div:first-child {
-  @apply bg-section-dark border-b border-white/10;
-  box-shadow: var(--aw-shadow-header);
 }
 
 @media (max-width: 767px) {

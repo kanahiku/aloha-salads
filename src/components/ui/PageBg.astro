@@ -1,0 +1,35 @@
+---
+/**
+ * Site wallpaper — both layers are position:fixed so they fill the
+ * viewport exactly and never move on scroll.
+ *
+ * Layer order (bottom → top):
+ *   1. Fixed green gradient div   #8CAC7F → #8FA1AB            z-index: -10
+ *   2. Fixed SVG motif img        leaves-motif.svg              z-index: -9
+ *                                  SVG scales proportionally via
+ *                                  preserveAspectRatio="xMidYMin slice" so
+ *                                  the pattern always fills the viewport width
+ *                                  at the same visual density as the 1440 px
+ *                                  design, cropping extra height.
+ *                                  fill-opacity 0.04 is baked into the SVG.
+ *   3. Section fills (bg-page …)  cover both layers                z: auto
+ *
+ * Transparent sections punch through to show layers 1 + 2.
+ */
+import leavesMotif from '~/assets/images/leaves-motif.svg?url';
+---
+
+{/* Layer 1 — green gradient, fixed to viewport */}
+<div
+  class="pointer-events-none fixed inset-0 -z-10 bg-green-wash"
+  aria-hidden="true"
+></div>
+
+{/* Layer 2 — SVG motif, fixed to viewport, scales to fill width */}
+<img
+  src={leavesMotif}
+  class="pointer-events-none fixed inset-0 -z-[9] h-full w-full select-none object-cover"
+  aria-hidden="true"
+  decoding="async"
+  fetchpriority="low"
+/>

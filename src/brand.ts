@@ -15,76 +15,108 @@
 export const brand = {
   fonts: {
     heading: {
-      name: 'Fraunces',
-      cssVariable: '--font-fraunces',
-      weights: ['400'] as string[],
-      styles: ['normal', 'italic'] as string[],
-      subsets: ['latin'] as string[],
-      fallbacks: ['serif'] as string[],
+      name: 'Norca',
+      cssVariable: '--font-norca',
+      provider: 'local' as const,
+      fallbacks: ['sans-serif'] as string[],
+      src: ['./src/fonts/norca/Regular/Norca.otf'] as [string, ...string[]],
     },
     body: {
-      name: 'Hanken Grotesk',
-      cssVariable: '--font-hanken-grotesk',
-      weights: ['300', '400', '500', '600'] as string[],
-      styles: ['normal', 'italic'] as string[],
+      name: 'Host Grotesk',
+      cssVariable: '--font-host-grotesk',
+      provider: 'google' as const,
+      weights: ['400'] as string[],
+      styles: ['normal'] as string[],
       subsets: ['latin'] as string[],
       fallbacks: ['sans-serif'] as string[],
     },
+    /** Eyebrows, ticker, quotes — Figma Wreck Script. */
+    script: {
+      name: 'Wreck Script',
+      cssVariable: '--font-wreck-script',
+      provider: 'local' as const,
+      fallbacks: ['cursive'] as string[],
+      src: ['./src/fonts/wreck/Wreck-Script-Exfont0263.ttf'] as [string, ...string[]],
+    },
+    /** Footer labels — Figma Norca-Rough 18px. */
+    rough: {
+      name: 'Norca Rough',
+      cssVariable: '--font-norca-rough',
+      provider: 'local' as const,
+      fallbacks: ['sans-serif'] as string[],
+      src: ['./src/fonts/norca/Rough/Norca-Rough.otf'] as [string, ...string[]],
+    },
   },
 
-  /** From Homepage (node 1:3). Repeating fills only — not one-off photo colors. */
+  /** Style Guide 110:2377 — named fills. Hover tints are derived. */
   colors: {
-    accent: '#567F9B',
-    accentHover: '#7BA3BD',
-    heading: '#1E2A30',
-    muted: '#45555D',
-    eyebrow: '#64727A',
-    page: '#F5F4EF',
-    sectionGrey: '#D2E1EA',
-    sectionDark: '#1B2A32',
-    card: '#FAFAF8',
-    cardMist: '#E4EDF2',
-    cardDark: '#2C4A5B',
-    ctaBg: '#E8DFCF',
-    ctaEnd: '#CFB28A',
-    ctaTan: '#B29A77',
-    tanText: '#665844',
-    tanBody: '#332C22',
-    ctaPink: '#F2E4E4',
-    ctaPinkText: '#BD7B7B',
-    featureCard: '#F1F5F8',
-    primary: '#2C4A5B',
-    secondary: '#7BA3BD',
-    navy: '#1B2A32',
-    white: '#FFFFFF',
-    cream: '#F5F4EF',
-    nav: '#1D1D1D',
-    black: '#1E2A30',
+    accent: '#994321', // brand/hibiscus
+    accentHover: '#B55A32',
+    heading: '#3D2819', // text/default
+    muted: '#3C2718', // brand/cacao
+    eyebrow: '#778074', // brand/seaweed-dark
+    page: '#EFE9DE', // brand/shell · text/contrast
+    sectionGrey: '#B5C2B0', // brand/seaweed
+    sectionDark: '#798991', // brand/blueberry
+    card: '#FAF4E8', // background/white
+    cardMist: '#B5C2B0',
+    cardDark: '#8FA1AB', // brand/blueberry-light
+    ctaBg: '#9B9D47', // accent/green-light
+    ctaEnd: '#6A714F', // accent/green
+    ctaTan: '#9B9D47',
+    tanText: '#6A714F',
+    tanBody: '#3C2718',
+    ctaPink: '#EFE9DE',
+    ctaPinkText: '#994321',
+    featureCard: '#FAF4E8',
+    primary: '#994321',
+    secondary: '#778074',
+    navy: '#3C2718',
+    white: '#FAF4E8',
+    cream: '#EFE9DE',
+    nav: '#778074',
+    black: '#3D2819',
+    /** gradient/blue-green — Figma from #8CAC7F to blueberry-light. Used as page-motif band bg. */
+    gradientFrom: '#8CAC7F',
+    gradientTo: '#8FA1AB',
+    /** Page wash — warm cream from top to bottom (sits on top of the green band). */
+    pageWashFrom: '#E6E0D5',
+    pageWashTo: '#FCF6EA',
   },
 
   type: {
     /**
-     * Desktop `size` + phone `mobile` from Figma when the file has both.
-     * Fallback (this file — desktop type only): h1 ~50%, h2 ~60%, h3 ~65%, h4 ~80%; body unchanged.
+     * Style Guide 110:2377 (desktop). No mobile type in the file —
+     * mobile sizes are an optical scale (not a flat %), so Norca-Rough
+     * still has a clear h1 > h2 > h3 step on a 390px screen.
+     * Faces: h1–h3 + button = Norca-Rough; tag/accent/quote = Wreck Script;
+     * body = Host Grotesk.
      */
-    h1: { size: '100px', mobile: '28px', lineHeight: '1', tracking: '0' },
-    h2: { size: '52px', mobile: '26px', lineHeight: '1', tracking: '0' },
-    h3: { size: '36px', mobile: '20px', lineHeight: '1', tracking: '0' },
-    /** Card / subsection titles. */
-    h4: { size: '28px', mobile: '18px', lineHeight: '1.2', tracking: '0' },
-    body: { size: '14px', lineHeight: '1.3', tracking: '0' },
-    bodyLg: { size: '16px', lineHeight: '1.3', tracking: '0' },
-    button: { size: '14px', lineHeight: '1.25', tracking: '0' },
-    eyebrow: { size: '14px', lineHeight: '1', tracking: '0.06em' },
-    small: { size: '12px', lineHeight: '1.3', tracking: '0' },
-    caption: { size: '11px', lineHeight: '1.3', tracking: '0' },
+    h1: { size: '72px', mobile: '40px', lineHeight: '1', tracking: '0' },
+    h2: { size: '52px', mobile: '28px', lineHeight: '1', tracking: '0' },
+    h3: { size: '26px', mobile: '22px', lineHeight: '1', tracking: '0' },
+    /** Extra — not in the Style Guide. */
+    h4: { size: '24px', mobile: '18px', lineHeight: '1', tracking: '0' },
+    body: { size: '14px', mobile: '14px', lineHeight: '1.3', tracking: '-0.01em' },
+    bodyLg: { size: '16px', mobile: '15px', lineHeight: '1.3', tracking: '-0.01em' },
+    button: { size: '14px', mobile: '14px', lineHeight: '1', tracking: '0' },
+    /** Figma `tag`. */
+    eyebrow: { size: '16px', mobile: '14px', lineHeight: '1', tracking: '0' },
+    small: { size: '12px', mobile: '12px', lineHeight: '1.3', tracking: '-0.01em' },
+    caption: { size: '11px', mobile: '11px', lineHeight: '1.3', tracking: '0' },
+    /** Footer column titles — extra, not in the Style Guide. */
+    label: { size: '18px', mobile: '16px', lineHeight: '1', tracking: '0.06em' },
+    /** Figma `accent`. */
+    ticker: { size: '32px', mobile: '24px', lineHeight: '1', tracking: '0' },
+    /** Figma `quote`. */
+    quote: { size: '22px', mobile: '18px', lineHeight: '1.2', tracking: '0' },
   },
 
   radius: {
-    base: '12px',
-    lg: '16px',
-    xl: '32px',
-    hero: '64px',
+    base: '0px',
+    lg: '0px',
+    xl: '0px',
+    hero: '0px',
     full: '9999px',
   },
 
@@ -94,7 +126,9 @@ export const brand = {
     greyOpacity: 0,
     whiteOpacity: 0,
     ctaOpacity: 0,
-    ctaColor: '#1E2A30',
+    /** Page wallpaper leaf overlay — cacao on the green–blue gradient. */
+    pageOpacity: 0.22,
+    ctaColor: '#3D2819',
   },
 } as const;
 
@@ -123,43 +157,37 @@ export function rgb(hex: string, alpha?: number): string {
   return `rgb(${channels} / ${a})`;
 }
 
-/** Per-variant CTA colors matching COLOR-PALETTE.html. */
+/** Per-variant CTA colors — hibiscus fill, cream ghost on photos. */
 function ctaButtonVars(c: Brand['colors']): string {
-  // Primary: #2C4A5B → hover #1B2A32, white text
   const primary = `
-    --aw-color-btn-primary-bg: ${rgb(c.primary)};
-    --aw-color-btn-primary-text: ${rgb(c.white)};
-    --aw-color-btn-primary-border: ${rgb(c.primary)};
+    --aw-color-btn-primary-bg: ${rgb(c.accent)};
+    --aw-color-btn-primary-text: ${rgb(c.cream)};
+    --aw-color-btn-primary-border: ${rgb(c.accent)};
     --aw-color-btn-primary-bg-hover: ${rgb(c.navy)};
-    --aw-color-btn-primary-text-hover: ${rgb(c.white)};
+    --aw-color-btn-primary-text-hover: ${rgb(c.cream)};
     --aw-color-btn-primary-border-hover: ${rgb(c.navy)};`;
 
-  // Secondary: #B29A77 (ctaTan) → hover #665844 (tanText), white text
   const secondary = `
     --aw-color-btn-secondary-bg: ${rgb(c.ctaTan)};
-    --aw-color-btn-secondary-text: ${rgb(c.white)};
+    --aw-color-btn-secondary-text: ${rgb(c.cream)};
     --aw-color-btn-secondary-border: ${rgb(c.ctaTan)};
     --aw-color-btn-secondary-bg-hover: ${rgb(c.tanText)};
-    --aw-color-btn-secondary-text-hover: ${rgb(c.white)};
+    --aw-color-btn-secondary-text-hover: ${rgb(c.cream)};
     --aw-color-btn-secondary-border-hover: ${rgb(c.tanText)};`;
 
-  // Ghost on light: transparent, #1E2A30 border+text → hover #2C4A5B bg, white text
   const ghostLight = `
     --aw-color-btn-ghost-light-bg: transparent;
-    --aw-color-btn-ghost-light-text: ${rgb(c.black)};
-    --aw-color-btn-ghost-light-border: ${rgb(c.black)};
-    --aw-color-btn-ghost-light-bg-hover: ${rgb(c.primary)};
-    --aw-color-btn-ghost-light-text-hover: ${rgb(c.white)};
-    --aw-color-btn-ghost-light-border-hover: ${rgb(c.primary)};`;
+    --aw-color-btn-ghost-light-text: ${rgb(c.heading)};
+    --aw-color-btn-ghost-light-border: ${rgb(c.heading)};
+    --aw-color-btn-ghost-light-bg-hover: ${rgb(c.accent)};
+    --aw-color-btn-ghost-light-text-hover: ${rgb(c.cream)};
+    --aw-color-btn-ghost-light-border-hover: ${rgb(c.accent)};`;
 
-  // Ghost on dark/photos: white glass default → brighter white glass hover.
-  // Using white-based opacity instead of primary-based because #2C4A5B at 20-35%
-  // on navy #1B2A32 produces near-zero visible contrast. White tint scales clearly.
   const ghostDark = `
-    --aw-color-btn-ghost-dark-bg: ${rgb(c.primary, 0.2)};
+    --aw-color-btn-ghost-dark-bg: transparent;
     --aw-color-btn-ghost-dark-text: ${rgb(c.cream)};
     --aw-color-btn-ghost-dark-border: ${rgb(c.cream)};
-    --aw-color-btn-ghost-dark-bg-hover: rgba(255 255 255 / 0.25);
+    --aw-color-btn-ghost-dark-bg-hover: ${rgb(c.cream, 0.12)};
     --aw-color-btn-ghost-dark-text-hover: ${rgb(c.cream)};
     --aw-color-btn-ghost-dark-border-hover: ${rgb(c.cream)};`;
 
@@ -177,6 +205,8 @@ function rootVars(b: Brand): string {
     --aw-font-sans: var(${f.body.cssVariable});
     --aw-font-serif: var(${f.heading.cssVariable});
     --aw-font-heading: var(${f.heading.cssVariable});
+    --aw-font-script: var(${f.script.cssVariable});
+    --aw-font-rough: var(${f.rough.cssVariable});
 
     --aw-text-h1: ${t.h1.size};
     --aw-text-h1-mobile: ${t.h1.mobile};
@@ -191,14 +221,27 @@ function rootVars(b: Brand): string {
     --aw-text-h4-mobile: ${t.h4.mobile};
     --aw-leading-h4: ${t.h4.lineHeight};
     --aw-text-body: ${t.body.size};
+    --aw-text-body-mobile: ${t.body.mobile};
     --aw-leading-body: ${t.body.lineHeight};
+    --aw-tracking-body: ${t.body.tracking};
     --aw-text-body-lg: ${t.bodyLg.size};
+    --aw-text-body-lg-mobile: ${t.bodyLg.mobile};
+    --aw-tracking-body-lg: ${t.bodyLg.tracking};
     --aw-text-button: ${t.button.size};
     --aw-text-eyebrow: ${t.eyebrow.size};
+    --aw-text-eyebrow-mobile: ${t.eyebrow.mobile};
     --aw-tracking-eyebrow: ${t.eyebrow.tracking};
     --aw-text-small: ${t.small.size};
     --aw-leading-small: ${t.small.lineHeight};
     --aw-text-caption: ${t.caption.size};
+    --aw-text-label: ${t.label.size};
+    --aw-text-label-mobile: ${t.label.mobile};
+    --aw-tracking-label: ${t.label.tracking};
+    --aw-text-ticker: ${t.ticker.size};
+    --aw-text-ticker-mobile: ${t.ticker.mobile};
+    --aw-text-quote: ${t.quote.size};
+    --aw-text-quote-mobile: ${t.quote.mobile};
+    --aw-leading-quote: ${t.quote.lineHeight};
 
     --aw-color-primary: ${rgb(c.primary)};
     --aw-color-secondary: ${rgb(c.secondary)};
@@ -206,9 +249,10 @@ function rootVars(b: Brand): string {
     --aw-color-accent-hover: ${accentHover};
 
     --aw-color-text-heading: ${heading};
-    --aw-color-text-default: ${muted};
+    --aw-color-text-default: ${heading};
     --aw-color-text-muted: ${muted};
     --aw-color-text-eyebrow: ${rgb(c.eyebrow)};
+    --aw-color-text-page: ${rgb(c.page)};
     --aw-color-bg-page: ${rgb(c.page)};
     --aw-color-bg-page-end: ${rgb(c.white)};
     --aw-color-bg-section-white: ${rgb(c.page)};
@@ -224,6 +268,11 @@ function rootVars(b: Brand): string {
     --aw-color-text-tan-body: ${rgb(c.tanBody)};
     --aw-color-bg-cta-pink: ${rgb(c.ctaPink)};
     --aw-color-text-cta-pink: ${rgb(c.ctaPinkText)};
+    --aw-color-gradient-from: ${rgb(c.gradientFrom)};
+    --aw-color-gradient-to: ${rgb(c.gradientTo)};
+    --aw-color-page-wash-from: ${rgb(c.pageWashFrom)};
+    --aw-color-page-wash-to: ${rgb(c.pageWashTo)};
+    --aw-opacity-motif-page: ${m.pageOpacity};
     --aw-shadow-card-mist: 4px 4px 30px rgb(0 0 0 / 5%), 3px 3px 0 ${rgb(c.cardMist)};
     --aw-shadow-card-pink: 4px 4px 30px rgb(0 0 0 / 5%), 3px 3px 0 ${rgb(c.ctaPink)};
     --aw-color-nav-glass: ${rgb(c.nav, 0.25)};
@@ -253,8 +302,8 @@ function rootVars(b: Brand): string {
 
     ${ctaButtonVars(c)}
 
-    --aw-color-btn-link: ${rgb(c.primary)};
-    --aw-color-btn-link-hover: ${accent};
+    --aw-color-btn-link: ${rgb(c.accent)};
+    --aw-color-btn-link-hover: ${accentHover};
 
     --aw-color-headline-light: var(--aw-color-text-heading);
     --aw-color-headline-dark: ${rgb(c.white)};
@@ -346,6 +395,8 @@ function darkVars(b: Brand): string {
     --aw-font-sans: var(${f.body.cssVariable});
     --aw-font-serif: var(${f.heading.cssVariable});
     --aw-font-heading: var(${f.heading.cssVariable});
+    --aw-font-script: var(${f.script.cssVariable});
+    --aw-font-rough: var(${f.rough.cssVariable});
 
     --aw-color-primary: ${accent};
     --aw-color-secondary: ${rgb(c.accentHover)};
@@ -355,6 +406,7 @@ function darkVars(b: Brand): string {
     --aw-color-text-heading: rgb(247 250 252);
     --aw-color-text-default: rgb(226 232 240);
     --aw-color-text-muted: ${rgb(c.secondary)};
+    --aw-color-text-page: ${rgb(c.page)};
     --aw-color-bg-page: ${rgb(c.navy)};
     --aw-color-bg-page-end: ${rgb(c.navy)};
     --aw-color-bg-section-white: ${rgb(c.navy)};
@@ -376,8 +428,8 @@ function darkVars(b: Brand): string {
     --aw-color-card-border-light: ${rgb(c.accent, 0.5)};
 
     ${ctaButtonVars(c)}
-    --aw-color-btn-link: ${rgb(c.primary)};
-    --aw-color-btn-link-hover: ${accent};
+    --aw-color-btn-link: ${rgb(c.accent)};
+    --aw-color-btn-link-hover: ${rgb(c.accentHover)};
 
     --aw-color-motif-hero: var(--aw-color-accent);
     --aw-color-motif-dark: var(--aw-color-accent);
@@ -414,14 +466,43 @@ export function brandStylesheet(b: Brand = brand): string {
 }`;
 }
 
-/** Astro Fonts API entries — used by astro.config.ts. */
+/** Astro Fonts API entries — used by astro.config.ts and Layout.astro. */
 export function brandFontConfig() {
-  return [brand.fonts.heading, brand.fonts.body].map((font) => ({
-    name: font.name,
-    cssVariable: font.cssVariable,
-    weights: font.weights,
-    styles: font.styles,
-    subsets: font.subsets,
-    fallbacks: font.fallbacks,
-  }));
+  const { heading, body, script, rough } = brand.fonts;
+  return [
+    {
+      name: heading.name,
+      cssVariable: heading.cssVariable,
+      provider: heading.provider,
+      fallbacks: heading.fallbacks,
+      preload: true,
+      options: { variants: [{ weight: 400, style: 'normal' as const, src: heading.src }] },
+    },
+    {
+      name: body.name,
+      cssVariable: body.cssVariable,
+      provider: body.provider,
+      weights: body.weights,
+      styles: body.styles,
+      subsets: body.subsets,
+      fallbacks: body.fallbacks,
+      preload: true,
+    },
+    {
+      name: script.name,
+      cssVariable: script.cssVariable,
+      provider: script.provider,
+      fallbacks: script.fallbacks,
+      preload: true,
+      options: { variants: [{ weight: 400, style: 'normal' as const, src: script.src }] },
+    },
+    {
+      name: rough.name,
+      cssVariable: rough.cssVariable,
+      provider: rough.provider,
+      fallbacks: rough.fallbacks,
+      preload: false,
+      options: { variants: [{ weight: 400, style: 'normal' as const, src: rough.src }] },
+    },
+  ];
 }

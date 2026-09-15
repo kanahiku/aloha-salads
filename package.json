@@ -1,7 +1,7 @@
 {
-  "name": "agency-web",
+  "name": "aloha-salads",
   "version": "1.0.0",
-  "description": "Generic Astro website starter. Implement pages from Figma MCP.",
+  "description": "Aloha Salads website. Island-grown produce, never-frozen local ahi, six spots on O‘ahu.",
   "type": "module",
   "private": true,
   "engines": {

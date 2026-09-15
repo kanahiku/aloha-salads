@@ -1,0 +1,101 @@
+---
+/**
+ * LocalSourcing — Homepage 59:106.
+ * Transparent band so the page gradient + leaf motif show through.
+ * Inner intro panel and fact cards stay filled. One widget for the whole site.
+ */
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+import Button from '~/components/ui/Button.astro';
+import basketIcon from '~/assets/icons/Shopping-Basket-Like--Streamline-Freehand.svg?url';
+
+export interface SourcingFact {
+  title: string;
+  description: string;
+}
+
+export interface Props {
+  eyebrow?: string;
+  title?: string;
+  subtitle?: string;
+  ctaText?: string;
+  ctaHref?: string;
+  facts?: SourcingFact[];
+  id?: string;
+}
+
+const {
+  eyebrow = 'Our ingredients & local sourcing',
+  title = 'Sourced close to home, on purpose.',
+  subtitle = "We've bought from local farmers and fishermen since day one in Kailua. Here's what that actually means on your plate — in specifics, not adjectives.",
+  ctaText = 'See where our food comes from',
+  ctaHref = '/about',
+  facts = [
+    {
+      title: 'Never-frozen ahi',
+      description: 'Fresh, local ahi — delivered, not frozen, not shipped in from far away.',
+    },
+    {
+      title: 'Island-grown produce',
+      description: 'Greens and vegetables from local Hawai‘i farms, in season whenever we can.',
+    },
+    {
+      title: 'Māmaki mint tea',
+      description: 'Brewed from māmaki grown on Hawai‘i Island — a true taste of the islands.',
+    },
+    {
+      title: '100% compostable',
+      description: 'Every piece of our packaging is eco-friendly and fully compostable. All of it.',
+    },
+  ],
+  id,
+} = Astro.props;
+---
+
+<section
+  {...id ? { id } : {}}
+  class="not-prose relative w-full"
+>
+  <div class="mx-auto flex w-full max-w-container flex-col px-5 pb-10 pt-16 sm:px-8 md:px-16 md:pb-[72px] md:pt-[120px]">
+    <div class="flex w-full flex-col md:mb-[-42px] md:px-8">
+      <div class="flex w-full flex-col bg-section-grey px-6 pb-10 pt-10 backdrop-blur-sm md:px-16 md:pb-[92px] md:pr-[100px] md:pt-16">
+        <div class="flex w-full flex-col items-start gap-8 md:flex-row md:gap-16">
+          <div class="flex min-w-0 flex-1 flex-col items-start gap-6">
+            {eyebrow && (
+              <Heading variant="eyebrow" color="inherit" class="text-heading mix-blend-overlay opacity-80">
+                {eyebrow}
+              </Heading>
+            )}
+            {title && <Heading variant="h2">{title}</Heading>}
+          </div>
+          <div class="flex min-w-0 flex-1 flex-col items-start gap-8">
+            {subtitle && (
+              <Text variant="body-lg" color="default">{subtitle}</Text>
+            )}
+            {ctaText && (
+              <Button variant="primary" text={ctaText} href={ctaHref} hideNote={true} />
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative z-[1] grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        facts.map((fact) => (
+          <article class="flex h-full flex-col items-start gap-3 border-8 border-section-grey bg-page p-6">
+            <div class="flex w-full items-center gap-3">
+              <div
+                class="size-12 shrink-0 bg-accent"
+                style={`-webkit-mask-image: url('${basketIcon}'); mask-image: url('${basketIcon}'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
+                aria-hidden="true"
+              ></div>
+              <Heading variant="h3" class="min-w-0 flex-1">{fact.title}</Heading>
+            </div>
+            <Text color="default">{fact.description}</Text>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

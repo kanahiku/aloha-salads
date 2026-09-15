@@ -21,6 +21,7 @@ import { ClientRouter } from 'astro:transitions';
 
 import type { MetaData as MetaDataType } from '~/types';
 import { brandFontConfig } from '~/brand';
+import PageBg from '~/components/ui/PageBg.astro';
 
 export interface Props {
   metadata?: MetaDataType;
@@ -32,12 +33,12 @@ const fonts = brandFontConfig();
 ---
 
 <!doctype html>
-<html lang={language} dir={textDirection} class="min-h-dvh bg-page-end">
+<html lang={language} dir={textDirection} class="min-h-dvh bg-wash-end">
   <head>
     <GoogleTagManager placement="head" />
     <CommonMeta />
     <Favicons />
-    {fonts.map((font) => <Font cssVariable={font.cssVariable} preload />)}
+    {fonts.map((font) => <Font cssVariable={font.cssVariable} preload={font.preload} />)}
     <CustomStyles />
     <ApplyColorMode />
     <Metadata {...metadata} />
@@ -51,7 +52,8 @@ const fonts = brandFontConfig();
     <ClientRouter fallback="swap" />
   </head>
 
-  <body class="antialiased text-default bg-page-wash min-h-dvh font-sans font-normal text-body">
+  <body class="relative isolate antialiased text-default min-h-dvh font-sans font-normal text-body">
+    <PageBg />
     <GoogleTagManager placement="body" />
     <slot />
 

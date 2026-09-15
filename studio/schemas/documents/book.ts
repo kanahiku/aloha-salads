@@ -122,8 +122,8 @@ export const book = defineType({
       options: {
         list: [
           { title: 'Textbook Series', value: 'textbook' },
-          { title: 'Rebellious Aging Guidebook Series', value: 'guidebook' },
-          { title: 'Bargaining with Aging Series', value: 'bargaining' },
+          { title: 'Guidebook Series', value: 'guidebook' },
+          { title: 'Featured Series', value: 'bargaining' },
         ],
         layout: 'radio',
       },

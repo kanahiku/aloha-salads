@@ -1,10 +1,14 @@
 import { createClient } from '@sanity/client';
 
+const projectId = import.meta.env.SANITY_PROJECT_ID ?? 'sys9vj6r';
+const dataset = import.meta.env.SANITY_DATASET ?? 'production';
+const token = import.meta.env.SANITY_API_TOKEN || undefined;
+
 export const sanityClient = createClient({
-  projectId: import.meta.env.SANITY_PROJECT_ID ?? '',
-  dataset: import.meta.env.SANITY_DATASET ?? 'production',
-  apiVersion: '2024-01-01',
+  projectId,
+  dataset,
+  apiVersion: '2026-09-15',
   useCdn: false,
   perspective: 'published',
-  token: import.meta.env.SANITY_API_TOKEN,
+  ...(token ? { token } : {}),
 });

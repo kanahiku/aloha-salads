@@ -8,9 +8,9 @@ import { site } from '~/config/site';
  * Replace fields when setting up a new site.
  */
 export const business: BusinessSchema = {
-  idFragment: 'localbusiness',
+  idFragment: 'restaurant',
   name: CONTACT.businessName,
-  businessType: 'Organization',
+  businessType: 'Restaurant',
   telephone: CONTACT.phone.schema,
   email: CONTACT.email,
   priceRange: '$$',

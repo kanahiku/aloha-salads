@@ -5,7 +5,7 @@
  * and title (photo + centered h1).
  *
  * This is the single hero widget for the whole site. Do NOT fork per page.
- * Nav slot accepts <Header embedded /> — the same glass-pill nav used on every page.
+ * Overlay (59:1341) sits below PageLayout chrome — do not embed Header on the homepage.
  *
  * Atoms used: Heading, Text, CTAActions.
  */
@@ -14,7 +14,6 @@ import ArtDirectedImage from '~/components/ui/ArtDirectedImage.astro';
 import CTAActions from '~/components/ui/CTAActions.astro';
 import Text from '~/components/ui/Text.astro';
 import Heading from '~/components/ui/Heading.astro';
-import overlayImage from '~/assets/images/home-hero.png';
 import type { ContentImage } from '~/lib/content/types';
 
 import type { Hero as Props } from '~/types';
@@ -42,6 +41,7 @@ const isTitle = variant === 'title';
 const isPage = variant === 'page';
 const isSplitDark = variant === 'split-dark';
 const isOverlay = variant === 'overlay' || isWords || isTitle;
+const isPhotoOverlay = variant === 'overlay';
 const isChrome = isOverlay || isPage || isSplitDark;
 const hasStats = variant === 'overlay' && Astro.slots.has('stats');
 const hasNav = Astro.slots.has('nav');
@@ -85,12 +85,13 @@ const isLocalPageImage =
   isChrome ? (
     <section
       class:list={[
-        'relative not-prose overflow-hidden rounded-b-hero flex flex-col w-full',
+        'relative not-prose overflow-hidden flex flex-col w-full',
+        !isPhotoOverlay && 'rounded-b-hero',
         isPage && 'bg-gradient-to-t from-transparent to-section-grey',
         isWords && 'min-h-[520px] md:h-[579px] md:min-h-[579px]',
         isTitle && 'min-h-[320px] md:h-[450px] md:min-h-[450px]',
         isPage && 'min-h-[480px] md:min-h-[629px]',
-        isOverlay && !isWords && !isTitle && 'min-h-[560px] md:min-h-[800px]',
+        isPhotoOverlay && 'min-h-[520px] md:h-[760px]',
         isSplitDark && 'bg-section-dark min-h-[560px] md:min-h-[740px]',
       ]}
       {...id ? { id } : {}}
@@ -129,23 +130,29 @@ const isLocalPageImage =
             layout="cover"
             format="webp"
           />
-        ) : isWords || isTitle ? (
+        ) : (
           /* TODO: replace with <Image> when asset is ready */
           <div
             class="absolute inset-0 bg-section-grey"
-            style={isTitle ? 'aspect-ratio: 1440 / 450;' : 'aspect-ratio: 1440 / 579;'}
+            style={
+              isTitle
+                ? 'aspect-ratio: 1440 / 450;'
+                : isWords
+                  ? 'aspect-ratio: 1440 / 579;'
+                  : 'aspect-ratio: 1440 / 760;'
+            }
             aria-hidden="true"
           />
-        ) : !bg ? (
-          <img
-            src={overlayImage.src}
-            alt=""
-            class="absolute inset-0 h-full w-full object-cover object-center"
-            loading="eager"
-            fetchpriority="high"
-          />
-        ) : null}
-        {isWords || isTitle ? (
+        )}
+        {isPhotoOverlay ? (
+          <>
+            <div class="absolute inset-0 z-[1] bg-black/60 md:bg-transparent md:bg-gradient-to-r md:from-black/60 md:to-black/0" />
+            <div
+              class="hero-progressive-blur absolute inset-y-0 left-0 z-[1] hidden w-1/2 backdrop-blur-[100px] md:block"
+              aria-hidden="true"
+            />
+          </>
+        ) : isWords || isTitle ? (
           <div class="absolute inset-0 z-[1] bg-heading/10" />
         ) : (
           <div class="absolute inset-0 bg-gradient-to-b from-transparent from-[85.25%] to-page/80 z-[1]" />
@@ -155,8 +162,11 @@ const isLocalPageImage =
 
       <div
         class:list={[
-          'relative z-[2] flex flex-1 flex-col w-full max-w-container mx-auto px-5 py-6 sm:px-8 md:px-16 lg:px-[120px] lg:py-8',
-          isSplitDark ? 'gap-16' : 'gap-2.5',
+          'relative z-[2] flex flex-1 flex-col w-full mx-auto max-w-container',
+          isPhotoOverlay
+            ? 'px-5 py-10 sm:px-8 md:px-16 md:py-16'
+            : 'px-5 py-6 sm:px-8 md:px-16 lg:py-8',
+          isSplitDark ? 'gap-16' : isPhotoOverlay ? 'gap-0' : 'gap-2.5',
         ]}
       >
         <slot name="nav" />
@@ -206,7 +216,7 @@ const isLocalPageImage =
               {title && (
                 <h1
                   class:list={[
-                    'font-heading text-h1 shrink-0 overflow-visible bg-[linear-gradient(var(--aw-color-bg-section-dark)_5%,var(--aw-color-primary)_97%)] bg-clip-text font-normal leading-[1.25] text-transparent [text-box-edge:cap_text] [text-box-trim:trim-start]',
+                    'font-rough text-h1 shrink-0 overflow-visible bg-[linear-gradient(var(--aw-color-bg-section-dark)_5%,var(--aw-color-primary)_97%)] bg-clip-text font-normal leading-[1.25] text-transparent [text-box-edge:cap_text] [text-box-trim:trim-start]',
                     stacked
                       ? 'w-full'
                       : typeof title === 'string' && /<br\s*\/?>/i.test(title)
@@ -256,7 +266,7 @@ const isLocalPageImage =
             )}
             {title && (
               <h1
-                class="font-heading text-h1 font-normal leading-none text-white"
+                class="font-rough text-h1 font-normal leading-none text-white"
                 set:html={title}
               />
             )}
@@ -296,33 +306,27 @@ const isLocalPageImage =
           </div>
         </div>
         ) : (
-        <div class="flex flex-1 flex-col justify-center gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-16 min-h-0">
-          <div class="flex w-full flex-col items-start gap-8 lg:w-auto lg:gap-16 shrink-0">
+        <div class="flex flex-1 flex-col items-start justify-center gap-16 min-h-0">
+          <div class="flex w-full max-w-[604px] flex-col items-start gap-8">
             {tagline && (
-              <Heading variant="eyebrow" color="white" html={tagline} />
+              <Heading variant="eyebrow" color="white" class="mix-blend-overlay" html={tagline} />
             )}
             {title && (
-              <h1
-                class="font-heading text-h1 font-normal text-heading leading-none [text-shadow:0_0_40px_var(--aw-color-bg-page)]"
-                set:html={title}
-              />
+              <Heading variant="h1" color="white" html={title} />
             )}
-            <div class="flex w-full flex-col items-start gap-6">
-              {actions &&
-                (Array.isArray(actions) ? (
-                  <CTAActions actions={actions} noteTone="onDark" />
-                ) : (
-                  <Fragment set:html={actions} />
-                ))}
-              {content && (
-                <Text variant="body-lg" color="white" class="max-w-[434px] font-light [text-shadow:0_1px_16px_rgb(0_0_0_/_0.45)]" html={content} />
-              )}
-            </div>
+            {subtitle && (
+              <Text variant="body-lg" color="inherit" class="text-page" html={subtitle} />
+            )}
+            {content && (
+              <Text variant="body-lg" color="inherit" class="text-page" html={content} />
+            )}
           </div>
-
-          {subtitle && (
-            <Text variant="body-lg" color="white" class="max-w-[418px] lg:shrink-0 [text-shadow:0_1px_16px_rgb(0_0_0_/_0.45)]" html={subtitle} />
-          )}
+          {actions &&
+            (Array.isArray(actions) ? (
+              <CTAActions actions={actions} noteTone="onDark" />
+            ) : (
+              <Fragment set:html={actions} />
+            ))}
         </div>
         )}
       </div>
@@ -422,3 +426,10 @@ const isLocalPageImage =
     </section>
   )
 }
+
+<style>
+  .hero-progressive-blur {
+    -webkit-mask-image: linear-gradient(to right, black 0%, transparent 100%);
+    mask-image: linear-gradient(to right, black 0%, transparent 100%);
+  }
+</style>

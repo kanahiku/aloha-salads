@@ -1,37 +1,17 @@
 ---
 /**
- * Site footer — same on every page.
+ * Site footer — Homepage 59:577 (stamp + columns) and 66:833 (wordmark).
+ * Same widget on every page. Do NOT fork a HomeFooter.
  *
- * Structure (fixed, from Figma):
- *   full-bleed photo background
- *   └─ max-w-container content column
- *      ├─ CTA card (eyebrow + heading + body + primary button)
- *      └─ logo + tagline + legal links | nav columns
- *
- * Copy lives in src/config/cta.ts.
- * Background image: src/assets/images/footer-bg.png.
- * Do NOT fork this component per page.
  */
-import Logo from '~/components/Logo.astro';
-import Button from '~/components/ui/Button.astro';
-import Heading from '~/components/ui/Heading.astro';
-import Text from '~/components/ui/Text.astro';
+import alohaWordsMotif from '~/assets/images/aloha-words-motif.svg?url';
+import circleMotif from '~/assets/images/circle-motif.svg?url';
 import { getHomePermalink } from '~/utils/permalinks';
-import { site } from '~/config/site';
-import {
-  FOOTER_CTA_BODY,
-  FOOTER_CTA_EYEBROW,
-  FOOTER_CTA_HREF,
-  FOOTER_CTA_LABEL,
-  FOOTER_CTA_TITLE,
-} from '~/config/cta';
-import footerBg from '~/assets/images/footer-bg.png';
 
 interface Link {
   text?: string;
   href?: string;
   ariaLabel?: string;
-  icon?: string;
 }
 
 interface Links {
@@ -41,81 +21,43 @@ interface Links {
 
 export interface Props {
   links: Array<Links>;
-  secondaryLinks: Array<Link>;
+  secondaryLinks?: Array<Link>;
   socialLinks?: Array<Link>;
   footNote?: string;
   theme?: string;
   tagline?: string;
 }
 
-const {
-  secondaryLinks = [],
-  links = [],
-  tagline = site.footerTagline,
-} = Astro.props;
+const { links = [] } = Astro.props;
 ---
 
-<footer class="relative not-prose w-full overflow-hidden">
-  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-    <img
-      src={footerBg.src}
-      alt=""
-      width={footerBg.width}
-      height={footerBg.height}
-      class="absolute inset-0 h-full w-full object-cover object-center"
-      loading="lazy"
-      decoding="async"
-    />
-    <div class="absolute inset-0 bg-gradient-to-b from-heading/20 to-heading/50"></div>
-  </div>
-
+<footer class="relative not-prose w-full bg-card">
   <div
-    class="relative mx-auto flex w-full max-w-container flex-col gap-10 px-5 py-10 sm:px-8 md:gap-16 md:px-16 md:py-16 lg:px-[120px]"
+    class="mx-auto flex w-full max-w-container flex-col px-5 pt-16 sm:px-8 md:px-16"
   >
-    <div
-      class="flex w-full flex-col items-start gap-8 rounded-[var(--aw-radius-xl)] bg-gradient-to-r from-cta to-cta-end p-8 md:flex-row md:gap-16 md:p-16"
-    >
-      <div class="flex shrink-0 flex-col items-start gap-4">
-        <Heading variant="eyebrow" color="inherit" class="text-tan opacity-50">{FOOTER_CTA_EYEBROW}</Heading>
-        <Heading variant="h2" color="inherit" class="text-tan" html={FOOTER_CTA_TITLE} />
-      </div>
-      <div class="flex min-w-0 flex-1 flex-col items-start justify-center gap-8">
-        <Text color="inherit" class="text-tan-body" html={FOOTER_CTA_BODY} />
-        <Button variant="secondary" text={FOOTER_CTA_LABEL} href={FOOTER_CTA_HREF} class="w-full" />
-      </div>
-    </div>
+    <div class="flex w-full flex-col items-start justify-between gap-12 md:flex-row md:items-center">
+      <a href={getHomePermalink()} class="shrink-0" aria-label="Aloha Salads">
+        <img
+          src={circleMotif}
+          alt=""
+          class="block h-auto"
+          style="width: min(242px, 70vw);"
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
 
-    <div class="flex w-full flex-col items-start justify-between gap-10 md:flex-row md:gap-16">
-      <div class="flex w-full max-w-[243px] shrink-0 flex-col items-start gap-4">
-        <a class="inline-block" href={getHomePermalink()}>
-          <Logo class="h-[95px] w-[132px] max-w-none mix-blend-soft-light" width={132} height={95} />
-        </a>
-        <Text variant="small" color="white">{tagline}</Text>
-        {
-          secondaryLinks.length > 0 && (
-            <p class="text-small font-sans text-white/50">
-              {secondaryLinks.map(({ text, href }, index) => (
-                <>
-                  {index !== 0 ? ' · ' : ''}
-                  <a class="hover:text-white transition duration-150 ease-in-out" href={href} set:html={text} />
-                </>
-              ))}
-            </p>
-          )
-        }
-      </div>
-
-      <nav class="flex flex-wrap items-start gap-10 text-white sm:gap-16 lg:flex-nowrap" aria-label="Footer">
+      <nav class="grid w-full grid-cols-2 gap-x-8 gap-y-10 sm:gap-x-16 md:w-auto md:grid-cols-4" aria-label="Footer">
         {
           links.map(({ title, links: items }) => (
-            <div class="flex flex-col items-start gap-4">
-              {title && <Heading variant="eyebrow" color="white">{title}</Heading>}
-              {items && Array.isArray(items) && items.length > 0 && (
-                <ul class="flex flex-col items-start gap-2 text-small font-sans font-medium">
+            <div class="flex min-w-0 flex-col items-start gap-4">
+              {title && <p class="type-label text-accent">{title}</p>}
+              {items && items.length > 0 && (
+                <ul class="flex flex-col items-start gap-2">
                   {items.map(({ text, href, ariaLabel }) => (
                     <li>
                       <a
-                        class="text-white hover:text-white/80 transition duration-150 ease-in-out"
+                        class="text-small text-heading hover:text-accent"
                         href={href}
                         aria-label={ariaLabel}
                       >
@@ -130,5 +72,15 @@ const {
         }
       </nav>
     </div>
+  </div>
+
+  <div class="mx-auto w-full max-w-container pt-16">
+    <img
+      src={alohaWordsMotif}
+      alt="Aloha Salads"
+      class="block h-auto w-full"
+      loading="lazy"
+      decoding="async"
+    />
   </div>
 </footer>

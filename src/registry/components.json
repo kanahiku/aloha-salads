@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "name": "agency-web-patterns",
+  "name": "aloha-salads-patterns",
   "description": "Inventory of reusable widgets. Restyle these after brand.ts and atoms; do not fork per page.",
   "sourceOfTruth": {
     "tokens": "src/brand.ts",
@@ -19,7 +19,7 @@
         "variant": "primary | ghost | secondary | link",
         "tone": "dark (default) | light  — only applies when variant=ghost"
       },
-      "notes": "primary = main conversion action. ghost tone=dark = white-border glass for hero/photo/dark sections. ghost tone=light = dark-border for light/grey sections. Backward-compat aliases ghost-dark and ghost-light still resolve correctly for data-driven action arrays."
+      "notes": "Style Guide 110:2377 button = Norca-Rough 14px. primary = square hibiscus fill, cream type. ghost tone=dark = 2px cream outline on photos. ghost tone=light = 2px cacao outline on cream."
     },
     {
       "id": "A-03",
@@ -34,7 +34,7 @@
         "as": "optional semantic-element override",
         "html": "string (set:html shorthand)"
       },
-      "notes": "Scale from brand.ts: h1=100px, h2=52px, h3/h4=36px, eyebrow=14px/0.06em/uppercase. variant='eyebrow' color='white' renders at 60% opacity. Use color='inherit' + class= for special colours (e.g. class='text-tan' on the footer CTA card)."
+      "notes": "Style Guide 110:2377: h1=72 / h2=52 / h3=26 Norca-Rough. h4=24px Norca (extra). tag/eyebrow=16px Wreck Script. color=white is text/contrast cream."
     },
     {
       "id": "A-05",
@@ -66,7 +66,7 @@
         "as": "optional semantic-element override",
         "html": "string (set:html shorthand)"
       },
-      "notes": "Scale from brand.ts: body-lg=16px, body=14px, small=12px, caption=11px, button=var(--aw-text-button)/font-medium. Default variant=body, color=muted. Use variant='button' for CTA label text inside custom controls."
+      "notes": "Style Guide 110:2377: body-lg=16 / body=14 / small=12 Host Grotesk, tracking -1%. button=14px Norca-Rough. color=white is text/contrast cream. Default color is muted (cacao); color=default is text/default cacao-brown."
     }
   ],
   "patterns": [
@@ -79,7 +79,7 @@
       "import": "~/components/widgets/Hero2.astro",
       "props": { "variant": "overlay | split | words | page | title" },
       "slots": ["title", "subtitle", "content", "image", "bg", "nav"],
-      "notes": "Overlay: full-bleed photo, glass nav slot, headline + CTAs left, lede right. Words: full-bleed photo, glass nav, three positioned h1 words (Figma 62:3 Peak / Slope / Floor). Page: light section-grey→transparent gradient, glass nav, h1 left + 28px Fraunces lede right (Figma 64:829 / 176:115). withImage adds a 1200×400 rx-32 band under the title/lede. Title: photo + centered h1 (Figma 64:935 Chapters)."
+      "notes": "Overlay (Homepage 59:1341): 760px full-bleed, grey placeholder until the photo is ready, left-to-right black/60 gradient, 64px pad, left column max-w 604 (eyebrow → h1 → body-lg → CTAs). Words/page/title variants unchanged. Do not embed Header in the home hero — PageLayout chrome sits above."
     },
     {
       "id": "P-02",
@@ -189,11 +189,11 @@
     {
       "id": "P-17",
       "name": "Site footer",
-      "figmaNames": ["Footer", "Frame 48"],
-      "shape": "photo background + tan assessment card + logo + link columns",
+      "figmaNames": ["Footer", "Frame 1707478621", "Frame 1707478619"],
+      "shape": "cream band: circular stamp + 4 Norca-Rough columns, then full-bleed wordmark",
       "component": "Footer",
       "import": "~/components/widgets/Footer.astro",
-      "notes": "Figma 2:1508. Restyle this widget; do not fork a HomeFooter."
+      "notes": "Homepage 59:577 (stamp + menu/catering/locations/about) and 66:833 (ALOHA SALADS wordmark). Grey placeholders for both images. Do not fork a HomeFooter."
     },
     {
       "id": "P-13",
@@ -579,6 +579,105 @@
         "disclosure": "small disclosure copy"
       },
       "notes": "Figma nodes 176:243 (page hero via Hero2 variant=page) and 176:259 (this widget). Content always passed from the page file."
+    },
+    {
+      "id": "P-42",
+      "name": "Brand ticker bar",
+      "figmaNames": ["Brand Bar", "Frame 24", "Healthy Fresh Local"],
+      "shape": "Full-bleed seaweed strip. Looping icon + Wreck Script words.",
+      "component": "BrandBar",
+      "import": "~/components/widgets/BrandBar.astro",
+      "props": {
+        "items": "Array<{ text, tilt? }> — default Healthy / Fresh / Local"
+      },
+      "notes": "Homepage 66:2. 32px Wreck Script (type-ticker), cream type, 42×42 grey icon placeholders, CSS marquee. Do not fork per page."
+    },
+    {
+      "id": "P-43",
+      "name": "Featured dishes",
+      "figmaNames": ["Featured dishes", "Frame 2", "The ones people come back for."],
+      "shape": "Header row (eyebrow + h2 + lede | primary CTA) + 3 photo tiles with overlay titles.",
+      "component": "FeaturedDishes",
+      "import": "~/components/widgets/FeaturedDishes.astro",
+      "props": {
+        "eyebrow": "Wreck Script label",
+        "title": "h2",
+        "subtitle": "body-lg lede",
+        "ctaText": "primary button label",
+        "ctaHref": "button href",
+        "dishes": "Array<{ title, description }> — 3 overlay photo cards"
+      },
+      "notes": "Homepage 59:66. Cream bg-page, 64px pad, 120/64 vertical. Cards 457×514 grey placeholders, black/30 + blur overlay, cream h3 + body. Decorative leaf vectors omitted (image pass). Do not fork per page."
+    },
+    {
+      "id": "P-44",
+      "name": "Local sourcing",
+      "figmaNames": ["Our ingredients & local sourcing", "Sourced close to home, on purpose.", "Frame 35"],
+      "shape": "Seaweed band. Inset intro panel (eyebrow+h2 | body-lg+primary CTA) with four overlapping 8px-border fact cards (icon placeholder + h3 + body).",
+      "component": "LocalSourcing",
+      "import": "~/components/widgets/LocalSourcing.astro",
+      "props": {
+        "eyebrow": "Wreck Script label (mix-blend-overlay)",
+        "title": "h2",
+        "subtitle": "body-lg lede",
+        "ctaText": "primary button label",
+        "ctaHref": "button href",
+        "facts": "Array<{ title, description }> — 4 icon+title cards"
+      },
+      "notes": "Homepage 59:106. Transparent section so the page gradient + leaf motif show through. Cream fact cards stay filled. Cards overlap the intro by 42px. Basket icons are grey placeholders until the image pass. Do not fork per page."
+    },
+    {
+      "id": "P-45",
+      "name": "Locations",
+      "figmaNames": ["Six spots across O'ahu", "Locations section", "59:155"],
+      "shape": "bg-page cream. 2-col: left = eyebrow+h2+body-lg+primary CTA then 2×2 blueberry location cards (name+address row + blueberry-light view-store button with pin icon) / right = square photo placeholder.",
+      "component": "Locations",
+      "import": "~/components/widgets/Locations.astro",
+      "props": {
+        "eyebrow": "Wreck Script label",
+        "title": "h2",
+        "subtitle": "body-lg lede",
+        "ctaText": "primary button label",
+        "ctaHref": "button href",
+        "locations": "Location[] — { name, shopName, addressLine1, addressLine2, href? }",
+        "id": "section anchor"
+      },
+      "notes": "Homepage 59:155. Location card bg is bg-section-dark (blueberry #798991). View store button bg is bg-card-dark (blueberry-light #8FA1AB) with inline pin SVG icon. Right column is a square grey placeholder until photo asset is ready."
+    },
+    {
+      "id": "P-46",
+      "name": "Salad Builder",
+      "figmaNames": ["Build your own salad, your way.", "Design Your Own Salad", "59:1868"],
+      "shape": "Transparent outer. Inner gradient band from-transparent from-[24%] to-page/90. 2-col: left = eyebrow+h2+body-lg+primary CTA / right = salad bowl illustration placeholder (562×624) with 3 floating bg-cta tags (Healthy -6.74°, Local, Fresh +8.09°) each with icon placeholder + 32px Wreck Script cream text.",
+      "component": "SaladBuilder",
+      "import": "~/components/widgets/SaladBuilder.astro",
+      "props": {
+        "eyebrow": "Wreck Script label (text-eyebrow/80)",
+        "title": "h2",
+        "subtitle": "body-lg lede",
+        "ctaText": "primary button label",
+        "ctaHref": "button href",
+        "id": "section anchor"
+      },
+      "notes": "Homepage 59:1868. Section is transparent — page gradient + leaf motif show through. Salad bowl is a grey placeholder until illustration asset is ready. Floating tags use bg-cta (accent/green-light #9B9D47). Icons inside tags are grey placeholders (Streamline Freehand icons from Figma). Do not fork per page."
+    },
+    {
+      "id": "P-47",
+      "name": "Our Story",
+      "figmaNames": ["Kailua roots, island-wide.", "Our story", "59:1765"],
+      "shape": "Centered 1440px dark blueberry panel with 20px blueberry border and subtle leaf motif. 2-col: left = eyebrow+h2+body-lg + staggered cream action cards; right = cream polaroid photo placeholder with primary CTA below image.",
+      "component": "OurStory",
+      "import": "~/components/widgets/OurStory.astro",
+      "props": {
+        "eyebrow": "Wreck Script label, mix-blend-overlay on dark panel",
+        "title": "h2 cream",
+        "subtitle": "body-lg cream",
+        "ctaText": "primary button label",
+        "ctaHref": "button href",
+        "actions": "StoryAction[] — { title, description, iconLabel }",
+        "id": "section anchor"
+      },
+      "notes": "Homepage 59:1765. Uses MotifLayer over bg-section-dark. Action cards are bg-page with border-card-dark. Photo and Streamline icons are placeholders until the image pass."
     }
   ]
 }

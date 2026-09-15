@@ -58,15 +58,13 @@ const MAX = { name: 120, email: 254, phone: 40, message: 5000 };
 const MAX_PDF_B64 = 3_500_000;
 const DEFAULT_RESEND_DAILY_LIMIT = 20;
 const PDF_KIND = 'checkup-pdf';
-const DEFAULT_PDF_FILENAME = 'rebellious-aging-check-up.pdf';
+const DEFAULT_PDF_FILENAME = 'aloha-salads-order.pdf';
 
 /** Always allowed so local + Vercel preview/prod work before a custom domain exists. */
 const DEFAULT_ORIGIN_PATTERNS = [
   'http://localhost:*',
   'http://127.0.0.1:*',
   'https://*.vercel.app',
-  'https://roofinspectionhawaii.com',
-  'https://www.roofinspectionhawaii.com',
 ];
 
 export default {

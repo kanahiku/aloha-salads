@@ -13,71 +13,32 @@ Never update one file and leave the others stale.
 | File | What it is | How to update |
 |---|---|---|
 | `public/favicon.svg` | Primary icon — used by all modern browsers | Edit SVG directly |
-| `public/favicon.ico` | Fallback for legacy browsers | Regenerate via script (see below) |
-| `public/apple-touch-icon.png` | iOS home-screen / Safari pinned tab — 180 × 180 | Regenerate via script |
-| `src/assets/images/og-image.jpg` | Open Graph / Twitter card — 1200 × 630 | Regenerate via script |
+| `public/favicon.ico` | Fallback for legacy browsers | `node scripts/gen-icons.mjs` |
+| `public/apple-touch-icon.png` | iOS home-screen / Safari pinned tab — 180 × 180 | `node scripts/gen-icons.mjs` |
+| `src/assets/images/og-image.jpg` | Open Graph / Twitter card — 1200 × 630 | `node scripts/gen-icons.mjs` |
 | `src/config.yaml` → `metadata.openGraph.images[0].url` | Points to the OG image | Update path if filename changes |
 | `src/config.yaml` → `metadata.title.default` / `template` | Site name in `<title>` tags | Update to match client |
 | `src/components/Favicons.astro` → `mask-icon color` | Safari pinned-tab tint | Set to brand accent (`brand.colors.accent`) |
 
 ## Source of truth for the icon shape
 
-The SVG source is **always based on the site logo** at `src/assets/images/logo.svg`.
-Strip any `mix-blend-mode` / opacity effects — the icon must read on a solid background.
+Figma node `1:226` (Aloha Salads file). Compound cream badge with hibiscus + **AS** as even-odd holes. Local copy: `public/favicon.svg`.
 
-The `favicon.svg` structure:
+Sit the path on `brand.colors.navy` (`#3C2718`) so the cut-outs read as cacao, not as transparent holes. Do not leave the Figma MCP localhost SVG URL in production files.
 
 ```xml
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-3 -3 49 37" width="32" height="32">
-  <!-- dark brand background -->
-  <rect x="-3" y="-3" width="49" height="37" rx="6" fill="[brand.colors.sectionDark]"/>
-  <!-- logo paths in white — copied from logo.svg, mix-blend-mode removed -->
-  <path d="…" fill="white"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 92.0174 92.0174" width="32" height="32">
+  <rect width="92.0174" height="92.0174" fill="[brand.colors.navy]"/>
+  <path fill="[brand.colors.page]" fill-rule="evenodd" d="…"/>
 </svg>
 ```
 
 ## Regeneration script
 
-Run this **once** after changing the SVG. It uses `sharp` (already a project dependency).
+`scripts/gen-icons.mjs` rasterizes `public/favicon.svg` with `sharp`. Run after changing the SVG or palette:
 
-```js
-// scripts/gen-icons.mjs
-import sharp from 'sharp';
-import { readFileSync } from 'fs';
-
-const BRAND_DARK = '#1B2A32';  // brand.colors.sectionDark
-
-// Simple monogram SVG as fallback if the logo SVG has complex paths
-// that librsvg can't parse (it rejects certain control characters).
-const monogramSvg = (size, rx) => Buffer.from(
-  `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">` +
-  `<rect width="${size}" height="${size}" rx="${rx}" fill="${BRAND_DARK}"/>` +
-  `<text x="${size * 0.5}" y="${size * 0.72}" text-anchor="middle" ` +
-  `font-family="Georgia,serif" font-size="${Math.round(size * 0.49)}" fill="white">RA</text>` +
-  `</svg>`
-);
-
-const ogSvg = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
-  <rect width="1200" height="630" fill="${BRAND_DARK}"/>
-  <rect x="70" y="60" width="200" height="260" rx="20" fill="#2C4A5B"/>
-  <text x="170" y="228" text-anchor="middle" font-family="Georgia,serif" font-size="130" fill="white">RA</text>
-  <rect x="308" y="90" width="3" height="200" fill="#567F9B" opacity="0.5"/>
-  <text x="340" y="160" font-family="Georgia,serif" font-size="72" fill="white">Rebellious Aging</text>
-  <text x="342" y="220" font-family="Arial,sans-serif" font-size="28" fill="#7BA3BD">The science of living long, on your own terms.</text>
-  <rect x="0" y="610" width="1200" height="4" fill="#567F9B" opacity="0.35"/>
-</svg>`);
-
-await Promise.all([
-  sharp(monogramSvg(180, 36)).png().toFile('public/apple-touch-icon.png'),
-  sharp(monogramSvg(32,  6 )).png().toFile('public/favicon.ico'),
-  sharp(ogSvg).resize(1200, 630).jpeg({ quality: 92 }).toFile('src/assets/images/og-image.jpg'),
-]);
-console.log('✓ apple-touch-icon.png  ✓ favicon.ico  ✓ og-image.jpg');
-```
-
-Run it with:
 ```bash
-node --env-file=.env scripts/gen-icons.mjs
+node scripts/gen-icons.mjs
 ```
 
 ## Config.yaml — always keep in sync
@@ -85,11 +46,11 @@ node --env-file=.env scripts/gen-icons.mjs
 ```yaml
 metadata:
   title:
-    default: Rebellious Aging          # ← client name
-    template: '%s | Rebellious Aging'  # ← client name
+    default: Aloha Salads
+    template: '%s | Aloha Salads'
   description: '…'                     # ← from Figma / SEO brief
   openGraph:
-    site_name: Rebellious Aging        # ← client name
+    site_name: Aloha Salads
     images:
       - url: '~/assets/images/og-image.jpg'
         width: 1200
@@ -107,6 +68,6 @@ Always use the brand accent colour (`brand.colors.accent` from `src/brand.ts`), 
 
 - Update only `favicon.svg` and leave `.ico` / `apple-touch-icon.png` stale
 - Reference `logo.webp` (old R&C Roofing asset — deleted) anywhere in `config.yaml` or meta tags
-- Hardcode `#EDD974` or any non-brand colour in `mask-icon`
+- Hardcode a non-brand colour in `mask-icon`
 - Use the Figma MCP localhost image server URLs in any production asset
 - Commit a 1024 × 124 logo as the OG image — OG cards must be 1200 × 630

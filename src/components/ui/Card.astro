@@ -168,26 +168,26 @@ const {
 
 // ── bordered ──
 const borderedBase =
-  'bg-card rounded-xl overflow-hidden shadow-card flex flex-col gap-4 items-start pb-4';
+  'bg-card rounded-none overflow-hidden border-8 border-section-grey flex flex-col gap-4 items-start p-6';
 
 // ── pillar ──
 // Single soft drop-shadow (no coloured offset), cream bg, overflow-hidden so
 // the icon's rounded-bl-[12px] corner clips properly at the card edge.
 const pillarBase =
-  'bg-page rounded-[var(--aw-radius-lg)] overflow-hidden flex flex-col items-end shadow-[4px_4px_30px_0px_rgba(0,0,0,0.05)]';
+  'bg-page rounded-none overflow-hidden flex flex-col items-end border-8 border-section-grey';
 
 // ── schedule ──
 // Flat mist-color offset shadow, card-light bg (slightly off-white), overflow-hidden.
 // Header band: bg-card-light, calendar icon + day label.
 // Default slot holds event rows.
 const scheduleBase =
-  'bg-card rounded-xl overflow-hidden flex flex-col gap-4 items-start pb-4 shadow-mist-offset';
+  'bg-card rounded-none overflow-hidden flex flex-col gap-4 items-start pb-4 border-8 border-section-grey';
 
 // ── testimonial ──
 // Dark glass gradient card. Fixed 512px width is applied at the slide level (Swiper).
 // Quote mark SVG (mix-blend-overlay) + Fraunces italic quote + small uppercase attribution.
 const testimonialBase =
-  'bg-gradient-to-r from-white/10 to-white/[0.02] rounded-[16px] overflow-hidden flex flex-col gap-4 p-6 shadow-[4px_4px_30px_0px_rgba(0,0,0,0.05)] h-full';
+  'bg-card rounded-none overflow-hidden flex flex-col gap-4 p-4 h-full';
 
 // ── feature ──
 // Cool-tinted light card (bg-feature-card). Border + rounded-[16px] + overflow-clip.
@@ -195,21 +195,21 @@ const testimonialBase =
 // featured=false → compact with ghost/frosted CTA.
 // featured=true  → tall, grey image placeholder, solid primary CTA.
 const featureBase =
-  'bg-feature-card border border-card-border-light rounded-[16px] overflow-clip flex flex-col items-start';
+  'bg-feature-card border-8 border-section-grey rounded-none overflow-clip flex flex-col items-start';
 
 // ── dark / outlined (promo shells, Figma 64:1086) ──
 // Shared layout: equal-height flex column, CTA pinned via mt-auto in the slot.
 const promoBase =
-  'flex h-full min-w-0 flex-col items-start gap-10 rounded-[32px] p-8 md:gap-16 md:rounded-[64px] md:p-12';
+  'flex h-full min-w-0 flex-col items-start gap-10 rounded-none p-8 md:gap-16 md:p-12';
 const darkBase =
-  `${promoBase} bg-[linear-gradient(93.6deg,var(--aw-color-bg-section-dark)_5.27%,var(--aw-color-primary)_97.29%)]`;
-const outlinedBase = `${promoBase} border-4 border-section-dark`;
+  `${promoBase} bg-section-dark`;
+const outlinedBase = `${promoBase} bg-card border-8 border-card-dark`;
 
 // ── podcast ──
 // Cream card (#f6f5f0 ≈ bg-page), navy type, tan tag, ghost-light CTA.
 // Same shell on the tan wash (121:916) and the white section (121:1286).
 const podcastBase =
-  'flex h-full min-w-0 flex-col items-start gap-3 rounded-[16px] bg-page p-6';
+  'flex h-full min-w-0 flex-col items-start gap-3 rounded-none bg-page border-8 border-section-grey p-6';
 
 const variantBase: Record<string, string> = {
   bordered: borderedBase,
@@ -309,7 +309,7 @@ const peopleSvg = `<svg viewBox="0 0 16 16" fill="currentColor" class="size-4 sh
 
     {/* ── Quote text — Fraunces italic, 22px, light cream ── */}
     {quote && (
-      <p class="font-heading italic text-[18px] leading-[1.2] text-page flex-1 md:text-[22px]">
+      <p class="type-quote flex-1 text-heading">
         {quote}
       </p>
     )}
@@ -506,7 +506,7 @@ const peopleSvg = `<svg viewBox="0 0 16 16" fill="currentColor" class="size-4 sh
   <div class={cls}>
     {label && (
       <div class:list={['flex items-center px-4 py-2 shrink-0 w-full', labelBg]}>
-        <span class:list={['type-eyebrow font-sans text-[12px]', labelTextColor]}>{label}</span>
+        <span class:list={['type-eyebrow font-script', labelTextColor]}>{label}</span>
       </div>
     )}
     <slot />

@@ -7,7 +7,7 @@ import { FORM_ENDPOINT, SITE_SLUG, TURNSTILE_SITE_KEY } from '~/lib/forms';
 const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } = Astro.props;
 
 const fieldClass =
-  'py-3 px-4 block w-full text-body rounded-md border border-heading/15 bg-white text-heading';
+  'py-3 px-4 block w-full text-body rounded-none border border-heading/15 bg-card text-heading';
 ---
 
 <form
@@ -77,7 +77,7 @@ const fieldClass =
             id="disclaimer"
             name="disclaimer"
             type="checkbox"
-            class="cursor-pointer mt-1 py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+            class="cursor-pointer mt-1 py-3 px-4 block w-full text-md rounded-none border border-heading/15 bg-card"
           />
         </div>
         <div class="ml-3">

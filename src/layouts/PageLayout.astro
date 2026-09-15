@@ -4,7 +4,6 @@ import Header from '~/components/widgets/Header.astro';
 import Footer from '~/components/widgets/Footer.astro';
 import Announcement from '~/components/widgets/Announcement.astro';
 
-import { getNavigationContent } from '~/lib/content';
 import { navigationData } from '~/data/navigation';
 
 import type { MetaData } from '~/types';
@@ -14,7 +13,6 @@ export interface Props {
 }
 
 const { metadata } = Astro.props;
-const nav = await getNavigationContent();
 const footer = navigationData.footer;
 ---
 
@@ -23,7 +21,7 @@ const footer = navigationData.footer;
     <Announcement />
   </slot>
   <slot name="header">
-    <Header links={nav.header.links} actions={nav.header.actions} phone={nav.header.phone} isSticky />
+    <Header links={navigationData.header.links} actions={navigationData.header.actions} isSticky />
   </slot>
   <div>
     <main>

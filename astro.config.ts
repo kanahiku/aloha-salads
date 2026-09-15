@@ -47,10 +47,25 @@ export default defineConfig({
     defaultStrategy: 'viewport',
   },
 
-  fonts: brandFontConfig().map((font) => ({
-    ...font,
-    provider: fontProviders.google(),
-  })),
+  fonts: brandFontConfig().map((font) =>
+    font.provider === 'google'
+      ? {
+          name: font.name,
+          cssVariable: font.cssVariable,
+          provider: fontProviders.google(),
+          weights: font.weights,
+          styles: font.styles,
+          subsets: font.subsets,
+          fallbacks: font.fallbacks,
+        }
+      : {
+          name: font.name,
+          cssVariable: font.cssVariable,
+          provider: fontProviders.local(),
+          fallbacks: font.fallbacks,
+          options: font.options,
+        }
+  ),
 
   integrations: [
     sitemap({

@@ -11,16 +11,16 @@
  *   src/config/schema/business.ts  schema.org extras (price range, credentials)
  */
 export const site = {
-  name: 'Rebellious Aging',
+  name: 'Aloha Salads',
   url: 'https://example.com',
   description:
-    'Member-led clubs across the Hawaiian Islands teaching the basics of longevity: how aging works, and what you can do about it.',
+    'Island-grown produce, never-frozen local ahi, and bowls built the way you like them. Kailua-born since 2006 — six spots on O‘ahu.',
   footerTagline:
-    'A network of member-led clubs across the Hawaiian Islands practising the foundational science of long life, together.',
+    'Fresh, healthy food that tastes worth coming back for — and feels like home. Six locations across O‘ahu.',
   trailingSlash: false,
 
   /** Cloudflare Worker `sites.slug`. `PUBLIC_SITE_SLUG` in env overrides this. */
-  formSlug: 'rebellious-aging',
+  formSlug: 'aloha-salads',
 
   analytics: {
     /** Google Tag Manager container. Empty until the client GTM is created. */

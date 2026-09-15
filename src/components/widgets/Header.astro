@@ -50,6 +50,10 @@ const {
   embedded = false,
 } = Astro.props;
 
+const splitAt = Math.ceil(links.length / 2);
+const leftLinks = links.slice(0, splitAt);
+const rightLinks = links.slice(splitAt);
+
 const extraActions = (actions ?? []).filter(
   (action) => action.href !== phone?.href && !String(action.href ?? '').startsWith('tel:')
 );
@@ -62,10 +66,12 @@ const phoneBoxClass =
 
 const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
 
+const navLinkClass =
+  'font-rough text-[14px] leading-none text-secondary hover:text-heading whitespace-nowrap';
 const mobileLinkClass =
-  'flex items-center rounded-[12px] px-3 py-3 font-sans text-[16px] font-medium leading-none text-white/90 transition-colors hover:bg-white/10 hover:text-white';
+  'flex items-center px-3 py-3 font-rough text-[16px] leading-none text-heading transition-colors hover:bg-section-grey/40';
 const mobilePanelClass =
-  'absolute inset-x-0 top-[calc(100%+8px)] z-50 max-h-[min(24rem,calc(100dvh-5.5rem))] flex-col overflow-y-auto rounded-[var(--aw-radius-xl)] border border-white/10 bg-section-dark p-3 shadow-[4px_4px_30px_rgba(0,0,0,0.18)] backdrop-blur-xl';
+  'absolute inset-x-0 top-full z-50 max-h-[min(24rem,calc(100dvh-5.5rem))] flex-col overflow-y-auto border-t border-heading/10 bg-card p-3';
 ---
 
 <aw-header transition:persist={embedded ? 'hero-nav' : 'header'}>
@@ -77,7 +83,7 @@ const mobilePanelClass =
             <a class="flex items-center shrink-0" href={getHomePermalink()}>
               <Logo class="h-5 w-auto max-w-none mix-blend-soft-light md:h-[31px] md:w-[43px]" />
             </a>
-            <ToggleMenu class="flex size-10 flex-col items-center justify-center rounded-lg bg-white/10 cursor-pointer group md:hidden" />
+            <ToggleMenu class="flex size-10 flex-col items-center justify-center rounded-lg bg-white/10 text-white cursor-pointer group md:hidden" />
           </div>
           <nav class="hidden md:flex items-center shrink-0 w-full md:w-auto" data-desktop-nav aria-label="Main navigation">
             <ul class="flex flex-col md:flex-row md:items-center gap-6 font-sans font-medium text-[16px] leading-normal text-white">
@@ -129,222 +135,73 @@ const mobilePanelClass =
     ) : (
   <header
     class:list={[
-      { sticky: isSticky, relative: !isSticky, dark: isDark },
-      'top-0 z-40 flex-none mx-auto w-full border-b border-gray-50/0 transition-[opacity] ease-in-out',
+      { sticky: isSticky, relative: !isSticky },
+      'top-0 z-40 flex-none mx-auto w-full bg-card',
     ]}
     {...isSticky ? { 'data-aw-sticky-header': true } : {}}
     {...id ? { id } : {}}
   >
-    <div class="absolute inset-0 bg-section-dark"></div>
     <div
       class:list={[
-        'relative text-white py-2 px-3 md:py-3 md:px-6 mx-auto w-full flex items-center justify-between',
-        {
-          'max-w-container': !isFullWidth,
-        },
+        'relative mx-auto flex w-full items-center justify-between px-5 py-4 md:justify-center md:gap-12 md:px-16',
+        { 'max-w-container': !isFullWidth },
       ]}
     >
-      <div class="flex items-center justify-between w-full md:w-auto">
-        <a class="flex items-center min-w-0" href={getHomePermalink()}>
-          <Logo class="h-5 max-w-[140px] md:h-9 md:max-w-[240px]" />
-        </a>
-        <div class="flex items-center gap-2 md:hidden">
-          {
-            phone && (
-              <a href={phone.href} class={phoneBoxClass} aria-label={phoneLabel}>
-                <Icon name="tabler:phone" class="size-4" aria-hidden="true" />
-              </a>
-            )
-          }
-          <ToggleMenu class="flex size-10 flex-col items-center justify-center rounded-lg bg-white/10 cursor-pointer group" />
-        </div>
+      <a class="flex shrink-0 items-center md:hidden" href={getHomePermalink()}>
+        <Logo />
+      </a>
+      <div class="flex items-center gap-2 md:hidden">
+        {
+          phone && (
+            <a href={phone.href} class={phoneBoxClass} aria-label={phoneLabel}>
+              <Icon name="tabler:phone" class="size-4" aria-hidden="true" />
+            </a>
+          )
+        }
+        <ToggleMenu class="flex size-10 flex-col items-center justify-center bg-heading/5 text-heading cursor-pointer group" />
       </div>
-      <nav
-        class="items-center w-full md:w-auto hidden md:flex md:ml-auto text-default overflow-y-auto overflow-x-hidden md:overflow-visible"
-        data-desktop-nav
-        aria-label="Main navigation"
-      >
-        <ul class="flex flex-col md:flex-row md:self-center w-full md:w-auto text-xl md:text-[15px] tracking-[0.01rem] font-medium md:justify-center">
-          {
-            links.map(({ text, href, links: childLinks, columns }) => {
-              const isDropdown = Boolean(childLinks?.length || columns?.length);
-              return (
-              <li class:list={[{ dropdown: isDropdown, mega: Boolean(columns?.length), 'md:relative': isDropdown }]}>
-                {isDropdown ? (
-                  <>
-                    <div class="flex items-center">
-                    {href ? (
-                    <a
-                      href={href}
-                      class:list={[
-                        'text-white/80 hover:text-white px-[8px] py-3 flex items-center flex-1 min-w-0 whitespace-nowrap',
-                        { 'aw-link-active': href === currentPath },
-                      ]}
-                    >
-                      {text}{' '}
-                      <Icon
-                        name="tabler:chevron-down"
-                        class="w-3.5 h-3.5 ml-0.5 rtl:ml-0 rtl:mr-0.5 hidden md:inline transition-transform duration-200"
-                      />
-                    </a>
-                    ) : (
-                    <button
-                      type="button"
-                      data-aw-toggle-dropdown
-                      aria-expanded="false"
-                      class="text-white/80 hover:text-white px-[8px] py-3 flex items-center flex-1 min-w-0 whitespace-nowrap select-none text-left"
-                    >
-                      {text}{' '}
-                      <Icon
-                        name="tabler:chevron-down"
-                        class="w-3.5 h-3.5 ml-0.5 rtl:ml-0 rtl:mr-0.5 hidden md:inline transition-transform duration-200"
-                      />
-                    </button>
-                    )}
-                    <button
-                      type="button"
-                      data-aw-toggle-dropdown
-                      aria-expanded="false"
-                      aria-label={`Toggle ${text} submenu`}
-                      class="md:hidden shrink-0 p-3 text-white/80 hover:text-white"
-                    >
-                      <Icon name="tabler:chevron-down" class="w-5 h-5 transition-transform duration-200" />
-                    </button>
-                    </div>
-                    {columns?.length ? (
-                    <div class="dropdown-menu mega-menu hidden md:backdrop-blur-md rounded md:absolute md:top-full md:left-1/2 md:-mt-1 pl-4 md:pl-0 font-medium md:bg-card-dark md:w-[900px] md:max-w-[calc(100vw-2rem)] md:z-50 drop-shadow-xl">
-                      <div class="mega-menu-columns flex flex-col md:grid md:gap-8 md:p-5" style={`--mega-columns: ${columns.length}`}>
-                        {columns.map((col) => (
-                          <div class="min-w-0">
-                            <p class="text-[11px] font-semibold uppercase tracking-[0.08em] text-accent px-5 md:px-2 pt-3 md:pt-0 pb-1">
-                              {col.title}
-                            </p>
-                            <ul>
-                              {col.links.map(({ text: text2, href: href2 }) => (
-                                <li>
-                                  <a
-                                    class:list={[
-                                      'first:rounded-t last:rounded-b hover:bg-accent/[0.12] hover:text-white text-white/80 py-2 px-5 md:px-2 block whitespace-normal break-words',
-                                      { 'aw-link-active': href2 === currentPath },
-                                    ]}
-                                    href={href2}
-                                  >
-                                    {text2}
-                                  </a>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    ) : (
-                    <ul class="dropdown-menu hidden md:backdrop-blur-md rounded md:absolute pl-4 md:pl-0 font-medium md:bg-card-dark md:min-w-[200px] drop-shadow-xl">
-                      {childLinks?.map(({ text: text2, href: href2, links: links2 }) => (
-                        <li class:list={[{ 'relative group/nested': links2?.length }]}>
-                          <a
-                            class:list={[
-                              'first:rounded-t last:rounded-b hover:bg-accent/[0.12] hover:text-white text-white/80 py-2 px-5 block whitespace-normal break-words md:whitespace-nowrap',
-                              { 'aw-link-active': href2 === currentPath },
-                              { 'flex items-center justify-between': links2?.length },
-                            ]}
-                            href={href2}
-                          >
-                            {text2}
-                            {links2?.length && (
-                              <Icon
-                                name="tabler:chevron-right"
-                                class="w-3.5 h-3.5 ml-2 hidden md:inline"
-                              />
-                            )}
-                          </a>
-                          {links2?.length && (
-                            <ul class="hidden md:absolute md:left-full md:top-0 group-hover/nested:md:block pl-4 md:pl-0 md:backdrop-blur-md rounded font-medium md:bg-card-dark md:min-w-[200px] drop-shadow-xl">
-                              {links2.map(({ text: text3, href: href3 }) => (
-                                <li>
-                                  <a
-                                    class:list={[
-                                      'first:rounded-t last:rounded-b hover:bg-accent/[0.12] hover:text-white text-white/80 py-2 px-5 block whitespace-normal break-words md:whitespace-nowrap',
-                                      { 'aw-link-active': href3 === currentPath },
-                                    ]}
-                                    href={href3}
-                                  >
-                                    {text3}
-                                  </a>
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                    )}
-                  </>
-                ) : (
-                  <a
-                    class:list={[
-                      embedded
-                        ? 'text-white hover:text-white/80 px-0 py-3 flex items-center whitespace-nowrap'
-                        : 'text-white/80 hover:text-white px-[8px] py-3 flex items-center whitespace-nowrap',
-                      { 'aw-link-active': href === currentPath },
-                    ]}
-                    href={href}
-                  >
-                    {text}
-                  </a>
-                )}
-              </li>
-              );
-            })
-          }
+
+      <nav class="hidden md:block" data-desktop-nav aria-label="Main navigation">
+        <ul class="flex items-center gap-8">
+          {leftLinks.map(({ text, href }) => (
+            <li>
+              <a class:list={[navLinkClass, { 'aw-link-active text-heading': href === currentPath }]} href={href}>
+                {text}
+              </a>
+            </li>
+          ))}
         </ul>
       </nav>
-      <div
-        class:list={[
-          'hidden md:self-center md:flex items-center md:mb-0 md:static justify-end',
-          embedded ? 'shrink-0 p-0' : 'fixed w-full md:w-auto left-0 rtl:left-auto rtl:right-0 bottom-0 p-3 md:p-0',
-        ]}
-      >
-        <div class="items-center flex justify-between w-full md:w-auto">
-          <div class="flex">
-            {showToggleTheme && <ToggleTheme iconClass="w-6 h-6 md:w-5 md:h-5 md:inline-block" />}
-            {
-              showRssFeed && (
-                <a
-                  class="text-muted dark:text-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 inline-flex items-center"
-                  aria-label="RSS Feed"
-                  href={getAsset('/rss.xml')}
-                >
-                  <Icon name="tabler:rss" class="w-5 h-5" />
-                </a>
-              )
-            }
-          </div>
-          {
-            (phoneAction || extraActions.length) && (
-              <span class:list={['flex items-center', !embedded && 'ml-4 rtl:ml-0 rtl:mr-4']}>
-                {phoneAction && (
-                  <Button
-                    {...phoneAction}
-                    hideNote
-                    class="ml-2 shadow-none w-auto whitespace-nowrap"
-                  />
-                )}
-                {extraActions.map((btnProps) => (
-                  <Button
-                    {...btnProps}
-                    hideNote
-                    class="ml-2 shadow-none w-auto whitespace-nowrap"
-                  />
-                ))}
-              </span>
-            )
-          }
-        </div>
+
+      <a class="hidden shrink-0 items-center md:flex" href={getHomePermalink()}>
+        <Logo />
+      </a>
+
+      <div class="hidden items-center gap-8 md:flex">
+        <ul class="flex items-center gap-8">
+          {rightLinks.map(({ text, href }) => (
+            <li>
+              <a class:list={[navLinkClass, { 'aw-link-active text-heading': href === currentPath }]} href={href}>
+                {text}
+              </a>
+            </li>
+          ))}
+        </ul>
+        {showToggleTheme && <ToggleTheme iconClass="w-5 h-5" />}
+        {
+          showRssFeed && (
+            <a class="text-secondary" aria-label="RSS Feed" href={getAsset('/rss.xml')}>
+              <Icon name="tabler:rss" class="w-5 h-5" />
+            </a>
+          )
+        }
+        {extraActions.map((btnProps) => (
+          <Button {...btnProps} hideNote class="whitespace-nowrap" />
+        ))}
       </div>
     </div>
 
-    <div class:list={[mobilePanelClass, 'mx-3']} data-mobile-panel>
+    <div class={mobilePanelClass} data-mobile-panel>
       <nav aria-label="Mobile navigation">
         <ul class="flex flex-col">
           {
@@ -358,7 +215,7 @@ const mobilePanelClass =
                   {isDropdown ? (
                     <details>
                       <summary class:list={[mobileLinkClass, 'cursor-pointer list-none']}>{text}</summary>
-                      <ul class="mb-1 ml-2 flex flex-col border-l border-white/10 pl-2">
+                      <ul class="mb-1 ml-2 flex flex-col border-l border-heading/10 pl-2">
                         {nested.map(({ text: nestedText, href: nestedHref }) => (
                           <li>
                             <a
@@ -383,7 +240,7 @@ const mobilePanelClass =
         </ul>
       </nav>
       {(phoneAction || extraActions.length > 0) && (
-        <div class="mt-2 flex flex-col gap-2 border-t border-white/10 pt-3">
+        <div class="mt-2 flex flex-col gap-2 border-t border-heading/10 pt-3">
           {phoneAction && <Button {...phoneAction} hideNote class="w-full justify-center" />}
           {extraActions.map((btnProps) => (
             <Button {...btnProps} hideNote class="w-full justify-center" />
@@ -440,7 +297,6 @@ const mobilePanelClass =
 
 <script>
   class AwHeader extends HTMLElement {
-    private onScroll?: () => void;
     private mql?: MediaQueryList;
     private onMqlChange?: () => void;
     private onResize?: () => void;
@@ -540,29 +396,10 @@ const mobilePanelClass =
       };
       window.addEventListener('resize', this.onResize);
 
-      // Sticky header: toggle the `scroll` class past a small threshold.
-      if (header?.hasAttribute('data-aw-sticky-header')) {
-        let ticking = false;
-        const applyStyles = () => {
-          if (window.scrollY > 60) header.classList.add('scroll');
-          else header.classList.remove('scroll');
-          ticking = false;
-        };
-        this.onScroll = () => {
-          if (!ticking) {
-            window.requestAnimationFrame(applyStyles);
-            ticking = true;
-          }
-        };
-        applyStyles();
-        document.addEventListener('scroll', this.onScroll, { passive: true });
-      }
-
       document.documentElement.classList.add('motion-safe:scroll-smooth');
     }
 
     disconnectedCallback() {
-      if (this.onScroll) document.removeEventListener('scroll', this.onScroll);
       if (this.mql && this.onMqlChange) this.mql.removeEventListener('change', this.onMqlChange);
       if (this.onResize) window.removeEventListener('resize', this.onResize);
       document.removeEventListener('astro:page-load', this.onPageLoad);

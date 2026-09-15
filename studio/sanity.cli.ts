@@ -2,8 +2,8 @@ import { defineCliConfig } from 'sanity/cli';
 
 export default defineCliConfig({
   api: {
-    projectId: process.env.SANITY_STUDIO_PROJECT_ID ?? '',
+    projectId: process.env.SANITY_STUDIO_PROJECT_ID ?? 'sys9vj6r',
     dataset: process.env.SANITY_STUDIO_DATASET ?? 'production',
   },
-  studioHost: process.env.SANITY_STUDIO_HOSTNAME ?? 'agency-studio',
+  studioHost: process.env.SANITY_STUDIO_HOSTNAME ?? 'aloha-salads',
 });

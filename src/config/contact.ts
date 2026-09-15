@@ -24,10 +24,10 @@ export const CONTACT = {
   email: 'hello@example.com',
 
   address: {
-    street: '',
+    street: '600 Kailua Road #103',
     city: 'Kailua',
     state: 'HI',
-    zip: '',
+    zip: '96734',
     country: 'US',
     /** "City, ST ZIP" — used in footer and CTABanner one-liner. */
     get cityLine() {
@@ -51,11 +51,11 @@ export const CONTACT = {
   hours: [
     {
       '@type': 'OpeningHoursSpecification' as const,
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-      opens: '09:00',
-      closes: '17:00',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      opens: '10:00',
+      closes: '20:00',
     },
   ],
 
-  areaServed: 'Hawaiian Islands',
+  areaServed: 'O‘ahu',
 } as const;

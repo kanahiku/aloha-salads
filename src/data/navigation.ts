@@ -4,11 +4,11 @@ import { CONTACT, PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF, SOCIAL } from '~/config';
 export const navigationData: NavigationContent = {
   header: {
     links: [
-      { text: 'How Aging Works', href: '/how-aging-works' },
-      { text: 'Four Pillars', href: '/four-pillars' },
-      { text: 'Books', href: '/books' },
-      { text: 'Podcasts', href: '/podcast' },
-      { text: 'About', href: '/about' },
+      { text: 'menu', href: '/menu' },
+      { text: 'catering', href: '/catering' },
+      { text: 'locations', href: '/locations' },
+      { text: 'about', href: '/about' },
+      { text: 'blog', href: '/blog' },
     ],
     actions: [{ variant: 'primary', text: PRIMARY_CTA_LABEL, href: PRIMARY_CTA_HREF }],
   },
@@ -16,13 +16,55 @@ export const navigationData: NavigationContent = {
   footer: {
     links: [
       {
-        title: 'Navigation',
+        title: 'menu',
         links: [
-          { text: 'How Aging Works', href: '/how-aging-works' },
-          { text: 'Four Pillars', href: '/four-pillars' },
-          { text: 'Books', href: '/books' },
-          { text: 'Podcasts', href: '/podcast' },
-          { text: 'About', href: '/about' },
+          { text: 'Full Menu', href: '/menu' },
+          { text: 'Salads', href: '/menu' },
+          { text: 'Wraps & Subs', href: '/menu' },
+          { text: 'Soups', href: '/menu' },
+          { text: 'Kids Menu', href: '/menu' },
+          { text: 'Design Your Own Salad', href: '/menu' },
+          { text: 'Vegan Options', href: '/menu' },
+          { text: 'Vegetarian Options', href: '/menu' },
+          { text: 'Nutrition & Allergens', href: '/menu' },
+        ],
+      },
+      {
+        title: 'catering',
+        links: [
+          { text: 'Catering', href: '/catering' },
+          { text: 'Corporate', href: '/catering' },
+          { text: 'Office Lunch', href: '/catering' },
+          { text: 'Meeting', href: '/catering' },
+          { text: 'Event', href: '/catering' },
+          { text: 'Party', href: '/catering' },
+          { text: 'School', href: '/catering' },
+          { text: 'Large Group', href: '/catering' },
+        ],
+      },
+      {
+        title: 'locations',
+        links: [
+          { text: 'All Locations', href: '/locations' },
+          { text: 'Kailua', href: '/locations' },
+          { text: 'Kahala', href: '/locations' },
+          { text: 'Kaneohe', href: '/locations' },
+          { text: 'Kapolei', href: '/locations' },
+          { text: 'Mililani', href: '/locations' },
+          { text: 'Pearlridge', href: '/locations' },
+        ],
+      },
+      {
+        title: 'about',
+        links: [
+          { text: 'Our Story', href: '/about' },
+          { text: 'Our Ingredients', href: '/about' },
+          { text: 'Order Online', href: PRIMARY_CTA_HREF },
+          { text: 'Gift Cards', href: '/about' },
+          { text: 'Press & Media', href: '/about' },
+          { text: 'Careers', href: '/about' },
+          { text: 'Blog', href: '/blog' },
+          { text: 'Contact', href: '/contact' },
         ],
       },
     ],

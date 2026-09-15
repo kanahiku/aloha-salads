@@ -37,15 +37,9 @@ Map Figma styles into `brand.type` roles, then only use `Heading` / `Text` (or `
 
 Do **not** invent mobile sizes when Figma already has them.
 
-**Fallback only** if there is no mobile type (no mobile Variables, no mobile Design System, no mobile text styles):
+**Fallback only** if there is no mobile type (no mobile Variables, no mobile Design System, no mobile text styles). Prefer an **optical** scale that keeps a clear h1 > h2 > h3 step on a ~390px screen — do not flatten display sizes (e.g. 36px h1 next to 32px h2).
 
-- `h1.mobile` ≈ 50% of desktop `h1`
-- `h2.mobile` ≈ 60% of desktop `h2`
-- `h3.mobile` ≈ 65% of desktop `h3`
-- `h4.mobile` ≈ 80% of desktop `h4`
-- `body`, `bodyLg`, `button`, `eyebrow`, `small`, `caption` — same as desktop
-
-This file used that fallback (100/52/36/28 → 48/32/24/22) because the Figma file had desktop type only.
+This file: Style Guide `110:2377` is desktop only. Mobile is optical — 72/52/26/24 → **40/28/22/18**; ticker 32→24; quote 22→18; body-lg 16→15; eyebrow 16→14. Body/button/small stay the same.
 
 ## In code
 
