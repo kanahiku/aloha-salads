@@ -1,77 +1,17 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import Hero2 from '~/components/widgets/Hero2.astro';
-import Header from '~/components/widgets/Header.astro';
-import AboutStory from '~/components/widgets/AboutStory.astro';
-import SingleQuote from '~/components/widgets/SingleQuote.astro';
-import CredentialsSection from '~/components/widgets/CredentialsSection.astro';
-import PublicationsSection from '~/components/widgets/PublicationsSection.astro';
+import InteriorPage from '~/components/widgets/InteriorPage.astro';
+import { getInteriorPage } from '~/data/pages/interior';
 import { site } from '~/config/site';
-import { navigationData } from '~/data/navigation';
 
+const page = getInteriorPage('/about');
 const metadata = {
-  title: `About Dr. Peterson | ${site.name}`,
-  description:
-    'Dr. Robert Peterson has spent his career helping patients combat aging, first as a plastic surgeon and now as a longevity expert. Learn about his background, philosophy, and published work.',
+  title: `${page.title} | ${site.name}`,
+  description: page.metaDescription,
   ignoreTitleTemplate: true,
 };
-
-const header = navigationData.header;
 ---
 
 <Layout metadata={metadata}>
-  <Fragment slot="header" />
-
-  {/* ── Hero: dark split with portrait ── */}
-  <Hero2
-    variant="split-dark"
-    overlapHeader={false}
-    tagline="About Dr. Peterson"
-    title="Medicine for the<br />Long Game"
-    content="Dr. Robert Peterson has spent his career helping patients combat aging, first as a plastic surgeon and now as a longevity expert. With a background in engineering and pharmacology, he is now focused on how we age, what can be done about it, and what gives the most &ldquo;bang for the buck.&rdquo;"
-  >
-    <Header
-      slot="nav"
-      embedded
-      isSticky={false}
-      links={header.links}
-      actions={header.actions}
-    />
-  </Hero2>
-
-  {/* ── Story & Philosophy: image left + text right ── */}
-  <AboutStory id="story" />
-
-  {/* ── Pullquote card ── */}
-  <SingleQuote
-    id="guiding-principle"
-    quote="You are only as young as your oldest parts."
-    attribution="Dr. Robert Peterson"
-  />
-
-  {/* ── Medical Credentials / Journey ── */}
-  <CredentialsSection id="credentials" />
-
-  {/* ── Publications ── */}
-  <PublicationsSection
-    id="publications"
-    heading="A body of work spanning clinician to patient."
-    publications={[
-      {
-        count: '6 Volumes',
-        title: 'Athena Textbook of Longevity Medicine',
-        description: 'A rigorous, system-by-system scientific reference for clinicians.',
-      },
-      {
-        count: '28 Books',
-        title: 'Rebellious Aging Guidebook Series',
-        description: 'Accessible, patient-facing guides drawn from the textbook material.',
-      },
-      {
-        count: '4 Books',
-        title: 'Bargaining with Aging Series',
-        description: 'Honest reckonings with the trade-offs and unknowns of growing older.',
-      },
-    ]}
-  />
+  <InteriorPage page={page} />
 </Layout>

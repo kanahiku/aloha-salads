@@ -21,7 +21,7 @@ export const CONTACT = {
   },
 
   /** Primary contact email shown in legal pages and schema.org. */
-  email: 'hello@example.com',
+  email: 'info@alohasalads.com',
 
   address: {
     street: '600 Kailua Road #103',

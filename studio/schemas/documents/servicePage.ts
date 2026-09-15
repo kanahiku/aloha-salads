@@ -24,7 +24,7 @@ export const servicePage = defineType({
       title: 'Slug',
       type: 'slug',
       description:
-        'Path without a leading slash, e.g. services/consulting. A new published slug goes live on the website without a developer deploy. Do not use reserved paths like contact, blog, reviews, privacy-policy, terms-of-service, or accessibility.',
+        'Path without a leading slash, e.g. services/consulting. A new published slug goes live on the website without a developer deploy. Do not use reserved paths like contact, blog, reviews, privacy-policy, terms, accessibility, menu, catering, or locations.',
       options: { source: 'title' },
       validation: (r) => r.required(),
       group: 'meta',

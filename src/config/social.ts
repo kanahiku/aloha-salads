@@ -7,14 +7,23 @@ export const SOCIAL = {
     {
       ariaLabel: 'Facebook',
       icon: 'tabler:brand-facebook',
-      href: 'https://www.facebook.com/',
+      href: 'https://www.facebook.com/AlohaSalads',
     },
     {
       ariaLabel: 'Instagram',
       icon: 'tabler:brand-instagram',
-      href: 'https://www.instagram.com/',
+      href: 'https://www.instagram.com/alohasalads/',
+    },
+    {
+      ariaLabel: 'Twitter / X',
+      icon: 'tabler:brand-x',
+      href: 'https://twitter.com/AlohaSalads',
     },
   ],
 
-  sameAs: ['https://www.facebook.com/', 'https://www.instagram.com/'],
+  sameAs: [
+    'https://www.facebook.com/AlohaSalads',
+    'https://www.instagram.com/alohasalads/',
+    'https://twitter.com/AlohaSalads',
+  ],
 } as const;

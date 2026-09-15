@@ -28,7 +28,12 @@ const footer = navigationData.footer;
       <slot />
     </main>
     <slot name="footer">
-      <Footer links={footer.links} secondaryLinks={footer.secondaryLinks} />
+      <Footer
+        links={footer.links}
+        secondaryLinks={footer.secondaryLinks}
+        socialLinks={footer.socialLinks}
+        footNote={footer.footNote}
+      />
     </slot>
   </div>
 </Layout>

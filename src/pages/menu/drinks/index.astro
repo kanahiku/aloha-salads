@@ -1,0 +1,176 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import MenuCategories from '~/components/widgets/MenuCategories.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import CTABanner from '~/components/widgets/CTABanner.astro';
+import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
+
+const metadata = {
+  title: 'Drinks, Beverages & Local Mamaki Tea | Aloha Salads Oahu',
+  description:
+    'Complete your meal with our beverage selection, featuring Guava Lemonade and Big Island māmaki mint tea. Order online across our six Oahu locations.',
+  ignoreTitleTemplate: true,
+};
+
+const heroTitle = 'Drinks and Beverages';
+const heroContent =
+  "Pair your meal with our selection of chilled beverages. We offer a variety of refreshing options available for pickup across our six O'ahu locations.";
+
+const drinkItems = [
+  {
+    title: 'Big Island Māmaki Mint Tea',
+    description:
+      'We serve chilled māmaki mint tea brewed fresh in-store. We source our māmaki from a company in Hilo on the Big Island to provide this traditional Hawaiian herbal beverage.',
+  },
+  {
+    title: 'Guava Lemonade',
+    description: 'A sweet and tart island favorite.',
+  },
+  {
+    title: 'Fountain Drink',
+    description: 'A selection of carbonated beverages.',
+  },
+  {
+    title: 'Bottle Water',
+    description: 'Chilled still water.',
+  },
+  {
+    title: 'Red Bull',
+    description: 'Energy drink.',
+  },
+];
+
+const faqs = [
+  {
+    title: 'Do you serve local Hawaiian tea?',
+    description: 'Yes. We serve freshly brewed māmaki mint tea sourced directly from the Big Island.',
+  },
+  {
+    title: 'What is mamaki?',
+    description:
+      'Mamaki is a plant native to Hawaii. Its leaves are traditionally brewed to create a mild, caffeine-free herbal tea.',
+  },
+  {
+    title: 'Can I order drinks online?',
+    description: 'Yes. You can add any of our beverages to your online order for fast pickup.',
+  },
+  {
+    title: 'Are drinks included with kids meals?',
+    description: 'Yes. Our Keiki Combo includes a designated keiki drink.',
+  },
+  {
+    title: 'Where can I pick up my order?',
+    description: "Our full beverage menu is available at our six neighborhood restaurants across O'ahu.",
+  },
+];
+---
+
+<PageLayout metadata={metadata}>
+  {/* ── Hero ─────────────────────────────────────────────────────── */}
+  <Hero2
+    variant="split-dark"
+    overlapHeader={false}
+    title={heroTitle}
+    content={heroContent}
+    actions={[
+      { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
+      { variant: 'ghost', tone: 'dark', text: 'Find a Location', href: LOCATION_CTA_HREF },
+    ]}
+  />
+
+  {/* ── Drink Menu ───────────────────────────────────────────────── */}
+  <section class="not-prose w-full bg-section-grey py-24 md:py-36 lg:py-44">
+    <div class="mx-auto w-full max-w-container px-5 sm:px-8 md:px-16">
+
+      {/* ── Section header ── */}
+      <div class="flex flex-col gap-4 mb-16 md:mb-24">
+        <p class="font-script text-accent leading-none" style="font-size: var(--aw-text-ticker);">Beverages</p>
+        <h2 class="font-rough font-normal leading-none text-heading" style="font-size: clamp(2rem, 5vw, var(--aw-text-h2));">Our Drink Menu</h2>
+      </div>
+
+      {/* ── Items ── */}
+      <ul class="flex flex-col">
+        {drinkItems.map((item, index) => {
+          const isFeatured = index === 0;
+          return (
+            <li class:list={[
+              'group border-t border-heading/15 last:border-b last:border-heading/15',
+              isFeatured ? 'py-10 md:py-14' : 'py-8 md:py-10',
+            ]}>
+              <div class="grid grid-cols-[48px_1fr] gap-x-6 gap-y-3 md:grid-cols-[80px_1fr_minmax(0,420px)] md:gap-x-12 md:items-start">
+
+                {/* Number */}
+                <span
+                  class:list={[
+                    'font-script leading-none text-accent transition-opacity duration-300 group-hover:opacity-70',
+                    isFeatured ? 'text-[28px] md:text-[32px] pt-1' : 'text-[22px] md:text-[26px] pt-0.5',
+                  ]}
+                  aria-hidden="true"
+                >
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+
+                {/* Name + badge */}
+                <div class="flex flex-wrap items-baseline gap-x-4 gap-y-2 md:col-span-1">
+                  <h3
+                    class:list={[
+                      'font-rough font-normal leading-none text-heading transition-colors duration-300 group-hover:text-accent',
+                      isFeatured
+                        ? 'text-[clamp(1.5rem,4vw,52px)]'
+                        : 'text-[clamp(1.25rem,3vw,26px)]',
+                    ]}
+                  >
+                    {item.title}
+                  </h3>
+                  {isFeatured && (
+                    <span class="inline-flex items-center gap-1.5 rounded-full border border-accent/50 px-3 py-1 font-script text-[13px] leading-none text-accent shrink-0">
+                      ✦ Island Sourced · Big Island
+                    </span>
+                  )}
+                </div>
+
+                {/* Description */}
+                <p
+                  class:list={[
+                    'col-start-2 font-sans leading-relaxed text-heading/60 md:col-start-3 md:col-span-1 md:pt-1',
+                    isFeatured ? 'text-[15px] max-w-prose' : 'text-[13px]',
+                  ]}
+                >
+                  {item.description}
+                </p>
+
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+
+    </div>
+  </section>
+
+  {/* ── Explore Other Menu Categories ────────────────────────────── */}
+  <MenuCategories
+    title="Explore Other Menu Categories"
+    subtitle="Browse our full menu to find your meal:"
+    excludeHref="/menu/drinks"
+    ctaText=""
+  />
+
+  {/* ── FAQs ─────────────────────────────────────────────────────── */}
+  <FAQs
+    title="Frequently Asked Questions"
+    items={faqs}
+    isDark={true}
+  />
+
+  {/* ── CTA Banner ───────────────────────────────────────────────── */}
+  <CTABanner
+    title="Ready to Order?"
+    subtitle="Skip the line and place your order online for fast pickup. Planning a group event? We also offer a variety of catering options."
+    ctaText="Order Online"
+    ctaHref={PRIMARY_CTA_HREF}
+    secondaryCtaText="Order Catering"
+    secondaryCtaHref={CATERING_CTA_HREF}
+  />
+</PageLayout>

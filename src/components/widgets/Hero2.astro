@@ -13,6 +13,8 @@ import Image from '~/components/common/Image.astro';
 import ArtDirectedImage from '~/components/ui/ArtDirectedImage.astro';
 import CTAActions from '~/components/ui/CTAActions.astro';
 import Text from '~/components/ui/Text.astro';
+import smallLeafMotif from '~/assets/images/small-leaf-motif.webp';
+import locationsCover from '~/assets/images/locations-cover.png';
 import Heading from '~/components/ui/Heading.astro';
 import type { ContentImage } from '~/lib/content/types';
 
@@ -96,6 +98,14 @@ const isLocalPageImage =
       ]}
       {...id ? { id } : {}}
     >
+      {/* ── Leaf motif overlay for split-dark variant ── */}
+      {isSplitDark && (
+        <div
+          class="pointer-events-none absolute inset-0 z-0 opacity-45"
+          style={`background-image: url('${smallLeafMotif.src}'); background-size: 3400px auto; background-position: top left; background-repeat: repeat;`}
+          aria-hidden="true"
+        />
+      )}
       {isOverlay && (
       <div class="absolute inset-0 pointer-events-none z-0" aria-hidden="true">
         <slot name="bg">
@@ -163,10 +173,12 @@ const isLocalPageImage =
       <div
         class:list={[
           'relative z-[2] flex flex-1 flex-col w-full mx-auto max-w-container',
-          isPhotoOverlay
-            ? 'px-5 py-10 sm:px-8 md:px-16 md:py-16'
-            : 'px-5 py-6 sm:px-8 md:px-16 lg:py-8',
-          isSplitDark ? 'gap-16' : isPhotoOverlay ? 'gap-0' : 'gap-2.5',
+          isSplitDark
+            ? 'pl-5 sm:pl-8 md:pl-16 pr-0 py-0'
+            : isPhotoOverlay
+              ? 'px-5 py-10 sm:px-8 md:px-16 md:py-16'
+              : 'px-5 py-6 sm:px-8 md:px-16 lg:py-8',
+          isSplitDark ? 'gap-0' : isPhotoOverlay ? 'gap-0' : 'gap-2.5',
         ]}
       >
         <slot name="nav" />
@@ -203,13 +215,16 @@ const isLocalPageImage =
           <div
             class:list={[
               'flex w-full flex-1 flex-col py-16 md:py-[120px]',
-              withImage ? 'items-stretch gap-[72px]' : 'items-start',
+              withImage ? 'items-stretch gap-6 md:gap-[72px]' : 'items-start gap-6',
             ]}
           >
+            {tagline && (
+              <p class="mb-2 font-script text-ticker text-heading/60 md:mb-4">{tagline}</p>
+            )}
             <div
               class:list={[
                 'flex w-full flex-col items-start',
-                stacked ? 'gap-[72px]' : 'gap-10 md:flex-row md:gap-[72px]',
+                stacked ? 'gap-6' : 'gap-10 md:flex-row md:gap-[72px]',
                 !withImage && 'flex-1',
               ]}
             >
@@ -236,6 +251,14 @@ const isLocalPageImage =
                 />
               )}
             </div>
+            {/* CTA actions for the page variant */}
+            {actions && (
+              Array.isArray(actions) ? (
+                <CTAActions actions={actions} noteTone="light" />
+              ) : (
+                <Fragment set:html={actions} />
+              )
+            )}
             {withImage && (
               isLocalPageImage ? (
                 <img
@@ -258,29 +281,36 @@ const isLocalPageImage =
             )}
           </div>
         ) : isSplitDark ? (
-        <div class="flex flex-1 flex-col lg:flex-row lg:items-end gap-0 lg:gap-[48px] pb-0">
+        <div class="flex flex-1 flex-col lg:flex-row lg:items-stretch gap-0 pb-0">
           {/* left: text column */}
-          <div class="flex flex-col items-start gap-6 lg:gap-[32px] shrink-0 lg:max-w-[628px] pb-8 pt-4 lg:pb-16 lg:pt-0">
+          <div class="flex flex-col items-start justify-center gap-6 shrink-0 lg:w-[55%] pb-10 pt-6 lg:py-24 lg:pr-16">
             {tagline && (
-              <Heading variant="eyebrow" color="white" class="opacity-60" html={tagline} />
+              <p class="font-script text-[var(--aw-text-eyebrow)] leading-none text-page/55">{tagline}</p>
             )}
             {title && (
               <h1
-                class="font-rough text-h1 font-normal leading-none text-white"
+                class="font-rough text-h1 font-normal leading-[1.05] text-page"
                 set:html={title}
               />
             )}
             {content && (
               <div
-                class="font-sans text-body leading-[1.3] text-white/60 max-w-[520px]"
+                class="font-sans text-[16px] leading-[1.55] text-page/60 max-w-[480px]"
                 set:html={content}
               />
             )}
+            {actions && (
+              Array.isArray(actions) ? (
+                <CTAActions actions={actions} noteTone="onDark" />
+              ) : (
+                <Fragment set:html={actions} />
+              )
+            )}
           </div>
           {/* right: image column — visible on all screen sizes */}
-          <div class="w-full h-[320px] sm:h-[400px] lg:h-auto lg:flex-1 lg:min-w-0 lg:self-stretch">
+          <div class="w-full h-[280px] sm:h-[380px] lg:h-auto lg:flex-1 lg:min-w-0 lg:self-stretch">
             {hasImage ? (
-              <div class="relative w-full h-full overflow-hidden rounded-tl-[32px] rounded-tr-[32px]">
+              <div class="relative w-full h-full overflow-hidden">
                 {typeof image === 'string' ? (
                   <Fragment set:html={image} />
                 ) : image && typeof image === 'object' && 'src' in image ? (
@@ -289,25 +319,35 @@ const isLocalPageImage =
                     alt={(image as any).alt ?? ''}
                     width={typeof (image as any).width === 'number' ? (image as any).width : undefined}
                     height={typeof (image as any).height === 'number' ? (image as any).height : undefined}
-                    class="w-full h-full object-cover object-top"
+                    class="w-full h-full object-cover object-center"
                     loading="eager"
                     decoding="async"
                   />
                 ) : null}
-                <div class="absolute inset-0 bg-gradient-to-b from-transparent from-[62%] to-section-dark" />
+                <div class="absolute inset-0 bg-gradient-to-r from-section-dark/60 from-[0%] via-transparent to-transparent" />
               </div>
             ) : (
               /* TODO: replace with <Image> when asset is ready */
               <div
-                class="w-full h-full min-h-[400px] rounded-tl-[32px] rounded-tr-[32px] bg-section-grey"
+                class="w-full h-full min-h-[380px] relative overflow-hidden"
                 aria-hidden="true"
-              />
+              >
+                <img
+                  src={locationsCover.src}
+                  alt="Fresh Aloha Salads bowl"
+                  width={locationsCover.width}
+                  height={locationsCover.height}
+                  class="absolute inset-0 h-full w-full object-cover object-center"
+                  loading="eager"
+                  decoding="async"
+                />
+              </div>
             )}
           </div>
         </div>
         ) : (
-        <div class="flex flex-1 flex-col items-start justify-center gap-16 min-h-0">
-          <div class="flex w-full max-w-[604px] flex-col items-start gap-8">
+        <div class="flex flex-1 flex-col items-start justify-center min-h-0">
+          <div class="flex w-full max-w-[604px] flex-col items-start gap-6">
             {tagline && (
               <Heading variant="eyebrow" color="white" class="mix-blend-overlay" html={tagline} />
             )}
@@ -320,13 +360,13 @@ const isLocalPageImage =
             {content && (
               <Text variant="body-lg" color="inherit" class="text-page" html={content} />
             )}
+            {actions &&
+              (Array.isArray(actions) ? (
+                <CTAActions actions={actions} noteTone="onDark" />
+              ) : (
+                <Fragment set:html={actions} />
+              ))}
           </div>
-          {actions &&
-            (Array.isArray(actions) ? (
-              <CTAActions actions={actions} noteTone="onDark" />
-            ) : (
-              <Fragment set:html={actions} />
-            ))}
         </div>
         )}
       </div>
@@ -376,14 +416,14 @@ const isLocalPageImage =
             )}
             {title && (
               <h1
-                class="text-h2 font-normal leading-[105%] mb-5 font-heading text-heading dark:text-gray-200 intersect-once motion-safe:md:intersect:animate-fade motion-safe:md:opacity-0 intersect-quarter"
+                class="text-h2 font-normal leading-[105%] font-heading text-heading dark:text-gray-200 intersect-once motion-safe:md:intersect:animate-fade motion-safe:md:opacity-0 intersect-quarter"
                 set:html={title}
               />
             )}
-            <div class="max-w-3xl lg:max-w-none">
+            <div class="max-w-3xl lg:max-w-none flex flex-col items-start gap-6">
               {subtitle && (
                 <p
-                  class="text-body mb-[30px] text-muted dark:text-slate-300 intersect-once motion-safe:md:intersect:animate-fade motion-safe:md:opacity-0 intersect-quarter"
+                  class="text-body text-muted dark:text-slate-300 intersect-once motion-safe:md:intersect:animate-fade motion-safe:md:opacity-0 intersect-quarter"
                   set:html={subtitle}
                 />
               )}

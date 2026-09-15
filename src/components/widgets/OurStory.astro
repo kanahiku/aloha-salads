@@ -17,6 +17,7 @@ export interface StoryAction {
   title: string;
   description: string;
   iconLabel: string;
+  href?: string;
 }
 
 export interface Props {
@@ -41,16 +42,19 @@ const {
       title: 'order online',
       description: 'Pickup or delivery from any store',
       iconLabel: 'online shop icon',
+      href: '/order-online',
     },
     {
       title: 'find location',
       description: "Six spots across O‘ahu.",
       iconLabel: 'location pin icon',
+      href: '/locations',
     },
     {
       title: 'Order Catering',
       description: 'Fresh trays for any group',
       iconLabel: 'shopping basket icon',
+      href: '/catering',
     },
   ],
   id,
@@ -84,11 +88,15 @@ const actionIconUrls = [onlineShopIcon, locationIcon, basketIcon];
           </div>
 
           <div class="flex w-full flex-col gap-6">
-            {actions.map((action, index) => (
-              <article
+            {actions.map((action, index) => {
+              const Tag = action.href ? 'a' : 'article';
+              return (
+              <Tag
+                href={action.href}
                 class:list={[
                   'w-full shrink-0 border-8 border-[color:var(--aw-color-bg-card-dark)] bg-page p-6 sm:w-fit',
                   index === 1 && 'sm:self-end',
+                  action.href && 'transition-opacity hover:opacity-90',
                 ]}
               >
                 <div class="flex items-center gap-3">
@@ -102,8 +110,9 @@ const actionIconUrls = [onlineShopIcon, locationIcon, basketIcon];
                     <Text color="default">{action.description}</Text>
                   </div>
                 </div>
-              </article>
-            ))}
+              </Tag>
+              );
+            })}
           </div>
         </div>
 

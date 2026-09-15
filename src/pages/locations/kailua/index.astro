@@ -1,0 +1,102 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import TextSplit from '~/components/widgets/TextSplit.astro';
+import StoreVisit from '~/components/widgets/StoreVisit.astro';
+import MenuItemsSection from '~/components/widgets/MenuItemsSection.astro';
+import CTABanner from '~/components/widgets/CTABanner.astro';
+import Text from '~/components/ui/Text.astro';
+import { PRIMARY_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
+import { findStore, storeDirectionsHref } from '~/data/locations';
+import locationsCover from '~/assets/images/locations-cover.png';
+import onoIsland from '~/assets/images/ono-island.png';
+
+const store = findStore('kailua');
+if (!store) throw new Error('Missing Kailua store');
+
+const directionsHref = storeDirectionsHref(store);
+
+const metadata = {
+  title: 'Aloha Salads Kailua | Fresh Local Food at Kailua Shopping Center',
+  description:
+    'Visit our original Aloha Salads location at Kailua Shopping Center. We serve fresh salads, wraps, and never-frozen local ahi in 100% compostable packaging.',
+  ignoreTitleTemplate: true,
+};
+
+const menuFavorites = [
+  {
+    title: 'Signature Salads',
+    description: 'Choose from local favorites like the Aloha Passion or Ono Island Ahi.',
+  },
+  {
+    title: 'Wraps and Subs',
+    description: 'Enjoy hearty, wholesome ingredients wrapped up for a quick meal on the go.',
+  },
+  {
+    title: 'Design Your Own Salad',
+    description:
+      'Build your perfect meal with your choice of greens and toppings dressed with our house-made dressings.',
+  },
+  {
+    title: 'Local Refreshments',
+    description: 'Pair your food with refreshing, locally sourced Big Island māmaki mint tea.',
+  },
+];
+---
+
+<PageLayout metadata={metadata}>
+  <Hero2
+    variant="split-dark"
+    overlapHeader={false}
+    tagline="Kailua"
+    title="Aloha Salads Kailua –<br/>Kailua Shopping Center"
+    content="Enjoy fresh, locally sourced food at our original home on the Windward coast. Order ahead for quick pickup or stop in for a healthy meal."
+    image={{ ...locationsCover, alt: 'Aloha Salads team with fresh salad bowls at the Kailua location' }}
+    actions={[
+      { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
+      { variant: 'ghost', tone: 'dark', text: 'Get Directions', href: directionsHref, target: '_blank' },
+    ]}
+  />
+
+  <TextSplit heading="Our Original Home in Kailua" withImage imageAspect="4 / 5">
+    <div class="flex flex-col gap-6">
+      <Text variant="body-lg" color="default">
+        Kailua is where the Aloha Salads story began in May 2006. We opened our doors in the Kailua Shopping Center with a mission to serve healthy meals using ingredients from Hawaii farmers and fishermen. Today, we continue that tradition right here in our hometown on the Windward coast.
+      </Text>
+      <Text variant="body-lg" color="default">
+        Whether you are grabbing lunch after a morning at Kailua Beach or picking up dinner on your way home, our menu features crisp greens and house-made dressings. We also serve never-frozen local ahi. We pack every meal in 100% compostable packaging to help protect the island we love.
+      </Text>
+      <Text variant="body-lg" color="default">
+        You can find us conveniently located in the Kailua Shopping Center. The center offers easy parking and a welcoming space for families and local professionals. Stop by to build your own salad or try a signature wrap. You can also cool off with Big Island māmaki mint tea while enjoying the neighborhood vibe. We are proud to serve the Kailua community that helped us grow into a local staple.
+      </Text>
+    </div>
+    <img
+      slot="image"
+      src={onoIsland.src}
+      alt="Fresh salad bowl with local greens and island produce"
+      width={onoIsland.width}
+      height={onoIsland.height}
+      class="h-full w-full rounded-[32px] object-cover"
+      loading="lazy"
+      decoding="async"
+    />
+  </TextSplit>
+
+  <StoreVisit store={store} id="visit" />
+
+  <MenuItemsSection
+    id="favorites"
+    eyebrow="Kailua"
+    title="Fresh Menu Favorites in Kailua"
+    items={menuFavorites}
+    ctaText="View Full Menu"
+    ctaHref="/menu"
+  />
+
+  <CTABanner
+    title="Kailua Catering for Offices and Events"
+    subtitle="We provide fresh catering for business meetings and events across the Windward side. Order custom salad trays and sandwich platters for your next gathering."
+    ctaText="Order Catering"
+    ctaHref={CATERING_CTA_HREF}
+  />
+</PageLayout>

@@ -1,0 +1,83 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import MenuCategories from '~/components/widgets/MenuCategories.astro';
+import LocalSourcing from '~/components/widgets/LocalSourcing.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import CTABanner from '~/components/widgets/CTABanner.astro';
+import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF } from '~/config/cta';
+
+const metadata = {
+  title: 'Menu | Fresh Salads, Wraps & Local Ahi | Aloha Salads',
+  description:
+    'Explore the Aloha Salads menu featuring fresh salads, wraps, subs, soups, and Big Island māmaki tea across six Oahu locations. Order online for pickup.',
+  ignoreTitleTemplate: true,
+};
+
+const heroTitle = 'Our Menu:<br/>Freshly Crafted on Oahu';
+const heroContent =
+  "We serve fresh, locally grown food prepared daily across our six O'ahu locations. Explore our selection of salads, wraps, subs, and local favorites below, or order ahead for fast pickup.";
+
+const sourcingSubtitle =
+  "Every meal is crafted using produce delivered daily by local Hawaii growers, including vine-ripe tomatoes from Hau'ula, alongside never-frozen local ahi with vessel-level catch traceability.";
+
+const faqs = [
+  {
+    title: 'Can I order online for pickup?',
+    description: "Yes. You can order ahead online for fast pickup at any of our six neighborhood restaurants across O'ahu.",
+  },
+  {
+    title: 'Do you offer catering trays?',
+    description: 'Yes. We offer a variety of priced catering trays and sandwich platters for group gatherings.',
+  },
+  {
+    title: 'Are your dressings made in-house?',
+    description: 'Yes. All of our signature salad dressings are crafted from scratch daily.',
+  },
+  {
+    title: 'Do you serve fresh local seafood?',
+    description: 'Yes. We exclusively feature never-frozen local ahi sourced through a Honolulu seafood supplier with vessel-level catch traceability.',
+  },
+  {
+    title: 'Where are your locations?',
+    description:
+      "We operate six neighborhood restaurants across O'ahu, located in Kailua, Kahala, Kaneohe, Kapolei, Mililani, and Pearlridge.",
+  },
+];
+---
+
+<PageLayout metadata={metadata}>
+  <Hero2
+    variant="split-dark"
+    overlapHeader={false}
+    title={heroTitle}
+    content={heroContent}
+    actions={[
+      { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
+      { variant: 'ghost', tone: 'dark', text: 'Find a Location', href: LOCATION_CTA_HREF },
+    ]}
+  />
+
+  <MenuCategories id="menu-categories" title="Explore Our Menu Categories" />
+
+  <LocalSourcing
+    title="Quality Ingredients"
+    subtitle={sourcingSubtitle}
+    ctaText="Our Ingredients"
+    ctaHref="/ingredients"
+    withPhoto={true}
+  />
+
+  <FAQs
+    title="Frequently Asked Questions"
+    items={faqs}
+    isDark={true}
+  />
+
+  <CTABanner
+    title="Ready to Order?"
+    subtitle="Skip the line and order your favorite meal for quick pickup today."
+    ctaText="Order Online"
+    ctaHref={PRIMARY_CTA_HREF}
+  />
+</PageLayout>

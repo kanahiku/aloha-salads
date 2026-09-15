@@ -1,0 +1,102 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import TextSplit from '~/components/widgets/TextSplit.astro';
+import StoreVisit from '~/components/widgets/StoreVisit.astro';
+import MenuItemsSection from '~/components/widgets/MenuItemsSection.astro';
+import CTABanner from '~/components/widgets/CTABanner.astro';
+import Text from '~/components/ui/Text.astro';
+import { PRIMARY_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
+import { findStore, storeDirectionsHref } from '~/data/locations';
+import locationsCover from '~/assets/images/locations-cover.png';
+import onoIsland from '~/assets/images/ono-island.png';
+
+const store = findStore('kahala');
+if (!store) throw new Error('Missing Kahala store');
+
+const directionsHref = storeDirectionsHref(store);
+
+const metadata = {
+  title: 'Aloha Salads Kahala | Fresh Local Food at Kahala Mall',
+  description:
+    'Visit our Aloha Salads location at Kahala Mall. We serve fresh salads and wraps made with never-frozen local ahi in 100% compostable packaging.',
+  ignoreTitleTemplate: true,
+};
+
+const menuFavorites = [
+  {
+    title: 'Signature Salads',
+    description: 'Choose from local favorites like the Aloha Passion or Ono Island Ahi.',
+  },
+  {
+    title: 'Wraps and Subs',
+    description: 'Enjoy hearty, wholesome ingredients wrapped up for a quick meal on the go.',
+  },
+  {
+    title: 'Design Your Own Salad',
+    description:
+      'Build your perfect meal with your choice of greens and toppings dressed with our house-made dressings.',
+  },
+  {
+    title: 'Local Refreshments',
+    description: 'Pair your food with refreshing, locally sourced Big Island māmaki mint tea.',
+  },
+];
+---
+
+<PageLayout metadata={metadata}>
+  <Hero2
+    variant="split-dark"
+    overlapHeader={false}
+    tagline="Kahala"
+    title="Aloha Salads Kahala<br/>at Kahala Mall"
+    content="Enjoy fresh, locally sourced food in the heart of East Honolulu. Order ahead for quick pickup or stop in for a healthy meal."
+    image={{ ...locationsCover, alt: 'Aloha Salads team with fresh salad bowls at the Kahala location' }}
+    actions={[
+      { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
+      { variant: 'ghost', tone: 'dark', text: 'Get Directions', href: directionsHref, target: '_blank' },
+    ]}
+  />
+
+  <TextSplit heading="Your Neighborhood Stop in Kahala" withImage imageAspect="4 / 5">
+    <div class="flex flex-col gap-6">
+      <Text variant="body-lg" color="default">
+        Kahala Mall is your neighborhood destination for wholesome food in East Honolulu. We opened this location to serve the local community with healthy meals using ingredients from Hawaii farmers and fishermen. Whether you are finishing up a shopping trip or taking a break from work, our inviting space offers a quick and nutritious option.
+      </Text>
+      <Text variant="body-lg" color="default">
+        Our menu features crisp greens and house-made dressings crafted fresh daily. We proudly serve never-frozen local ahi. We pack every meal in 100% compostable packaging to help protect the island environment. Our commitment to sustainability matches our dedication to quality and flavor.
+      </Text>
+      <Text variant="body-lg" color="default">
+        You can find us conveniently located next to Starbucks inside Kahala Mall. The mall provides ample parking and a relaxed atmosphere for catching up with friends. Stop by to build your own custom bowl or try a signature wrap. You can also cool off with Big Island māmaki mint tea while enjoying the East Honolulu climate. We look forward to welcoming you soon.
+      </Text>
+    </div>
+    <img
+      slot="image"
+      src={onoIsland.src}
+      alt="Fresh salad bowl with local greens and island produce"
+      width={onoIsland.width}
+      height={onoIsland.height}
+      class="h-full w-full rounded-[32px] object-cover"
+      loading="lazy"
+      decoding="async"
+    />
+  </TextSplit>
+
+  <StoreVisit store={store} id="visit" />
+
+  <MenuItemsSection
+    id="favorites"
+    eyebrow="Kahala"
+    title="Fresh Menu Favorites in Kahala"
+    items={menuFavorites}
+    ctaText="View Menu"
+    ctaHref="/menu"
+  />
+
+  <CTABanner
+    title="Kahala Catering for Offices and Events"
+    subtitle="We provide fresh catering for business meetings and events across East Honolulu. Order custom salad trays and sandwich platters for your next gathering."
+    ctaText="Order Catering"
+    ctaHref={CATERING_CTA_HREF}
+  />
+</PageLayout>

@@ -30,6 +30,7 @@ import {
 import { blogPosts as localBlogPosts } from '../../data/pages/blogPosts';
 /* contact page removed */
 import { navigationData } from '../../data/navigation';
+import { interiorPaths } from '../../data/pages/interior';
 
 export async function getHomeContent(): Promise<HomePageContent> {
   const page = await getSanityHomeContent();
@@ -61,7 +62,7 @@ export async function getReviewsPage(): Promise<ReviewsPageContent | null> {
 
 const LEGAL_FOOTER_LINKS = [
   { text: 'Privacy Policy', href: '/privacy-policy' },
-  { text: 'Terms of Service', href: '/terms-of-service' },
+  { text: 'Terms', href: '/terms' },
   { text: 'Accessibility', href: '/accessibility' },
 ];
 
@@ -155,8 +156,10 @@ const STATIC_PATHS = [
   '/blog',
   '/reviews',
   '/privacy-policy',
-  '/terms-of-service',
+  '/terms',
   '/accessibility',
+  '/contact',
+  ...interiorPaths,
 ];
 
 export async function getPublicContentPaths(): Promise<string[]> {

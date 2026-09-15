@@ -1,0 +1,102 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import TextSplit from '~/components/widgets/TextSplit.astro';
+import StoreVisit from '~/components/widgets/StoreVisit.astro';
+import MenuItemsSection from '~/components/widgets/MenuItemsSection.astro';
+import CTABanner from '~/components/widgets/CTABanner.astro';
+import Text from '~/components/ui/Text.astro';
+import { PRIMARY_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
+import { findStore, storeDirectionsHref } from '~/data/locations';
+import locationsCover from '~/assets/images/locations-cover.png';
+import onoIsland from '~/assets/images/ono-island.png';
+
+const store = findStore('mililani');
+if (!store) throw new Error('Missing Mililani store');
+
+const directionsHref = storeDirectionsHref(store);
+
+const metadata = {
+  title: 'Aloha Salads Mililani | Fresh Local Food at Mililani Town Center',
+  description:
+    'Visit our Aloha Salads location at Mililani Town Center. We serve fresh salads and wraps made with never-frozen local ahi in 100% compostable packaging.',
+  ignoreTitleTemplate: true,
+};
+
+const menuFavorites = [
+  {
+    title: 'Signature Salads',
+    description: 'Choose from local favorites like the Aloha Passion or Ono Island Ahi.',
+  },
+  {
+    title: 'Wraps and Subs',
+    description: 'Enjoy hearty, wholesome ingredients wrapped up for a quick meal on the go.',
+  },
+  {
+    title: 'Design Your Own Salad',
+    description:
+      'Build your perfect meal with your choice of greens and toppings dressed with our house-made dressings.',
+  },
+  {
+    title: 'Local Refreshments',
+    description: 'Pair your food with refreshing, locally sourced Big Island māmaki mint tea.',
+  },
+];
+---
+
+<PageLayout metadata={metadata}>
+  <Hero2
+    variant="split-dark"
+    overlapHeader={false}
+    tagline="Mililani"
+    title="Aloha Salads Mililani<br/>at Mililani Town Center"
+    content="Enjoy fresh, locally sourced food in Central Oahu. Order ahead for quick pickup or stop in for a healthy meal."
+    image={{ ...locationsCover, alt: 'Aloha Salads team with fresh salad bowls at an Oahu location' }}
+    actions={[
+      { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
+      { variant: 'ghost', tone: 'dark', text: 'Get Directions', href: directionsHref, target: '_blank' },
+    ]}
+  />
+
+  <TextSplit heading="Your Neighborhood Stop in Mililani" withImage imageAspect="4 / 5">
+    <div class="flex flex-col gap-6">
+      <Text variant="body-lg" color="default">
+        Our Mililani location serves fresh food right in the heart of Central Oahu. We established this store at Mililani Town Center to give families and local workers a fast and healthy meal option. Our team works hard to maintain the high standards our customers expect. We partner with Hawaii farmers to source fresh produce for our kitchen. We also rely on local fishermen to supply our seafood.
+      </Text>
+      <Text variant="body-lg" color="default">
+        The menu revolves around quality ingredients prepared every morning. You can taste the difference in our crisp greens and house-made dressings. We are extremely proud to serve never-frozen local ahi in our salads. Protecting our island environment is a major priority for our business. Because of this commitment, we package every single takeout order in 100% compostable packaging.
+      </Text>
+      <Text variant="body-lg" color="default">
+        Finding us is simple when you visit Mililani Town Center. The shopping plaza offers plenty of parking spaces for a quick visit. You can sit down for a quiet lunch break or grab a fast dinner for the whole family to take home. We invite you to build a custom salad bowl or try a signature wrap. You can pair your meal with a refreshing glass of Big Island māmaki mint tea. We look forward to feeding you here in Central Oahu.
+      </Text>
+    </div>
+    <img
+      slot="image"
+      src={onoIsland.src}
+      alt="Fresh salad bowl with local greens and island produce"
+      width={onoIsland.width}
+      height={onoIsland.height}
+      class="h-full w-full rounded-[32px] object-cover"
+      loading="lazy"
+      decoding="async"
+    />
+  </TextSplit>
+
+  <StoreVisit store={store} id="visit" />
+
+  <MenuItemsSection
+    id="favorites"
+    eyebrow="Mililani"
+    title="Fresh Menu Favorites in Mililani"
+    items={menuFavorites}
+    ctaText="View Menu"
+    ctaHref="/menu"
+  />
+
+  <CTABanner
+    title="Mililani Catering for Offices and Events"
+    subtitle="We provide fresh catering for business meetings and events across Central Oahu. Order custom salad trays and sandwich platters for your next gathering."
+    ctaText="Order Catering"
+    ctaHref={CATERING_CTA_HREF}
+  />
+</PageLayout>

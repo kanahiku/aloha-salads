@@ -1,6 +1,32 @@
 import type { BreadcrumbItem, PageSchema } from './types';
+import { interiorPages } from '~/data/pages/interior';
 
 const HOME: BreadcrumbItem = { name: 'Home', path: '/' };
+
+function crumbsFor(path: string, name: string): BreadcrumbItem[] {
+  const parts = path.split('/').filter(Boolean);
+  const items: BreadcrumbItem[] = [HOME];
+  let acc = '';
+  for (let i = 0; i < parts.length; i++) {
+    acc += `/${parts[i]}`;
+    const isLast = i === parts.length - 1;
+    const page = interiorPages[acc];
+    items.push({
+      name: isLast ? name : (page?.title ?? parts[i]),
+      path: acc,
+    });
+  }
+  return items;
+}
+
+const interiorSchemas: PageSchema[] = Object.values(interiorPages).map((page) => ({
+  name: page.title,
+  path: page.path,
+  schemaType: page.path === '/about' ? 'AboutPage' : 'WebPage',
+  description: page.metaDescription,
+  faq: [],
+  breadcrumb: crumbsFor(page.path, page.title),
+}));
 
 /**
  * Per-page schema.org data. Add an entry when Figma MCP creates a new route.
@@ -15,38 +41,7 @@ export const pages: PageSchema[] = [
     faq: [],
     breadcrumb: [HOME],
   },
-  {
-    name: 'Menu',
-    path: '/menu',
-    schemaType: 'WebPage',
-    description: null,
-    faq: [],
-    breadcrumb: [HOME, { name: 'Menu', path: '/menu' }],
-  },
-  {
-    name: 'Catering',
-    path: '/catering',
-    schemaType: 'WebPage',
-    description: null,
-    faq: [],
-    breadcrumb: [HOME, { name: 'Catering', path: '/catering' }],
-  },
-  {
-    name: 'Locations',
-    path: '/locations',
-    schemaType: 'WebPage',
-    description: null,
-    faq: [],
-    breadcrumb: [HOME, { name: 'Locations', path: '/locations' }],
-  },
-  {
-    name: 'About',
-    path: '/about',
-    schemaType: 'AboutPage',
-    description: null,
-    faq: [],
-    breadcrumb: [HOME, { name: 'About', path: '/about' }],
-  },
+  ...interiorSchemas,
   {
     name: 'Contact',
     path: '/contact',
@@ -80,12 +75,12 @@ export const pages: PageSchema[] = [
     breadcrumb: [HOME, { name: 'Privacy Policy', path: '/privacy-policy' }],
   },
   {
-    name: 'Terms of Service',
-    path: '/terms-of-service',
+    name: 'Terms',
+    path: '/terms',
     schemaType: 'WebPage',
     description: null,
     faq: [],
-    breadcrumb: [HOME, { name: 'Terms of Service', path: '/terms-of-service' }],
+    breadcrumb: [HOME, { name: 'Terms', path: '/terms' }],
   },
   {
     name: 'Accessibility',

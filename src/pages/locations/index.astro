@@ -1,0 +1,76 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import LocationDirectory from '~/components/widgets/LocationDirectory.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import CTABanner from '~/components/widgets/CTABanner.astro';
+import { PRIMARY_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
+import locationsCover from '~/assets/images/locations-cover.png';
+
+const metadata = {
+  title: 'Aloha Salads Locations | Find Our 6 Oahu Restaurants',
+  description:
+    'Find an Aloha Salads location near you. We operate six restaurants across Oahu offering fresh meals for dine-in or fast pickup.',
+  ignoreTitleTemplate: true,
+};
+
+const heroTitle = 'Aloha Salads Locations<br/>on Oahu';
+const heroContent =
+  "Find your nearest Aloha Salads. We operate six neighborhood restaurants across O'ahu. Every location offers online ordering for fast pickup and convenient dine-in seating.";
+
+const faqs = [
+  {
+    title: 'Do all Aloha Salads locations offer catering?',
+    description:
+      'Yes, we provide catering for events and office lunches across Oahu. You can pick up your tray orders from any of our six stores.',
+  },
+  {
+    title: 'Can I order delivery from Aloha Salads?',
+    description:
+      'Yes, you can order online for quick pickup or choose delivery through our website at all Oahu locations.',
+  },
+  {
+    title: 'Are the menus the same at every location?',
+    description:
+      'Yes, you will find our signature custom salads, wraps, and Big Island māmaki mint tea at all of our Oahu stores.',
+  },
+  {
+    title: 'Does Aloha Salads have vegan and vegetarian options?',
+    description:
+      'Yes. We offer dedicated vegan salads, and our Design Your Own Salad option lets you build a meal that perfectly fits vegetarian or gluten-free diets.',
+  },
+  {
+    title: 'Can I use Aloha Salads gift cards at all locations?',
+    description: 'Yes, physical and digital gift cards are accepted at all six of our Oahu stores.',
+  },
+];
+---
+
+<PageLayout metadata={metadata}>
+  <Hero2
+    variant="split-dark"
+    overlapHeader={false}
+    tagline="Locations"
+    title={heroTitle}
+    content={heroContent}
+    image={{ ...locationsCover, alt: 'Aloha Salads team with fresh salad bowls at an Oahu location' }}
+    actions={[{ variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF }]}
+  />
+
+  <LocationDirectory id="find-a-location" />
+
+  <FAQs
+    title="Frequently Asked Questions"
+    items={faqs}
+    isDark={true}
+  />
+
+  <CTABanner
+    title="Order Fresh Food in Eco-Friendly Packaging"
+    subtitle="Every Aloha Salads location is committed to protecting our island. We serve locally sourced produce and never-frozen local ahi in 100% compostable packaging. Order ahead online for fast pickup, or let us bring fresh local flavor directly to your next office lunch or gathering."
+    ctaText="Order Online"
+    ctaHref={PRIMARY_CTA_HREF}
+    secondaryCtaText="Order Catering"
+    secondaryCtaHref={CATERING_CTA_HREF}
+  />
+</PageLayout>

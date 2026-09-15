@@ -11,6 +11,7 @@ import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import locationsCover from '~/assets/images/locations-cover.png';
+import { storeLocations } from '~/data/locations';
 
 export interface Location {
   name: string;
@@ -36,36 +37,13 @@ const {
   subtitle = "Dine in, grab and go, or order ahead. There\u2019s an Aloha Salads closer than you think.",
   ctaText = 'view all locations',
   ctaHref = '/locations',
-  locations = [
-    {
-      name: 'Kailua',
-      shopName: 'Kailua Shopping Center',
-      addressLine1: '600 Kailua Road #103',
-      addressLine2: 'Kailua, HI 96734',
-      href: '/locations/kailua',
-    },
-    {
-      name: 'Kailua Town',
-      shopName: 'Kailua Town Center',
-      addressLine1: '609 Kailua Road',
-      addressLine2: 'Kailua, HI 96734',
-      href: '/locations/kailua-town',
-    },
-    {
-      name: 'Kāne\u02bbohe',
-      shopName: 'Windward City Shopping Center',
-      addressLine1: '45-480 Kane\u02bbohe Bay Dr',
-      addressLine2: 'Kane\u02bbohe, HI 96744',
-      href: '/locations/kaneohe',
-    },
-    {
-      name: 'Hawaii Kai',
-      shopName: 'Koko Marina Center',
-      addressLine1: '7192 Kalanianaole Hwy',
-      addressLine2: 'Honolulu, HI 96825',
-      href: '/locations/hawaii-kai',
-    },
-  ],
+  locations = storeLocations.slice(0, 4).map((store) => ({
+    name: store.name,
+    shopName: store.shopName,
+    addressLine1: store.addressLine1,
+    addressLine2: store.addressLine2,
+    href: store.href,
+  })),
   id,
 } = Astro.props;
 ---

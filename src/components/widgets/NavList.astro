@@ -1,0 +1,55 @@
+---
+import { Icon } from 'astro-icon/components';
+import { trimSlash } from '~/utils/permalinks';
+import type { NavLink } from '~/lib/content/types';
+
+export interface Props {
+  links?: NavLink[];
+  class?: string;
+}
+
+const { links = [], class: className = '' } = Astro.props;
+
+const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
+const navLinkClass = 'font-rough text-[14px] leading-none text-secondary hover:text-heading whitespace-nowrap';
+---
+
+<ul class={className}>
+  {
+    links.map(({ text, href, links: childLinks }) => {
+      const isDropdown = Boolean(childLinks?.length);
+      if (!isDropdown) {
+        return (
+          <li>
+            <a class:list={[navLinkClass, { 'aw-link-active text-heading': href === currentPath }]} href={href}>
+              {text}
+            </a>
+          </li>
+        );
+      }
+
+      return (
+        <li class="dropdown relative">
+          <div>
+            <a class:list={[navLinkClass, 'inline-flex items-center gap-1']} href={href}>
+              {text}
+              <Icon name="tabler:chevron-down" class="size-3.5" aria-hidden="true" />
+            </a>
+          </div>
+          <ul class="dropdown-menu" role="list">
+            {childLinks!.map(({ text: childText, href: childHref }) => (
+              <li>
+                <a
+                  class:list={[{ 'aw-link-active': childHref === currentPath }]}
+                  href={childHref}
+                >
+                  {childText}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </li>
+      );
+    })
+  }
+</ul>

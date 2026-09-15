@@ -66,6 +66,7 @@ const isBleed = hasImage && imageFit === 'bleed';
     >
       <div
         class:list={[
+          'flex flex-col items-start gap-6',
           { 'md:basis-1/2': hasImage },
           isBleed
             ? [
@@ -79,13 +80,13 @@ const isBleed = hasImage && imageFit === 'bleed';
       >
         {hasImage && title && (
           <h2
-            class={`text-[26px] md:text-[40px] font-normal leading-[110%] tracking-tighter mb-[20px] font-heading ${classes?.title ?? 'text-heading'}`}
+            class={`text-[26px] md:text-[40px] font-normal leading-[110%] tracking-tighter font-heading ${classes?.title ?? 'text-heading'}`}
             set:html={title}
           />
         )}
         {content && (
           <div
-            class="text-[16px] md:text-[17px] font-normal leading-[160%] dark:text-slate-400 mb-[30px] last:mb-0"
+            class="text-[16px] md:text-[17px] font-normal leading-[160%] dark:text-slate-400"
             set:html={content}
           />
         )}
