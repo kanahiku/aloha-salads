@@ -5,7 +5,6 @@ import Header from '~/components/widgets/Header.astro';
 import TalkToDoctor from '~/components/widgets/TalkToDoctor.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
-import talkToDoctorHero from '~/assets/images/talk-to-doctor-hero.png';
 
 const metadata = {
   title: `Talk to Your Doctor | ${site.name}`,
@@ -63,13 +62,8 @@ const packages = [
   <Hero2
     variant="page"
     overlapHeader={false}
-    withImage
     title="Talk to your<br />doctor about it"
     subtitle="You have done what you can do alone, and what you can do with a friend. Past this point it is medical care, and we do not deliver medical care. What we can do is make sure you walk into that appointment with a much better list."
-    image={{
-      ...talkToDoctorHero,
-      alt: 'A stethoscope resting on a tan medical case',
-    }}
   >
     <Header
       slot="nav"

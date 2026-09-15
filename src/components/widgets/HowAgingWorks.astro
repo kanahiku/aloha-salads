@@ -25,7 +25,6 @@ import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import Card from '~/components/ui/Card.astro';
-import basicFirstImg from '~/assets/images/basic-first.png';
 
 export interface Props {
   id?: string;
@@ -117,15 +116,11 @@ const buckets = [
             style="background-image: repeating-linear-gradient(to bottom, #E4E2DA 0, #E4E2DA 8.93px, transparent 8.93px, transparent 17.86px);"
           ></div>
 
-          <img
-            src={basicFirstImg.src}
-            width={basicFirstImg.width}
-            height={basicFirstImg.height}
-            alt="Five people practicing tree pose on yoga mats on a beach"
-            class="w-[83%] max-w-[489px] shrink-0 rounded-[32px] object-cover"
+          <!-- TODO: replace with <Image> when asset is ready -->
+          <div
+            class="w-[83%] max-w-[489px] shrink-0 rounded-[32px] bg-section-grey"
             style="aspect-ratio: 489 / 326;"
-            loading="lazy"
-            decoding="async"
+            aria-hidden="true"
           />
 
           <div class="hidden min-h-[78px] flex-1 flex-col items-center gap-2.5 lg:flex">

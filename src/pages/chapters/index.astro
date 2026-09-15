@@ -9,8 +9,6 @@ import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
-import locationBgImg from '~/assets/images/location-bg.png';
-import chaptersHero from '~/assets/images/chapters-hero.png';
 import { chapterLocations } from '~/data/chapters';
 
 const CHAPTERS_PAGE_HIDDEN = true;
@@ -35,10 +33,6 @@ const header = navigationData.header;
     variant="title"
     overlapHeader={false}
     title="Chapters"
-    image={{
-      ...chaptersHero,
-      alt: 'Silhouettes of people gathered against an evening sky',
-    }}
   >
     <Header
       slot="nav"
@@ -65,7 +59,6 @@ const header = navigationData.header;
   <ChaptersList
     id="our-locations"
     eyebrow="Our locations"
-    bgImage={locationBgImg}
     locations={chapterLocations}
   />
 

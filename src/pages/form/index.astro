@@ -1,10 +1,6 @@
 ---
 import Layout from '~/layouts/Layout.astro';
-import { getImage } from 'astro:assets';
-import heroPng from '~/assets/images/home-hero.png';
 import { EMAIL_SUMMARY_ENDPOINT, SITE_SLUG, TURNSTILE_SITE_KEY } from '~/lib/forms';
-
-const heroImg = await getImage({ src: heroPng, format: 'webp', quality: 85 });
 
 const metadata = {
   title: 'Rebellious Aging Check-up',
@@ -17,8 +13,8 @@ const metadata = {
 <Layout metadata={metadata}>
   <!-- Full-screen immersive quiz — no site nav -->
   <div id="quiz-root">
-    <!-- Background photo -->
-    <div class="quiz-bg" aria-hidden="true" style={`background-image: url('${heroImg.src}')`}></div>
+    <!-- TODO: replace with <Image> when asset is ready -->
+    <div class="quiz-bg bg-section-grey" aria-hidden="true"></div>
     <div class="quiz-overlay" aria-hidden="true"></div>
 
     <!-- ═══════════════════════════════════ PROGRESS HEADER ═══════════════════════════════════ -->

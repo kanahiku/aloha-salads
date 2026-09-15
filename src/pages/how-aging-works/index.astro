@@ -6,13 +6,9 @@ import ConceptSplit from '~/components/widgets/ConceptSplit.astro';
 import TextSplit from '~/components/widgets/TextSplit.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
-import Image from '~/components/common/Image.astro';
-import whyUrgent from '~/assets/images/why-urgent.png';
-import weStopImg from '~/assets/images/we-stop.png';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
 import { PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
-import howAgingHero from '~/assets/images/how-aging-hero.png';
 
 const metadata = {
   title: `How Aging Works | ${site.name}`,
@@ -62,10 +58,6 @@ const conceptCards = [
       { text: 'Slope.', italic: true, align: 'center' },
       { text: 'Floor.', align: 'end' },
     ]}
-    image={{
-      ...howAgingHero,
-      alt: "A baby's hand resting on an elderly person's hand",
-    }}
   >
     <Header
       slot="nav"
@@ -88,13 +80,11 @@ const conceptCards = [
       The useful questions are: which system, how steep, and how far away is the floor?
     </Text>
     <!-- TODO: replace with <Image> when asset is ready -->
-    <Image
+    <div
       slot="image"
-      src={whyUrgent}
-      alt="Function vs age chart: managed vs unmanaged decline"
-      class="w-full rounded-[32px] object-cover"
-      widths={[480, 900, 1695]}
-      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 60vw, 1695px"
+      class="w-full rounded-[32px] bg-section-grey"
+      style="aspect-ratio: 1695 / 928;"
+      aria-hidden="true"
     />
   </ConceptSplit>
 
@@ -114,16 +104,12 @@ const conceptCards = [
       hideNote
       class="mt-8 self-start"
     />
-    <img
+    <!-- TODO: replace with <Image> when asset is ready -->
+    <div
       slot="image"
-      src={weStopImg.src}
-      width={weStopImg.width}
-      height={weStopImg.height}
-      alt="Hands typing on a laptop with a stethoscope on the desk"
-      class="w-full rounded-[32px] object-cover"
+      class="w-full rounded-[32px] bg-section-grey"
       style="aspect-ratio: 568 / 378.667;"
-      loading="lazy"
-      decoding="async"
+      aria-hidden="true"
     />
   </TextSplit>
 </Layout>

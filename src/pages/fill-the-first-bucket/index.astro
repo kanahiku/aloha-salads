@@ -6,7 +6,6 @@ import BucketsSection from '~/components/widgets/BucketsSection.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
-import fillBucketHero from '~/assets/images/fill-bucket-hero.png';
 
 const metadata = {
   title: `Fill the First Bucket | ${site.name}`,
@@ -25,13 +24,8 @@ const header = navigationData.header;
   <Hero2
     variant="page"
     overlapHeader={false}
-    withImage
     title="Fill the<br />first bucket."
     subtitle={`<p>Then the next one, and the one after that. The buckets do not hold health. They hold resources: your money, your time, your attention, your appointments, your willpower. All five are finite, and where you pour them is the most consequential decision you make about your own aging.</p><p>The order runs from the simplest and cheapest to the most complex and expensive. Do the basics before the fancy stuff.</p>`}
-    image={{
-      ...fillBucketHero,
-      alt: 'Silhouette of a person meditating at sunrise among palm trees',
-    }}
   >
     <Header
       slot="nav"
