@@ -16,32 +16,33 @@ export const testimonial = defineType({
     }),
     defineField({
       name: 'name',
-      title: 'Name',
+      title: 'Reviewer Name',
       type: 'string',
       validation: (r) => r.required(),
     }),
     defineField({
-      name: 'age',
-      title: 'Age',
-      type: 'number',
-      validation: (r) => r.integer().min(1).max(120),
-    }),
-    defineField({
       name: 'location',
-      title: 'Location',
+      title: 'Attribution / Location',
       type: 'string',
-      description: 'Optional. Shown between age and tenure, e.g. Kailua.',
+      description: 'Shown under the name, e.g. "Google Review" or "Kailua".',
     }),
     defineField({
-      name: 'tenure',
-      title: 'Tenure',
+      name: 'platform',
+      title: 'Review Platform',
       type: 'string',
-      description: 'How long they have been in, e.g. "Two years in" or "Eighteen months".',
+      options: {
+        list: [
+          { title: 'Google', value: 'google' },
+          { title: 'Yelp', value: 'yelp' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'google',
       validation: (r) => r.required(),
     }),
     defineField({
       name: 'order',
-      title: 'Display order',
+      title: 'Display Order',
       type: 'number',
       description: 'Lower numbers appear first in the carousel.',
       initialValue: 0,
@@ -61,15 +62,13 @@ export const testimonial = defineType({
   preview: {
     select: {
       title: 'name',
-      age: 'age',
-      tenure: 'tenure',
+      platform: 'platform',
       quote: 'quote',
     },
-    prepare({ title, age, tenure, quote }) {
-      const attribution = [title, age, tenure].filter(Boolean).join(', ');
+    prepare({ title, platform, quote }) {
       return {
-        title: attribution || 'Untitled testimonial',
-        subtitle: quote,
+        title: title || 'Untitled',
+        subtitle: `${platform ?? 'google'} · ${quote?.slice(0, 60)}…`,
       };
     },
   },

@@ -4,7 +4,7 @@ import Hero2 from '~/components/widgets/Hero2.astro';
 import BrandBar from '~/components/widgets/BrandBar.astro';
 import MenuCategories from '~/components/widgets/MenuCategories.astro';
 import LocalSourcing from '~/components/widgets/LocalSourcing.astro';
-import ownSaladImage from '~/assets/images/own-salad.png';
+import ownSaladImage from '~/assets/images/own-salad.webp';
 import SaladBuilder from '~/components/widgets/SaladBuilder.astro';
 import Locations from '~/components/widgets/Locations.astro';
 import Testimonials from '~/components/widgets/Testimonials.astro';
@@ -14,7 +14,7 @@ import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import { site } from '~/config/site';
 import { PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
-import heroCover from '~/assets/images/hero-cover.png';
+import heroCover from '~/assets/images/hero-cover.webp';
 
 const metadata = {
   title: 'Aloha Salads | Fresh Salads & Local Ahi on Oahu',
@@ -88,43 +88,11 @@ const metadata = {
     </div>
   </section>
 
-  {/* ── 5. Testimonials ──────────────────────────────────── */}
+  {/* ── 5. Testimonials — fetched from Sanity ────────────── */}
   <Testimonials
     id="reviews"
     eyebrow="Reviews"
     heading="What Our Customers Say"
-    testimonials={[
-      {
-        quote: "Excellent salads, sandwiches and wraps. The best hibiscus iced tea.",
-        name: "Mark C.",
-        location: "Google Review",
-        platform: "google",
-      },
-      {
-        quote: "Always love the fresh food at Aloha Salads. A local favorite! Food: 5/5 · Service: 5/5 · Atmosphere: 5/5",
-        name: "B.P.",
-        location: "Google Review",
-        platform: "google",
-      },
-      {
-        quote: "Very delicious salads and dressings. They have the most delicious bleu cheese I ever had. One of my favorite places for salad.",
-        name: "Mar B.",
-        location: "Google Review",
-        platform: "google",
-      },
-      {
-        quote: "I love this place. Curry chicken salad wrap with the Guava lemonade is a must have.",
-        name: "Teiara H.",
-        location: "Google Review",
-        platform: "google",
-      },
-      {
-        quote: "The girls here were all so sweet! I really love my acai bowl and aloha wrap!! One of my favorite places. Definitely coming back soon!",
-        name: "R.",
-        location: "Google Review",
-        platform: "google",
-      },
-    ]}
   />
 
   {/* ── 6. Locations ─────────────────────────────────────── */}

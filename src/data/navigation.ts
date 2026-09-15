@@ -17,7 +17,6 @@ export const navigationData: NavigationContent = {
           { text: 'Vegetarian Options', href: '/menu/vegetarian' },
           { text: 'Healthy Options', href: '/menu/healthy-options' },
           { text: 'Drinks', href: '/menu/drinks' },
-          { text: 'View Full Menu', href: '/menu' },
         ],
       },
       {
@@ -31,7 +30,6 @@ export const navigationData: NavigationContent = {
           { text: 'Party Catering', href: '/catering/parties' },
           { text: 'School Catering', href: '/catering/schools' },
           { text: 'Large Group Catering', href: '/catering/large-groups' },
-          { text: 'View All Catering', href: '/catering' },
         ],
       },
       {
@@ -44,7 +42,6 @@ export const navigationData: NavigationContent = {
           { text: 'Kapolei', href: '/locations/kapolei' },
           { text: 'Mililani', href: '/locations/mililani' },
           { text: 'Pearlridge', href: '/locations/pearlridge' },
-          { text: 'View All Locations', href: '/locations' },
         ],
       },
       {

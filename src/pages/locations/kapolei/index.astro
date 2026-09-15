@@ -8,8 +8,8 @@ import CTABanner from '~/components/widgets/CTABanner.astro';
 import Text from '~/components/ui/Text.astro';
 import { PRIMARY_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
 import { findStore, storeDirectionsHref } from '~/data/locations';
-import locationsCover from '~/assets/images/locations-cover.png';
-import onoIsland from '~/assets/images/ono-island.png';
+import locationsCover from '~/assets/images/locations-cover.webp';
+import onoIsland from '~/assets/images/ono-island.webp';
 
 const store = findStore('kapolei');
 if (!store) throw new Error('Missing Kapolei store');

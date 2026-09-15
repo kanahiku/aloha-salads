@@ -5,7 +5,7 @@
  *
  * Layer order (bottom → top):
  *   1. Fixed green gradient div   #8CAC7F → #8FA1AB            z-index: -10
- *   2. Fixed SVG motif img        leaves-motif.svg              z-index: -9
+ *   2. Fixed motif img             leaves-motif.webp             z-index: -9
  *                                  SVG scales proportionally via
  *                                  preserveAspectRatio="xMidYMin slice" so
  *                                  the pattern always fills the viewport width
@@ -16,7 +16,7 @@
  *
  * Transparent sections punch through to show layers 1 + 2.
  */
-import leavesMotif from '~/assets/images/leaves-motif.svg?url';
+import leavesMotif from '~/assets/images/leaves-motif.webp';
 ---
 
 {/* Layer 1 — green gradient, fixed to viewport */}
@@ -25,11 +25,14 @@ import leavesMotif from '~/assets/images/leaves-motif.svg?url';
   aria-hidden="true"
 ></div>
 
-{/* Layer 2 — SVG motif, fixed to viewport, scales to fill width */}
+{/* Layer 2 — leaves motif, fixed to viewport, scales to fill width */}
 <img
-  src={leavesMotif}
-  class="pointer-events-none fixed inset-0 -z-[9] h-full w-full select-none object-cover"
+  src={leavesMotif.src}
+  width={leavesMotif.width}
+  height={leavesMotif.height}
+  class="pointer-events-none fixed inset-0 -z-[9] h-full w-full select-none object-cover opacity-[0.07]"
   aria-hidden="true"
   decoding="async"
   fetchpriority="low"
+  loading="lazy"
 />

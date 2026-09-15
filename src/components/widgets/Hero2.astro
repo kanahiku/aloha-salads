@@ -14,7 +14,7 @@ import ArtDirectedImage from '~/components/ui/ArtDirectedImage.astro';
 import CTAActions from '~/components/ui/CTAActions.astro';
 import Text from '~/components/ui/Text.astro';
 import smallLeafMotif from '~/assets/images/small-leaf-motif.webp';
-import locationsCover from '~/assets/images/locations-cover.png';
+import locationsCover from '~/assets/images/locations-cover.webp';
 import Heading from '~/components/ui/Heading.astro';
 import type { ContentImage } from '~/lib/content/types';
 
@@ -102,7 +102,7 @@ const isLocalPageImage =
       {isSplitDark && (
         <div
           class="pointer-events-none absolute inset-0 z-0 opacity-45"
-          style={`background-image: url('${smallLeafMotif.src}'); background-size: 3400px auto; background-position: top left; background-repeat: repeat;`}
+          style={`background-image: url('${smallLeafMotif.src}'); background-size: 1700px auto; background-position: top left; background-repeat: repeat;`}
           aria-hidden="true"
         />
       )}
@@ -174,7 +174,7 @@ const isLocalPageImage =
         class:list={[
           'relative z-[2] flex flex-1 flex-col w-full mx-auto max-w-container',
           isSplitDark
-            ? 'pl-5 sm:pl-8 md:pl-16 pr-0 py-0'
+            ? 'px-5 sm:px-8 md:pl-16 md:pr-0 py-0'
             : isPhotoOverlay
               ? 'px-5 py-10 sm:px-8 md:px-16 md:py-16'
               : 'px-5 py-6 sm:px-8 md:px-16 lg:py-8',

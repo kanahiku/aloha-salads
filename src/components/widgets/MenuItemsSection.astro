@@ -6,6 +6,7 @@
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
+import smallLeafMotif from '~/assets/images/small-leaf-motif.webp';
 
 export interface MenuItem {
   title: string;
@@ -27,9 +28,14 @@ const { eyebrow, title, intro, items = [], ctaText, ctaHref, id } = Astro.props;
 
 <section
   {...id ? { id } : {}}
-  class="not-prose w-full bg-cta"
+  class="not-prose relative w-full overflow-hidden bg-section-grey"
 >
-  <div class="mx-auto w-full max-w-container px-5 py-16 sm:px-8 md:px-16 md:py-[120px]">
+  <div
+    class="pointer-events-none absolute inset-0"
+    style={`background-image: url('${smallLeafMotif.src}'); background-size: 1700px auto; background-position: top left; background-repeat: repeat;`}
+    aria-hidden="true"
+  ></div>
+  <div class="relative z-[1] mx-auto w-full max-w-container px-5 py-16 sm:px-8 md:px-16 md:py-[120px]">
     <div class="mb-12 flex max-w-4xl flex-col gap-6 md:mb-16">
       {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}
       <Heading variant="h2">{title}</Heading>
@@ -50,19 +56,19 @@ const { eyebrow, title, intro, items = [], ctaText, ctaHref, id } = Astro.props;
                 {n}
               </span>
 
-              <div class="relative grid grid-cols-[3.25rem_minmax(0,1fr)] items-start gap-x-4 gap-y-3 px-4 py-8 md:grid-cols-[5.5rem_minmax(0,1fr)] md:px-10 md:py-10 lg:grid-cols-[5.5rem_minmax(0,1fr)_minmax(14rem,26rem)] lg:gap-x-10">
-                <span class="type-quote pt-1 text-accent" aria-hidden="true">
+              <div class="relative grid grid-cols-[3.25rem_minmax(0,1fr)] items-start gap-x-4 gap-y-3 px-4 py-8 md:grid-cols-[5.5rem_minmax(0,1fr)] md:items-center md:px-10 md:py-10 lg:grid-cols-[5.5rem_minmax(0,1fr)_minmax(14rem,26rem)] lg:gap-x-10">
+                <span class="type-quote pt-1 text-accent md:pt-0" aria-hidden="true">
                   {n}
                 </span>
 
-                <Heading variant="h3">{item.title}</Heading>
+                <Heading variant="h3" class="md:text-[30px] lg:text-[34px]">{item.title}</Heading>
 
                 {item.description && (
                   <Text
                     as="p"
                     variant="body-lg"
                     color="inherit"
-                    class="col-start-2 max-w-prose text-heading/60 lg:col-start-3 lg:pt-1"
+                    class="col-start-2 max-w-prose text-heading/60 lg:col-start-3"
                   >
                     {item.description}
                   </Text>

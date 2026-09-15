@@ -21,6 +21,7 @@
 import Heading from '~/components/ui/Heading.astro';
 import googleIcon from '~/assets/images/google-icon.png';
 import yelpIcon from '~/assets/images/yelp-icon.png';
+import { sanityClient } from '~/lib/sanity/client';
 
 export type ReviewPlatform = 'google' | 'yelp';
 
@@ -34,52 +35,29 @@ export interface TestimonialItem {
 export interface Props {
   eyebrow?: string;
   heading?: string;
+  /** Pass testimonials explicitly to skip the Sanity fetch (e.g. in Storybook/tests). */
   testimonials?: TestimonialItem[];
   id?: string;
 }
 
-const {
-  eyebrow = 'Reviews',
-  heading = 'Loved across the island.',
-  testimonials = [
-    {
-      quote:
-        '\u201cFreshest salad on the windward side, hands down. The ahi actually tastes like it was caught that morning.\u201d',
-      name: 'Malia K.',
-      location: 'Kailua',
-      platform: 'google',
-    },
-    {
-      quote:
-        '\u201cI come here every week. The portions are generous, everything tastes clean and fresh. My go-to lunch spot.\u201d',
-      name: 'Keoni L.',
-      location: 'Kāne\u02bbohe',
-      platform: 'yelp',
-    },
-    {
-      quote:
-        '\u201cBest poke bowl on the island, period. Local ingredients you can actually taste. Nothing else comes close.\u201d',
-      name: 'Leilani M.',
-      location: 'Hawaii Kai',
-      platform: 'google',
-    },
-    {
-      quote:
-        '\u201cLove that they use locally grown produce. You can taste the difference. The māmaki mint tea is incredible.\u201d',
-      name: 'Noa P.',
-      location: 'Kailua',
-      platform: 'yelp',
-    },
-    {
-      quote:
-        '\u201cFinally a fast-casual place that doesn\u2019t cut corners. The staff is warm, the food is honest. Aloha spirit for real.\u201d',
-      name: 'Kai T.',
-      location: 'Honolulu',
-      platform: 'google',
-    },
-  ],
-  id,
-} = Astro.props;
+const { eyebrow = 'Reviews', heading = 'Loved across the island.', testimonials: propTestimonials, id } = Astro.props;
+
+// Fetch from Sanity; fall back to prop overrides if provided.
+let testimonials: TestimonialItem[] = propTestimonials ?? [];
+
+if (!propTestimonials) {
+  try {
+    const raw = await sanityClient.fetch<TestimonialItem[]>(
+      `*[_type == "testimonial"] | order(order asc, name asc) {
+        quote, name, location, platform
+      }`
+    );
+    if (raw && raw.length > 0) testimonials = raw;
+  } catch (e) {
+    // Sanity unreachable at build time — silently use empty array
+    console.warn('[Testimonials] Sanity fetch failed:', (e as Error).message);
+  }
+}
 
 // Duplicate for seamless loop
 const doubled = [...testimonials, ...testimonials];
