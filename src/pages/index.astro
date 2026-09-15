@@ -2,86 +2,144 @@
 import Layout from '~/layouts/PageLayout.astro';
 import Hero2 from '~/components/widgets/Hero2.astro';
 import BrandBar from '~/components/widgets/BrandBar.astro';
-import FeaturedDishes from '~/components/widgets/FeaturedDishes.astro';
+import MenuCategories from '~/components/widgets/MenuCategories.astro';
 import LocalSourcing from '~/components/widgets/LocalSourcing.astro';
+import ownSaladImage from '~/assets/images/own-salad.png';
 import SaladBuilder from '~/components/widgets/SaladBuilder.astro';
 import Locations from '~/components/widgets/Locations.astro';
 import Testimonials from '~/components/widgets/Testimonials.astro';
 import OurStory from '~/components/widgets/OurStory.astro';
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+import Button from '~/components/ui/Button.astro';
 import { site } from '~/config/site';
 import { PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
 import heroCover from '~/assets/images/hero-cover.png';
 
 const metadata = {
-  title: site.name,
-  description: site.description,
+  title: 'Aloha Salads | Fresh Salads & Local Ahi on Oahu',
+  description:
+    "Founded in Kailua in 2006, Aloha Salads serves fresh island-grown produce and never-frozen local ahi across six Oahu locations. Order online for pickup.",
   ignoreTitleTemplate: true,
 };
 ---
 
 <Layout metadata={metadata}>
+  {/* ── 1. Hero ───────────────────────────────────────────── */}
   <Hero2
     id="home-hero"
     variant="overlay"
     overlapHeader={false}
-    tagline="Kailua-born since 2006 · Six spots on O‘ahu"
-    title="Salads with a side of aloha."
-    subtitle="Island-grown produce, never-frozen local ahi, and bowls built the way you like them. Real food, made with care — the way we'd feed our own family."
+    tagline="Kailua-born since 2006 · Six spots on O'ahu"
+    title="Aloha Salads: Fresh Food<br/>Crafted Daily on Oahu."
+    subtitle="Founded in Kailua in May 2006, Aloha Salads provides fresh, locally grown food tailored to active island lifestyles. Voted First Place Hawaii's Best 2024 in the People's Choice Awards by the Star Advertiser, we operate six neighborhood restaurants across O'ahu."
     image={{ ...heroCover, alt: 'Fresh ahi salad with island greens and avocado' }}
     actions={[
-      { variant: 'primary', text: PRIMARY_CTA_LABEL, href: PRIMARY_CTA_HREF },
-      { variant: 'ghost', text: 'find a location', href: '/locations' },
+      { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
+      { variant: 'ghost', text: 'Find a Location', href: '/locations' },
     ]}
   />
+
+  {/* ── 2. Brand bar ─────────────────────────────────────── */}
   <BrandBar />
-  <FeaturedDishes
-    eyebrow="Featured dishes"
-    title="The ones people come back for."
-    subtitle="A few island favorites — or skip the menu entirely and build your own."
-    ctaText="view full menu"
+
+  {/* ── 3. Menu categories ───────────────────────────────── */}
+  <MenuCategories
+    eyebrow="Our menu"
+    title="Explore Our Full Menu"
+    subtitle="We prepare meals from scratch daily across our six Oahu locations. Browse our core categories below to find your meal or order ahead for fast pickup."
+    ctaText="View Full Menu"
     ctaHref="/menu"
-    dishes={[
+  />
+
+  {/* ── 4. Local sourcing — SaladBuilder-style gradient split ── */}
+  <section class="not-prose relative w-full overflow-hidden">
+    <div class="mx-auto max-w-container px-4 pb-12 md:px-8">
+      <div class="flex min-h-[610px] w-full flex-col items-center justify-center gap-10 bg-gradient-to-b from-transparent from-[24%] to-page/90 px-4 pt-10 pb-4 md:flex-row md:gap-16 md:pt-16 md:pb-6 md:px-16">
+
+        {/* Left — text + CTA */}
+        <div class="flex min-w-0 flex-1 flex-col items-start gap-6">
+          <div class="flex w-full flex-col gap-6">
+            <Heading variant="eyebrow" color="inherit" class="text-eyebrow opacity-80">
+              Local sourcing
+            </Heading>
+            <Heading variant="h2">Our Local Sourcing</Heading>
+            <Text variant="body-lg" color="default">
+              We partner with Hawaii growers and suppliers to bring quality ingredients into our kitchens. We feature vine-ripe tomatoes from Hau'ula and exclusively use never-frozen local ahi sourced through a Honolulu seafood supplier with vessel-level catch traceability.
+            </Text>
+          </div>
+          <Button variant="primary" text="Our Ingredients" href="/ingredients" hideNote={true} />
+        </div>
+
+        {/* Right — food photo */}
+        <div class="relative w-full max-w-[400px] shrink-0" style="aspect-ratio: 562 / 624;" aria-hidden="true">
+          <img
+            src={ownSaladImage.src}
+            alt="Fresh locally sourced salad bowl with island greens and ahi"
+            width={ownSaladImage.width}
+            height={ownSaladImage.height}
+            class="absolute inset-0 h-full w-full object-contain"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  {/* ── 5. Testimonials ──────────────────────────────────── */}
+  <Testimonials
+    id="reviews"
+    eyebrow="Reviews"
+    heading="What Our Customers Say"
+    testimonials={[
       {
-        title: 'Ono Island Ahi',
-        description: 'Fresh local ahi, never frozen, over crisp island greens.',
+        quote: "Excellent salads, sandwiches and wraps. The best hibiscus iced tea.",
+        name: "Mark C.",
+        location: "Google Review",
+        platform: "google",
       },
       {
-        title: 'Aloha Passion',
-        description: 'Blue cheese, candied walnuts, and a bright vinaigrette.',
+        quote: "Always love the fresh food at Aloha Salads. A local favorite! Food: 5/5 · Service: 5/5 · Atmosphere: 5/5",
+        name: "B.P.",
+        location: "Google Review",
+        platform: "google",
       },
       {
-        title: 'The Paniolo',
-        description: 'Cheddar, black beans, and a smoky BBQ ranch.',
+        quote: "Very delicious salads and dressings. They have the most delicious bleu cheese I ever had. One of my favorite places for salad.",
+        name: "Mar B.",
+        location: "Google Review",
+        platform: "google",
+      },
+      {
+        quote: "I love this place. Curry chicken salad wrap with the Guava lemonade is a must have.",
+        name: "Teiara H.",
+        location: "Google Review",
+        platform: "google",
+      },
+      {
+        quote: "The girls here were all so sweet! I really love my acai bowl and aloha wrap!! One of my favorite places. Definitely coming back soon!",
+        name: "R.",
+        location: "Google Review",
+        platform: "google",
       },
     ]}
   />
-  <LocalSourcing
-    eyebrow="Our ingredients & local sourcing"
-    title="Sourced close to home, on purpose."
-    subtitle="We've bought from local farmers and fishermen since day one in Kailua. Here's what that actually means on your plate — in specifics, not adjectives."
-    ctaText="See where our food comes from"
-    ctaHref="/ingredients"
-    facts={[
-      {
-        title: 'Never-frozen ahi',
-        description: 'Fresh, local ahi — delivered, not frozen, not shipped in from far away.',
-      },
-      {
-        title: 'Island-grown produce',
-        description: 'Greens and vegetables from local Hawai‘i farms, in season whenever we can.',
-      },
-      {
-        title: 'Māmaki mint tea',
-        description: 'Brewed from māmaki grown on Hawai‘i Island — a true taste of the islands.',
-      },
-      {
-        title: '100% compostable',
-        description: 'Every piece of our packaging is eco-friendly and fully compostable. All of it.',
-      },
-    ]}
+
+  {/* ── 6. Locations ─────────────────────────────────────── */}
+  <Locations
+    id="locations"
+    eyebrow="Locations"
+    title="Visit a Store Near You"
+    subtitle="Stop by any of our six O'ahu locations in Kailua, Kahala, Kaneohe, Kapolei, Mililani, or Pearlridge."
+    ctaText="View All Locations"
+    ctaHref="/locations"
   />
-  <Locations id="locations" />
-  <SaladBuilder id="salad-builder" />
-  <Testimonials id="reviews" />
-  <OurStory id="our-story" />
+
+  {/* ── 7. Salad builder — hidden (not in copy brief) ───── */}
+  {/* <SaladBuilder id="salad-builder" /> */}
+
+  {/* ── 8. Our story — hidden (not in copy brief) ─────── */}
+  {/* <OurStory id="our-story" /> */}
 </Layout>

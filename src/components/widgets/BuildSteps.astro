@@ -9,6 +9,8 @@ import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import ownSaladImage from '~/assets/images/own-salad.png';
+import peachMotif from '~/assets/images/peach-motif.png';
+import bigLeafMotif from '~/assets/images/big-leaf.png';
 
 export interface BuildStep {
   title: string;
@@ -42,9 +44,21 @@ const hasImage = Astro.slots.has('image');
 
 <section
   {...id ? { id } : {}}
-  class="not-prose w-full bg-page"
+  class="not-prose relative w-full overflow-hidden bg-page"
 >
-  <div class="mx-auto flex w-full max-w-container flex-col gap-12 px-5 py-16 sm:px-8 md:flex-row md:items-center md:gap-16 md:px-16 md:py-[120px]">
+  <img
+    src={peachMotif.src} alt="" aria-hidden="true"
+    width={peachMotif.width} height={peachMotif.height}
+    class="pointer-events-none absolute right-0 top-0 w-[32%] max-w-[480px] select-none"
+    loading="lazy" decoding="async"
+  />
+  <img
+    src={bigLeafMotif.src} alt="" aria-hidden="true"
+    width={bigLeafMotif.width} height={bigLeafMotif.height}
+    class="pointer-events-none absolute bottom-0 left-[-20px] z-0 w-[28%] max-w-[420px] select-none"
+    loading="lazy" decoding="async"
+  />
+  <div class="relative z-[1] mx-auto flex w-full max-w-container flex-col gap-12 px-5 py-16 sm:px-8 md:flex-row md:items-center md:gap-16 md:px-16 md:py-[120px]">
     <div class="flex min-w-0 flex-1 flex-col items-start gap-8">
       <div class="flex w-full flex-col gap-6">
         {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}

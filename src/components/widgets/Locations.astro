@@ -11,6 +11,7 @@ import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import locationsCover from '~/assets/images/locations-cover.png';
+import smallLeafMotif from '~/assets/images/small-leaf-motif.webp';
 import { storeLocations } from '~/data/locations';
 
 export interface Location {
@@ -50,9 +51,15 @@ const {
 
 <section
   {...id ? { id } : {}}
-  class="not-prose relative w-full bg-page"
+  class="not-prose relative w-full overflow-hidden bg-section-grey"
 >
-  <div class="mx-auto w-full max-w-container px-5 py-16 sm:px-8 md:px-16 md:py-[120px]">
+  {/* Leaf motif background */}
+  <div
+    class="pointer-events-none absolute inset-0"
+    style={`background-image: url('${smallLeafMotif.src}'); background-size: 3400px auto; background-position: top left; background-repeat: repeat;`}
+    aria-hidden="true"
+  ></div>
+  <div class="relative z-[1] mx-auto w-full max-w-container px-5 py-16 sm:px-8 md:px-16 md:py-[120px]">
     <div class="flex flex-col gap-8 md:flex-row md:gap-8">
 
       {/* Left column — header + location cards */}
@@ -131,4 +138,3 @@ const {
     </div>
   </div>
 </section>
-```

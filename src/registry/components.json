@@ -771,6 +771,19 @@
       "notes": "Hub on /locations. Reuse on location subpages with excludeHref so the current store drops out. Card chrome matches homepage Locations (P-45). Do not list hours here."
     },
     {
+      "id": "P-54",
+      "name": "Catering sub-page nav",
+      "figmaNames": ["More Catering Options", "Catering cross-links"],
+      "shape": "Sage-grey band. Eyebrow + h3 heading + wrapping pill-link row, one pill per catering occasion. Suppresses current page via excludeHref.",
+      "component": "CateringSubNav",
+      "import": "~/components/widgets/CateringSubNav.astro",
+      "props": {
+        "excludeHref": "href of the current sub-page to omit from the list",
+        "id": "section anchor"
+      },
+      "notes": "Appears on all 7 catering sub-pages (corporate, office-lunches, meetings, events, parties, schools, large-groups). Always placed before FAQs."
+    },
+    {
       "id": "P-53",
       "name": "Store visit",
       "figmaNames": ["Location, Hours, and Contact", "Store details", "Google Maps"],

@@ -1,17 +1,89 @@
 ---
-import Layout from '~/layouts/PageLayout.astro';
-import InteriorPage from '~/components/widgets/InteriorPage.astro';
-import { getInteriorPage } from '~/data/pages/interior';
-import { site } from '~/config/site';
+import PageLayout from '~/layouts/PageLayout.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import TextSplit from '~/components/widgets/TextSplit.astro';
+import LocalSourcing from '~/components/widgets/LocalSourcing.astro';
+import CTABanner from '~/components/widgets/CTABanner.astro';
+import Text from '~/components/ui/Text.astro';
+import Heading from '~/components/ui/Heading.astro';
+import ourStoryCover from '~/assets/images/our-story-cover.png';
+import onoIsland from '~/assets/images/ono-island.png';
 
-const page = getInteriorPage('/about');
 const metadata = {
-  title: `${page.title} | ${site.name}`,
-  description: page.metaDescription,
+  title: 'About Aloha Salads | Our Story & Local Sourcing on Oahu',
+  description:
+    'Learn about Aloha Salads. Founded in Kailua in 2006, we serve fresh, locally sourced food across six Oahu locations. Read our story.',
   ignoreTitleTemplate: true,
 };
 ---
 
-<Layout metadata={metadata}>
-  <InteriorPage page={page} />
-</Layout>
+<PageLayout metadata={metadata}>
+  {/* ── 1. Page hero ─────────────────────────────────────── */}
+  <Hero2
+    variant="split-dark"
+    overlapHeader={false}
+    tagline="About Us"
+    title="About Aloha Salads:<br/>Our Island Story"
+    content="Founded in May 2006 in Kailua, Aloha Salads was established to serve fresh, locally grown food of the highest quality at affordable prices. We remain dedicated to supporting local farmers and fishermen while providing our customers with fresh and delicious ingredients."
+    image={{ ...ourStoryCover, alt: 'Aloha Salads founder and team at the original Kailua location' }}
+    actions={[
+      { variant: 'primary', text: 'View Menu', href: '/menu' },
+      { variant: 'ghost', tone: 'dark', text: 'Find a Location', href: '/locations' },
+    ]}
+  />
+
+  {/* ── 2. Recognition band ──────────────────────────────── */}
+  <TextSplit
+    eyebrow="Recognition"
+    heading="Recognized Across Oahu"
+  >
+    <div class="flex flex-col gap-6">
+      <Text variant="body-lg" color="default">
+        We are honored to have been awarded <strong>First Place Hawaii's Best 2024</strong> in the People's Choice Awards by the Star Advertiser. This recognition reflects our ongoing commitment to our customers and our neighborhood restaurants across O'ahu.
+      </Text>
+    </div>
+  </TextSplit>
+
+  {/* ── 3. Founding story ────────────────────────────────── */}
+  <TextSplit heading="Our Founding Story" withImage imageAspect="4 / 5" class="bg-section-grey">
+    <div class="flex flex-col gap-6">
+      <Text variant="body-lg" color="default">
+        Aloha Salads opened its first location at Kailua Shopping Center in May 2006. From day one, the goal was simple: give the community a place to eat food that is genuinely good for you and made with ingredients you can trust.
+      </Text>
+      <Text variant="body-lg" color="default">
+        That founding commitment — fresh produce from island farms, never-frozen local ahi from local fishermen, and dressings made from scratch every morning — has guided every decision we have made since.
+      </Text>
+      <Text variant="body-lg" color="muted" class="text-sm italic">
+        Additional founding story details coming soon.
+      </Text>
+    </div>
+    <img
+      slot="image"
+      src={ourStoryCover.src}
+      alt="Aloha Salads original Kailua location"
+      width={ourStoryCover.width}
+      height={ourStoryCover.height}
+      class="h-full w-full rounded-[32px] object-cover"
+      loading="lazy"
+      decoding="async"
+    />
+  </TextSplit>
+
+  {/* ── 4. Local sourcing teaser ─────────────────────────── */}
+  <LocalSourcing
+    eyebrow="Our ingredients"
+    title="Rooted in local sourcing."
+    subtitle="Our menu reflects strong ties to Hawaii's agricultural and fishing communities. We partner directly with local growers and suppliers to bring quality ingredients into our kitchens."
+    ctaText="Learn More About Our Ingredients"
+    ctaHref="/ingredients"
+    withPhoto={true}
+  />
+
+  {/* ── 5. Visit CTA ─────────────────────────────────────── */}
+  <CTABanner
+    title="Visit Us Today"
+    subtitle="Experience our commitment to quality at any of our six neighborhood restaurants across O'ahu."
+    ctaText="View All Locations"
+    ctaHref="/locations"
+  />
+</PageLayout>
