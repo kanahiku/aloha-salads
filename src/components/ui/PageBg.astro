@@ -17,6 +17,7 @@
  * Transparent sections punch through to show layers 1 + 2.
  */
 import leavesMotif from '~/assets/images/leaves-motif.webp';
+const leavesUrl = leavesMotif.src;
 ---
 
 {/* Layer 1 — green gradient, fixed to viewport */}
@@ -25,14 +26,10 @@ import leavesMotif from '~/assets/images/leaves-motif.webp';
   aria-hidden="true"
 ></div>
 
-{/* Layer 2 — leaves motif, fixed to viewport, scales to fill width */}
-<img
-  src={leavesMotif.src}
-  width={leavesMotif.width}
-  height={leavesMotif.height}
-  class="pointer-events-none fixed inset-0 -z-[9] h-full w-full select-none object-cover opacity-[0.07]"
+{/* Layer 2 — leaves motif, fixed to viewport, 1440 px wide so pattern
+     density always matches the original 1440-wide SVG design. */}
+<div
+  class="pointer-events-none fixed inset-0 -z-[9] select-none opacity-[0.04]"
+  style={`background-image: url('${leavesUrl}'); background-size: 5500px auto; background-position: top left; background-repeat: repeat;`}
   aria-hidden="true"
-  decoding="async"
-  fetchpriority="low"
-  loading="lazy"
 />
