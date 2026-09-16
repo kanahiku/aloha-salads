@@ -57,7 +57,7 @@ export const brand = {
     eyebrow: '#778074', // brand/seaweed-dark
     page: '#EFE9DE', // brand/shell · text/contrast
     sectionGrey: '#B5C2B0', // brand/seaweed
-    sectionDark: '#798991', // brand/blueberry
+    sectionDark: '#5A6A72', // brand/blueberry darkened to 4.5:1 with cream text
     card: '#FAF4E8', // background/white
     cardMist: '#B5C2B0',
     cardDark: '#8FA1AB', // brand/blueberry-light
@@ -475,7 +475,7 @@ export function brandFontConfig() {
       cssVariable: heading.cssVariable,
       provider: heading.provider,
       fallbacks: heading.fallbacks,
-      preload: true,
+      preload: false,
       options: { variants: [{ weight: 400, style: 'normal' as const, src: heading.src }] },
     },
     {
@@ -501,7 +501,7 @@ export function brandFontConfig() {
       cssVariable: rough.cssVariable,
       provider: rough.provider,
       fallbacks: rough.fallbacks,
-      preload: false,
+      preload: true,
       options: { variants: [{ weight: 400, style: 'normal' as const, src: rough.src }] },
     },
   ];

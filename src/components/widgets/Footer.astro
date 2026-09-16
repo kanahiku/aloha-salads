@@ -47,6 +47,8 @@ const {
         <img
           src={circleMotif}
           alt=""
+          width="235"
+          height="234"
           class="block h-auto"
           style="width: min(242px, 70vw);"
           loading="lazy"
@@ -92,7 +94,7 @@ const {
                 aria-label={ariaLabel}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-heading hover:text-accent"
+                class="inline-flex size-12 items-center justify-center text-heading hover:text-accent"
               >
                 {icon ? <Icon name={icon} class="size-5" /> : ariaLabel}
               </a>
@@ -105,7 +107,7 @@ const {
           <ul class="flex flex-wrap items-center gap-x-4 gap-y-2">
             {secondaryLinks.map(({ text, href }) => (
               <li>
-                <a class="text-small text-heading hover:text-accent" href={href}>
+                <a class="inline-flex min-h-11 items-center text-small text-heading hover:text-accent" href={href}>
                   {text}
                 </a>
               </li>
@@ -121,6 +123,8 @@ const {
     <img
       src={alohaWordsMotif}
       alt="Aloha Salads"
+      width="1440"
+      height="160"
       class="block h-auto w-full"
       loading="lazy"
       decoding="async"

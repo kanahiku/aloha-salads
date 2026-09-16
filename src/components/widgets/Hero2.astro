@@ -158,7 +158,7 @@ const isLocalPageImage =
           <>
             <div class="absolute inset-0 z-[1] bg-black/60 md:bg-transparent md:bg-gradient-to-r md:from-black/60 md:to-black/0" />
             <div
-              class="hero-progressive-blur absolute inset-y-0 left-0 z-[1] hidden w-1/2 backdrop-blur-[100px] md:block"
+              class="hero-progressive-blur absolute inset-y-0 left-0 z-[1] hidden w-1/2 backdrop-blur-[32px] md:block"
               aria-hidden="true"
             />
           </>
@@ -349,7 +349,7 @@ const isLocalPageImage =
         <div class="flex flex-1 flex-col items-start justify-center min-h-0">
           <div class="flex w-full max-w-[604px] flex-col items-start gap-6">
             {tagline && (
-              <Heading variant="eyebrow" color="white" class="mix-blend-overlay" html={tagline} />
+              <Heading variant="eyebrow" color="white" html={tagline} />
             )}
             {title && (
               <Heading variant="h1" color="white" html={title} />

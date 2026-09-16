@@ -98,7 +98,7 @@ const {
               {/* View store button */}
               <a
                 href={loc.href ?? ctaHref}
-                class="mt-auto flex w-full items-center justify-center gap-2.5 bg-card-dark px-4 py-3 text-page transition-opacity hover:opacity-80"
+                class="mt-auto flex w-full items-center justify-center gap-2.5 bg-card-dark px-4 py-3 text-heading transition-opacity hover:opacity-80"
               >
                 {/* Location pin icon */}
                 <svg
@@ -115,7 +115,7 @@ const {
                     fill="currentColor"
                   />
                 </svg>
-                <span class="font-heading text-button leading-none">View store</span>
+                <span class="font-heading text-button leading-none">View {loc.name}</span>
               </a>
             </div>
           ))}

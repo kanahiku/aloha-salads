@@ -7,6 +7,7 @@ import type { SEOProps } from 'astro-seo';
 import { SITE, METADATA, I18N } from 'astrowind:config';
 import type { MetaData, MetaDataOpenGraph } from '~/types';
 import { getCanonical } from '~/utils/permalinks';
+import { isIndexableHost } from '~/lib/indexing';
 
 import { adaptOpenGraphImages } from '~/utils/images';
 
@@ -14,10 +15,15 @@ export interface Props extends MetaData {
   dontUseTitleTemplate?: boolean;
 }
 
+const indexable = isIndexableHost(Astro.url.host);
+const defaultCanonical = indexable
+  ? String(getCanonical(String(Astro.url.pathname)))
+  : String(new URL(Astro.url.pathname, Astro.url.origin));
+
 const {
   title,
   ignoreTitleTemplate = false,
-  canonical = String(getCanonical(String(Astro.url.pathname))),
+  canonical = defaultCanonical,
   robots = {},
   description,
   openGraph = {},
@@ -92,17 +98,19 @@ const seoProps: SEOProps = {
   titleTemplate: ignoreTitleTemplate ? '%s' : METADATA?.title?.template || '%s',
   canonical: canonical,
   noindex:
-    typeof robots?.index !== 'undefined'
+    !indexable ||
+    (typeof robots?.index !== 'undefined'
       ? !robots.index
       : typeof METADATA?.robots?.index !== 'undefined'
         ? !METADATA.robots.index
-        : true,
+        : true),
   nofollow:
-    typeof robots?.follow !== 'undefined'
+    !indexable ||
+    (typeof robots?.follow !== 'undefined'
       ? !robots.follow
       : typeof METADATA?.robots?.follow !== 'undefined'
         ? !METADATA.robots.follow
-        : true,
+        : true),
   description: description || METADATA?.description,
   openGraph: buildOpenGraph(adaptedOg),
   twitter: mergedTwitter,

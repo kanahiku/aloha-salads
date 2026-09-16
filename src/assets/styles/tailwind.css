@@ -209,9 +209,11 @@
   background-color: var(--aw-color-bg-page-end);
 }
 
-/* Solid fallback on <html> — matches the gradient end so no flash below the fold. */
+/* Solid fallback on <html>. Cream, not blueberry — Chrome drops compositor
+   layers when a tab is backgrounded, and the html color is what you see
+   for a beat on return. Blueberry read as a blank blue screen. */
 @utility bg-wash-end {
-  background-color: var(--aw-color-gradient-to);
+  background-color: var(--aw-color-bg-page);
 }
 
 /* Main page wash — warm cream gradient, top to bottom. */
@@ -222,9 +224,11 @@
   background-size: 100% 100%;
 }
 
-/* Green-band layer — used by PageBg behind the leaf motif. */
+/* Green-band layer — used by PageBg behind the leaf motif.
+   Solid fallback is the sage start (70% of the gradient), not the blueberry
+   end — otherwise a discarded GPU layer paints a full-viewport blue flash. */
 @utility bg-green-wash {
-  background-color: var(--aw-color-gradient-to);
+  background-color: var(--aw-color-gradient-from);
   background-image: linear-gradient(
     to bottom,
     var(--aw-color-gradient-from) 0%,

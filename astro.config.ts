@@ -44,11 +44,11 @@ export default defineConfig({
     '/terms-of-service': '/terms',
   },
 
-  // Prefetch links as they enter the viewport for snappier navigations
-  // (works together with <ClientRouter />, which enables prefetch by default).
+  // Hover/tap only. Prefetching every nav + footer URL on load contended with
+  // the hero image and pushed LCP past 10s on a cold homepage.
   prefetch: {
-    prefetchAll: true,
-    defaultStrategy: 'viewport',
+    prefetchAll: false,
+    defaultStrategy: 'hover',
   },
 
   fonts: brandFontConfig().map((font) =>
