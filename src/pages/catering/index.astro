@@ -7,7 +7,6 @@ import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import { CATERING_CTA_HREF, LOCATION_CTA_HREF } from '~/config/cta';
-import locationsCover from '~/assets/images/locations-cover.webp';
 import peach from '~/assets/images/peach-motif.webp';
 import bigLeaf from '~/assets/images/big-leaf.webp';
 import smallLeafMotif from '~/assets/images/small-leaf-motif.webp';
@@ -53,16 +52,6 @@ const occasions = [
     description: 'Custom salad and wrap trays built for special events.',
   },
   {
-    label: 'Party Catering',
-    href: '/catering/parties',
-    description: 'Crowd-pleasing island flavors for birthdays and celebrations.',
-  },
-  {
-    label: 'School Catering',
-    href: '/catering/schools',
-    description: 'Wholesome, kid-friendly catering options for school events.',
-  },
-  {
     label: 'Large Group Catering',
     href: '/catering/large-groups',
     description: 'Scaled-up trays and platters for big gatherings across O\'ahu.',
@@ -78,7 +67,6 @@ const occasions = [
     tagline="Catering"
     title="Catering Menu"
     content="Provide fresh meals for your next gathering with our catering trays. We prepare scaled-up versions of our signature salads and wraps for pickup across our six O'ahu locations."
-    image={{ ...locationsCover, alt: 'Large catering salad tray prepared by Aloha Salads for an Oahu event' }}
     actions={[
       { variant: 'primary', text: 'Order Catering Online', href: CATERING_CTA_HREF },
     ]}
@@ -154,7 +142,7 @@ const occasions = [
           <Heading variant="eyebrow">By occasion</Heading>
           <Heading variant="h2">Catering for Every Occasion</Heading>
           <Text variant="body-lg" color="default" class="max-w-2xl">
-            We accommodate groups of all sizes across different event types. Select your event category below to learn more.
+            We accommodate groups of all sizes across different event types. Select your event category below to learn more:
           </Text>
         </div>
 
@@ -168,7 +156,7 @@ const occasions = [
                 <Heading variant="h4" color="white">{occ.label}</Heading>
                 <Text variant="small" color="white" class="text-page/75">{occ.description}</Text>
               </div>
-              <div class="flex items-center gap-2 text-accent">
+              <div class="flex items-center gap-2 text-page/90">
                 <span class="font-heading text-[13px] uppercase tracking-widest leading-none">Learn more</span>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" class="size-3 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M3 8h10M9 4l4 4-4 4" />
@@ -196,7 +184,7 @@ const occasions = [
       {
         title: "Does catering include serving utensils?",
         description:
-          "Yes. We provide the necessary serving bowls and utensils with every catering order upon request.",
+          "Ask the store when you order and they will let you know what is included.",
       },
       {
         title: "How do I place a catering order?",
@@ -206,7 +194,7 @@ const occasions = [
       {
         title: "Can I customize the catering trays?",
         description:
-          "Yes. We can accommodate specific dietary requirements and ingredient modifications for your group.",
+          "Trays are built to set recipes. Call the store to talk through anything specific.",
       },
       {
         title: "Where do I pick up my catering order?",
@@ -219,7 +207,7 @@ const occasions = [
   {/* ── 5. Ready to order CTA ────────────────────────────── */}
   <CTABanner
     title="Ready to Order?"
-    subtitle="Skip the line and place your catering order online for fast pickup. Need to confirm serving sizes or lead times for a large group? Contact your nearest location directly."
+    subtitle="Order online for pickup at any of our six O'ahu stores. For serving sizes, minimums or lead times, call the store you want to collect from."
     ctaText="Order Catering Online"
     ctaHref={CATERING_CTA_HREF}
     secondaryCtaText="Find a Location"

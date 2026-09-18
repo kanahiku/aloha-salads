@@ -25,6 +25,7 @@
  * Background image: pass `bgImage` (imported PNG/JPG ImageMetadata) to show a real photo.
  * Falls back to a bg-section-grey placeholder when omitted.
  */
+import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 
 export interface ChapterLocation {
   name: string;
@@ -47,7 +48,6 @@ const {
   locations = [],
   footerNote,
   footerLink,
-  bgImage,
   id = 'our-locations',
 } = Astro.props;
 ---
@@ -59,21 +59,8 @@ const {
     <div class="relative flex flex-col items-center gap-8 overflow-hidden rounded-[32px] p-6 md:rounded-[64px] md:p-[64px]">
 
       {/* ── BACKGROUND ── */}
-      {bgImage ? (
-        <img
-          src={bgImage.src}
-          width={bgImage.width}
-          height={bgImage.height}
-          alt=""
-          aria-hidden="true"
-          class="absolute inset-0 h-full w-full object-cover object-center"
-          loading="lazy"
-          decoding="async"
-        />
-      ) : (
-        /* Fallback placeholder — TODO: replace with real image via bgImage prop */
-        <div class="absolute inset-0 bg-section-grey" aria-hidden="true" />
-      )}
+      <!-- TODO: replace with <Image> when asset is ready -->
+      <HeroImagePlaceholder fill class="absolute inset-0" />
 
       {/* ── CONTENT (above background) ── */}
       <div class="relative z-10 flex w-full flex-col items-center gap-8">

@@ -14,8 +14,8 @@ import ArtDirectedImage from '~/components/ui/ArtDirectedImage.astro';
 import CTAActions from '~/components/ui/CTAActions.astro';
 import Text from '~/components/ui/Text.astro';
 import smallLeafMotif from '~/assets/images/small-leaf-motif.webp';
-import locationsCover from '~/assets/images/locations-cover.webp';
 import Heading from '~/components/ui/Heading.astro';
+import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 import type { ContentImage } from '~/lib/content/types';
 
 import type { Hero as Props } from '~/types';
@@ -49,6 +49,7 @@ const hasStats = variant === 'overlay' && Astro.slots.has('stats');
 const hasNav = Astro.slots.has('nav');
 const hasImage = Boolean(image && (typeof image !== 'string' || image.trim()));
 const isSplitImage = !isOverlay && !isSplitDark && hasImage;
+const keepHomeHeroImage = id === 'home-hero';
 
 const wordAlignClass = {
   start: 'self-start md:justify-start',
@@ -74,13 +75,6 @@ const isLocalOverlayImage =
   !Array.isArray(image) &&
   'width' in image &&
   'height' in image;
-const isLocalPageImage =
-  isPage &&
-  Boolean(image) &&
-  typeof image === 'object' &&
-  !Array.isArray(image) &&
-  'src' in image &&
-  typeof image.src === 'string';
 ---
 
 {
@@ -111,7 +105,7 @@ const isLocalPageImage =
         <slot name="bg">
           {bg ? <Fragment set:html={bg} /> : null}
         </slot>
-        {isLocalOverlayImage ? (
+        {keepHomeHeroImage && isLocalOverlayImage ? (
           <img
             src={image.src}
             alt={'alt' in image && typeof image.alt === 'string' ? image.alt : ''}
@@ -125,7 +119,7 @@ const isLocalPageImage =
             fetchpriority="high"
             decoding="async"
           />
-        ) : hasOverlayPhoto ? (
+        ) : keepHomeHeroImage && hasOverlayPhoto ? (
           <ArtDirectedImage
             desktop={overlayDesktop}
             mobile={overlayMobile}
@@ -142,8 +136,9 @@ const isLocalPageImage =
           />
         ) : (
           /* TODO: replace with <Image> when asset is ready */
-          <div
-            class="absolute inset-0 bg-section-grey"
+          <HeroImagePlaceholder
+            fill
+            class="absolute inset-0"
             style={
               isTitle
                 ? 'aspect-ratio: 1440 / 450;'
@@ -151,7 +146,6 @@ const isLocalPageImage =
                   ? 'aspect-ratio: 1440 / 579;'
                   : 'aspect-ratio: 1440 / 760;'
             }
-            aria-hidden="true"
           />
         )}
         {isPhotoOverlay ? (
@@ -260,24 +254,12 @@ const isLocalPageImage =
               )
             )}
             {withImage && (
-              isLocalPageImage ? (
-                <img
-                  src={image.src}
-                  alt={'alt' in image && typeof image.alt === 'string' ? image.alt : ''}
-                  width={typeof image.width === 'number' ? image.width : 1200}
-                  height={typeof image.height === 'number' ? image.height : 400}
-                  class="w-full rounded-[32px] object-cover"
-                  style="aspect-ratio: 1200 / 400;"
-                  loading="eager"
-                  decoding="async"
-                />
-              ) : (
-                <div
-                  class="w-full rounded-[32px] bg-section-grey"
-                  style="aspect-ratio: 1200 / 400;"
-                  aria-hidden="true"
-                />
-              )
+              <HeroImagePlaceholder
+                fill
+                class="w-full rounded-[32px]"
+                style="aspect-ratio: 1200 / 400;"
+                label="Aloha Salads page hero placeholder"
+              />
             )}
           </div>
         ) : isSplitDark ? (
@@ -311,19 +293,7 @@ const isLocalPageImage =
           <div class="w-full h-[280px] sm:h-[380px] lg:h-auto lg:flex-1 lg:min-w-0 lg:self-stretch">
             {hasImage ? (
               <div class="relative w-full h-full overflow-hidden">
-                {typeof image === 'string' ? (
-                  <Fragment set:html={image} />
-                ) : image && typeof image === 'object' && 'src' in image ? (
-                  <img
-                    src={(image as any).src}
-                    alt={(image as any).alt ?? ''}
-                    width={typeof (image as any).width === 'number' ? (image as any).width : undefined}
-                    height={typeof (image as any).height === 'number' ? (image as any).height : undefined}
-                    class="w-full h-full object-cover object-center"
-                    loading="eager"
-                    decoding="async"
-                  />
-                ) : null}
+                <HeroImagePlaceholder fill class="w-full h-full" />
                 <div class="absolute inset-0 bg-gradient-to-r from-section-dark/60 from-[0%] via-transparent to-transparent" />
               </div>
             ) : (
@@ -332,15 +302,7 @@ const isLocalPageImage =
                 class="w-full h-full min-h-[380px] relative overflow-hidden"
                 aria-hidden="true"
               >
-                <img
-                  src={locationsCover.src}
-                  alt="Fresh Aloha Salads bowl"
-                  width={locationsCover.width}
-                  height={locationsCover.height}
-                  class="absolute inset-0 h-full w-full object-cover object-center"
-                  loading="eager"
-                  decoding="async"
-                />
+                <HeroImagePlaceholder fill class="absolute inset-0" />
               </div>
             )}
           </div>

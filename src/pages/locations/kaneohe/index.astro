@@ -3,43 +3,45 @@ import PageLayout from '~/layouts/PageLayout.astro';
 import Hero2 from '~/components/widgets/Hero2.astro';
 import TextSplit from '~/components/widgets/TextSplit.astro';
 import StoreVisit from '~/components/widgets/StoreVisit.astro';
-import MenuItemsSection from '~/components/widgets/MenuItemsSection.astro';
+import LocationDirectory from '~/components/widgets/LocationDirectory.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import Text from '~/components/ui/Text.astro';
 import { PRIMARY_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
-import { findStore, storeDirectionsHref } from '~/data/locations';
-import locationsCover from '~/assets/images/locations-cover.webp';
-import onoIsland from '~/assets/images/ono-island.webp';
+import { findStore } from '~/data/locations';
 
 const store = findStore('kaneohe');
 if (!store) throw new Error('Missing Kaneohe store');
 
-const directionsHref = storeDirectionsHref(store);
-
 const metadata = {
-  title: 'Aloha Salads Kaneohe | Fresh Local Food at Windward Mall',
+  title: 'Kaneohe Location | Aloha Salads Oahu',
   description:
-    'Visit our Aloha Salads location at Windward Mall. We serve fresh salads and wraps made with never-frozen local ahi in 100% compostable packaging.',
+    'Visit Aloha Salads at Windward Mall in Kaneohe. We serve fresh salads, signature wraps, healthy soups, and local beverages for dine-in or pickup.',
   ignoreTitleTemplate: true,
 };
 
-const menuFavorites = [
+const faqs = [
   {
-    title: 'Signature Salads',
-    description: 'Choose from local favorites like the Aloha Passion or Ono Island Ahi.',
+    title: 'Is parking available at the Kaneohe location?',
+    description: 'Yes. Windward Mall provides ample free parking for our restaurant guests.',
   },
   {
-    title: 'Wraps and Subs',
-    description: 'Enjoy hearty, wholesome ingredients wrapped up for a quick meal on the go.',
+    title: 'Can I dine in at Aloha Salads Kaneohe?',
+    description: 'Yes. We offer a dedicated dining area for guests who prefer to eat their meals on site.',
   },
   {
-    title: 'Design Your Own Salad',
+    title: 'Can I pick up catering orders in Kaneohe?',
     description:
-      'Build your perfect meal with your choice of greens and toppings dressed with our house-made dressings.',
+      'Yes. You can schedule large party trays and corporate catering orders for pickup at this location.',
   },
   {
-    title: 'Local Refreshments',
-    description: 'Pair your food with refreshing, locally sourced Big Island māmaki mint tea.',
+    title: 'Can I collect a catering order from Kaneohe?',
+    description: 'Yes. Catering trays can be collected from this store. Call ahead to arrange it.',
+  },
+  {
+    title: 'Do you deliver to the Kaneohe area?',
+    description:
+      'We partner with third-party delivery services to bring our meals to local residents. Delivery availability depends on your exact address.',
   },
 ];
 ---
@@ -50,53 +52,42 @@ const menuFavorites = [
     overlapHeader={false}
     tagline="Kaneohe"
     title="Aloha Salads Kaneohe<br/>at Windward Mall"
-    content="Enjoy fresh, locally sourced food on the Windward coast. Order ahead for quick pickup or stop in for a healthy meal."
-    image={{ ...locationsCover, alt: 'Aloha Salads team with fresh salad bowls at the Kaneohe location' }}
+    content="Visit our Windward Mall restaurant for a fresh meal in Kaneohe. We serve custom bowls and signature wraps for fast pickup or casual dine-in."
     actions={[
       { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
-      { variant: 'ghost', tone: 'dark', text: 'Get Directions', href: directionsHref, target: '_blank' },
+      { variant: 'ghost', tone: 'dark', text: 'Order Catering', href: CATERING_CTA_HREF },
     ]}
   />
 
-  <TextSplit heading="Your Neighborhood Stop in Kaneohe" withImage imageAspect="4 / 5">
+  <TextSplit heading="Your Kaneohe Neighborhood Stop">
     <div class="flex flex-col gap-6">
       <Text variant="body-lg" color="default">
-        Our Kaneohe store sits near the base of the Koolau mountains and serves fresh food to the Windward side. We opened our doors inside Windward Mall to give this community a reliable, healthy dining option. Our kitchen operates with a clear mission. We use produce grown directly by Hawaii farmers and ingredients caught by local fishermen.
-      </Text>
-      <Text variant="body-lg" color="default">
-        Every salad bowl we make includes crisp greens and our signature house-made dressings. We serve never-frozen local ahi to our customers every single day. Protecting the environment is just as important as the ingredients we use. That is why we pack all our meals in 100% compostable packaging to help reduce waste on the island.
-      </Text>
-      <Text variant="body-lg" color="default">
-        You can find our restaurant right inside Windward Mall. The shopping center provides plenty of seating and parking for a quick workday lunch or a family dinner. Stop by to build a custom salad bowl or pick up a signature wrap to take home. Cool down from the Hawaii heat with a glass of Big Island māmaki mint tea. We are proud to feed our neighbors here in Kaneohe.
+        Windward Mall is conveniently located for a fresh post-shopping meal or a quick family lunch. Whether you are running errands or spending the day around the Ko'olau mountains, our menu features crisp greens, house-made dressings, and never-frozen local ahi. We proudly serve the Kaneohe community with a welcoming space to enjoy wholesome food.
       </Text>
     </div>
-    <img
-      slot="image"
-      src={onoIsland.src}
-      alt="Fresh salad bowl with local greens and island produce"
-      width={onoIsland.width}
-      height={onoIsland.height}
-      class="h-full w-full rounded-[32px] object-cover"
-      loading="lazy"
-      decoding="async"
-    />
   </TextSplit>
 
-  <StoreVisit store={store} id="visit" />
+  <StoreVisit store={store} id="visit" title="Location Details" />
 
-  <MenuItemsSection
-    id="favorites"
-    eyebrow="Kaneohe"
-    title="Fresh Menu Favorites in Kaneohe"
-    items={menuFavorites}
-    ctaText="View Menu"
-    ctaHref="/menu"
+  <LocationDirectory
+    title="More Oahu Locations"
+    subtitle="Find us across the island. Explore our other neighborhood restaurants below:"
+    excludeHref={store.href}
+  />
+
+  <FAQs
+    isDark={true}
+    tagline="Common questions"
+    title="Frequently Asked Questions"
+    items={faqs}
   />
 
   <CTABanner
-    title="Kaneohe Catering for Offices and Events"
-    subtitle="We provide fresh catering for business meetings and events across the Windward side. Order custom salad trays and sandwich platters for your next gathering."
-    ctaText="Order Catering"
-    ctaHref={CATERING_CTA_HREF}
+    title="Visit Us in Kaneohe"
+    subtitle="Stop by Windward Mall for a fresh meal or place your order online to skip the line."
+    ctaText="View Full Menu"
+    ctaHref="/menu"
+    secondaryCtaText="Order Online"
+    secondaryCtaHref={PRIMARY_CTA_HREF}
   />
 </PageLayout>

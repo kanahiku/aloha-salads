@@ -12,6 +12,7 @@
 import type { ImageMetadata } from 'astro';
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
+import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 
 interface Props {
   id?: string;
@@ -19,7 +20,7 @@ interface Props {
   imageAlt?: string;
 }
 
-const { id, image, imageAlt = '' } = Astro.props;
+const { id, imageAlt = '' } = Astro.props;
 ---
 
 <section
@@ -30,22 +31,12 @@ const { id, image, imageAlt = '' } = Astro.props;
 
     {/* Left: image */}
     <div class="relative w-full shrink-0 overflow-hidden rounded-bl-[32px] rounded-tl-[32px] sm:w-auto sm:flex-1" style="aspect-ratio: 545 / 564;">
-      {image ? (
-        <img
-          src={image.src}
-          width={image.width}
-          height={image.height}
-          alt={imageAlt}
-          class="absolute inset-0 h-full w-full rounded-bl-[32px] rounded-tl-[32px] object-cover"
-          loading="lazy"
-          decoding="async"
-        />
-      ) : (
-        <div
-          class="absolute inset-0 rounded-bl-[32px] rounded-tl-[32px] bg-section-grey"
-          aria-hidden="true"
-        />
-      )}
+      <!-- TODO: replace with <Image> when asset is ready -->
+      <HeroImagePlaceholder
+        fill
+        label={imageAlt || 'Aloha Salads story placeholder'}
+        class="absolute inset-0 rounded-bl-[32px] rounded-tl-[32px]"
+      />
       {/* Right-edge fade to page background */}
       <div
         class="pointer-events-none absolute inset-0 rounded-bl-[32px] rounded-tl-[32px] bg-gradient-to-r from-transparent from-[55%] to-page"

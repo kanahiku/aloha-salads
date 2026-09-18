@@ -7,9 +7,7 @@
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
-import alohaPassionImage from '~/assets/images/aloha-passion.webp';
-import onoIslandImage from '~/assets/images/ono-island.webp';
-import paniolaImage from '~/assets/images/paniola.webp';
+import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 import bigLeaf from '~/assets/images/big-leaf.webp';
 import peach from '~/assets/images/peach-motif.webp';
 
@@ -51,11 +49,6 @@ const {
   id,
 } = Astro.props;
 
-const dishImages = [
-  { src: onoIslandImage, alt: 'Ono Island Ahi salad with fresh avocado and mango' },
-  { src: alohaPassionImage, alt: 'Aloha Passion salad with strawberries, mango, and grilled fish' },
-  { src: paniolaImage, alt: 'The Paniolo sandwich with fresh toppings' },
-];
 ---
 
 <section
@@ -102,17 +95,10 @@ const dishImages = [
 
     <div class="grid w-full grid-cols-1 gap-8 md:grid-cols-3">
       {
-        dishes.map((dish, index) => (
+        dishes.map((dish) => (
           <article class="relative flex w-full flex-col overflow-hidden" style="aspect-ratio: 457 / 514">
-            <img
-              src={dishImages[index]?.src.src}
-              alt={dishImages[index]?.alt ?? dish.title}
-              width={dishImages[index]?.src.width}
-              height={dishImages[index]?.src.height}
-              class="absolute inset-0 h-full w-full object-cover"
-              loading="lazy"
-              decoding="async"
-            />
+            <!-- TODO: replace with <Image> when asset is ready -->
+            <HeroImagePlaceholder fill class="absolute inset-0" label={`${dish.title} placeholder`} />
             <div class="relative z-[1] flex w-full flex-col items-center justify-center gap-2 bg-black/30 px-4 py-6 text-center backdrop-blur-[5px]">
               <Heading variant="h3" color="white">{dish.title}</Heading>
               <Text color="inherit" class="text-page">{dish.description}</Text>

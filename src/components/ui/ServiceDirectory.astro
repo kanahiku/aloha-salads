@@ -9,7 +9,7 @@ const { items, variant = 'dark' } = Astro.props;
 const divideClass = variant === 'dark' ? 'divide-white/15' : 'divide-black/10';
 const titleClass = variant === 'dark' ? 'text-white' : 'text-heading';
 const bodyClass = variant === 'dark' ? 'text-white/60' : 'text-muted';
-const linkClass = variant === 'dark' ? 'text-accent' : 'text-timeline-step-light';
+const linkClass = variant === 'dark' ? 'text-white' : 'text-timeline-step-light';
 ---
 
 <div class:list={['divide-y', divideClass]}>

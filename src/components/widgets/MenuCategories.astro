@@ -14,13 +14,9 @@
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
+import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 import { CATERING_CTA_HREF, CATERING_CTA_LABEL } from '~/config/cta';
 
-import saladsImg    from '~/assets/images/hero-cover.webp';
-import dyoImg       from '~/assets/images/own-salad.webp';
-import wrapsImg     from '~/assets/images/paniola.webp';
-import healthyImg   from '~/assets/images/aloha-passion.webp';
-import keikiImg     from '~/assets/images/our-story-cover.webp';
 import bigLeaf from '~/assets/images/big-leaf.webp';
 import peach from '~/assets/images/peach-motif.webp';
 
@@ -66,7 +62,7 @@ const CATEGORIES: MenuCategory[] = [
     description: 'Signature bowls featuring crisp greens, local ahi, and house-made dressings.',
     colSpan: 'md:col-span-7',
     row: 1,
-    img: saladsImg,
+    img: null,
   },
   {
     label: 'Design Your Own Salad',
@@ -74,7 +70,7 @@ const CATEGORIES: MenuCategory[] = [
     description: 'Build a custom bowl with your choice of greens, toppings, and dressings.',
     colSpan: 'md:col-span-5',
     row: 1,
-    img: dyoImg,
+    img: null,
   },
   // ── Row 2 ────────────────────────────────────────────────────────────
   {
@@ -83,7 +79,7 @@ const CATEGORIES: MenuCategory[] = [
     description: 'Hearty options wrapped in fresh tortillas or served on artisan bread.',
     colSpan: 'md:col-span-4',
     row: 2,
-    img: wrapsImg,
+    img: null,
   },
   {
     label: 'Soups',
@@ -108,7 +104,7 @@ const CATEGORIES: MenuCategory[] = [
     description: 'Wholesome options sized for children.',
     colSpan: 'md:col-span-3',
     row: 3,
-    img: keikiImg,
+    img: null,
   },
   {
     label: 'Vegan Options',
@@ -132,7 +128,7 @@ const CATEGORIES: MenuCategory[] = [
     description: 'Wholesome menu choices for an active island lifestyle.',
     colSpan: 'md:col-span-3',
     row: 3,
-    img: healthyImg,
+    img: null,
   },
 ];
 
@@ -208,20 +204,8 @@ const visibleCategories = CATEGORIES.filter((cat) => !excludedCategoryHrefs.has(
       >
         {/* ── Photo ── */}
         <div class="menu-cat-photo relative w-full flex-1 min-h-0 overflow-hidden bg-section-grey">
-          {cat.img ? (
-            <img
-              src={cat.img.src}
-              alt={cat.label}
-              width={cat.img.width}
-              height={cat.img.height}
-              class="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.04]"
-              loading="lazy"
-              decoding="async"
-            />
-          ) : (
-            /* TODO: replace with <Image> when asset is ready */
-            <div class="absolute inset-0 opacity-[0.06] bg-[url('/favicon.svg')] bg-center bg-no-repeat bg-[length:160px_160px]" aria-hidden="true" />
-          )}
+          <!-- TODO: replace with <Image> when asset is ready -->
+          <HeroImagePlaceholder fill class="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.04]" label={`${cat.label} placeholder`} />
           {/* Dark gradient scrim — more depth at bottom for text legibility */}
           <div class="absolute inset-0 bg-gradient-to-t from-heading/80 via-heading/20 to-transparent" />
         </div>

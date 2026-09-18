@@ -96,7 +96,7 @@ const h3Class = 'text-[16px] md:text-[18px] font-sans font-medium leading-[130%]
                         class:list={[
                           'bg-card-dark text-white font-medium leading-[160%] px-4 py-3 border-r border-accent last:border-r-0',
                           hi === 0 && 'rounded-tl-lg',
-                          hi === block.headerRow.length - 1 && 'rounded-tr-lg text-accent border-r-0',
+                          hi === block.headerRow.length - 1 && 'rounded-tr-lg text-white border-r-0',
                         ]}
                       >
                         {header}
@@ -225,7 +225,7 @@ const h3Class = 'text-[16px] md:text-[18px] font-sans font-medium leading-[130%]
                       <th class="bg-card-dark text-white font-sans font-medium text-[16px] leading-[160%] px-4 md:px-5 py-3 md:py-4 border-r border-accent">
                         {section.column2}
                       </th>
-                      <th class="bg-card-dark text-accent font-sans font-medium text-[16px] leading-[160%] px-4 md:px-5 py-3 md:py-4 rounded-tr-lg">
+                      <th class="bg-card-dark text-white font-sans font-medium text-[16px] leading-[160%] px-4 md:px-5 py-3 md:py-4 rounded-tr-lg">
                         {section.column3}
                       </th>
                     </tr>
@@ -300,7 +300,7 @@ const h3Class = 'text-[16px] md:text-[18px] font-sans font-medium leading-[130%]
             <ol class="space-y-6">
               {section.steps.map((step, index) => (
                 <li class="flex items-start gap-4">
-                  <div class="shrink-0 w-9 h-9 rounded-full bg-card-dark flex items-center justify-center font-heading font-normal text-[15px] text-accent mt-0.5">
+                  <div class="shrink-0 w-9 h-9 rounded-full bg-card-dark flex items-center justify-center font-heading font-normal text-[15px] text-white mt-0.5">
                     {index + 1}
                   </div>
                   <div class="min-w-0">

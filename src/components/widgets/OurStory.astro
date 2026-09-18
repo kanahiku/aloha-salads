@@ -10,8 +10,8 @@ import Text from '~/components/ui/Text.astro';
 import basketIcon from '~/assets/icons/Shopping-Basket-Like--Streamline-Freehand.svg?url';
 import locationIcon from '~/assets/icons/Worldwide-Web-Location-Pin--Streamline-Freehand.svg?url';
 import onlineShopIcon from '~/assets/icons/E-Commerce-Online-Shop--Streamline-Freehand.svg?url';
-import ourStoryCover from '~/assets/images/our-story-cover.webp';
 import smallLeafMotif from '~/assets/images/small-leaf-motif.webp';
+import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 
 export interface StoryAction {
   title: string;
@@ -118,15 +118,8 @@ const actionIconUrls = [onlineShopIcon, locationIcon, basketIcon];
 
         <div class="relative mx-auto w-full max-w-[560px] bg-page p-4 pb-8 shadow-[-11px_20px_22px_0_rgb(0_0_0_/_5%)] md:pb-8">
           <div class="w-full overflow-hidden bg-section-grey" style="aspect-ratio: 515 / 515;">
-            <img
-              src={ourStoryCover.src}
-              alt="Aloha Salads founder with family and fresh salads"
-              width={ourStoryCover.width}
-              height={ourStoryCover.height}
-              class="h-full w-full object-cover"
-              loading="lazy"
-              decoding="async"
-            />
+            <!-- TODO: replace with <Image> when asset is ready -->
+            <HeroImagePlaceholder fill class="h-full w-full" label="Aloha Salads story placeholder" />
           </div>
 
           <div class="mt-7 flex justify-center">

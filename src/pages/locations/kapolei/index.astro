@@ -3,43 +3,45 @@ import PageLayout from '~/layouts/PageLayout.astro';
 import Hero2 from '~/components/widgets/Hero2.astro';
 import TextSplit from '~/components/widgets/TextSplit.astro';
 import StoreVisit from '~/components/widgets/StoreVisit.astro';
-import MenuItemsSection from '~/components/widgets/MenuItemsSection.astro';
+import LocationDirectory from '~/components/widgets/LocationDirectory.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import Text from '~/components/ui/Text.astro';
 import { PRIMARY_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
-import { findStore, storeDirectionsHref } from '~/data/locations';
-import locationsCover from '~/assets/images/locations-cover.webp';
-import onoIsland from '~/assets/images/ono-island.webp';
+import { findStore } from '~/data/locations';
 
 const store = findStore('kapolei');
 if (!store) throw new Error('Missing Kapolei store');
 
-const directionsHref = storeDirectionsHref(store);
-
 const metadata = {
-  title: 'Aloha Salads Kapolei | Fresh Local Food at Kapolei Commons',
+  title: 'Kapolei Location | Aloha Salads Oahu',
   description:
-    'Visit our Aloha Salads location at Kapolei Commons. We serve fresh salads and wraps made with never-frozen local ahi in 100% compostable packaging.',
+    'Visit Aloha Salads at Kapolei Commons. We serve fresh salads, signature wraps, healthy soups, and local beverages for dine-in or pickup.',
   ignoreTitleTemplate: true,
 };
 
-const menuFavorites = [
+const faqs = [
   {
-    title: 'Signature Salads',
-    description: 'Choose from local favorites like the Aloha Passion or Ono Island Ahi.',
+    title: 'Is parking available at the Kapolei location?',
+    description: 'Yes. Kapolei Commons provides ample free parking for our restaurant guests.',
   },
   {
-    title: 'Wraps and Subs',
-    description: 'Enjoy hearty, wholesome ingredients wrapped up for a quick meal on the go.',
+    title: 'Can I dine in at Aloha Salads Kapolei?',
+    description: 'Yes. We offer a dedicated dining area for guests who prefer to eat their meals on site.',
   },
   {
-    title: 'Design Your Own Salad',
+    title: 'Can I pick up catering orders in Kapolei?',
     description:
-      'Build your perfect meal with your choice of greens and toppings dressed with our house-made dressings.',
+      'Yes. You can schedule large party trays and corporate catering orders for pickup at this location.',
   },
   {
-    title: 'Local Refreshments',
-    description: 'Pair your food with refreshing, locally sourced Big Island māmaki mint tea.',
+    title: 'Can I collect a catering order from Kapolei?',
+    description: 'Yes. Catering trays can be collected from this store. Call ahead to arrange it.',
+  },
+  {
+    title: 'Do you deliver to the Kapolei area?',
+    description:
+      'We partner with third-party delivery services to bring our meals to local residents. Delivery availability depends on your exact address.',
   },
 ];
 ---
@@ -49,54 +51,43 @@ const menuFavorites = [
     variant="split-dark"
     overlapHeader={false}
     tagline="Kapolei"
-    title="Aloha Salads Kapolei<br/>at Kapolei Commons"
-    content="Enjoy fresh, locally sourced food in West Oahu. Order ahead for quick pickup or stop in for a healthy meal."
-    image={{ ...locationsCover, alt: 'Aloha Salads team with fresh salad bowls at the Kapolei location' }}
+    title="Aloha Salads Kapolei"
+    content="Visit our West O'ahu restaurant for a fresh meal at Kapolei Commons. We serve custom bowls and signature wraps for fast pickup or casual dine-in."
     actions={[
       { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
-      { variant: 'ghost', tone: 'dark', text: 'Get Directions', href: directionsHref, target: '_blank' },
+      { variant: 'ghost', tone: 'dark', text: 'Order Catering', href: CATERING_CTA_HREF },
     ]}
   />
 
-  <TextSplit heading="Your Neighborhood Stop in Kapolei" withImage imageAspect="4 / 5">
+  <TextSplit heading="Your Kapolei Neighborhood Stop">
     <div class="flex flex-col gap-6">
       <Text variant="body-lg" color="default">
-        Serving the leeward side of the island means bringing fresh options to a fast-growing community. Our Kapolei Commons store offers West Oahu residents a reliable spot for healthy eating without the wait. We built this location to make it easy for local families and professionals to enjoy meals crafted from ingredients sourced directly from Hawaii producers.
-      </Text>
-      <Text variant="body-lg" color="default">
-        Quality starts with what goes into the bowl and how it leaves the store. You will find crisp greens paired with our daily scratch-made dressings on the menu. We are proud to feature never-frozen local ahi for a truly fresh experience. Every order is packed in 100% compostable packaging because protecting our island environment is just as important as the food we serve.
-      </Text>
-      <Text variant="body-lg" color="default">
-        Getting here is simple. The restaurant sits right next to Target with plenty of convenient parking available. It is a great place to recharge after a busy day of errands or to grab a quick dinner to take home. Build a custom salad bowl or pick up a signature wrap. Cool down from the West side heat with our Big Island māmaki mint tea. We are excited to feed the Kapolei community.
+        Kapolei Commons serves West O'ahu with hearty salads alongside refreshing Big Island māmaki mint tea. Whether you are catching a movie or running errands near Target, our menu features crisp greens, house-made dressings, and never-frozen local ahi. We proudly serve the growing Kapolei community with a welcoming space to enjoy wholesome food.
       </Text>
     </div>
-    <img
-      slot="image"
-      src={onoIsland.src}
-      alt="Fresh salad bowl with local greens and island produce"
-      width={onoIsland.width}
-      height={onoIsland.height}
-      class="h-full w-full rounded-[32px] object-cover"
-      loading="lazy"
-      decoding="async"
-    />
   </TextSplit>
 
-  <StoreVisit store={store} id="visit" />
+  <StoreVisit store={store} id="visit" title="Location Details" />
 
-  <MenuItemsSection
-    id="favorites"
-    eyebrow="Kapolei"
-    title="Fresh Menu Favorites in Kapolei"
-    items={menuFavorites}
-    ctaText="View Menu"
-    ctaHref="/menu"
+  <LocationDirectory
+    title="More Oahu Locations"
+    subtitle="Find us across the island. Explore our other neighborhood restaurants below:"
+    excludeHref={store.href}
+  />
+
+  <FAQs
+    isDark={true}
+    tagline="Common questions"
+    title="Frequently Asked Questions"
+    items={faqs}
   />
 
   <CTABanner
-    title="Kapolei Catering for Offices and Events"
-    subtitle="We provide fresh catering for business meetings and events across West Oahu. Order custom salad trays and sandwich platters for your next gathering."
-    ctaText="Order Catering"
-    ctaHref={CATERING_CTA_HREF}
+    title="Visit Us in Kapolei"
+    subtitle="Stop by Kapolei Commons for a fresh meal or place your order online to skip the line."
+    ctaText="View Full Menu"
+    ctaHref="/menu"
+    secondaryCtaText="Order Online"
+    secondaryCtaHref={PRIMARY_CTA_HREF}
   />
 </PageLayout>

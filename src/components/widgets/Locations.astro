@@ -10,7 +10,7 @@
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
-import locationsCover from '~/assets/images/locations-cover.webp';
+import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 import smallLeafMotif from '~/assets/images/small-leaf-motif.webp';
 import { storeLocations } from '~/data/locations';
 
@@ -124,15 +124,8 @@ const {
       </div>
 
       <div class="w-full self-stretch overflow-hidden bg-section-grey md:aspect-square md:w-auto md:flex-1" style="aspect-ratio: 1 / 1;">
-        <img
-          src={locationsCover.src}
-          alt="Aloha Salads team members holding fresh salad bowls in-store"
-          width={locationsCover.width}
-          height={locationsCover.height}
-          class="h-full w-full object-cover"
-          loading="lazy"
-          decoding="async"
-        />
+        <!-- TODO: replace with <Image> when asset is ready -->
+        <HeroImagePlaceholder fill class="h-full w-full" label="Aloha Salads locations placeholder" />
       </div>
 
     </div>

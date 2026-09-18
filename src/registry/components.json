@@ -718,6 +718,24 @@
       "notes": "Bento on /menu. Even 4-col grid on menu subpages via excludeHref. Card heights set via data-row CSS: 480px / 360px / 260px; grid layout uses 300px."
     },
     {
+      "id": "P-55",
+      "name": "Full menu section",
+      "figmaNames": ["Full Menu", "Goop-style menu listing", "Menu products"],
+      "shape": "Cream menu page section with sticky category anchor strip and grouped product-card grids. Each dish card has a 4:3 grey image placeholder, rough title, and short description.",
+      "component": "FullMenuSection",
+      "import": "~/components/widgets/FullMenuSection.astro",
+      "props": {
+        "eyebrow": "optional Wreck Script label",
+        "title": "h2 section heading",
+        "subtitle": "optional body-lg intro",
+        "categories": "Array<{ title, href?, description?, items: Array<{ title, description? }> }>",
+        "ctaText": "optional primary button label",
+        "ctaHref": "CTA href",
+        "id": "section anchor"
+      },
+      "notes": "Used on /menu to show the complete menu in one page. Keep images as HeroImagePlaceholder until the menu photo pass."
+    },
+    {
       "id": "P-50",
       "name": "Build steps",
       "figmaNames": ["How to Build Your Own Salad", "Build Steps", "What's included"],

@@ -4,7 +4,6 @@ import Hero2 from '~/components/widgets/Hero2.astro';
 import BrandBar from '~/components/widgets/BrandBar.astro';
 import MenuCategories from '~/components/widgets/MenuCategories.astro';
 import LocalSourcing from '~/components/widgets/LocalSourcing.astro';
-import ownSaladImage from '~/assets/images/own-salad.webp';
 import SaladBuilder from '~/components/widgets/SaladBuilder.astro';
 import Locations from '~/components/widgets/Locations.astro';
 import Testimonials from '~/components/widgets/Testimonials.astro';
@@ -12,6 +11,7 @@ import OurStory from '~/components/widgets/OurStory.astro';
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
+import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 import { site } from '~/config/site';
 import { PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
 import heroCover from '~/assets/images/hero-cover.webp';
@@ -71,17 +71,10 @@ const metadata = {
           <Button variant="primary" text="Our Ingredients" href="/ingredients" hideNote={true} />
         </div>
 
-        {/* Right — food photo */}
-        <div class="relative w-full max-w-[400px] shrink-0" style="aspect-ratio: 562 / 624;" aria-hidden="true">
-          <img
-            src={ownSaladImage.src}
-            alt="Fresh locally sourced salad bowl with island greens and ahi"
-            width={ownSaladImage.width}
-            height={ownSaladImage.height}
-            class="absolute inset-0 h-full w-full object-contain"
-            loading="lazy"
-            decoding="async"
-          />
+        {/* Right — food photo placeholder */}
+        <div class="relative w-full max-w-[400px] shrink-0" style="aspect-ratio: 562 / 624;">
+          <!-- TODO: replace with <Image> when asset is ready -->
+          <HeroImagePlaceholder fill class="absolute inset-0" />
         </div>
 
       </div>

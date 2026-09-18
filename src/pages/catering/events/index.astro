@@ -6,9 +6,7 @@ import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
-import Button from '~/components/ui/Button.astro';
 import { CATERING_CTA_HREF, LOCATION_CTA_HREF } from '~/config/cta';
-import locationsCover from '~/assets/images/locations-cover.webp';
 import peach from '~/assets/images/peach-motif.webp';
 import bigLeaf from '~/assets/images/big-leaf.webp';
 
@@ -24,7 +22,7 @@ const occasions = [
     number: '01',
     title: 'Community Gatherings',
     description:
-      "Feed your crowd with nutrient-dense meals. Our signature salad trays and wrap platters provide a fresh alternative to heavy event food for local gatherings.",
+      "Feed your crowd with fresh and healthy meals. Our signature salad trays and wrap platters provide a fresh alternative to heavy event food for local gatherings.",
   },
   {
     number: '02',
@@ -42,7 +40,7 @@ const occasions = [
     number: '04',
     title: 'Quality Event Food',
     description:
-      "Every catering tray is built using the same high-quality components as our standard menu. We use our scratch-made dressings and premium produce, including vine-ripe Hau'ula tomatoes.",
+      "A catering tray is our standard menu in a bigger format. Scratch-made dressings and vine-ripe Hau'ula tomatoes throughout.",
   },
 ];
 ---
@@ -54,7 +52,6 @@ const occasions = [
     tagline="Catering"
     title="Event Catering"
     content="Provide fresh food for your next gathering. We prepare large-format catering trays and wrap platters for events of all sizes. All event orders are available for pickup across our six O'ahu locations."
-    image={{ ...locationsCover, alt: 'Fresh catering spread set up for a large event in Oahu' }}
     actions={[
       { variant: 'primary', text: 'Order Catering Online', href: CATERING_CTA_HREF },
       { variant: 'ghost', tone: 'dark', text: 'View Full Catering Menu', href: '/catering' },
@@ -68,25 +65,12 @@ const occasions = [
       class="pointer-events-none absolute bottom-0 left-[-20px] z-0 w-[28%] max-w-[420px] select-none" loading="lazy" decoding="async" />
 
     <div class="relative z-[1] mx-auto w-full max-w-container px-5 py-16 sm:px-8 md:px-16 md:py-[120px]">
-      <div class="mb-12 flex flex-col gap-4 md:mb-16 md:flex-row md:items-end md:justify-between">
-        <div class="flex max-w-2xl flex-col gap-4">
-          <Heading variant="eyebrow">What we cover</Heading>
-          <Heading variant="h2">Fresh Catering for Every Event</Heading>
-          <Text variant="body-lg" color="default">
-            From community gatherings to private banquets, we prepare the same high-quality trays your guests will love.
-          </Text>
-        </div>
-        <div class="shrink-0">
-          <Button variant="primary" text="Order Catering Online" href={CATERING_CTA_HREF} hideNote={true} />
-        </div>
-      </div>
-
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {occasions.map((occ) => (
           <article class="group relative flex flex-col justify-between overflow-hidden bg-section-dark px-8 pb-8 pt-10 md:px-10 md:pb-10 md:pt-12">
             <span class="pointer-events-none absolute right-6 top-4 select-none font-rough text-[96px] leading-none text-page/[0.07] md:text-[120px]" aria-hidden="true">{occ.number}</span>
             <div class="relative flex flex-col gap-4">
-              <span class="font-rough text-[15px] leading-none text-accent">{occ.number}</span>
+              <span class="font-rough text-[15px] leading-none text-page/90">{occ.number}</span>
               <Heading variant="h3" color="white">{occ.title}</Heading>
               <Text color="white" class="text-page/75 leading-relaxed">{occ.description}</Text>
             </div>
@@ -97,7 +81,10 @@ const occasions = [
     </div>
   </section>
 
-  <CateringSubNav excludeHref="/catering/events" />
+  <CateringSubNav
+    excludeHref="/catering/events"
+    subtitle="We provide catering services for various event types. Explore our other catering menus below:"
+  />
 
   <FAQs
     isDark={true}
@@ -105,7 +92,7 @@ const occasions = [
     title="Frequently Asked Questions"
     items={[
       { title: "How far in advance should I order for a large event?", description: "Please contact your nearest location to confirm the required lead time for your specific event size." },
-      { title: "Do you provide serving utensils for events?", description: "We provide the necessary serving bowls and serving utensils with every catering order upon request." },
+      { title: "Do you provide serving utensils for events?", description: "Ask the store when you order and they will let you know what is included." },
       { title: "Can I customize event catering trays?", description: "Yes. We can modify our catering trays to accommodate specific dietary requirements for your event guests." },
       { title: "Do you offer meatless event catering options?", description: "Yes. We prepare dedicated plant-based items including the Aloha Mediterranean Tray and the Aloha Passion Tray." },
       { title: "Where do I pick up my event catering order?", description: "You can pick up your catering order at any of our six neighborhood restaurants across O'ahu." },
@@ -114,7 +101,7 @@ const occasions = [
 
   <CTABanner
     title="Ready to Order?"
-    subtitle="Skip the line and place your event catering order online for fast pickup. Need to confirm serving sizes or lead times for a large group? Contact your nearest location directly."
+    subtitle="Order online for pickup. For a large event, call the store to talk through quantities and timing."
     ctaText="Order Catering Online"
     ctaHref={CATERING_CTA_HREF}
     secondaryCtaText="Find a Location"

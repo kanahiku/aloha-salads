@@ -34,6 +34,7 @@
  */
 
 import Heading from '~/components/ui/Heading.astro';
+import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 
 export interface Props {
   eyebrow?: string;
@@ -63,7 +64,6 @@ const hasImage = withImage || Astro.slots.has('image');
 const imageUnderHeading = hasImage && imagePlacement === 'under-heading';
 const imageAside = hasImage && !imageUnderHeading;
 const bodyHtml = await Astro.slots.render('default');
-const customImageHtml = Astro.slots.has('image') ? await Astro.slots.render('image') : '';
 
 const [aspectW, aspectH] = imageAspect.split('/').map((n) => Number(n.trim()));
 const isLandscape = Number.isFinite(aspectW) && Number.isFinite(aspectH) && aspectW > aspectH;
@@ -95,18 +95,12 @@ const useNarrowGap = imageUnderHeading || (imageAside && isLandscape);
         </div>
         {imageUnderHeading && (
           <div class="w-full min-w-0">
-            {customImageHtml ? (
-              <div class="contents" set:html={customImageHtml} />
-            ) : (
-              <>
-                <!-- TODO: replace with <Image> when asset is ready -->
-                <div
-                  class="w-full rounded-[32px] bg-section-grey"
-                  style={`aspect-ratio: ${imageAspect};`}
-                  aria-hidden="true"
-                />
-              </>
-            )}
+            <!-- TODO: replace with <Image> when asset is ready -->
+            <HeroImagePlaceholder
+              fill
+              class="w-full rounded-[32px]"
+              style={`aspect-ratio: ${imageAspect};`}
+            />
           </div>
         )}
         {imageAside && <div class="flex flex-col" set:html={bodyHtml} />}
@@ -119,18 +113,12 @@ const useNarrowGap = imageUnderHeading || (imageAside && isLandscape);
             !isLandscape && 'lg:max-w-[507px]',
           ]}
         >
-          {customImageHtml ? (
-            <div class="contents" set:html={customImageHtml} />
-          ) : (
-            <>
-              <!-- TODO: replace with <Image> when asset is ready -->
-              <div
-                class="w-full rounded-[32px] bg-section-grey"
-                style={`aspect-ratio: ${imageAspect};`}
-                aria-hidden="true"
-              />
-            </>
-          )}
+          <!-- TODO: replace with <Image> when asset is ready -->
+          <HeroImagePlaceholder
+            fill
+            class="w-full rounded-[32px]"
+            style={`aspect-ratio: ${imageAspect};`}
+          />
         </div>
       ) : (
         <div class="flex min-w-0 flex-1 flex-col" set:html={bodyHtml} />

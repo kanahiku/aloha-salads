@@ -6,6 +6,7 @@
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
+import { PRIMARY_CTA_HREF } from '~/config/cta';
 import type { StoreLocation } from '~/data/locations';
 import { storeDirectionsHref, storeMapEmbedSrc } from '~/data/locations';
 import bigLeaf from '~/assets/images/big-leaf.webp';
@@ -60,6 +61,9 @@ const mapSrc = storeMapEmbedSrc(store);
             <Text variant="body-lg" color="white" as="span" class="block">{store.shopName}</Text>
             <Text variant="body-lg" color="white" as="span" class="block">{store.addressLine1}</Text>
             <Text variant="body-lg" color="white" as="span" class="block">{store.addressLine2}</Text>
+            {store.landmark && (
+              <Text variant="body-lg" color="white" as="span" class="block text-page/70">{store.landmark}</Text>
+            )}
           </address>
         </div>
 
@@ -77,15 +81,23 @@ const mapSrc = storeMapEmbedSrc(store);
           ))}
         </div>
 
-        <Button
-          variant="ghost"
-          tone="dark"
-          text="Get Directions"
-          href={directionsHref}
-          target="_blank"
-          hideNote={true}
-          class="mt-auto self-start"
-        />
+        <div class="mt-auto flex flex-col gap-3 sm:flex-row">
+          <Button
+            variant="primary"
+            text="Order Online for Pickup"
+            href={store.orderPickupHref ?? PRIMARY_CTA_HREF}
+            target="_blank"
+            hideNote={true}
+          />
+          <Button
+            variant="ghost"
+            tone="dark"
+            text="Get Directions"
+            href={directionsHref}
+            target="_blank"
+            hideNote={true}
+          />
+        </div>
       </article>
 
       <div class="min-h-[280px] overflow-hidden bg-section-grey aspect-[600/450] lg:aspect-auto lg:h-auto lg:min-h-full">

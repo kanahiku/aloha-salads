@@ -418,7 +418,7 @@ function darkVars(b: Brand): string {
 
     --aw-color-card-heading-dark: ${rgb(c.white)};
     --aw-color-card-body-dark: ${rgb(c.white, 0.6)};
-    --aw-color-card-link-dark: var(--aw-color-accent);
+    --aw-color-card-link-dark: ${rgb(c.cream)};
 
     --aw-color-card-heading-light: rgb(247 250 252);
     --aw-color-card-body-light: ${rgb(c.secondary)};

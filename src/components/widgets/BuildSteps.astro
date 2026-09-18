@@ -8,7 +8,7 @@
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
-import ownSaladImage from '~/assets/images/own-salad.webp';
+import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 import peachMotif from '~/assets/images/peach-motif.webp';
 import bigLeafMotif from '~/assets/images/big-leaf.webp';
 
@@ -39,7 +39,6 @@ const {
   id,
 } = Astro.props;
 
-const hasImage = Astro.slots.has('image');
 ---
 
 <section
@@ -103,19 +102,8 @@ const hasImage = Astro.slots.has('image');
     </div>
 
     <div class="relative w-full shrink-0 md:w-[42%] md:max-w-[520px]" style="aspect-ratio: 562 / 624;">
-      {hasImage ? (
-        <slot name="image" />
-      ) : (
-        <img
-          src={ownSaladImage.src}
-          alt="Illustrated custom salad bowl"
-          width={ownSaladImage.width}
-          height={ownSaladImage.height}
-          class="absolute inset-0 h-full w-full object-contain"
-          loading="lazy"
-          decoding="async"
-        />
-      )}
+      <!-- TODO: replace with <Image> when asset is ready -->
+      <HeroImagePlaceholder fill class="absolute inset-0" />
     </div>
   </div>
 </section>

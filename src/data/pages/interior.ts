@@ -52,8 +52,6 @@ const CATERING_LINKS: InteriorLink[] = [
   { text: 'Office Lunch Catering', href: '/catering/office-lunches' },
   { text: 'Meeting Catering', href: '/catering/meetings' },
   { text: 'Event Catering', href: '/catering/events' },
-  { text: 'Party Catering', href: '/catering/parties' },
-  { text: 'School Catering', href: '/catering/schools' },
   { text: 'Large Group Catering', href: '/catering/large-groups' },
 ];
 
@@ -281,7 +279,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     path: '/catering',
     title: 'Catering',
     metaDescription:
-      'Aloha Salads catering trays for offices, meetings, parties, schools, and large groups across O‘ahu.',
+      'Aloha Salads catering trays for offices, meetings, events, and large groups across O‘ahu.',
     heading: 'Catering',
     lede: 'Trays for the table, priced as they are on the current menu. Servings, minimums, lead time, and delivery radius will fill in once the shops confirm them.',
     sections: [
@@ -329,35 +327,6 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     metaDescription: 'Event catering from Aloha Salads.',
     heading: 'Event catering',
     lede: 'Event trays, listed separately from party catering. Same kitchen, different use.',
-    sections: [
-      {
-        links: [
-          { text: 'Party catering', href: '/catering/parties' },
-          { text: 'View all catering', href: CATERING_CTA_HREF },
-        ],
-      },
-    ],
-  },
-  '/catering/parties': {
-    path: '/catering/parties',
-    title: 'Party Catering',
-    metaDescription: 'Party catering from Aloha Salads for birthdays, graduations, showers, and sports teams.',
-    heading: 'Party catering',
-    lede: 'Birthdays, graduations, showers, and sports teams are sections on this page — not their own URLs.',
-    sections: [
-      { heading: 'Birthdays', body: 'Trays for the table, from a handful of friends to a full house.' },
-      { heading: 'Graduations', body: 'Feed the family without cooking the day of.' },
-      { heading: 'Showers', body: 'Light, fresh food that doesn’t fight the cake.' },
-      { heading: 'Sports teams', body: 'After practice, after the game, or before the ride home.' },
-      { links: [{ text: 'View all catering', href: CATERING_CTA_HREF }] },
-    ],
-  },
-  '/catering/schools': {
-    path: '/catering/schools',
-    title: 'School Catering',
-    metaDescription: 'School catering from Aloha Salads.',
-    heading: 'School catering',
-    lede: 'Trays for classrooms, staff lunches, and school events.',
     sections: [{ links: [{ text: 'View all catering', href: CATERING_CTA_HREF }] }],
   },
   '/catering/large-groups': {

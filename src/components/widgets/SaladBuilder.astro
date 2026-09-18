@@ -12,7 +12,7 @@
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
-import ownSaladImage from '~/assets/images/own-salad.webp';
+import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 
 export interface Props {
   eyebrow?: string;
@@ -61,17 +61,9 @@ const {
     </div>
 
     {/* ── Right column: illustration + floating tags ── */}
-    <div class="relative w-full max-w-[562px] shrink-0" style="aspect-ratio: 562 / 624;" aria-hidden="true">
-      <img
-        src={ownSaladImage.src}
-        alt="Illustrated salad bowl with healthy, local, and fresh labels"
-        width={ownSaladImage.width}
-        height={ownSaladImage.height}
-        class="absolute inset-0 h-full w-full object-contain"
-        loading="lazy"
-        decoding="async"
-      />
-
+    <div class="relative w-full max-w-[562px] shrink-0" style="aspect-ratio: 562 / 624;">
+      <!-- TODO: replace with <Image> when asset is ready -->
+      <HeroImagePlaceholder fill class="absolute inset-0" />
     </div>
 
   </div>
