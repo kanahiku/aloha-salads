@@ -220,6 +220,8 @@ export interface Hero extends Omit<Headline, 'classes'>, Omit<Widget, 'isDark' |
   stacked?: boolean;
   /** `variant="page"` only — full-width 1200×400 image under the title/lede (Figma 176:115). Pass `image` for the photo; otherwise a grey placeholder. */
   withImage?: boolean;
+  /** `variant="split-dark"` only — omit the side image column for text-only heroes. */
+  hideImage?: boolean;
 }
 
 export interface Team extends Omit<Headline, 'classes'>, Widget {

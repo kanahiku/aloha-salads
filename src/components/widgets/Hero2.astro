@@ -34,6 +34,7 @@ const {
   overlapHeader = true,
   stacked = false,
   withImage = false,
+  hideImage = false,
   id,
   bg = await Astro.slots.render('bg'),
 } = Astro.props;
@@ -50,6 +51,7 @@ const hasNav = Astro.slots.has('nav');
 const hasImage = Boolean(image && (typeof image !== 'string' || image.trim()));
 const isSplitImage = !isOverlay && !isSplitDark && hasImage;
 const keepHomeHeroImage = id === 'home-hero';
+const showSplitDarkImage = isSplitDark && !hideImage;
 
 const wordAlignClass = {
   start: 'self-start md:justify-start',
@@ -88,7 +90,10 @@ const isLocalOverlayImage =
         isTitle && 'min-h-[320px] md:h-[450px] md:min-h-[450px]',
         isPage && 'min-h-[480px] md:min-h-[629px]',
         isPhotoOverlay && 'min-h-[520px] md:h-[760px]',
-        isSplitDark && 'bg-section-dark min-h-[560px] md:min-h-[740px]',
+        isSplitDark &&
+          (hideImage
+            ? 'bg-section-dark min-h-[460px] md:min-h-[560px]'
+            : 'bg-section-dark min-h-[560px] md:min-h-[740px]'),
       ]}
       {...id ? { id } : {}}
     >
@@ -264,48 +269,41 @@ const isLocalOverlayImage =
           </div>
         ) : isSplitDark ? (
         <div class="flex flex-1 flex-col lg:flex-row lg:items-stretch gap-0 pb-0">
-          {/* left: text column */}
-          <div class="flex flex-col items-start justify-center gap-6 shrink-0 lg:w-[55%] pb-10 pt-6 lg:py-24 lg:pr-16">
-            {tagline && (
-              <p class="font-script text-[var(--aw-text-eyebrow)] leading-none text-page/55">{tagline}</p>
-            )}
-            {title && (
-              <h1
-                class="font-rough text-h1 font-normal leading-[1.05] text-page"
-                set:html={title}
-              />
-            )}
-            {content && (
-              <div
-                class="font-sans text-[16px] leading-[1.55] text-page/60 max-w-[480px]"
-                set:html={content}
-              />
-            )}
-            {actions && (
-              Array.isArray(actions) ? (
-                <CTAActions actions={actions} noteTone="onDark" />
-              ) : (
-                <Fragment set:html={actions} />
-              )
-            )}
-          </div>
-          {/* right: image column — visible on all screen sizes */}
-          <div class="w-full h-[280px] sm:h-[380px] lg:h-auto lg:flex-1 lg:min-w-0 lg:self-stretch">
-            {hasImage ? (
-              <div class="relative w-full h-full overflow-hidden">
-                <HeroImagePlaceholder fill class="w-full h-full" />
-                <div class="absolute inset-0 bg-gradient-to-r from-section-dark/60 from-[0%] via-transparent to-transparent" />
-              </div>
-            ) : (
-              /* TODO: replace with <Image> when asset is ready */
-              <div
-                class="w-full h-full min-h-[380px] relative overflow-hidden"
-                aria-hidden="true"
-              >
-                <HeroImagePlaceholder fill class="absolute inset-0" />
+            {/* left: text column */}
+            <div
+              class:list={[
+                'flex shrink-0 flex-col items-start justify-center gap-6 pb-10 pt-6 lg:py-24 lg:pr-16',
+                showSplitDarkImage ? 'lg:w-[55%]' : 'lg:w-full lg:max-w-[760px]',
+              ]}
+            >
+              {tagline && <p class="font-script text-[var(--aw-text-eyebrow)] leading-none text-page/55">{tagline}</p>}
+              {title && <h1 class="font-rough text-h1 font-normal leading-[1.05] text-page" set:html={title} />}
+              {content && (
+                <div class="font-sans text-[16px] leading-[1.55] text-page/60 max-w-[480px]" set:html={content} />
+              )}
+              {actions &&
+                (Array.isArray(actions) ? (
+                  <CTAActions actions={actions} noteTone="onDark" />
+                ) : (
+                  <Fragment set:html={actions} />
+                ))}
+            </div>
+            {/* right: image column — visible on all screen sizes */}
+            {showSplitDarkImage && (
+              <div class="w-full h-[280px] sm:h-[380px] lg:h-auto lg:flex-1 lg:min-w-0 lg:self-stretch">
+                {hasImage ? (
+                  <div class="relative w-full h-full overflow-hidden">
+                    <HeroImagePlaceholder fill class="w-full h-full" />
+                    <div class="absolute inset-0 bg-gradient-to-r from-section-dark/60 from-[0%] via-transparent to-transparent" />
+                  </div>
+                ) : (
+                  /* TODO: replace with <Image> when asset is ready */
+                  <div class="w-full h-full min-h-[380px] relative overflow-hidden" aria-hidden="true">
+                    <HeroImagePlaceholder fill class="absolute inset-0" />
+                  </div>
+                )}
               </div>
             )}
-          </div>
         </div>
         ) : (
         <div class="flex flex-1 flex-col items-start justify-center min-h-0">

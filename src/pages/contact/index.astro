@@ -5,6 +5,7 @@ import Contact from '~/components/widgets/Contact.astro';
 import { CONTACT } from '~/config/contact';
 import { contactHelpOptions } from '~/data/pages/contact';
 import { site } from '~/config/site';
+import { CATERING_CTA_HREF } from '~/config/cta';
 
 const metadata = {
   title: `Contact | ${site.name}`,
@@ -15,20 +16,32 @@ const metadata = {
 
 <Layout metadata={metadata}>
   <Hero2
-    variant="page"
+    variant="split-dark"
     overlapHeader={false}
-    stacked
-    title="Contact"
-    subtitle={`Questions about an order, catering, or a store? Send a note and we’ll follow up.`}
+    hideImage
+    tagline="Contact"
+    title="Get in Touch"
+    content="Questions about an order, catering, or a store? Send a note and we'll follow up soon."
+    actions={[
+      { variant: 'primary', text: 'Email Us', href: `mailto:${CONTACT.email}` },
+      { variant: 'ghost-dark', text: 'Order Catering', href: CATERING_CTA_HREF },
+    ]}
   />
 
   <Contact
     title="Send a message"
-    subtitle={`Or email <a class="btn-link" href="mailto:${CONTACT.email}">${CONTACT.email}</a>.`}
+    subtitle={`Tell us what you need and the right person from Aloha Salads will get back to you.`}
     button="Send message"
     inputs={[
       { type: 'text', name: 'name', label: 'Name', autocomplete: 'name', placeholder: 'Your name', required: true },
-      { type: 'email', name: 'email', label: 'Email', autocomplete: 'email', placeholder: 'you@email.com', required: true },
+      {
+        type: 'email',
+        name: 'email',
+        label: 'Email',
+        autocomplete: 'email',
+        placeholder: 'you@email.com',
+        required: true,
+      },
       { type: 'tel', name: 'phone', label: 'Phone', autocomplete: 'tel', placeholder: CONTACT.phone.display },
       {
         type: 'select',
