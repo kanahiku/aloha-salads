@@ -6,7 +6,9 @@
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
-import smallLeafMotif from '~/assets/images/small-leaf-motif.webp';
+import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
+import peach from '~/assets/images/peach-motif.webp';
+import bigLeaf from '~/assets/images/big-leaf.webp';
 
 export interface MenuItem {
   title: string;
@@ -28,56 +30,55 @@ const { eyebrow, title, intro, items = [], ctaText, ctaHref, id } = Astro.props;
 
 <section
   {...id ? { id } : {}}
-  class="not-prose relative w-full overflow-hidden bg-section-grey"
+  class="not-prose relative w-full scroll-mt-24 overflow-hidden bg-page md:scroll-mt-32"
 >
-  <div
-    class="pointer-events-none absolute inset-0"
-    style={`background-image: url('${smallLeafMotif.src}'); background-size: 1700px auto; background-position: top left; background-repeat: repeat;`}
-    aria-hidden="true"
-  ></div>
+  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+    <img
+      src={peach.src}
+      alt=""
+      width={peach.width}
+      height={peach.height}
+      class="absolute right-0 top-[-6%] w-[38%] max-w-[560px] select-none"
+      loading="lazy"
+      decoding="async"
+    />
+    <img
+      src={bigLeaf.src}
+      alt=""
+      width={bigLeaf.width}
+      height={bigLeaf.height}
+      class="absolute bottom-0 left-[-20px] z-0 w-[33%] max-w-[480px] select-none"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+
   <div class="relative z-[1] mx-auto w-full max-w-container px-5 py-16 sm:px-8 md:px-16 md:py-[120px]">
-    <div class="mb-12 flex max-w-4xl flex-col gap-6 md:mb-16">
+    <div class="mb-10 flex max-w-4xl flex-col gap-6 md:mb-14">
       {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}
       <Heading variant="h2">{title}</Heading>
       {intro && <Text variant="body-lg" color="default">{intro}</Text>}
     </div>
 
     {items.length > 0 && (
-      <ol class="flex list-none flex-col">
-        {items.map((item, index) => {
-          const n = String(index + 1).padStart(2, '0');
-
-          return (
-            <li class="relative overflow-hidden border-t border-heading/15 last:border-b">
-              <span
-                class="pointer-events-none absolute left-3 top-1/2 hidden -translate-y-1/2 select-none font-script text-h1 text-heading/10 md:block"
-                aria-hidden="true"
-              >
-                {n}
-              </span>
-
-              <div class="relative grid grid-cols-[3.25rem_minmax(0,1fr)] items-start gap-x-4 gap-y-3 px-4 py-8 md:grid-cols-[5.5rem_minmax(0,1fr)] md:items-center md:px-10 md:py-10 lg:grid-cols-[5.5rem_minmax(0,1fr)_minmax(14rem,26rem)] lg:gap-x-10">
-                <span class="type-quote pt-1 text-accent md:pt-0" aria-hidden="true">
-                  {n}
-                </span>
-
-                <Heading variant="h3" class="md:text-[30px] lg:text-[34px]">{item.title}</Heading>
-
-                {item.description && (
-                  <Text
-                    as="p"
-                    variant="body-lg"
-                    color="inherit"
-                    class="col-start-2 max-w-prose text-heading/60 lg:col-start-3"
-                  >
-                    {item.description}
-                  </Text>
-                )}
-              </div>
-            </li>
-          );
-        })}
-      </ol>
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {items.map((item) => (
+          <article class="flex h-full flex-col overflow-hidden bg-card shadow-card">
+            <div class="relative w-full bg-section-grey" style="aspect-ratio: 4 / 3;">
+              <!-- TODO: replace with <Image> when asset is ready -->
+              <HeroImagePlaceholder fill class="absolute inset-0" label={`${item.title} menu item placeholder`} />
+            </div>
+            <div class="flex flex-1 flex-col gap-3 px-5 py-5">
+              <h3 class="font-rough text-h4 font-normal leading-none text-heading">{item.title}</h3>
+              {item.description && (
+                <p class="font-sans text-body leading-[1.45] tracking-[-0.01em] text-muted">
+                  {item.description}
+                </p>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
     )}
 
     {ctaText && ctaHref && (

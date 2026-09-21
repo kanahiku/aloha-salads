@@ -30,6 +30,7 @@
  *   withImage       — true = include the image column / placeholder
  *   imageAspect     — CSS aspect-ratio for the default placeholder (Figma frame size)
  *   imagePlacement  — "end" (image opposite the text stack) or "under-heading"
+ *   imageReverse    — true = image LEFT / text RIGHT (mirrors the default end layout)
  *   class           — extra classes on the outer <section>
  */
 
@@ -45,6 +46,7 @@ export interface Props {
   withImage?: boolean;
   imageAspect?: string;
   imagePlacement?: 'end' | 'under-heading';
+  imageReverse?: boolean;
   class?: string;
 }
 
@@ -57,6 +59,7 @@ const {
   withImage = false,
   imageAspect = '507 / 657.445',
   imagePlacement = 'end',
+  imageReverse = false,
   class: className = '',
 } = Astro.props;
 
@@ -81,6 +84,7 @@ const useNarrowGap = imageUnderHeading || (imageAside && isLandscape);
       class:list={[
         'flex flex-col gap-12 lg:flex-row lg:items-center',
         useNarrowGap ? 'lg:gap-16' : 'lg:gap-[120px]',
+        imageReverse && imageAside && 'lg:flex-row-reverse',
       ]}
     >
 
