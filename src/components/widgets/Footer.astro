@@ -84,11 +84,11 @@ const {
   </div>
 
   {(socialLinks.length > 0 || secondaryLinks.length > 0 || footNote) && (
-    <div class="mx-auto grid w-full max-w-container grid-cols-1 gap-4 px-5 py-10 sm:px-8 md:grid-cols-3 md:items-center md:px-16">
-      {/* Left — social icons */}
-      <div class="flex items-center gap-1">
+    <div class="mx-auto grid w-full max-w-container grid-cols-1 items-center gap-4 px-5 py-10 sm:px-8 md:grid-cols-[1fr_auto_1fr] md:px-16">
+      {/* Left — social icons, glyphs flush with the content edge */}
+      <div class="flex items-center">
         {socialLinks.length > 0 && (
-          <ul class="flex items-center gap-1">
+          <ul class="-ml-2.5 flex items-center gap-1">
             {socialLinks.map(({ href, ariaLabel, icon }) => (
               <li>
                 <a
@@ -106,18 +106,21 @@ const {
         )}
       </div>
 
-      {/* Centre — copyright */}
+      {/* Centre — copyright sits in an auto column so it is the true midpoint */}
       {footNote && (
-        <p class="text-center text-small text-muted md:text-center" set:html={footNote} />
+        <p class="text-small leading-none text-muted md:whitespace-nowrap" set:html={footNote} />
       )}
 
-      {/* Right — legal links */}
+      {/* Right — legal links, text flush with the content edge */}
       {secondaryLinks.length > 0 && (
-        <nav aria-label="Legal" class="md:flex md:justify-end">
-          <ul class="flex flex-wrap items-center gap-x-4 gap-y-1">
+        <nav aria-label="Legal" class="md:justify-self-end">
+          <ul class="flex flex-wrap items-center gap-x-4">
             {secondaryLinks.map(({ text, href }) => (
               <li>
-                <a class="inline-flex min-h-9 items-center text-small text-heading hover:text-accent" href={href}>
+                <a
+                  class="inline-flex h-10 items-center text-small leading-none text-heading hover:text-accent"
+                  href={href}
+                >
                   {text}
                 </a>
               </li>
