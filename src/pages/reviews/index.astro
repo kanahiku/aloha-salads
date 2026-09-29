@@ -6,26 +6,23 @@ import SectionBg from '~/components/ui/SectionBg.astro';
 import Hero2 from '~/components/widgets/Hero2.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import ReviewsGrid from '~/components/widgets/ReviewsGrid.astro';
-import { getReviewsPage } from '~/lib/content';
 import { CONTACT } from '~/config/contact';
-import { PRIMARY_CTA_LABEL } from '~/config/cta';
+import { PRIMARY_CTA_HREF } from '~/config/cta';
 
 export const prerender = false;
 
-const page = await getReviewsPage();
-
 const metadata = {
-  title: page?.meta.title || `Reviews | ${CONTACT.businessName}`,
-  description: page?.meta.description || `Read recent Google and Yelp reviews for ${CONTACT.businessName}.`,
+  title: `Reviews | ${CONTACT.businessName}`,
+  description: `Read recent Google and Yelp reviews for ${CONTACT.businessName}.`,
   ignoreTitleTemplate: true,
 };
 ---
 
 <Layout metadata={metadata}>
   <Hero2>
-    <Fragment slot="title">{page?.hero.title || 'Reviews'}</Fragment>
+    <Fragment slot="title">Reviews</Fragment>
     <Fragment slot="subtitle">
-      {page?.hero.subtitle || `What people are saying about ${CONTACT.businessName}.`}
+      What people are saying about {CONTACT.businessName}.
     </Fragment>
     <Fragment slot="bg">
       <SectionBg variant="hero" />
@@ -33,14 +30,7 @@ const metadata = {
   </Hero2>
 
   <WidgetWrapper containerClass="max-w-container mx-auto">
-    <Headline title={page?.liveReviews.heading || 'Recent reviews'} classes={{ container: 'mb-[9px]' }} />
-    {
-      page?.liveReviews.intro ? (
-        <p class="text-[16px] md:text-[17px] font-normal leading-[160%] text-muted text-left max-w-3xl mb-[30px]">
-          {page.liveReviews.intro}
-        </p>
-      ) : null
-    }
+    <Headline title="Recent reviews" classes={{ container: 'mb-[9px]' }} />
     <ReviewsGrid showHeader={false} sources={['google', 'yelp']} variant="dark" showCta={false} />
     <Fragment slot="bg">
       <SectionBg variant="grey" />
@@ -48,9 +38,11 @@ const metadata = {
   </WidgetWrapper>
 
   <CTABanner
-    title={page?.ctaBanner.title || 'Have a project in mind?'}
-    subtitle={page?.ctaBanner.subtitle || `Contact ${CONTACT.businessName} and we will follow up.`}
-    ctaText={page?.ctaBanner.ctaText || PRIMARY_CTA_LABEL}
-    ctaHref={page?.ctaBanner.ctaHref}
+    title="Find a Location"
+    subtitle="Six neighborhood restaurants across O'ahu. Come see us."
+    ctaText="Find a Location"
+    ctaHref="/locations"
+    secondaryCtaText="Order Online"
+    secondaryCtaHref={PRIMARY_CTA_HREF}
   />
 </Layout>

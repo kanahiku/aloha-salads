@@ -10,6 +10,8 @@ export interface ContentImage {
 export interface NavSubLink {
   text: string;
   href: string;
+  description?: string;
+  image?: ContentImage;
 }
 
 export interface NavColumn {
@@ -20,6 +22,8 @@ export interface NavColumn {
 export interface NavLink {
   text: string;
   href?: string;
+  description?: string;
+  image?: ContentImage;
   links?: NavSubLink[];
   columns?: NavColumn[];
 }
@@ -59,24 +63,29 @@ export interface NavigationContent {
   };
 }
 
-// ─── Homepage section types ───────────────────────────────────────────────────
+// ─── Menu ────────────────────────────────────────────────────────────────────
 
-export interface StatItem {
-  stat: string;
-  label: string;
+export interface MenuItem {
+  title: string;
+  slug?: string;
+  description?: string;
+  image?: ContentImage;
 }
+
+export interface MenuCategory {
+  title: string;
+  slug?: string;
+  href?: string;
+  description?: string;
+  items: MenuItem[];
+}
+
+// ─── Shared CMS sections (blog articles) ───────────────────────────────────────
 
 export interface InfoCardItem {
   title: string;
   description: string;
   icon?: string;
-}
-
-export interface ServiceItem {
-  title: string;
-  description: string;
-  linkText: string;
-  linkHref: string;
 }
 
 export interface TimelineStep {
@@ -85,82 +94,13 @@ export interface TimelineStep {
   icon: string;
 }
 
-export interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-// ─── Full homepage content ─────────────────────────────────────────────────────
-
-export interface HomePageContent {
-  meta: {
-    title: string;
-    description: string;
-  };
-
-  hero: {
-    titleLine1: string;
-    titleLine2: string;
-    subtitleParagraph1: string;
-    ctaText: string;
-    ctaHref: string;
-    phoneCtaText?: string;
-    phoneCtaHref?: string;
-    heroImage: ContentImage;
-    heroImageMobile?: ContentImage;
-  };
-
-  statsBar: StatItem[];
-
-  whyInspect: {
-    heading: string;
-    paragraph1: string;
-    paragraph2: string;
-    ctaText: string;
-    ctaHref: string;
-    image: ContentImage;
-  };
-
-  servicesSection: {
-    title: string;
-    subtitle: string;
-    services: ServiceItem[];
-  };
-
-  faqs: {
-    title: string;
-    items: FAQItem[];
-  };
-
-  ctaBanner: {
-    title: string;
-    subtitle: string;
-    ctaText?: string;
-    ctaHref?: string;
-    showAfterHoursNote: boolean;
-  };
-}
-
-// ─── Shared CMS sections (service pages and later templates) ───────────────────
+// ─── Shared CMS sections ───────────────────────────────────────────────────────
 
 export interface LinkedCardItem {
   title: string;
   description: string;
   href: string;
   linkText: string;
-}
-
-export interface PageHero {
-  title: string;
-  visualSubheading?: string;
-  subtitle: string;
-  ctaText?: string;
-  ctaHref?: string;
-  phoneCtaText?: string;
-  phoneCtaHref?: string;
-  image?: ContentImage;
-  imageMobile?: ContentImage;
-  imagePlaceholder?: string;
 }
 
 export interface CtaBannerContent {
@@ -291,11 +231,6 @@ export interface QuoteCardsSection {
   items: QuoteCardItem[];
 }
 
-export interface PageFaqs {
-  title: string;
-  items: Array<{ title: string; description: string }>;
-}
-
 export type ServiceSection = (
   | IconPointsSection
   | TimelineSection
@@ -310,88 +245,6 @@ export type ServiceSection = (
   | SplitContentSection
   | QuoteCardsSection
 ) & { surface?: 'white' | 'grey' | 'dark' };
-
-export interface ServicePageContent {
-  title: string;
-  slug: string;
-  meta: {
-    title: string;
-    description: string;
-  };
-  hero: PageHero;
-  sections: ServiceSection[];
-  faqs?: PageFaqs;
-  ctaBanner: CtaBannerContent;
-}
-
-export interface FormHelpOption {
-  label: string;
-  value: string;
-}
-
-export interface ContactLinkItem {
-  text: string;
-  href: string;
-}
-
-export interface ContactPageContent {
-  meta: {
-    title: string;
-    description: string;
-  };
-  hero: PageHero;
-  form: {
-    heading: string;
-    intro?: string;
-    topicLabel?: string;
-    topicPlaceholder?: string;
-    helpOptions: FormHelpOption[];
-    messageLabel?: string;
-    submitLabel?: string;
-    mapHeading?: string;
-    addressLine1?: string;
-    addressLine2?: string;
-    mapsQuery?: string;
-    directionsLabel?: string;
-  };
-  touchpoints: {
-    heading: string;
-    items: InfoCardItem[];
-    links?: ContactLinkItem[];
-  };
-  unsureSection: SplitContentSection;
-  reasons: LinkedCardsSection;
-  ctaBanner: CtaBannerContent;
-}
-
-export interface ReviewPlatformItem {
-  title: string;
-  ratingNote: string;
-  href: string;
-  linkText: string;
-  icon?: string;
-}
-
-export interface ReviewsPageContent {
-  meta: {
-    title: string;
-    description: string;
-  };
-  hero: PageHero;
-  liveReviews: {
-    heading: string;
-    intro?: string;
-  };
-  platforms: {
-    heading: string;
-    intro?: string;
-    items: ReviewPlatformItem[];
-  };
-  gallerySection: SplitContentSection & {
-    previewImages?: ContentImage[];
-  };
-  ctaBanner: CtaBannerContent;
-}
 
 // ─── Blog ─────────────────────────────────────────────────────────────────────
 
@@ -478,60 +331,6 @@ export interface BlogContentCallout {
   calloutType: 'tip' | 'info' | 'warning' | 'note';
   text: string;
 }
-
-// ─── Books ────────────────────────────────────────────────────────────────────
-
-export type BookSeries = 'textbook' | 'guidebook' | 'bargaining';
-
-export interface BookCta {
-  _key?: string;
-  label: string;
-  href: string;
-}
-
-export interface Book {
-  _id: string;
-  slug: string;
-  title: string;
-  subtitle?: string;
-  description?: string;
-  image?: ContentImage;
-  badges: string[];
-  publisherName?: string;
-  publisherYear?: number;
-  publisherNote?: string;
-  ctas: BookCta[];
-  podcastHref?: string;
-  series: BookSeries;
-  order: number;
-}
-
-// ─── Podcast ──────────────────────────────────────────────────────────────────
-
-export type PodcastEpisodeStatus = 'live' | 'coming-soon';
-
-export interface PodcastEpisode {
-  _id: string;
-  slug: string;
-  title: string;
-  description?: string;
-  status: PodcastEpisodeStatus;
-  order: number;
-  part: number;
-  partName: string;
-  partDescription?: string;
-  spotifyUrl?: string;
-  youtubeUrl?: string;
-  guidebookHref?: string;
-}
-
-/** Episodes grouped by part number (1–5). */
-export type PodcastPartGroup = {
-  part: number;
-  partName: string;
-  partDescription?: string;
-  episodes: PodcastEpisode[];
-};
 
 // ─── Testimonials ─────────────────────────────────────────────────────────────
 

@@ -28,3 +28,6 @@ studio/.env
 pnpm-lock.yaml
 
 .astro
+
+# Local source photos for one-off Sanity imports.
+src/menu-images/

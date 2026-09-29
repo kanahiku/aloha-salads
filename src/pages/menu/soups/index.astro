@@ -7,6 +7,7 @@ import MenuCategories from '~/components/widgets/MenuCategories.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
+import { getMenuCategory } from '~/lib/content';
 
 const metadata = {
   title: 'Fresh Soups & Tomato Bisque | Aloha Salads Oahu',
@@ -25,6 +26,9 @@ const soupItems = [
     description: 'A warm side option perfect for dipping.',
   },
 ];
+
+const cmsCategory = await getMenuCategory('soups');
+const menuItems = cmsCategory?.items.length ? cmsCategory.items : soupItems;
 
 const faqs = [
   {
@@ -63,7 +67,7 @@ const faqs = [
     ]}
   />
 
-  <MenuItemsSection eyebrow="Soups" title="Our Soup Menu" items={soupItems} />
+  <MenuItemsSection eyebrow="Soups" title="Our Soup Menu" items={menuItems} />
 
   <LocalSourcing
     title="Quality Ingredients"

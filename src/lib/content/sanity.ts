@@ -1,135 +1,75 @@
 import { sanityClient } from '../sanity/client';
-import {
-  resolveContentImage,
-  resolveContentImageOrEmpty,
-  type SanityImageFields,
-} from '../sanity/image';
+import { resolveContentImage, type SanityImageFields } from '../sanity/image';
 import type {
   BlogContentBlock,
   BlogPost,
-  Book,
-  BookCta,
-  BookSeries,
-  PodcastEpisode,
-  PodcastEpisodeStatus,
-  PodcastPartGroup,
   Testimonial,
-  ContactPageContent,
   ContentImage,
-  FormHelpOption,
-  HomePageContent,
   NavigationContent,
-  ReviewsPageContent,
-  ServicePageContent,
-  ServiceSection,
-  SplitContentSection,
+  NavLink,
+  NavSubLink,
+  MenuCategory,
+  MenuItem,
 } from './types';
-
-const IMAGE_PROJECTION = /* groq */ `
-  "src": coalesce(image.asset->url, imageUrl, ""),
-  "alt": coalesce(image.alt, imageAlt, ""),
-  "crop": image.crop,
-  "hotspot": image.hotspot,
-  "asset": image.asset
-`;
-
-const IMAGE_MOBILE_PROJECTION = /* groq */ `
-  "src": coalesce(imageMobile.asset->url, imageMobileUrl, ""),
-  "alt": coalesce(imageMobile.alt, imageMobileAlt, ""),
-  "crop": imageMobile.crop,
-  "hotspot": imageMobile.hotspot,
-  "asset": imageMobile.asset
-`;
 
 type FetchedImage = ContentImage & SanityImageFields;
 
-const HOME_QUERY = /* groq */ `
-  *[_type == "homePage" && _id == "singleton-home"][0] {
-    meta,
-    hero {
-      titleLine1,
-      titleLine2,
-      subtitleParagraph1,
-      ctaText,
-      ctaHref,
-      phoneCtaText,
-      phoneCtaHref,
-      "heroImage": {
-        "src": coalesce(heroImage.asset->url, heroImageUrl, ""),
-        "alt": coalesce(heroImage.alt, ""),
-        "crop": heroImage.crop,
-        "hotspot": heroImage.hotspot,
-        "asset": heroImage.asset
-      },
-      "heroImageMobile": {
-        "src": coalesce(heroImageMobile.asset->url, heroImageMobileUrl, ""),
-        "alt": coalesce(heroImageMobile.alt, heroImage.alt, ""),
-        "crop": heroImageMobile.crop,
-        "hotspot": heroImageMobile.hotspot,
-        "asset": heroImageMobile.asset
-      }
-    },
-    "statsBar": statsBar[] { stat, label },
-    whyInspect {
-      heading,
-      paragraph1,
-      paragraph2,
-      ctaText,
-      ctaHref,
-      "image": {
-        ${IMAGE_PROJECTION}
-      }
-    },
-    servicesSection {
-      title,
-      subtitle,
-      "services": services[] { title, description, linkText, linkHref }
-    },
-    faqs {
-      title,
-      "items": items[] { question, answer }
-    },
-    ctaBanner {
-      title,
-      subtitle,
-      ctaText,
-      ctaHref,
-      showAfterHoursNote
-    }
-  }
+type FetchedNavSubLink = {
+  text?: string;
+  href?: string;
+  description?: string;
+  image?: FetchedImage | null;
+};
+
+type FetchedNavColumn = {
+  title?: string;
+  links?: FetchedNavSubLink[] | null;
+};
+
+type FetchedNavLink = FetchedNavSubLink & {
+  links?: FetchedNavSubLink[] | null;
+  columns?: FetchedNavColumn[] | null;
+};
+
+type FetchedNavigationContent = Omit<NavigationContent, 'header' | 'footer'> & {
+  header?: {
+    links?: FetchedNavLink[] | null;
+    actions?: NavigationContent['header']['actions'];
+    phone?: NavigationContent['header']['phone'];
+  } | null;
+  footer?: NavigationContent['footer'] | null;
+};
+
+const NAV_IMAGE_PROJECTION = /* groq */ `
+  "image": select(defined(image.asset) => {
+    "src": image.asset->url,
+    "alt": coalesce(image.alt, ""),
+    "crop": image.crop,
+    "hotspot": image.hotspot,
+    "asset": image.asset
+  }, null)
 `;
 
-export async function getSanityHomeContent(): Promise<HomePageContent> {
-  const page = await sanityClient.fetch<
-    HomePageContent & {
-      hero: HomePageContent['hero'] & { heroImage: FetchedImage; heroImageMobile?: FetchedImage };
-      whyInspect: HomePageContent['whyInspect'] & { image: FetchedImage };
-    }
-  >(HOME_QUERY);
-  return {
-    ...page,
-    hero: {
-      ...page.hero,
-      heroImage: resolveContentImageOrEmpty(page.hero?.heroImage),
-      heroImageMobile: resolveContentImage(page.hero?.heroImageMobile),
-    },
-    whyInspect: {
-      ...page.whyInspect,
-      image: resolveContentImageOrEmpty(page.whyInspect?.image),
-    },
-  };
-}
+const NAV_SUB_LINK_PROJECTION = /* groq */ `
+  text,
+  href,
+  description,
+  ${NAV_IMAGE_PROJECTION}
+`;
 
 const NAVIGATION_QUERY = /* groq */ `
   {
     "header": *[_type == "siteNavigation" && _id == "singleton-navigation"][0] {
       "links": links[] {
-        text,
-        href,
-        "links": subLinks[] { text, href },
+        ${NAV_SUB_LINK_PROJECTION},
+        "links": subLinks[] {
+          ${NAV_SUB_LINK_PROJECTION}
+        },
         "columns": columns[] {
           title,
-          "links": links[] { text, href }
+          "links": links[] {
+            ${NAV_SUB_LINK_PROJECTION}
+          }
         }
       },
       "actions": actions[] { variant, text, href },
@@ -147,251 +87,159 @@ const NAVIGATION_QUERY = /* groq */ `
   }
 `;
 
-export async function getSanityNavigationContent(): Promise<NavigationContent> {
-  return sanityClient.fetch<NavigationContent>(NAVIGATION_QUERY);
+function normalizeNavSubLink(link: FetchedNavSubLink | null | undefined): NavSubLink | null {
+  if (!link?.text || !link.href) return null;
+  const image = resolveContentImage(link.image);
+  return {
+    text: link.text,
+    href: link.href,
+    ...(link.description ? { description: link.description } : {}),
+    ...(image ? { image } : {}),
+  };
 }
 
-const SERVICE_PAGE_QUERY = /* groq */ `
-  *[_type == "servicePage" && slug.current == $slug][0] {
-    title,
-    "slug": slug.current,
-    meta,
-    hero {
+function normalizeNavLink(link: FetchedNavLink | null | undefined): NavLink | null {
+  if (!link?.text) return null;
+  const image = resolveContentImage(link.image);
+  const links = (link.links ?? [])
+    .map(normalizeNavSubLink)
+    .filter((item): item is NonNullable<typeof item> => Boolean(item));
+  const columns = (link.columns ?? [])
+    .map((column) => ({
+      title: column?.title ?? '',
+      links: (column?.links ?? [])
+        .map(normalizeNavSubLink)
+        .filter((item): item is NonNullable<typeof item> => Boolean(item)),
+    }))
+    .filter((column) => column.title && column.links.length);
+
+  return {
+    text: link.text,
+    ...(link.href ? { href: link.href } : {}),
+    ...(link.description ? { description: link.description } : {}),
+    ...(image ? { image } : {}),
+    ...(links.length ? { links } : {}),
+    ...(columns.length ? { columns } : {}),
+  };
+}
+
+export async function getSanityNavigationContent(): Promise<NavigationContent> {
+  const nav = await sanityClient.fetch<FetchedNavigationContent>(NAVIGATION_QUERY);
+  if (!nav.header || !nav.footer) {
+    throw new Error('Sanity navigation/footer singletons are not published yet.');
+  }
+
+  return {
+    header: {
+      links: (nav.header?.links ?? [])
+        .map(normalizeNavLink)
+        .filter((item): item is NonNullable<typeof item> => Boolean(item)),
+      actions: nav.header?.actions ?? [],
+      ...(nav.header?.phone ? { phone: nav.header.phone } : {}),
+    },
+    footer: nav.footer ?? {
+      links: [],
+      secondaryLinks: [],
+      socialLinks: [],
+      footNote: '',
+    },
+  };
+}
+
+// ─── Menu ────────────────────────────────────────────────────────────────────
+
+type FetchedMenuCategory = {
+  _id: string;
+  title?: string;
+  slug?: string;
+  description?: string;
+  order?: number;
+};
+
+type FetchedMenuItem = {
+  _id: string;
+  title?: string;
+  slug?: string;
+  description?: string;
+  image?: FetchedImage | null;
+  placements?: Array<{ categoryId?: string; order?: number }> | null;
+};
+
+type FetchedMenuContent = {
+  categories?: FetchedMenuCategory[] | null;
+  items?: FetchedMenuItem[] | null;
+};
+
+const MENU_QUERY = /* groq */ `
+  {
+    "categories": *[_type == "menuCategory" && showOnFullMenu != false && defined(slug.current)] | order(coalesce(order, 0) asc, title asc) {
+      _id,
       title,
-      visualSubheading,
-      subtitle,
-      ctaText,
-      ctaHref,
-      phoneCtaText,
-      phoneCtaHref,
-      imagePlaceholder,
-      "image": {
-        ${IMAGE_PROJECTION}
-      },
-      "imageMobile": {
-        ${IMAGE_MOBILE_PROJECTION}
+      "slug": slug.current,
+      description,
+      "order": coalesce(order, 0)
+    },
+    "items": *[_type == "menuItem" && isAvailable != false && defined(title)] | order(title asc) {
+      _id,
+      title,
+      "slug": slug.current,
+      description,
+      "image": select(defined(photo.asset) => {
+        "src": photo.asset->url,
+        "alt": coalesce(photo.alt, title),
+        "crop": photo.crop,
+        "hotspot": photo.hotspot,
+        "asset": photo.asset
+      }, null),
+      "placements": categoryPlacements[defined(category._ref)][] {
+        "categoryId": category._ref,
+        "order": coalesce(order, 0)
       }
-    },
-    "sections": sections[_type != "faqsSection"] {
-      _type,
-      heading,
-      intro,
-      layout,
-      display,
-      title,
-      paragraphs,
-      featureLabel,
-      column1,
-      column2,
-      column3,
-      ctaText,
-      ctaHref,
-      linkText,
-      linkHref,
-      surface,
-      isReversed,
-      sources,
-      imagePlaceholder,
-      "image": {
-        ${IMAGE_PROJECTION}
-      },
-      "items": select(
-        _type == "linkedCardsSection" => items[] { title, description, linkText, href },
-        _type == "bulletCardsSection" => items[] { title, items },
-        _type == "checklistSection" => items[] { text },
-        _type == "yelpReviewsSection" => items[] { name, reviewId, userId },
-        _type == "quoteCardsSection" => items[] { name, quote },
-        items[] { title, description, icon }
-      ),
-      "steps": steps[] { title, description, icon },
-      "rows": rows[] { feature, cell1, cell2, cell3 }
-    },
-    faqs {
-      title,
-      "items": items[] { "title": question, "description": answer }
-    },
-    ctaBanner {
-      title,
-      subtitle,
-      ctaText,
-      ctaHref,
-      showAfterHoursNote,
-      extraLines,
-      license
     }
   }
 `;
 
-function normalizeHeroImage<T extends { image?: FetchedImage | ContentImage; imageMobile?: FetchedImage | ContentImage }>(
-  hero: T
-): T {
+function normalizeMenuItem(item: FetchedMenuItem): MenuItem | null {
+  if (!item.title) return null;
+  const image = resolveContentImage(item.image);
   return {
-    ...hero,
-    image: resolveContentImage(hero.image as FetchedImage | undefined),
-    imageMobile: resolveContentImage(hero.imageMobile as FetchedImage | undefined),
+    title: item.title,
+    ...(item.slug ? { slug: item.slug } : {}),
+    ...(item.description ? { description: item.description } : {}),
+    ...(image ? { image } : {}),
   };
 }
 
-function normalizeSplit(section: SplitContentSection & { image?: FetchedImage | ContentImage }): SplitContentSection {
-  return { ...section, image: resolveContentImage(section.image as FetchedImage | undefined) };
-}
+export async function getSanityMenuCategories(): Promise<MenuCategory[]> {
+  const content = await sanityClient.fetch<FetchedMenuContent>(MENU_QUERY);
+  const categories = (content.categories ?? []).filter((category) => category._id && category.title);
+  const items = content.items ?? [];
 
-function resolveSectionImage<T extends { image?: FetchedImage | ContentImage }>(section: T): T {
-  return { ...section, image: resolveContentImage(section.image as FetchedImage | undefined) };
-}
+  return categories
+    .map((category) => {
+      const categoryItems = items
+        .flatMap((item) =>
+          (item.placements ?? [])
+            .filter((placement) => placement.categoryId === category._id)
+            .map((placement) => ({ item, order: placement.order ?? 0 }))
+        )
+        .map(({ item, order }) => {
+          const normalized = normalizeMenuItem(item);
+          return normalized ? { ...normalized, order } : null;
+        })
+        .filter((item): item is MenuItem & { order: number } => Boolean(item))
+        .sort((a, b) => a.order - b.order || a.title.localeCompare(b.title))
+        .map(({ order: _order, ...item }) => item);
 
-const HERO_PROJECTION = /* groq */ `
-  title,
-  visualSubheading,
-  subtitle,
-  ctaText,
-  ctaHref,
-  phoneCtaText,
-  phoneCtaHref,
-  imagePlaceholder,
-  "image": {
-    ${IMAGE_PROJECTION}
-  },
-  "imageMobile": {
-    ${IMAGE_MOBILE_PROJECTION}
-  }
-`;
-
-const SPLIT_PROJECTION = /* groq */ `
-  heading,
-  paragraphs,
-  ctaText,
-  ctaHref,
-  linkText,
-  linkHref,
-  isReversed,
-  imagePlaceholder,
-  "image": {
-    ${IMAGE_PROJECTION}
-  }
-`;
-
-const CTA_BANNER_PROJECTION = /* groq */ `
-  title,
-  subtitle,
-  ctaText,
-  ctaHref,
-  showAfterHoursNote,
-  extraLines,
-  license
-`;
-
-export async function getSanityServicePage(slug: string): Promise<ServicePageContent | null> {
-  const page = await sanityClient.fetch<ServicePageContent | null>(SERVICE_PAGE_QUERY, { slug });
-  if (!page) return null;
-
-  return {
-    ...page,
-    sections: ((page.sections ?? []) as ServiceSection[]).map((section) => {
-      const withImage = resolveSectionImage(section as ServiceSection & { image?: FetchedImage });
-      if (withImage._type !== 'splitContentSection') return withImage;
-      return normalizeSplit(withImage as SplitContentSection);
-    }),
-    faqs: page.faqs?.items?.length ? page.faqs : undefined,
-    hero: normalizeHeroImage(page.hero),
-  };
-}
-
-const CONTACT_PAGE_QUERY = /* groq */ `
-  *[_type == "contactPage" && _id == "singleton-contact"][0] {
-    meta,
-    hero { ${HERO_PROJECTION} },
-    form {
-      heading,
-      intro,
-      topicLabel,
-      topicPlaceholder,
-      "helpOptions": helpOptions[] { label, value },
-      messageLabel,
-      submitLabel,
-      mapHeading,
-      addressLine1,
-      addressLine2,
-      mapsQuery,
-      directionsLabel
-    },
-    touchpoints {
-      heading,
-      "items": items[] { title, description, icon },
-      "links": links[] { text, href }
-    },
-    unsureSection { ${SPLIT_PROJECTION} },
-    reasons {
-      heading,
-      intro,
-      display,
-      "items": items[] { title, description, linkText, href }
-    },
-    ctaBanner { ${CTA_BANNER_PROJECTION} }
-  }
-`;
-
-export async function getSanityContactPage(): Promise<ContactPageContent> {
-  const page = await sanityClient.fetch<ContactPageContent | null>(CONTACT_PAGE_QUERY);
-  if (!page) {
-    throw new Error('Sanity contactPage document is missing (singleton-contact).');
-  }
-  return {
-    ...page,
-    hero: normalizeHeroImage(page.hero),
-    unsureSection: normalizeSplit({ ...page.unsureSection, _type: 'splitContentSection' }),
-    reasons: { ...page.reasons, _type: 'linkedCardsSection' },
-  };
-}
-
-const CONTACT_HELP_OPTIONS_QUERY = /* groq */ `
-  *[_type == "contactPage" && _id == "singleton-contact"][0].form.helpOptions[] { label, value }
-`;
-
-export async function getSanityContactHelpOptions(): Promise<FormHelpOption[]> {
-  const options = await sanityClient.fetch<FormHelpOption[] | null>(CONTACT_HELP_OPTIONS_QUERY);
-  return (options ?? []).filter((option) => option?.label && option?.value);
-}
-
-const REVIEWS_PAGE_QUERY = /* groq */ `
-  *[_type == "reviewsPage" && _id == "singleton-reviews"][0] {
-    meta,
-    hero { ${HERO_PROJECTION} },
-    liveReviews { heading, intro },
-    platforms {
-      heading,
-      intro,
-      "items": items[] { title, ratingNote, href, linkText, icon }
-    },
-    gallerySection {
-      heading,
-      paragraphs,
-      ctaText,
-      ctaHref,
-      "previewImages": previewImages[] {
-        ${IMAGE_PROJECTION}
-      }
-    },
-    ctaBanner { ${CTA_BANNER_PROJECTION} }
-  }
-`;
-
-export async function getSanityReviewsPage(): Promise<ReviewsPageContent> {
-  const page = await sanityClient.fetch<ReviewsPageContent | null>(REVIEWS_PAGE_QUERY);
-  if (!page) {
-    throw new Error('Sanity reviewsPage document is missing (singleton-reviews).');
-  }
-  return {
-    ...page,
-    hero: normalizeHeroImage(page.hero),
-    gallerySection: {
-      ...page.gallerySection,
-      _type: 'splitContentSection',
-      previewImages: (page.gallerySection.previewImages ?? [])
-        .map((image) => resolveContentImage(image as FetchedImage))
-        .filter((image): image is ContentImage => Boolean(image?.src)),
-    },
-  };
+      return {
+        title: category.title!,
+        slug: category.slug,
+        href: category.slug ? `/menu/${category.slug}` : undefined,
+        ...(category.description ? { description: category.description } : {}),
+        items: categoryItems,
+      };
+    })
+    .filter((category) => category.items.length > 0);
 }
 
 type SanityMarkDef = {
@@ -439,17 +287,10 @@ function portableBlockText(block: SanityPortableBlock): string {
 }
 
 function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function spansToHtml(
-  children: SanitySpan[] | undefined,
-  markDefs: SanityMarkDef[] | undefined
-): string {
+function spansToHtml(children: SanitySpan[] | undefined, markDefs: SanityMarkDef[] | undefined): string {
   if (!Array.isArray(children)) return '';
   const defsMap = new Map((markDefs ?? []).map((d) => [d._key, d]));
 
@@ -716,159 +557,13 @@ export async function getSanityBlogPostsRelatedTo(pageSlug: string): Promise<Blo
   return (posts ?? []).filter((post) => post?.slug && post?.title).map(normalizeBlogPost);
 }
 
-const SERVICE_PAGE_SLUGS_QUERY = /* groq */ `
-  *[_type == "servicePage" && defined(slug.current)].slug.current
-`;
-
 const BLOG_POST_SLUGS_QUERY = /* groq */ `
   *[_type == "blogPost" && defined(slug.current)].slug.current
 `;
 
-export async function getSanityServicePageSlugs(): Promise<string[]> {
-  const slugs = await sanityClient.fetch<string[]>(SERVICE_PAGE_SLUGS_QUERY);
-  return (slugs ?? []).filter((slug): slug is string => typeof slug === 'string' && slug.length > 0);
-}
-
 export async function getSanityBlogPostSlugs(): Promise<string[]> {
   const slugs = await sanityClient.fetch<string[]>(BLOG_POST_SLUGS_QUERY);
   return (slugs ?? []).filter((slug): slug is string => typeof slug === 'string' && slug.length > 0);
-}
-
-type SanityBook = {
-  _id: string;
-  slug?: string;
-  title?: string;
-  subtitle?: string;
-  description?: string;
-  image?: FetchedImage | null;
-  badges?: string[] | null;
-  publisher?: { name?: string; year?: number } | null;
-  ctas?: { _key?: string; label?: string; href?: string }[] | null;
-  podcastHref?: string | null;
-  series?: string | null;
-  order?: number | null;
-};
-
-const BOOKS_QUERY = /* groq */ `
-  *[_type == "book" && defined(slug.current)] | order(order asc, title asc) {
-    _id,
-    "slug": slug.current,
-    title,
-    subtitle,
-    description,
-    "image": {
-      ${IMAGE_PROJECTION}
-    },
-    badges,
-    publisher { name, year },
-    ctas[] { _key, label, href },
-    podcastHref,
-    series,
-    order
-  }
-`;
-
-const BOOK_SERIES: BookSeries[] = ['textbook', 'guidebook', 'bargaining'];
-
-function isBookSeries(value: string | null | undefined): value is BookSeries {
-  return BOOK_SERIES.includes(value as BookSeries);
-}
-
-function normalizeBook(doc: SanityBook): Book | null {
-  if (!doc._id || !doc.slug || !doc.title) return null;
-
-  const ctas: BookCta[] = (doc.ctas ?? [])
-    .filter((cta): cta is { _key?: string; label: string; href: string } => Boolean(cta?.label && cta?.href))
-    .map((cta) => ({ _key: cta._key, label: cta.label, href: cta.href }));
-
-  const publisherName = doc.publisher?.name?.trim();
-  const publisherYear = doc.publisher?.year;
-  const publisherNote = [publisherName, publisherYear].filter(Boolean).join(' · ') || undefined;
-
-  return {
-    _id: doc._id,
-    slug: doc.slug,
-    title: doc.title,
-    subtitle: doc.subtitle || undefined,
-    description: doc.description || undefined,
-    image: resolveContentImage(doc.image),
-    badges: (doc.badges ?? []).filter((badge): badge is string => Boolean(badge?.trim())),
-    publisherName,
-    publisherYear,
-    publisherNote,
-    ctas,
-    podcastHref: doc.podcastHref || undefined,
-    series: isBookSeries(doc.series) ? doc.series : 'guidebook',
-    order: typeof doc.order === 'number' ? doc.order : 0,
-  };
-}
-
-export async function getSanityBooks(): Promise<Book[]> {
-  const docs = await sanityClient.fetch<SanityBook[]>(BOOKS_QUERY);
-  return (docs ?? []).map(normalizeBook).filter((book): book is Book => Boolean(book));
-}
-
-// ─── Podcast ──────────────────────────────────────────────────────────────────
-
-const PODCAST_EPISODES_QUERY = /* groq */ `
-  *[_type == "podcastEpisode"] | order(order asc) {
-    _id,
-    "slug": slug.current,
-    title,
-    description,
-    status,
-    order,
-    part,
-    partName,
-    partDescription,
-    spotifyUrl,
-    youtubeUrl,
-    guidebookHref,
-  }
-`;
-
-type SanityPodcastEpisode = {
-  _id: string;
-  slug: string;
-  title: string;
-  description?: string;
-  status: string;
-  order: number;
-  part: number;
-  partName: string;
-  partDescription?: string;
-  spotifyUrl?: string;
-  youtubeUrl?: string;
-  guidebookHref?: string;
-};
-
-function isPodcastStatus(s: unknown): s is PodcastEpisodeStatus {
-  return s === 'live' || s === 'coming-soon';
-}
-
-function normalizePodcastEpisode(doc: SanityPodcastEpisode): PodcastEpisode | null {
-  if (!doc?._id || !doc.title) return null;
-  return {
-    _id: doc._id,
-    slug: doc.slug || doc._id,
-    title: doc.title,
-    description: doc.description || undefined,
-    status: isPodcastStatus(doc.status) ? doc.status : 'coming-soon',
-    order: typeof doc.order === 'number' ? doc.order : 0,
-    part: typeof doc.part === 'number' ? doc.part : 1,
-    partName: doc.partName || '',
-    partDescription: doc.partDescription || undefined,
-    spotifyUrl: doc.spotifyUrl || undefined,
-    youtubeUrl: doc.youtubeUrl || undefined,
-    guidebookHref: doc.guidebookHref || undefined,
-  };
-}
-
-export async function getSanityPodcastEpisodes(): Promise<PodcastEpisode[]> {
-  const docs = await sanityClient.fetch<SanityPodcastEpisode[]>(PODCAST_EPISODES_QUERY);
-  return (docs ?? [])
-    .map(normalizePodcastEpisode)
-    .filter((ep): ep is PodcastEpisode => Boolean(ep));
 }
 
 // ─── Testimonials ─────────────────────────────────────────────────────────────
@@ -911,21 +606,4 @@ function normalizeTestimonial(doc: SanityTestimonial): Testimonial | null {
 export async function getSanityTestimonials(): Promise<Testimonial[]> {
   const docs = await sanityClient.fetch<SanityTestimonial[]>(TESTIMONIALS_QUERY);
   return (docs ?? []).map(normalizeTestimonial).filter((item): item is Testimonial => Boolean(item));
-}
-
-/** Returns episodes grouped by part (sorted by part number, then episode order). */
-export function groupEpisodesByPart(episodes: PodcastEpisode[]): PodcastPartGroup[] {
-  const map = new Map<number, PodcastPartGroup>();
-  for (const ep of episodes) {
-    if (!map.has(ep.part)) {
-      map.set(ep.part, {
-        part: ep.part,
-        partName: ep.partName,
-        partDescription: ep.partDescription,
-        episodes: [],
-      });
-    }
-    map.get(ep.part)!.episodes.push(ep);
-  }
-  return [...map.values()].sort((a, b) => a.part - b.part);
 }

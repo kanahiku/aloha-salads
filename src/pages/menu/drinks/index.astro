@@ -7,6 +7,7 @@ import MenuCategories from '~/components/widgets/MenuCategories.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
+import { getMenuCategory } from '~/lib/content';
 
 const metadata = {
   title: 'Drinks, Beverages & Local Mamaki Tea | Aloha Salads Oahu',
@@ -42,6 +43,9 @@ const drinkItems = [
     description: 'Energy drink.',
   },
 ];
+
+const cmsCategory = await getMenuCategory('drinks');
+const menuItems = cmsCategory?.items.length ? cmsCategory.items : drinkItems;
 
 const faqs = [
   {
@@ -82,7 +86,7 @@ const faqs = [
   />
 
   {/* ── Drink Menu ───────────────────────────────────────────────── */}
-  <MenuItemsSection id="our-drink-menu" eyebrow="Beverages" title="Our Drink Menu" items={drinkItems} />
+  <MenuItemsSection id="our-drink-menu" eyebrow="Beverages" title="Our Drink Menu" items={menuItems} />
 
   <LocalSourcing
     title="Big Island Māmaki"
@@ -101,11 +105,7 @@ const faqs = [
   />
 
   {/* ── FAQs ─────────────────────────────────────────────────────── */}
-  <FAQs
-    title="Frequently Asked Questions"
-    items={faqs}
-    isDark={true}
-  />
+  <FAQs title="Frequently Asked Questions" items={faqs} isDark={true} />
 
   {/* ── CTA Banner ───────────────────────────────────────────────── */}
   <CTABanner

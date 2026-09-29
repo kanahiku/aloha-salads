@@ -6,6 +6,7 @@ import LocalSourcing from '~/components/widgets/LocalSourcing.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF } from '~/config/cta';
+import { getMenuCategories } from '~/lib/content';
 
 const metadata = {
   title: 'Menu | Fresh Salads, Wraps & Local Ahi | Aloha Salads',
@@ -79,7 +80,8 @@ const fullMenuCategories = [
     items: [
       {
         title: 'Grilled Steak Wrap',
-        description: 'Grilled steak, mushrooms, red onion, provolone, romaine, sundried tomatoes, and goddess dressing.',
+        description:
+          'Grilled steak, mushrooms, red onion, provolone, romaine, sundried tomatoes, and goddess dressing.',
       },
       {
         title: 'Aloha Gyro Wrap',
@@ -114,7 +116,8 @@ const fullMenuCategories = [
       },
       {
         title: 'Caprese Sub',
-        description: 'Fresh mozzarella, tomatoes, basil, red onion, mixed greens, balsamic vinaigrette, and balsamic glaze.',
+        description:
+          'Fresh mozzarella, tomatoes, basil, red onion, mixed greens, balsamic vinaigrette, and balsamic glaze.',
       },
       {
         title: 'Grilled Cheese Soup Combo',
@@ -230,8 +233,7 @@ const fullMenuCategories = [
     items: [
       {
         title: 'Big Island Māmaki Mint Tea',
-        description:
-          'Chilled māmaki mint tea brewed fresh in-store using māmaki sourced from Hilo on the Big Island.',
+        description: 'Chilled māmaki mint tea brewed fresh in-store using māmaki sourced from Hilo on the Big Island.',
       },
       {
         title: 'Guava Lemonade',
@@ -253,10 +255,14 @@ const fullMenuCategories = [
   },
 ];
 
+const cmsMenuCategories = await getMenuCategories();
+const menuCategories = cmsMenuCategories.length ? cmsMenuCategories : fullMenuCategories;
+
 const faqs = [
   {
     title: 'Can I order online for pickup?',
-    description: "Yes. You can order ahead online for fast pickup at any of our six neighborhood restaurants across O'ahu.",
+    description:
+      "Yes. You can order ahead online for fast pickup at any of our six neighborhood restaurants across O'ahu.",
   },
   {
     title: 'Do you offer catering trays?',
@@ -268,7 +274,8 @@ const faqs = [
   },
   {
     title: 'Do you serve fresh local seafood?',
-    description: 'Yes. We exclusively feature never-frozen local ahi sourced through a Honolulu seafood supplier with vessel-level catch traceability.',
+    description:
+      'Yes. We exclusively feature never-frozen local ahi sourced through a Honolulu seafood supplier with vessel-level catch traceability.',
   },
   {
     title: 'Where are your locations?',
@@ -293,8 +300,8 @@ const faqs = [
   <FullMenuSection
     id="full-menu"
     title="Full Menu"
-    subtitle="Browse the dishes and drinks available across our menu. Photos are placeholders until the menu image pass."
-    categories={fullMenuCategories}
+    subtitle="Browse the dishes and drinks available across our menu."
+    categories={menuCategories}
     ctaText="Order Online"
     ctaHref={PRIMARY_CTA_HREF}
   />
@@ -307,11 +314,7 @@ const faqs = [
     withPhoto={true}
   />
 
-  <FAQs
-    title="Frequently Asked Questions"
-    items={faqs}
-    isDark={true}
-  />
+  <FAQs title="Frequently Asked Questions" items={faqs} isDark={true} />
 
   <CTABanner
     title="Ready to Order?"

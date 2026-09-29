@@ -7,6 +7,7 @@ import MenuCategories from '~/components/widgets/MenuCategories.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
+import { getMenuCategory } from '~/lib/content';
 
 const metadata = {
   title: 'Vegetarian Salads & Wraps | Aloha Salads Oahu',
@@ -65,6 +66,9 @@ const vegetarianItems = [
   },
 ];
 
+const cmsCategory = await getMenuCategory('vegetarian');
+const menuItems = cmsCategory?.items.length ? cmsCategory.items : vegetarianItems;
+
 const faqs = [
   {
     title: 'What kind of vegetarian wraps do you serve?',
@@ -104,12 +108,7 @@ const faqs = [
     ]}
   />
 
-  <MenuItemsSection eyebrow="Vegetarian Options" title="Our Vegetarian Menu" items={vegetarianItems} />
-
-  <MenuItemsSection
-    title="Can Be Made Vegetarian"
-    intro="Some of our signature dishes can be adapted by leaving out the protein. Ask our team when you order and we'll talk you through the options."
-  />
+  <MenuItemsSection eyebrow="Vegetarian Options" title="Our Vegetarian Menu" items={menuItems} />
 
   <LocalSourcing
     title="Quality Ingredients"

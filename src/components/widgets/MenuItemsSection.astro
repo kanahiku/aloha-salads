@@ -6,13 +6,16 @@
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
+import Image from '~/components/common/Image.astro';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
+import type { ContentImage } from '~/lib/content/types';
 import peach from '~/assets/images/peach-motif.webp';
 import bigLeaf from '~/assets/images/big-leaf.webp';
 
 export interface MenuItem {
   title: string;
   description?: string;
+  image?: ContentImage;
 }
 
 export interface Props {
@@ -28,10 +31,7 @@ export interface Props {
 const { eyebrow, title, intro, items = [], ctaText, ctaHref, id } = Astro.props;
 ---
 
-<section
-  {...id ? { id } : {}}
-  class="not-prose relative w-full scroll-mt-24 overflow-hidden bg-page md:scroll-mt-32"
->
+<section {...id ? { id } : {}} class="not-prose relative w-full scroll-mt-24 overflow-hidden bg-page md:scroll-mt-32">
   <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
     <img
       src={peach.src}
@@ -57,34 +57,57 @@ const { eyebrow, title, intro, items = [], ctaText, ctaHref, id } = Astro.props;
     <div class="mb-10 flex max-w-4xl flex-col gap-6 md:mb-14">
       {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}
       <Heading variant="h2">{title}</Heading>
-      {intro && <Text variant="body-lg" color="default">{intro}</Text>}
+      {
+        intro && (
+          <Text variant="body-lg" color="default">
+            {intro}
+          </Text>
+        )
+      }
     </div>
 
-    {items.length > 0 && (
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {items.map((item) => (
-          <article class="flex h-full flex-col overflow-hidden bg-card shadow-card">
-            <div class="relative w-full bg-section-grey" style="aspect-ratio: 4 / 3;">
-              <!-- TODO: replace with <Image> when asset is ready -->
-              <HeroImagePlaceholder fill class="absolute inset-0" label={`${item.title} menu item placeholder`} />
-            </div>
-            <div class="flex flex-1 flex-col gap-3 px-5 py-5">
-              <h3 class="font-rough text-h4 font-normal leading-none text-heading">{item.title}</h3>
-              {item.description && (
-                <p class="font-sans text-body leading-[1.45] tracking-[-0.01em] text-muted">
-                  {item.description}
-                </p>
-              )}
-            </div>
-          </article>
-        ))}
-      </div>
-    )}
+    {
+      items.length > 0 && (
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {items.map((item) => (
+            <article class="flex h-full flex-col overflow-hidden bg-card shadow-card">
+              <div class="relative w-full bg-section-grey" style="aspect-ratio: 4 / 3;">
+                {item.image?.src ? (
+                  <Image
+                    src={item.image.src}
+                    alt={item.image.alt || ''}
+                    width={640}
+                    height={480}
+                    layout="cover"
+                    loading="lazy"
+                    decoding="async"
+                    class="absolute inset-0 h-full w-full object-cover"
+                  />
+                ) : (
+                  <>
+                    {/* TODO: replace with <Image> when asset is ready */}
+                    <HeroImagePlaceholder fill class="absolute inset-0" label={`${item.title} menu item placeholder`} />
+                  </>
+                )}
+              </div>
+              <div class="flex flex-1 flex-col gap-3 px-5 py-5">
+                <h3 class="font-rough text-h4 font-normal leading-none text-heading">{item.title}</h3>
+                {item.description && (
+                  <p class="font-sans text-body leading-[1.45] tracking-[-0.01em] text-muted">{item.description}</p>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      )
+    }
 
-    {ctaText && ctaHref && (
-      <div class="mt-10 md:mt-16">
-        <Button variant="primary" text={ctaText} href={ctaHref} hideNote={true} />
-      </div>
-    )}
+    {
+      ctaText && ctaHref && (
+        <div class="mt-10 md:mt-16">
+          <Button variant="primary" text={ctaText} href={ctaHref} hideNote={true} />
+        </div>
+      )
+    }
   </div>
 </section>

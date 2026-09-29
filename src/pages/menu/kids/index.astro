@@ -7,6 +7,7 @@ import MenuCategories from '~/components/widgets/MenuCategories.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
+import { getMenuCategory } from '~/lib/content';
 
 const metadata = {
   title: 'Keiki Menu & Kids Meals | Aloha Salads Oahu',
@@ -21,6 +22,9 @@ const kidsItems = [
     description: 'Pita sandwich, fruit, keiki drink, and an organic lollipop.',
   },
 ];
+
+const cmsCategory = await getMenuCategory('kids');
+const menuItems = cmsCategory?.items.length ? cmsCategory.items : kidsItems;
 
 const faqs = [
   {
@@ -42,7 +46,7 @@ const faqs = [
   {
     title: 'Where are your Oahu locations?',
     description:
-      "We operate six neighborhood restaurants located in Kailua, Kahala, Kaneohe, Kapolei, Mililani, and Pearlridge.",
+      'We operate six neighborhood restaurants located in Kailua, Kahala, Kaneohe, Kapolei, Mililani, and Pearlridge.',
   },
 ];
 ---
@@ -59,7 +63,7 @@ const faqs = [
     ]}
   />
 
-  <MenuItemsSection eyebrow="Keiki" title="Our Keiki Menu" items={kidsItems} />
+  <MenuItemsSection eyebrow="Keiki" title="Our Keiki Menu" items={menuItems} />
 
   <LocalSourcing
     title="Quality Ingredients"

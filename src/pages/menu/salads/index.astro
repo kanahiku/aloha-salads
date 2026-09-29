@@ -7,6 +7,7 @@ import MenuCategories from '~/components/widgets/MenuCategories.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
+import { getMenuCategory } from '~/lib/content';
 
 const metadata = {
   title: 'Signature Salads & Bowls | Aloha Salads Oahu',
@@ -61,6 +62,9 @@ const saladItems = [
   },
 ];
 
+const cmsCategory = await getMenuCategory('salads');
+const menuItems = cmsCategory?.items.length ? cmsCategory.items : saladItems;
+
 const faqs = [
   {
     title: 'Can I customize my salad?',
@@ -99,7 +103,7 @@ const faqs = [
     ]}
   />
 
-  <MenuItemsSection eyebrow="Salads" title="Our Salad Menu" items={saladItems} />
+  <MenuItemsSection eyebrow="Salads" title="Our Salad Menu" items={menuItems} />
 
   <LocalSourcing
     title="Sourced with Care"

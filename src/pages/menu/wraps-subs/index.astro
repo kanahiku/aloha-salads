@@ -7,6 +7,7 @@ import MenuCategories from '~/components/widgets/MenuCategories.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
+import { getMenuCategory } from '~/lib/content';
 
 const metadata = {
   title: 'Fresh Wraps & Subs | Aloha Salads Oahu',
@@ -53,14 +54,17 @@ const wrapItems = [
   },
   {
     title: 'Caprese Sub',
-    description: 'Fresh mozzarella, tomatoes, basil, red onion, mixed greens, balsamic vinaigrette, and balsamic glaze.',
+    description:
+      'Fresh mozzarella, tomatoes, basil, red onion, mixed greens, balsamic vinaigrette, and balsamic glaze.',
   },
   {
     title: 'Grilled Cheese Soup Combo',
-    description:
-      'Havarti, cheddar, and fresh mozzarella on sourdough bread, served with a 6oz tomato bisque.',
+    description: 'Havarti, cheddar, and fresh mozzarella on sourdough bread, served with a 6oz tomato bisque.',
   },
 ];
+
+const cmsCategory = await getMenuCategory('wraps-subs');
+const menuItems = cmsCategory?.items.length ? cmsCategory.items : wrapItems;
 
 const faqs = [
   {
@@ -79,7 +83,8 @@ const faqs = [
   },
   {
     title: 'Are there vegetarian wrap options?',
-    description: 'Yes. Our Hummus Pita Wrap and Caprese Sub are excellent meatless options packed with fresh vegetables and cheeses.',
+    description:
+      'Yes. Our Hummus Pita Wrap and Caprese Sub are excellent meatless options packed with fresh vegetables and cheeses.',
   },
   {
     title: 'Where can I pick up my order?',
@@ -100,7 +105,7 @@ const faqs = [
     ]}
   />
 
-  <MenuItemsSection eyebrow="Wraps & Subs" title="Our Wraps & Subs Menu" items={wrapItems} />
+  <MenuItemsSection eyebrow="Wraps & Subs" title="Our Wraps & Subs Menu" items={menuItems} />
 
   <LocalSourcing
     title="Quality Ingredients"

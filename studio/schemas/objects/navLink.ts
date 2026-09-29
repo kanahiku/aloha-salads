@@ -7,8 +7,23 @@ export const navSubLink = defineType({
   fields: [
     defineField({ name: 'text', title: 'Label', type: 'string', validation: (r) => r.required() }),
     defineField({ name: 'href', title: 'URL', type: 'string', validation: (r) => r.required() }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      rows: 2,
+      description: 'Optional short copy shown in rich dropdown menu cards.',
+    }),
+    defineField({
+      name: 'image',
+      title: 'Image',
+      type: 'image',
+      description: 'Optional thumbnail shown in rich dropdown menu cards.',
+      options: { hotspot: true },
+      fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+    }),
   ],
-  preview: { select: { title: 'text', subtitle: 'href' } },
+  preview: { select: { title: 'text', subtitle: 'href', media: 'image' } },
 });
 
 export const navLink = defineType({
@@ -18,6 +33,21 @@ export const navLink = defineType({
   fields: [
     defineField({ name: 'text', title: 'Label', type: 'string', validation: (r) => r.required() }),
     defineField({ name: 'href', title: 'URL (optional if has sub-links)', type: 'string' }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      rows: 2,
+      description: 'Optional short copy for future rich menu displays.',
+    }),
+    defineField({
+      name: 'image',
+      title: 'Image',
+      type: 'image',
+      description: 'Optional image for future rich menu displays.',
+      options: { hotspot: true },
+      fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+    }),
     defineField({
       name: 'subLinks',
       title: 'Sub-links',
@@ -47,5 +77,5 @@ export const navLink = defineType({
       ],
     }),
   ],
-  preview: { select: { title: 'text', subtitle: 'href' } },
+  preview: { select: { title: 'text', subtitle: 'href', media: 'image' } },
 });

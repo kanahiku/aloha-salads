@@ -337,22 +337,6 @@
       "notes": "Figma node 2:1375. Uses Card variant='feature' (A-05). Left col: eyebrow+h2 header + stacked compact cards (ghost CTA). Right col: tall featured card (grey image placeholder + solid primary CTA). bg-feature-card (#F1F5F8) + border-card-border-light + rounded-[16px]. iconType='calendar' renders 40×40 bg-card-light tile + 14px calendar icon; iconType='book' renders 40×40 SVG with built-in tile bg."
     },
     {
-      "id": "P-25",
-      "name": "Written Work Section",
-      "figmaNames": ["The written work", "Books + sessions cards", "2:1375"],
-      "shape": "bg-page section. 2-col gap-8: left=header+stacked compact feature cards, right=tall featured card with image placeholder.",
-      "component": "WrittenWorkSection",
-      "import": "~/components/widgets/WrittenWorkSection.astro",
-      "props": {
-        "eyebrow": "section eyebrow label",
-        "heading": "h2 section heading",
-        "cards": "FeatureCardItem[] for left column stacked compact cards",
-        "featuredCard": "FeatureCardItem for right column tall featured card",
-        "id": "section anchor"
-      },
-      "notes": "Figma node 2:1375. Uses Card variant='feature' (A-05). Left col: eyebrow+h2 header + stacked compact cards (ghost CTA). Right col: tall featured card (grey image placeholder + solid primary CTA). bg-feature-card (#F1F5F8) + border-card-border-light + rounded-[16px]. iconType='calendar' renders 40×40 bg-card-light tile + 14px calendar icon; iconType='book' renders 40×40 SVG with built-in tile bg."
-    },
-    {
       "id": "P-26",
       "name": "Testimonials Carousel (moved from P-24)",
       "notes": "Figma node 2:1305. Uses Card variant='testimonial' (A-05): quote mark SVG (mix-blend-overlay), Fraunces italic 22px quote, small uppercase attribution. Swiper v14 FreeMode, slidesPerView='auto', slidesOffsetBefore/After=80px. Edge fade via CSS mask-image gradient."
@@ -405,52 +389,6 @@
       "notes": "Figma node 64:1086 (Chapters). Uses Card variant='dark' | 'outlined' (A-05) plus Heading, Text, Button. Content always passed from the page file."
     },
     {
-      "id": "P-31",
-      "name": "Books Grid",
-      "figmaNames": ["Books with filter", "Books filter grid", "121:18"],
-      "shape": "Filter tabs (Textbook / Guidebook / Bargaining / Podcast) + 3×6 book-cover placeholder grid.",
-      "component": "BooksGrid",
-      "import": "~/components/widgets/BooksGrid.astro",
-      "props": {
-        "id": "section anchor",
-        "books": "Book[] from Sanity — cover image, slug, series"
-      },
-      "notes": "Figma node 121:18. Filter tabs are interactive (JS). Covers scroll to #book-{slug} on the same page. Grey placeholder until a cover is uploaded in Studio."
-    },
-    {
-      "id": "P-32",
-      "name": "Book Series Feature",
-      "figmaNames": ["Textbook Series", "Bargaining with Aging Series", "121:246", "121:532"],
-      "shape": "Dark navy→primary gradient. Header row (eyebrow+h2 | description). Glass card: book info+tags+buy buttons (left) | cover placeholder (right). Optional rounded-b-hero.",
-      "component": "BookSeriesFeature",
-      "import": "~/components/widgets/BookSeriesFeature.astro",
-      "props": {
-        "eyebrow": "section label (default 'Series')",
-        "heading": "h2 series title",
-        "description": "right-column header text",
-        "book": "BookFeatureItem — { subtitle, title, description, tags, buyButtons, publisherNote }",
-        "roundedBottom": "boolean — adds rounded-b-hero (Bargaining with Aging variant)",
-        "id": "section anchor"
-      },
-      "notes": "Figma nodes 121:246 (Textbook) and 121:532 (Bargaining with Aging). Same component, different props."
-    },
-    {
-      "id": "P-33",
-      "name": "GuideBook Grid",
-      "figmaNames": ["Rebellious Aging Guidebook Series", "Guidebook grid cards", "121:313"],
-      "shape": "bg-page section. Header (eyebrow+h2 | description). 3-col grid of book cards (cover placeholder + title + subtitle + description + tags + buy buttons).",
-      "component": "GuideBookGrid",
-      "import": "~/components/widgets/GuideBookGrid.astro",
-      "props": {
-        "eyebrow": "section label",
-        "heading": "h2 section heading",
-        "description": "right-column header text",
-        "books": "GuideBookItem[] — { slug, title, subtitle, description, image, tags, buyButtons, publisherNote, podcastHref }",
-        "id": "section anchor"
-      },
-      "notes": "Figma node 121:313. Card bg is bg-card-light. Covers come from Sanity; grey placeholder if missing. Card id is book-{slug} for in-page jumps."
-    },
-    {
       "id": "P-34",
       "name": "Media Appearances",
       "figmaNames": ["As Seen In", "Media appearances horizontal scroll", "121:566"],
@@ -481,39 +419,6 @@
       },
       "itemCount": [2, 4, 6],
       "notes": "Figma node 64:1201 (Guidebooks). Uses Card variant='feature' (A-05) with speaker prop for the session body layout. Content always passed from the page file."
-    },
-    {
-      "id": "P-35",
-      "name": "Podcast Filter",
-      "figmaNames": ["The roadmap", "Podcast filter", "121:1169"],
-      "shape": "Centered eyebrow+h2+body, then wrapping uppercase filter pills (active = accent fill).",
-      "component": "PodcastFilter",
-      "import": "~/components/widgets/PodcastFilter.astro",
-      "props": {
-        "eyebrow": "small uppercase label",
-        "heading": "h2",
-        "description": "centered body under the heading",
-        "tabs": "FilterTab[] — { label, id }",
-        "id": "section anchor"
-      },
-      "notes": "Figma node 121:1169. Filter tabs are interactive (JS). Content always passed from the page file."
-    },
-    {
-      "id": "P-36",
-      "name": "Podcast Episodes",
-      "figmaNames": ["Head & Senses", "Podcast category grid", "121:1286"],
-      "shape": "Centered eyebrow+h2+body, then 3-col grid of Card variant=podcast. tone=light | dark.",
-      "component": "PodcastEpisodes",
-      "import": "~/components/widgets/PodcastEpisodes.astro",
-      "props": {
-        "eyebrow": "episode count label",
-        "heading": "h2 category title",
-        "description": "centered body under the heading",
-        "episodes": "PodcastEpisodeItem[] — { slug?, title, tag?, description?, ctaText?, ctaHref?, status?, spotifyUrl?, youtubeUrl? }",
-        "tone": "light (default) | dark",
-        "id": "section anchor"
-      },
-      "notes": "Figma node 121:1286 (light, page bg) and 121:916 (dark, tan bg-cta/60). Uses Card variant='podcast' (A-05) — cream card, dark type, same on both tones. Pass one episode while the grid is still a template."
     },
     {
       "id": "P-37",

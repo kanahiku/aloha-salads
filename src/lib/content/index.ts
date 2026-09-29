@@ -1,64 +1,15 @@
-import type {
-  BlogPost,
-  Book,
-  BookSeries,
-  ContactPageContent,
-  HomePageContent,
-  NavigationContent,
-  PodcastEpisode,
-  PodcastPartGroup,
-  ReviewsPageContent,
-  ServicePageContent,
-  Testimonial,
-} from './types';
+import type { BlogPost, NavigationContent, Testimonial, MenuCategory } from './types';
 import {
   getSanityBlogPost,
   getSanityBlogPosts,
   getSanityBlogPostSlugs,
-  getSanityBooks,
-  getSanityPodcastEpisodes,
   getSanityTestimonials,
-  groupEpisodesByPart,
-  getSanityContactHelpOptions,
-  getSanityContactPage,
-  getSanityHomeContent,
   getSanityNavigationContent,
-  getSanityReviewsPage,
-  getSanityServicePage,
-  getSanityServicePageSlugs,
+  getSanityMenuCategories,
 } from './sanity';
 import { blogPosts as localBlogPosts } from '../../data/pages/blogPosts';
-/* contact page removed */
 import { navigationData } from '../../data/navigation';
 import { interiorPaths } from '../../data/pages/interior';
-
-export async function getHomeContent(): Promise<HomePageContent> {
-  const page = await getSanityHomeContent();
-  if (!page) {
-    throw new Error('Sanity homePage document is missing (singleton-home).');
-  }
-  return page;
-}
-
-export async function getContactPage(): Promise<ContactPageContent | null> {
-  try {
-    return await getSanityContactPage();
-  } catch (error) {
-    console.warn('Sanity contact page unavailable; using local form fallback.', error);
-    return null;
-  }
-}
-
-export async function getReviewsPage(): Promise<ReviewsPageContent | null> {
-  try {
-    return await getSanityReviewsPage();
-  } catch (error) {
-    console.warn('Sanity reviews page unavailable; using live review feed fallback.', error);
-    return null;
-  }
-}
-
-/* getContactHelpOptions removed — contact page deleted */
 
 const LEGAL_FOOTER_LINKS = [
   { text: 'Privacy Policy', href: '/privacy-policy' },
@@ -70,10 +21,7 @@ const HIDDEN_NAV_HREFS = new Set(['/chapters', '/guidebooks']);
 const HIDDEN_NAV_LABELS = new Set(['chapters', 'guidebooks', 'guidebook series']);
 
 function isHiddenNavLink(link: { text: string; href?: string }): boolean {
-  return (
-    (link.href != null && HIDDEN_NAV_HREFS.has(link.href)) ||
-    HIDDEN_NAV_LABELS.has(link.text.toLowerCase())
-  );
+  return (link.href != null && HIDDEN_NAV_HREFS.has(link.href)) || HIDDEN_NAV_LABELS.has(link.text.toLowerCase());
 }
 
 function hidePagesFromUi(nav: NavigationContent): NavigationContent {
@@ -122,27 +70,6 @@ export async function getNavigationContent(): Promise<NavigationContent> {
   return hidePagesFromUi(ensureLegalFooterLinks(navigationData));
 }
 
-export async function findServicePage(slug: string): Promise<ServicePageContent | null> {
-  return getSanityServicePage(slug);
-}
-
-export async function getServicePage(slug: string): Promise<ServicePageContent> {
-  const page = await findServicePage(slug);
-  if (!page) {
-    throw new Error(`Sanity servicePage document is missing for slug "${slug}".`);
-  }
-  return page;
-}
-
-export async function getServicePageSlugs(): Promise<string[]> {
-  try {
-    return await getSanityServicePageSlugs();
-  } catch (error) {
-    console.warn('Sanity service page slugs unavailable.', error);
-    return [];
-  }
-}
-
 export async function getBlogPostSlugs(): Promise<string[]> {
   const [sanitySlugs, localSlugs] = await Promise.all([
     getSanityBlogPostSlugs().catch(() => [] as string[]),
@@ -163,12 +90,8 @@ const STATIC_PATHS = [
 ];
 
 export async function getPublicContentPaths(): Promise<string[]> {
-  const [pageSlugs, postSlugs] = await Promise.all([getServicePageSlugs(), getBlogPostSlugs()]);
-  return [
-    ...STATIC_PATHS,
-    ...pageSlugs.map((slug) => `/${slug.replace(/^\/+/, '')}`),
-    ...postSlugs.map((slug) => `/blog/${slug.replace(/^\/+/, '')}`),
-  ];
+  const postSlugs = await getBlogPostSlugs();
+  return [...STATIC_PATHS, ...postSlugs.map((slug) => `/blog/${slug.replace(/^\/+/, '')}`)];
 }
 
 export function getBlogPermalink(slug: string): string {
@@ -232,15 +155,6 @@ export async function getBlogPostsRelatedTo(pageSlug: string): Promise<BlogPost[
   return posts.filter((post) => post.relatedPages.includes(key)).slice(0, 3);
 }
 
-export async function getBooks(): Promise<Book[]> {
-  try {
-    return await getSanityBooks();
-  } catch (error) {
-    console.warn('Sanity books unavailable.', error);
-    return [];
-  }
-}
-
 export async function getRelatedBlogPosts(post: BlogPost, max = 3): Promise<BlogPost[]> {
   const keys = new Set(post.relatedPages);
   if (!keys.size) return [];
@@ -258,30 +172,7 @@ export async function getRelatedBlogPosts(post: BlogPost, max = 3): Promise<Blog
     .map(({ item }) => item);
 }
 
-export type {
-  BlogPost,
-  Book,
-  BookSeries,
-  ContactPageContent,
-  HomePageContent,
-  NavigationContent,
-  PodcastEpisode,
-  PodcastPartGroup,
-  ReviewsPageContent,
-  ServicePageContent,
-  Testimonial,
-};
-
-export { groupEpisodesByPart };
-
-export async function getPodcastEpisodes(): Promise<PodcastEpisode[]> {
-  try {
-    return await getSanityPodcastEpisodes();
-  } catch (error) {
-    console.warn('Sanity podcast episodes unavailable.', error);
-    return [];
-  }
-}
+export type { BlogPost, NavigationContent, Testimonial };
 
 export function formatTestimonialAttribution(item: Testimonial): string {
   const identity = typeof item.age === 'number' ? `${item.name}, ${item.age}` : item.name;
@@ -296,3 +187,20 @@ export async function getTestimonials(): Promise<Testimonial[]> {
     return [];
   }
 }
+
+export async function getMenuCategories(): Promise<MenuCategory[]> {
+  try {
+    return await getSanityMenuCategories();
+  } catch (error) {
+    console.warn('Sanity menu unavailable.', error);
+    return [];
+  }
+}
+
+export async function getMenuCategory(slug: string): Promise<MenuCategory | undefined> {
+  const normalized = slug.replace(/^\/+|\/+$/g, '');
+  const categories = await getMenuCategories();
+  return categories.find((category) => category.slug === normalized || category.href === `/menu/${normalized}`);
+}
+
+export type { MenuCategory };

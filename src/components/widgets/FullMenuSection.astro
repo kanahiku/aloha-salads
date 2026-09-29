@@ -2,13 +2,16 @@
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
+import Image from '~/components/common/Image.astro';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
+import type { ContentImage } from '~/lib/content/types';
 import peach from '~/assets/images/peach-motif.webp';
 import bigLeaf from '~/assets/images/big-leaf.webp';
 
 export interface FullMenuItem {
   title: string;
   description?: string;
+  image?: ContentImage;
 }
 
 export interface FullMenuCategory {
@@ -46,11 +49,7 @@ const slugify = (value: string) =>
     .replace(/(^-|-$)/g, '');
 ---
 
-<section
-  {...id ? { id } : {}}
-  class="not-prose relative w-full bg-page"
-  aria-label="Full menu"
->
+<section {...id ? { id } : {}} class="not-prose relative w-full bg-page" aria-label="Full menu">
   <!-- Decorative images in their own overflow-hidden shell so sticky positioning still works -->
   <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
     <img
@@ -73,93 +72,140 @@ const slugify = (value: string) =>
     />
   </div>
 
-  <div class="relative z-[1] mx-auto flex w-full max-w-container flex-col gap-10 px-5 py-16 sm:px-8 md:gap-14 md:px-16 md:py-[120px]">
+  <div
+    class="relative z-[1] mx-auto flex w-full max-w-container flex-col gap-10 px-5 py-16 sm:px-8 md:gap-14 md:px-16 md:py-[120px]"
+  >
     <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
       <div class="flex max-w-3xl flex-col gap-5">
         {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}
         {title && <Heading variant="h2">{title}</Heading>}
-        {subtitle && <Text variant="body-lg" color="default">{subtitle}</Text>}
+        {
+          subtitle && (
+            <Text variant="body-lg" color="default">
+              {subtitle}
+            </Text>
+          )
+        }
       </div>
-      {ctaText && ctaHref && (
-        <Button variant="primary" text={ctaText} href={ctaHref} hideNote={true} class="shrink-0" />
-      )}
+      {
+        ctaText && ctaHref && (
+          <Button variant="primary" text={ctaText} href={ctaHref} hideNote={true} class="shrink-0" />
+        )
+      }
     </div>
 
-    {categories.length > 0 && (
-      <nav
-        class="sticky top-14 z-30 -mx-5 overflow-x-auto border-y border-heading/10 bg-page/95 px-5 py-3 backdrop-blur sm:-mx-8 sm:px-8 md:top-[77px] md:-mx-16 md:px-16"
-        aria-label="Menu sections"
-        data-full-menu-jump-nav
-        style="top: var(--jump-nav-top, 3.5rem)"
-      >
-        <ul class="flex min-w-max gap-2">
-          {categories.map((category) => (
-            <li>
-              <a
-                href={`#${slugify(category.title)}`}
-                class="inline-flex min-h-10 items-center border border-section-dark bg-transparent px-4 font-heading text-button leading-none text-heading transition-colors duration-200 hover:bg-section-dark hover:text-page aria-[current=true]:bg-section-dark aria-[current=true]:text-page"
-                data-full-menu-jump-link
-              >
-                {category.title}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    )}
+    {
+      categories.length > 0 && (
+        <nav
+          class="sticky top-14 z-30 -mx-5 overflow-x-auto border-y border-heading/10 bg-page/95 px-5 py-3 backdrop-blur sm:-mx-8 sm:px-8 md:top-[77px] md:-mx-16 md:px-16"
+          aria-label="Menu sections"
+          data-full-menu-jump-nav
+          style="top: var(--jump-nav-top, 3.5rem)"
+        >
+          <ul class="flex min-w-max gap-2">
+            {categories.map((category) => (
+              <li>
+                <a
+                  href={`#${slugify(category.title)}`}
+                  class="inline-flex min-h-10 items-center border border-section-dark bg-transparent px-4 font-heading text-button leading-none text-heading transition-colors duration-200 hover:bg-section-dark hover:text-page aria-[current=true]:bg-section-dark aria-[current=true]:text-page"
+                  data-full-menu-jump-link
+                >
+                  {category.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
 
     <div class="flex flex-col gap-14 md:gap-20">
-      {categories.map((category) => (
-        <section id={slugify(category.title)} class="scroll-mt-36 md:scroll-mt-44" aria-labelledby={`${slugify(category.title)}-heading`} data-full-menu-section style="scroll-margin-top: var(--jump-nav-scroll-mt, 9rem)">
-          <div class="mb-6 flex flex-col gap-4 md:mb-8 md:flex-row md:items-end md:justify-between">
-            <div class="flex max-w-2xl flex-col gap-3">
-              <h3 id={`${slugify(category.title)}-heading`} class="font-rough text-h2 font-normal leading-none text-heading">
-                {category.title}
-              </h3>
-              {category.description && (
-                <p class="font-sans text-body-lg leading-[1.3] tracking-[-0.01em] text-muted">
-                  {category.description}
-                </p>
+      {
+        categories.map((category) => (
+          <section
+            id={slugify(category.title)}
+            class="scroll-mt-36 md:scroll-mt-44"
+            aria-labelledby={`${slugify(category.title)}-heading`}
+            data-full-menu-section
+            style="scroll-margin-top: var(--jump-nav-scroll-mt, 9rem)"
+          >
+            <div class="mb-6 flex flex-col gap-4 md:mb-8 md:flex-row md:items-end md:justify-between">
+              <div class="flex max-w-2xl flex-col gap-3">
+                <h3
+                  id={`${slugify(category.title)}-heading`}
+                  class="font-rough text-h2 font-normal leading-none text-heading"
+                >
+                  {category.title}
+                </h3>
+                {category.description && (
+                  <p class="font-sans text-body-lg leading-[1.3] tracking-[-0.01em] text-muted">
+                    {category.description}
+                  </p>
+                )}
+              </div>
+              {category.href && (
+                <a
+                  href={category.href}
+                  class="font-heading text-button leading-none text-accent hover:text-accent-hover"
+                >
+                  View category
+                </a>
               )}
             </div>
-            {category.href && (
-              <a href={category.href} class="font-heading text-button leading-none text-accent hover:text-accent-hover">
-                View category
-              </a>
-            )}
-          </div>
 
-          <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {category.items.map((item) => (
-              <article class="flex h-full flex-col overflow-hidden bg-card shadow-card">
-                <div class="relative w-full bg-section-grey" style="aspect-ratio: 4 / 3;">
-                  <!-- TODO: replace with <Image> when asset is ready -->
-                  <HeroImagePlaceholder fill class="absolute inset-0" label={`${item.title} menu item placeholder`} />
-                </div>
-                <div class="flex flex-1 flex-col gap-3 px-5 py-5">
-                  <h4 class="font-rough text-h4 font-normal leading-none text-heading">{item.title}</h4>
-                  {item.description && (
-                    <p class="font-sans text-body leading-[1.45] tracking-[-0.01em] text-muted">
-                      {item.description}
-                    </p>
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      ))}
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {category.items.map((item) => (
+                <article class="flex h-full flex-col overflow-hidden bg-card shadow-card">
+                  <div class="relative w-full bg-section-grey" style="aspect-ratio: 4 / 3;">
+                    {item.image?.src ? (
+                      <Image
+                        src={item.image.src}
+                        alt={item.image.alt || ''}
+                        width={640}
+                        height={480}
+                        layout="cover"
+                        loading="lazy"
+                        decoding="async"
+                        class="absolute inset-0 h-full w-full object-cover"
+                      />
+                    ) : (
+                      <>
+                        {/* TODO: replace with <Image> when asset is ready */}
+                        <HeroImagePlaceholder
+                          fill
+                          class="absolute inset-0"
+                          label={`${item.title} menu item placeholder`}
+                        />
+                      </>
+                    )}
+                  </div>
+                  <div class="flex flex-1 flex-col gap-3 px-5 py-5">
+                    <h4 class="font-rough text-h4 font-normal leading-none text-heading">{item.title}</h4>
+                    {item.description && (
+                      <p class="font-sans text-body leading-[1.45] tracking-[-0.01em] text-muted">{item.description}</p>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        ))
+      }
     </div>
   </div>
 </section>
 
 <script>
+  type JumpNavElement = HTMLElement & { _jumpNavCleanup?: () => void };
+
   const setupFullMenuJumpNav = () => {
     const navs = document.querySelectorAll<HTMLElement>('[data-full-menu-jump-nav]');
 
     navs.forEach((nav) => {
+      const jumpNav = nav as JumpNavElement;
+
       // Tear down any previous listeners / observers from a prior init
-      (nav as any)._jumpNavCleanup?.();
+      jumpNav._jumpNavCleanup?.();
 
       const links = Array.from(nav.querySelectorAll<HTMLAnchorElement>('[data-full-menu-jump-link]'));
       const menuSections = links
@@ -178,9 +224,7 @@ const slugify = (value: string) =>
       const siteHeader = document.querySelector<HTMLElement>('[data-aw-sticky-header]');
 
       const applyTop = () => {
-        const headerH = siteHeader
-          ? siteHeader.getBoundingClientRect().height
-          : window.innerWidth >= 768 ? 77 : 56;
+        const headerH = siteHeader ? siteHeader.getBoundingClientRect().height : window.innerWidth >= 768 ? 77 : 56;
         // Drive both the nav sticky-top and the section scroll-margin via CSS vars
         // so a single measurement keeps everything in sync.
         nav.style.setProperty('--jump-nav-top', `${headerH}px`);
@@ -235,7 +279,7 @@ const slugify = (value: string) =>
       };
 
       const update = () => {
-        const headerH = siteHeader ? siteHeader.getBoundingClientRect().height : (window.innerWidth >= 768 ? 77 : 56);
+        const headerH = siteHeader ? siteHeader.getBoundingClientRect().height : window.innerWidth >= 768 ? 77 : 56;
         const navH = nav.getBoundingClientRect().height;
         const visibleH = window.innerHeight - headerH - navH;
 
@@ -269,7 +313,7 @@ const slugify = (value: string) =>
 
       window.addEventListener('scroll', onScroll, { passive: true });
 
-      (nav as any)._jumpNavCleanup = () => {
+      jumpNav._jumpNavCleanup = () => {
         window.removeEventListener('scroll', onScroll);
         ro.disconnect();
       };
@@ -282,7 +326,7 @@ const slugify = (value: string) =>
   // Clean up before Astro view-transition swaps the page
   document.addEventListener('astro:before-swap', () => {
     document.querySelectorAll<HTMLElement>('[data-full-menu-jump-nav]').forEach((nav) => {
-      (nav as any)._jumpNavCleanup?.();
+      (nav as JumpNavElement)._jumpNavCleanup?.();
     });
   });
 

@@ -7,6 +7,7 @@ import MenuCategories from '~/components/widgets/MenuCategories.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
+import { getMenuCategory } from '~/lib/content';
 
 const metadata = {
   title: 'Vegan Salads & Bowls | Aloha Salads Oahu',
@@ -31,6 +32,9 @@ const veganItems = [
     description: 'Build a custom vegan bowl with your choice of greens and plant-based toppings.',
   },
 ];
+
+const cmsCategory = await getMenuCategory('vegan');
+const menuItems = cmsCategory?.items.length ? cmsCategory.items : veganItems;
 
 const faqs = [
   {
@@ -69,7 +73,7 @@ const faqs = [
     ]}
   />
 
-  <MenuItemsSection eyebrow="Vegan Options" title="Our Vegan Menu" items={veganItems} />
+  <MenuItemsSection eyebrow="Vegan Options" title="Our Vegan Menu" items={menuItems} />
 
   <LocalSourcing
     title="Quality Ingredients"

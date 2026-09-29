@@ -13,7 +13,7 @@ import { getPublicContentPaths } from '~/lib/content';
  * Filter: !(_id in path("drafts.**"))
  * Projection: {_id,_type,"slug": slug.current}
  *
- * On publish, this refreshes cached HTML (ISR) so new blogs and CMS pages
+ * On publish, this refreshes cached HTML (ISR) so new blog posts
  * go live without a Vercel rebuild.
  */
 
@@ -29,9 +29,7 @@ function bearerToken(request: Request) {
   const match = header.match(/^Bearer\s+(.+)$/i);
   if (match?.[1]) return match[1].trim();
   return (
-    request.headers.get('x-revalidate-secret')?.trim() ||
-    new URL(request.url).searchParams.get('secret')?.trim() ||
-    ''
+    request.headers.get('x-revalidate-secret')?.trim() || new URL(request.url).searchParams.get('secret')?.trim() || ''
   );
 }
 
