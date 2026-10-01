@@ -9,6 +9,8 @@ import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import basketIcon from '~/assets/icons/Shopping-Basket-Like--Streamline-Freehand.svg?url';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
+import Image from '~/components/common/Image.astro';
+import type { ContentImage } from '~/lib/content/types';
 
 export interface SourcingFact {
   title: string;
@@ -27,6 +29,7 @@ export interface Props {
    * The intro panel becomes a split layout: text+CTA left / photo right.
    */
   withPhoto?: boolean;
+  image?: ContentImage;
   /**
    * Controls the facts card layout.
    * 'grid-4'    — 4-column grid (default, homepage style, overlaps the intro panel)
@@ -44,155 +47,197 @@ const {
   ctaText = 'See where our food comes from',
   ctaHref = '/ingredients',
   withPhoto = false,
+  image,
   facts = [],
   factsLayout = 'grid-4',
   id,
 } = Astro.props;
 ---
 
-<section
-  {...id ? { id } : {}}
-  class="not-prose relative w-full"
->
+<section {...id ? { id } : {}} class="not-prose relative w-full">
   <div class="mx-auto flex w-full max-w-container flex-col px-5 py-16 sm:px-8 md:px-16 md:py-[120px]">
-
     {/* ── Standard intro panel (grid-4 and grid-2 only) ─────────── */}
-    {factsLayout !== 'featured' && (
-      <div class:list={['flex w-full flex-col', facts.length > 0 && factsLayout === 'grid-4' && 'md:mb-[-42px]']}>
-        {withPhoto ? (
-          /* withPhoto: text left / photo right */
-          <div class="flex w-full flex-col overflow-hidden bg-section-grey md:flex-row">
-            <div class="flex flex-col items-start gap-6 px-6 py-10 md:w-[52%] md:px-14 md:py-16 md:pb-[100px]">
-              {eyebrow && (
-                <Heading variant="eyebrow" color="inherit" class="text-heading mix-blend-overlay opacity-80">
-                  {eyebrow}
-                </Heading>
-              )}
-              {title && <Heading variant="h2">{title}</Heading>}
-              {subtitle && <Text variant="body-lg" color="default">{subtitle}</Text>}
-              {ctaText && <Button variant="primary" text={ctaText} href={ctaHref} hideNote={true} />}
-            </div>
-            <div class="relative min-h-[280px] flex-1 overflow-hidden md:min-h-0">
-              <!-- TODO: replace with <Image> when asset is ready -->
-              <HeroImagePlaceholder fill class="absolute inset-0" />
-            </div>
-          </div>
-        ) : (
-          /* default: 2-col text split */
-          <div class="flex w-full flex-col bg-section-grey px-6 pb-10 pt-10 backdrop-blur-sm md:px-16 md:pb-[92px] md:pr-[100px] md:pt-16">
-            <div class="flex w-full flex-col items-start gap-8 md:flex-row md:gap-16">
-              <div class="flex min-w-0 flex-1 flex-col items-start gap-6">
+    {
+      factsLayout !== 'featured' && (
+        <div class:list={['flex w-full flex-col', facts.length > 0 && factsLayout === 'grid-4' && 'md:mb-[-42px]']}>
+          {withPhoto ? (
+            /* withPhoto: text left / photo right */
+            <div class="flex w-full flex-col overflow-hidden bg-section-grey md:flex-row">
+              <div class="flex flex-col items-start gap-6 px-6 py-10 md:w-[52%] md:px-14 md:py-16 md:pb-[100px]">
                 {eyebrow && (
                   <Heading variant="eyebrow" color="inherit" class="text-heading mix-blend-overlay opacity-80">
                     {eyebrow}
                   </Heading>
                 )}
                 {title && <Heading variant="h2">{title}</Heading>}
-              </div>
-              <div class="flex min-w-0 flex-1 flex-col items-start gap-6">
-                {subtitle && <Text variant="body-lg" color="default">{subtitle}</Text>}
+                {subtitle && (
+                  <Text variant="body-lg" color="default">
+                    {subtitle}
+                  </Text>
+                )}
                 {ctaText && <Button variant="primary" text={ctaText} href={ctaHref} hideNote={true} />}
               </div>
+              <div class="relative min-h-[280px] flex-1 overflow-hidden md:min-h-0">
+                {image ? (
+                  <Image
+                    {...image}
+                    class="absolute inset-0 h-full w-full object-cover"
+                    widths={[400, 768, 1200]}
+                    sizes="(max-width: 768px) 100vw, 48vw"
+                    loading="lazy"
+                    width={720}
+                    height={720}
+                    layout="cover"
+                    format="webp"
+                  />
+                ) : (
+                  <HeroImagePlaceholder fill class="absolute inset-0" />
+                )}
+              </div>
             </div>
-          </div>
-        )}
-      </div>
-    )}
+          ) : (
+            /* default: 2-col text split */
+            <div class="flex w-full flex-col bg-section-grey px-6 pb-10 pt-10 backdrop-blur-sm md:px-16 md:pb-[92px] md:pr-[100px] md:pt-16">
+              <div class="flex w-full flex-col items-start gap-8 md:flex-row md:gap-16">
+                <div class="flex min-w-0 flex-1 flex-col items-start gap-6">
+                  {eyebrow && (
+                    <Heading variant="eyebrow" color="inherit" class="text-heading mix-blend-overlay opacity-80">
+                      {eyebrow}
+                    </Heading>
+                  )}
+                  {title && <Heading variant="h2">{title}</Heading>}
+                </div>
+                <div class="flex min-w-0 flex-1 flex-col items-start gap-6">
+                  {subtitle && (
+                    <Text variant="body-lg" color="default">
+                      {subtitle}
+                    </Text>
+                  )}
+                  {ctaText && <Button variant="primary" text={ctaText} href={ctaHref} hideNote={true} />}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )
+    }
 
     {/* ── grid-4 cards ───────────────────────────────────────────── */}
-    {factsLayout === 'grid-4' && facts.length > 0 && (
-      <div class="relative z-[1] grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {facts.map((fact) => (
-          <article class="flex h-full flex-col items-start gap-3 border-8 border-section-grey bg-page p-6">
-            <div class="flex w-full items-center gap-3">
-              <div
-                class="size-12 shrink-0 bg-accent"
-                style={`-webkit-mask-image: url('${basketIcon}'); mask-image: url('${basketIcon}'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
-                aria-hidden="true"
-              ></div>
-              <Heading variant="h3" class="min-w-0 flex-1">{fact.title}</Heading>
-            </div>
-            <p class="font-sans text-[15px] leading-relaxed text-heading" set:html={fact.description} />
-          </article>
-        ))}
-      </div>
-    )}
+    {
+      factsLayout === 'grid-4' && facts.length > 0 && (
+        <div class="relative z-[1] grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {facts.map((fact) => (
+            <article class="flex h-full flex-col items-start gap-3 border-8 border-section-grey bg-page p-6">
+              <div class="flex w-full items-center gap-3">
+                <div
+                  class="size-12 shrink-0 bg-accent"
+                  style={`-webkit-mask-image: url('${basketIcon}'); mask-image: url('${basketIcon}'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
+                  aria-hidden="true"
+                />
+                <Heading variant="h3" class="min-w-0 flex-1">
+                  {fact.title}
+                </Heading>
+              </div>
+              <p class="font-sans text-[15px] leading-relaxed text-heading" set:html={fact.description} />
+            </article>
+          ))}
+        </div>
+      )
+    }
 
     {/* ── grid-2 cards ───────────────────────────────────────────── */}
-    {factsLayout === 'grid-2' && facts.length > 0 && (
-      <div class="mt-10 grid w-full grid-cols-1 gap-6 sm:grid-cols-2 md:mt-14">
-        {facts.map((fact, i) => (
-          <article class="flex h-full flex-col gap-5 bg-page px-8 py-8 shadow-sm">
-            <div class="flex items-center gap-4">
-              <span class="font-rough text-[40px] leading-none text-accent/30" aria-hidden="true">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <div
-                class="size-10 shrink-0 bg-accent"
-                style={`-webkit-mask-image: url('${basketIcon}'); mask-image: url('${basketIcon}'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
-                aria-hidden="true"
-              ></div>
-              <Heading variant="h3" class="min-w-0 flex-1 leading-tight">{fact.title}</Heading>
-            </div>
-            <div class="h-px w-full bg-accent/15"></div>
-            <p class="flex-1 font-sans text-[15px] leading-relaxed text-heading" set:html={fact.description} />
-          </article>
-        ))}
-      </div>
-    )}
+    {
+      factsLayout === 'grid-2' && facts.length > 0 && (
+        <div class="mt-10 grid w-full grid-cols-1 gap-6 sm:grid-cols-2 md:mt-14">
+          {facts.map((fact, i) => (
+            <article class="flex h-full flex-col gap-5 bg-page px-8 py-8 shadow-sm">
+              <div class="flex items-center gap-4">
+                <span class="font-rough text-[40px] leading-none text-accent/30" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div
+                  class="size-10 shrink-0 bg-accent"
+                  style={`-webkit-mask-image: url('${basketIcon}'); mask-image: url('${basketIcon}'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
+                  aria-hidden="true"
+                />
+                <Heading variant="h3" class="min-w-0 flex-1 leading-tight">
+                  {fact.title}
+                </Heading>
+              </div>
+              <div class="h-px w-full bg-accent/15" />
+              <p class="flex-1 font-sans text-[15px] leading-relaxed text-heading" set:html={fact.description} />
+            </article>
+          ))}
+        </div>
+      )
+    }
 
     {/* ── featured: split panel (facts[0]) + 3-col cards (facts[1…]) ── */}
-    {factsLayout === 'featured' && facts.length > 0 && (
-      <div class="flex w-full flex-col gap-6">
+    {
+      factsLayout === 'featured' && facts.length > 0 && (
+        <div class="flex w-full flex-col gap-6">
+          {/* ── Split panel — eyebrow + facts[0] heading + sub-points | image ── */}
+          <div class="flex w-full flex-col overflow-hidden bg-section-grey md:flex-row">
+            {/* Left: text */}
+            <div class="flex flex-col items-start gap-6 px-8 py-10 md:w-[52%] md:px-14 md:py-16">
+              {eyebrow && (
+                <Heading variant="eyebrow" color="inherit" class="text-heading mix-blend-overlay opacity-80">
+                  {eyebrow}
+                </Heading>
+              )}
+              <Heading variant="h2">{facts[0].title}</Heading>
+              <div
+                class="sourcing-featured-body w-full font-sans text-[15px] leading-relaxed text-heading"
+                set:html={facts[0].description}
+              />
+            </div>
+            {/* Right: image placeholder */}
+            <div class="relative min-h-[280px] flex-1 overflow-hidden md:min-h-0">
+              {image ? (
+                <Image
+                  {...image}
+                  class="absolute inset-0 h-full w-full object-cover"
+                  widths={[400, 768, 1200]}
+                  sizes="(max-width: 768px) 100vw, 48vw"
+                  loading="lazy"
+                  width={720}
+                  height={720}
+                  layout="cover"
+                  format="webp"
+                />
+              ) : (
+                <HeroImagePlaceholder fill class="absolute inset-0" />
+              )}
+            </div>
+          </div>
 
-        {/* ── Split panel — eyebrow + facts[0] heading + sub-points | image ── */}
-        <div class="flex w-full flex-col overflow-hidden bg-section-grey md:flex-row">
-          {/* Left: text */}
-          <div class="flex flex-col items-start gap-6 px-8 py-10 md:w-[52%] md:px-14 md:py-16">
-            {eyebrow && (
-              <Heading variant="eyebrow" color="inherit" class="text-heading mix-blend-overlay opacity-80">
-                {eyebrow}
-              </Heading>
-            )}
-            <Heading variant="h2">{facts[0].title}</Heading>
-            <div
-              class="sourcing-featured-body w-full font-sans text-[15px] leading-relaxed text-heading"
-              set:html={facts[0].description}
-            />
-          </div>
-          {/* Right: image placeholder */}
-          <div class="relative min-h-[280px] flex-1 overflow-hidden md:min-h-0">
-            <!-- TODO: replace with <Image> when asset is ready -->
-            <HeroImagePlaceholder fill class="absolute inset-0" />
-          </div>
+          {/* ── 3-col cards — subgrid rows so heading / rule / body align across all cards ── */}
+          {facts.length > 1 && (
+            <div class="grid w-full grid-cols-1 gap-6 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-0 sm:[grid-template-rows:auto_auto_1fr]">
+              {facts.slice(1).map((fact) => (
+                <article class="flex flex-col gap-4 bg-page px-7 py-7 shadow-sm sm:row-span-3 sm:grid sm:gap-0 sm:py-0 sm:[grid-template-rows:subgrid]">
+                  {/* row 1 — icon + heading */}
+                  <div class="flex items-center gap-3 sm:px-0 sm:pt-7 sm:pb-0">
+                    <div
+                      class="size-9 shrink-0 bg-accent"
+                      style={`-webkit-mask-image: url('${basketIcon}'); mask-image: url('${basketIcon}'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
+                      aria-hidden="true"
+                    />
+                    <Heading variant="h3" class="min-w-0 flex-1 leading-tight">
+                      {fact.title}
+                    </Heading>
+                  </div>
+                  {/* row 2 — separator */}
+                  <div class="h-px w-full bg-accent/15 sm:my-4" />
+                  {/* row 3 — body */}
+                  <p class="font-sans text-[15px] leading-relaxed text-heading sm:pb-7" set:html={fact.description} />
+                </article>
+              ))}
+            </div>
+          )}
         </div>
-
-        {/* ── 3-col cards — subgrid rows so heading / rule / body align across all cards ── */}
-        {facts.length > 1 && (
-          <div class="grid w-full grid-cols-1 gap-6 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-0 sm:[grid-template-rows:auto_auto_1fr]">
-            {facts.slice(1).map((fact) => (
-              <article class="flex flex-col gap-4 bg-page px-7 py-7 shadow-sm sm:row-span-3 sm:grid sm:gap-0 sm:py-0 sm:[grid-template-rows:subgrid]">
-                {/* row 1 — icon + heading */}
-                <div class="flex items-center gap-3 sm:px-0 sm:pt-7 sm:pb-0">
-                  <div
-                    class="size-9 shrink-0 bg-accent"
-                    style={`-webkit-mask-image: url('${basketIcon}'); mask-image: url('${basketIcon}'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
-                    aria-hidden="true"
-                  ></div>
-                  <Heading variant="h3" class="min-w-0 flex-1 leading-tight">{fact.title}</Heading>
-                </div>
-                {/* row 2 — separator */}
-                <div class="h-px w-full bg-accent/15 sm:my-4"></div>
-                {/* row 3 — body */}
-                <p class="font-sans text-[15px] leading-relaxed text-heading sm:pb-7" set:html={fact.description} />
-              </article>
-            ))}
-          </div>
-        )}
-
-      </div>
-    )}
-
+      )
+    }
   </div>
 </section>
 

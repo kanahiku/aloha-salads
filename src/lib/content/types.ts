@@ -5,6 +5,43 @@ export interface ContentImage {
   alt: string;
 }
 
+export interface HomepageImages {
+  hero?: ContentImage;
+  localSourcing?: ContentImage;
+  locations?: ContentImage;
+}
+
+export interface AboutImages {
+  hero?: ContentImage;
+  story?: ContentImage;
+  sustainability?: ContentImage;
+  vendors?: ContentImage;
+}
+
+export interface CateringImages {
+  menu?: ContentImage;
+  corporate?: ContentImage;
+  officeLunch?: ContentImage;
+  meetings?: ContentImage;
+  events?: ContentImage;
+  largeGroups?: ContentImage;
+}
+
+export interface LocationImages {
+  directory?: ContentImage;
+  kailua?: ContentImage;
+  kahala?: ContentImage;
+  kaneohe?: ContentImage;
+  kapolei?: ContentImage;
+  mililani?: ContentImage;
+  pearlridge?: ContentImage;
+}
+
+export interface IngredientsImages {
+  hero?: ContentImage;
+  freshLocalProduce?: ContentImage;
+}
+
 // ─── Navigation ───────────────────────────────────────────────────────────────
 
 export interface NavSubLink {

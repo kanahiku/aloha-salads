@@ -3,23 +3,22 @@ import Layout from '~/layouts/PageLayout.astro';
 import Hero2 from '~/components/widgets/Hero2.astro';
 import BrandBar from '~/components/widgets/BrandBar.astro';
 import MenuCategories from '~/components/widgets/MenuCategories.astro';
-import LocalSourcing from '~/components/widgets/LocalSourcing.astro';
-import SaladBuilder from '~/components/widgets/SaladBuilder.astro';
 import Locations from '~/components/widgets/Locations.astro';
 import Testimonials from '~/components/widgets/Testimonials.astro';
-import OurStory from '~/components/widgets/OurStory.astro';
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
+import Image from '~/components/common/Image.astro';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
-import { site } from '~/config/site';
-import { PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
-import heroCover from '~/assets/images/hero-cover.webp';
+import { PRIMARY_CTA_HREF } from '~/config/cta';
+import { getSanityHomepageImages } from '~/lib/content/sanity';
+
+const homepageImages = await getSanityHomepageImages();
 
 const metadata = {
   title: 'Aloha Salads | Fresh Salads & Local Ahi on Oahu',
   description:
-    "Founded in Kailua in 2006, Aloha Salads serves fresh island-grown produce and never-frozen local ahi across six Oahu locations. Order online for pickup.",
+    'Founded in Kailua in 2006, Aloha Salads serves fresh island-grown produce and never-frozen local ahi across six Oahu locations. Order online for pickup.',
   ignoreTitleTemplate: true,
 };
 ---
@@ -33,7 +32,7 @@ const metadata = {
     tagline="Kailua-born since 2006 · Six spots on O'ahu"
     title="Aloha Salads: Fresh Food<br/>Crafted Daily on Oahu."
     subtitle="Founded in Kailua in May 2006, Aloha Salads provides fresh, locally grown food tailored to active island lifestyles. Voted First Place Hawaii's Best 2024 in the People's Choice Awards by the Star Advertiser, we operate six neighborhood restaurants across O'ahu."
-    image={{ ...heroCover, alt: 'Fresh ahi salad with island greens and avocado' }}
+    image={homepageImages.hero}
     actions={[
       { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
       { variant: 'ghost', text: 'Find a Location', href: '/locations' },
@@ -55,17 +54,18 @@ const metadata = {
   {/* ── 4. Local sourcing — SaladBuilder-style gradient split ── */}
   <section class="not-prose relative w-full overflow-hidden">
     <div class="mx-auto max-w-container px-4 pb-12 md:px-8">
-      <div class="flex min-h-[610px] w-full flex-col items-center justify-center gap-10 bg-gradient-to-b from-transparent from-[24%] to-page/90 px-4 pt-10 pb-4 md:flex-row md:gap-16 md:pt-16 md:pb-6 md:px-16">
-
+      <div
+        class="flex min-h-[610px] w-full flex-col items-center justify-center gap-10 bg-gradient-to-b from-transparent from-[24%] to-page/90 px-4 pt-10 pb-4 md:flex-row md:gap-16 md:pt-16 md:pb-6 md:px-16"
+      >
         {/* Left — text + CTA */}
         <div class="flex min-w-0 flex-1 flex-col items-start gap-6">
           <div class="flex w-full flex-col gap-6">
-            <Heading variant="eyebrow" color="inherit" class="text-eyebrow opacity-80">
-              Local sourcing
-            </Heading>
+            <Heading variant="eyebrow" color="inherit" class="text-eyebrow opacity-80"> Local sourcing </Heading>
             <Heading variant="h2">Our Local Sourcing</Heading>
             <Text variant="body-lg" color="default">
-              We partner with Hawaii growers and suppliers to bring quality ingredients into our kitchens. We feature vine-ripe tomatoes from Hau'ula and exclusively use never-frozen local ahi sourced through a Honolulu seafood supplier with vessel-level catch traceability.
+              We partner with Hawaii growers and suppliers to bring quality ingredients into our kitchens. We feature
+              vine-ripe tomatoes from Hau'ula and exclusively use never-frozen local ahi sourced through a Honolulu
+              seafood supplier with vessel-level catch traceability.
             </Text>
           </div>
           <Button variant="primary" text="Our Ingredients" href="/ingredients" hideNote={true} />
@@ -73,20 +73,30 @@ const metadata = {
 
         {/* Right — food photo placeholder */}
         <div class="relative w-full max-w-[400px] shrink-0" style="aspect-ratio: 562 / 624;">
-          <!-- TODO: replace with <Image> when asset is ready -->
-          <HeroImagePlaceholder fill class="absolute inset-0" />
+          {
+            homepageImages.localSourcing ? (
+              <Image
+                {...homepageImages.localSourcing}
+                class="absolute inset-0 h-full w-full object-cover"
+                widths={[320, 480, 640, 828]}
+                sizes="(max-width: 768px) 100vw, 400px"
+                loading="lazy"
+                width={562}
+                height={624}
+                layout="cover"
+                format="webp"
+              />
+            ) : (
+              <HeroImagePlaceholder fill class="absolute inset-0" />
+            )
+          }
         </div>
-
       </div>
     </div>
   </section>
 
   {/* ── 5. Testimonials — fetched from Sanity ────────────── */}
-  <Testimonials
-    id="reviews"
-    eyebrow="Reviews"
-    heading="What Our Customers Say"
-  />
+  <Testimonials id="reviews" eyebrow="Reviews" heading="What Our Customers Say" />
 
   {/* ── 6. Locations ─────────────────────────────────────── */}
   <Locations
@@ -96,6 +106,7 @@ const metadata = {
     subtitle="Stop by any of our six O'ahu locations in Kailua, Kahala, Kaneohe, Kapolei, Mililani, or Pearlridge."
     ctaText="View All Locations"
     ctaHref="/locations"
+    image={homepageImages.locations}
   />
 
   {/* ── 7. Salad builder — hidden (not in copy brief) ───── */}

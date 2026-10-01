@@ -35,6 +35,7 @@ const {
   stacked = false,
   withImage = false,
   hideImage = false,
+  imageFit = 'cover',
   id,
   bg = await Astro.slots.render('bg'),
 } = Astro.props;
@@ -43,13 +44,12 @@ const isWords = variant === 'words';
 const isTitle = variant === 'title';
 const isPage = variant === 'page';
 const isSplitDark = variant === 'split-dark';
+const isContainImage = imageFit === 'contain';
 const isOverlay = variant === 'overlay' || isWords || isTitle;
 const isPhotoOverlay = variant === 'overlay';
 const isChrome = isOverlay || isPage || isSplitDark;
 const hasStats = variant === 'overlay' && Astro.slots.has('stats');
 const hasNav = Astro.slots.has('nav');
-const hasImage = Boolean(image && (typeof image !== 'string' || image.trim()));
-const isSplitImage = !isOverlay && !isSplitDark && hasImage;
 const keepHomeHeroImage = id === 'home-hero';
 const showSplitDarkImage = isSplitDark && !hideImage;
 
@@ -67,16 +67,19 @@ const asContentImage = (value: unknown): ContentImage | undefined => {
   return { src, alt };
 };
 
-const overlayDesktop = isOverlay ? asContentImage(image) : undefined;
+const imageRecord =
+  image && typeof image === 'object' && !Array.isArray(image) ? (image as Record<string, unknown>) : undefined;
+const contentImage = asContentImage(image);
+const hasImage = typeof image === 'string' ? Boolean(image.trim()) : Boolean(contentImage);
+const isSplitImage = !isOverlay && !isSplitDark && hasImage;
+const overlayDesktop = isOverlay ? contentImage : undefined;
 const overlayMobile = isOverlay ? asContentImage(imageMobile) : undefined;
 const hasOverlayPhoto = Boolean(overlayDesktop || overlayMobile);
 const isLocalOverlayImage =
   isOverlay &&
-  Boolean(image) &&
-  typeof image === 'object' &&
-  !Array.isArray(image) &&
-  'width' in image &&
-  'height' in image;
+  Boolean(contentImage) &&
+  typeof imageRecord?.width === 'number' &&
+  typeof imageRecord.height === 'number';
 ---
 
 {
@@ -95,7 +98,7 @@ const isLocalOverlayImage =
             ? 'bg-section-dark min-h-[460px] md:min-h-[560px]'
             : 'bg-section-dark min-h-[560px] md:min-h-[740px]'),
       ]}
-      {...id ? { id } : {}}
+      {...(id ? { id } : {})}
     >
       {/* ── Leaf motif overlay for split-dark variant ── */}
       {isSplitDark && (
@@ -106,67 +109,62 @@ const isLocalOverlayImage =
         />
       )}
       {isOverlay && (
-      <div class="absolute inset-0 pointer-events-none z-0" aria-hidden="true">
-        <slot name="bg">
-          {bg ? <Fragment set:html={bg} /> : null}
-        </slot>
-        {keepHomeHeroImage && isLocalOverlayImage ? (
-          <img
-            src={image.src}
-            alt={'alt' in image && typeof image.alt === 'string' ? image.alt : ''}
-            width={typeof image.width === 'number' ? image.width : 1440}
-            height={typeof image.height === 'number' ? image.height : 800}
-            class:list={[
-              'absolute inset-0 h-full w-full object-cover',
-              isTitle ? 'object-bottom' : 'object-center',
-            ]}
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          />
-        ) : keepHomeHeroImage && hasOverlayPhoto ? (
-          <ArtDirectedImage
-            desktop={overlayDesktop}
-            mobile={overlayMobile}
-            class="absolute inset-0 h-full w-full object-cover object-center"
-            widths={[768, 1200, 1600, 1920]}
-            mobileWidths={[400, 640, 828, 1080]}
-            sizes="100vw"
-            mobileSizes="100vw"
-            loading="eager"
-            fetchpriority="high"
-            width={1920}
-            layout="cover"
-            format="webp"
-          />
-        ) : (
-          /* TODO: replace with <Image> when asset is ready */
-          <HeroImagePlaceholder
-            fill
-            class="absolute inset-0"
-            style={
-              isTitle
-                ? 'aspect-ratio: 1440 / 450;'
-                : isWords
-                  ? 'aspect-ratio: 1440 / 579;'
-                  : 'aspect-ratio: 1440 / 760;'
-            }
-          />
-        )}
-        {isPhotoOverlay ? (
-          <>
-            <div class="absolute inset-0 z-[1] bg-black/60 md:bg-transparent md:bg-gradient-to-r md:from-black/60 md:to-black/0" />
-            <div
-              class="hero-progressive-blur absolute inset-y-0 left-0 z-[1] hidden w-1/2 backdrop-blur-[32px] md:block"
-              aria-hidden="true"
+        <div class="absolute inset-0 pointer-events-none z-0" aria-hidden="true">
+          <slot name="bg">{bg ? <Fragment set:html={bg} /> : null}</slot>
+          {keepHomeHeroImage && isLocalOverlayImage ? (
+            <img
+              src={contentImage?.src}
+              alt={contentImage?.alt ?? ''}
+              width={typeof imageRecord?.width === 'number' ? imageRecord.width : 1440}
+              height={typeof imageRecord?.height === 'number' ? imageRecord.height : 800}
+              class:list={['absolute inset-0 h-full w-full object-cover', isTitle ? 'object-bottom' : 'object-center']}
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
             />
-          </>
-        ) : isWords || isTitle ? (
-          <div class="absolute inset-0 z-[1] bg-heading/10" />
-        ) : (
-          <div class="absolute inset-0 bg-gradient-to-b from-transparent from-[85.25%] to-page/80 z-[1]" />
-        )}
-      </div>
+          ) : keepHomeHeroImage && hasOverlayPhoto ? (
+            <ArtDirectedImage
+              desktop={overlayDesktop}
+              mobile={overlayMobile}
+              class="absolute inset-0 h-full w-full object-cover object-center"
+              widths={[768, 1200, 1600, 1920]}
+              mobileWidths={[400, 640, 828, 1080]}
+              sizes="100vw"
+              mobileSizes="100vw"
+              loading="eager"
+              fetchpriority="high"
+              width={1920}
+              layout="cover"
+              format="webp"
+            />
+          ) : (
+            /* TODO: replace with <Image> when asset is ready */
+            <HeroImagePlaceholder
+              fill
+              class="absolute inset-0"
+              style={
+                isTitle
+                  ? 'aspect-ratio: 1440 / 450;'
+                  : isWords
+                    ? 'aspect-ratio: 1440 / 579;'
+                    : 'aspect-ratio: 1440 / 760;'
+              }
+            />
+          )}
+          {isPhotoOverlay ? (
+            <>
+              <div class="absolute inset-0 z-[1] bg-black/60 md:bg-transparent md:bg-gradient-to-r md:from-black/60 md:to-black/0" />
+              <div
+                class="hero-progressive-blur absolute inset-y-0 left-0 z-[1] hidden w-1/2 backdrop-blur-[32px] md:block"
+                aria-hidden="true"
+              />
+            </>
+          ) : isWords || isTitle ? (
+            <div class="absolute inset-0 z-[1] bg-heading/10" />
+          ) : (
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent from-[85.25%] to-page/80 z-[1]" />
+          )}
+        </div>
       )}
 
       <div
@@ -217,9 +215,7 @@ const isLocalOverlayImage =
               withImage ? 'items-stretch gap-6 md:gap-[72px]' : 'items-start gap-6',
             ]}
           >
-            {tagline && (
-              <p class="mb-2 font-script text-ticker text-heading/60 md:mb-4">{tagline}</p>
-            )}
+            {tagline && <p class="mb-2 font-script text-ticker text-heading/60 md:mb-4">{tagline}</p>}
             <div
               class:list={[
                 'flex w-full flex-col items-start',
@@ -251,13 +247,12 @@ const isLocalOverlayImage =
               )}
             </div>
             {/* CTA actions for the page variant */}
-            {actions && (
-              Array.isArray(actions) ? (
+            {actions &&
+              (Array.isArray(actions) ? (
                 <CTAActions actions={actions} noteTone="light" />
               ) : (
                 <Fragment set:html={actions} />
-              )
-            )}
+              ))}
             {withImage && (
               <HeroImagePlaceholder
                 fill
@@ -268,7 +263,7 @@ const isLocalOverlayImage =
             )}
           </div>
         ) : isSplitDark ? (
-        <div class="flex flex-1 flex-col lg:flex-row lg:items-stretch gap-0 pb-0">
+          <div class="flex flex-1 flex-col lg:flex-row lg:items-stretch gap-0 pb-0">
             {/* left: text column */}
             <div
               class:list={[
@@ -292,8 +287,31 @@ const isLocalOverlayImage =
             {showSplitDarkImage && (
               <div class="w-full h-[280px] sm:h-[380px] lg:h-auto lg:flex-1 lg:min-w-0 lg:self-stretch">
                 {hasImage ? (
-                  <div class="relative w-full h-full overflow-hidden">
-                    <HeroImagePlaceholder fill class="w-full h-full" />
+                  <div
+                    class:list={[
+                      'relative w-full h-full overflow-hidden',
+                      isContainImage && 'p-6 sm:p-8 lg:p-12 bg-section-dark',
+                    ]}
+                  >
+                    {typeof image === 'string' ? (
+                      <Fragment set:html={image} />
+                    ) : (
+                      <Image
+                        src={contentImage?.src}
+                        alt={contentImage?.alt ?? ''}
+                        class:list={[
+                          'h-full w-full object-center',
+                          isContainImage ? 'object-contain bg-section-dark' : 'object-cover',
+                        ]}
+                        widths={[400, 768, 1200, 1600]}
+                        sizes="(max-width: 1024px) 100vw, 45vw"
+                        loading="eager"
+                        width={900}
+                        height={isContainImage ? undefined : 900}
+                        layout={isContainImage ? 'none' : 'cover'}
+                        format="webp"
+                      />
+                    )}
                     <div class="absolute inset-0 bg-gradient-to-r from-section-dark/60 from-[0%] via-transparent to-transparent" />
                   </div>
                 ) : (
@@ -304,30 +322,22 @@ const isLocalOverlayImage =
                 )}
               </div>
             )}
-        </div>
-        ) : (
-        <div class="flex flex-1 flex-col items-start justify-center min-h-0">
-          <div class="flex w-full max-w-[604px] flex-col items-start gap-6">
-            {tagline && (
-              <Heading variant="eyebrow" color="white" html={tagline} />
-            )}
-            {title && (
-              <Heading variant="h1" color="white" html={title} />
-            )}
-            {subtitle && (
-              <Text variant="body-lg" color="inherit" class="text-page" html={subtitle} />
-            )}
-            {content && (
-              <Text variant="body-lg" color="inherit" class="text-page" html={content} />
-            )}
-            {actions &&
-              (Array.isArray(actions) ? (
-                <CTAActions actions={actions} noteTone="onDark" />
-              ) : (
-                <Fragment set:html={actions} />
-              ))}
           </div>
-        </div>
+        ) : (
+          <div class="flex flex-1 flex-col items-start justify-center min-h-0">
+            <div class="flex w-full max-w-[604px] flex-col items-start gap-6">
+              {tagline && <Heading variant="eyebrow" color="white" html={tagline} />}
+              {title && <Heading variant="h1" color="white" html={title} />}
+              {subtitle && <Text variant="body-lg" color="inherit" class="text-page" html={subtitle} />}
+              {content && <Text variant="body-lg" color="inherit" class="text-page" html={content} />}
+              {actions &&
+                (Array.isArray(actions) ? (
+                  <CTAActions actions={actions} noteTone="onDark" />
+                ) : (
+                  <Fragment set:html={actions} />
+                ))}
+            </div>
+          </div>
         )}
       </div>
 
@@ -340,14 +350,9 @@ const isLocalOverlayImage =
       )}
     </section>
   ) : (
-    <section
-      class:list={['relative not-prose', overlapHeader && 'md:-mt-[76px]']}
-      {...id ? { id } : {}}
-    >
+    <section class:list={['relative not-prose', overlapHeader && 'md:-mt-[76px]']} {...(id ? { id } : {})}>
       <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <slot name="bg">
-          {bg ? <Fragment set:html={bg} /> : null}
-        </slot>
+        <slot name="bg">{bg ? <Fragment set:html={bg} /> : null}</slot>
       </div>
       <div class:list={['relative max-w-container mx-auto', !isSplitImage && 'px-4 sm:px-6']}>
         {!isSplitImage && overlapHeader && <div class="pt-0 md:pt-[76px] pointer-events-none" />}
@@ -407,7 +412,8 @@ const isLocalOverlayImage =
                   <Fragment set:html={image} />
                 ) : (
                   <Image
-                    {...image}
+                    src={contentImage?.src}
+                    alt={contentImage?.alt ?? ''}
                     class="w-full h-full object-cover"
                     widths={[400, 768, 1200]}
                     sizes="(max-width: 768px) 100vw, 50vw"

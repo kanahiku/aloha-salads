@@ -36,6 +36,8 @@
 
 import Heading from '~/components/ui/Heading.astro';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
+import Image from '~/components/common/Image.astro';
+import type { ContentImage } from '~/lib/content/types';
 
 export interface Props {
   eyebrow?: string;
@@ -44,6 +46,7 @@ export interface Props {
   id?: string;
   compact?: boolean;
   withImage?: boolean;
+  image?: ContentImage;
   imageAspect?: string;
   imagePlacement?: 'end' | 'under-heading';
   imageReverse?: boolean;
@@ -57,13 +60,15 @@ const {
   id,
   compact = false,
   withImage = false,
+  image,
   imageAspect = '507 / 657.445',
   imagePlacement = 'end',
   imageReverse = false,
   class: className = '',
 } = Astro.props;
 
-const hasImage = withImage || Astro.slots.has('image');
+const imageSlotHtml = Astro.slots.has('image') ? await Astro.slots.render('image') : '';
+const hasImage = withImage || Boolean(image) || Boolean(imageSlotHtml);
 const imageUnderHeading = hasImage && imagePlacement === 'under-heading';
 const imageAside = hasImage && !imageUnderHeading;
 const bodyHtml = await Astro.slots.render('default');
@@ -87,47 +92,71 @@ const useNarrowGap = imageUnderHeading || (imageAside && isLandscape);
         imageReverse && imageAside && 'lg:flex-row-reverse',
       ]}
     >
-
       {/* ── LEFT — heading; body when image is aside; image when under-heading ── */}
       <div class:list={['flex min-w-0 flex-1 flex-col', hasImage ? 'gap-8' : 'gap-4']}>
         <div class="flex flex-col gap-4">
           {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}
-          {headingHtml
-            ? <Heading variant="h2" html={headingHtml} />
-            : heading && <Heading variant="h2">{heading}</Heading>
+          {
+            headingHtml ? (
+              <Heading variant="h2" html={headingHtml} />
+            ) : (
+              heading && <Heading variant="h2">{heading}</Heading>
+            )
           }
         </div>
-        {imageUnderHeading && (
-          <div class="w-full min-w-0">
-            <!-- TODO: replace with <Image> when asset is ready -->
-            <HeroImagePlaceholder
-              fill
-              class="w-full rounded-[32px]"
-              style={`aspect-ratio: ${imageAspect};`}
-            />
-          </div>
-        )}
+        {
+          imageUnderHeading && (
+            <div class="w-full min-w-0">
+              {image ? (
+                <Image
+                  {...image}
+                  class="h-full w-full rounded-[32px] object-cover"
+                  widths={[400, 768, 1200]}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  loading="lazy"
+                  width={568}
+                  height={379}
+                  layout="cover"
+                  format="webp"
+                  style={`aspect-ratio: ${imageAspect};`}
+                />
+              ) : imageSlotHtml ? (
+                <Fragment set:html={imageSlotHtml} />
+              ) : (
+                <HeroImagePlaceholder fill class="w-full rounded-[32px]" style={`aspect-ratio: ${imageAspect};`} />
+              )}
+            </div>
+          )
+        }
         {imageAside && <div class="flex flex-col" set:html={bodyHtml} />}
       </div>
 
-      {imageAside ? (
-        <div
-          class:list={[
-            'w-full min-w-0 flex-1',
-            !isLandscape && 'lg:max-w-[507px]',
-          ]}
-        >
-          <!-- TODO: replace with <Image> when asset is ready -->
-          <HeroImagePlaceholder
-            fill
-            class="w-full rounded-[32px]"
-            style={`aspect-ratio: ${imageAspect};`}
-          />
-        </div>
-      ) : (
-        <div class="flex min-w-0 flex-1 flex-col" set:html={bodyHtml} />
-      )}
-
+      {
+        imageAside ? (
+          <div class:list={['w-full min-w-0 flex-1', !isLandscape && 'lg:max-w-[507px]']}>
+            {image ? (
+              <Image
+                {...image}
+                class="h-full w-full rounded-[32px] object-cover"
+                widths={[400, 768, 1200]}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                loading="lazy"
+                width={isLandscape ? 568 : 507}
+                height={isLandscape ? 427 : 657}
+                layout="cover"
+                format="webp"
+                style={`aspect-ratio: ${imageAspect};`}
+              />
+            ) : imageSlotHtml ? (
+              <Fragment set:html={imageSlotHtml} />
+            ) : (
+              <HeroImagePlaceholder fill class="w-full rounded-[32px]" style={`aspect-ratio: ${imageAspect};`} />
+            )}
+          </div>
+        ) : (
+          <div class="flex min-w-0 flex-1 flex-col" set:html={bodyHtml} />
+        )
+      }
     </div>
   </div>
 </section>

@@ -5,6 +5,11 @@ import type {
   BlogPost,
   Testimonial,
   ContentImage,
+  HomepageImages,
+  AboutImages,
+  CateringImages,
+  LocationImages,
+  IngredientsImages,
   NavigationContent,
   NavLink,
   NavSubLink,
@@ -13,6 +18,167 @@ import type {
 } from './types';
 
 type FetchedImage = ContentImage & SanityImageFields;
+
+const IMAGE_PROJECTION = (field: string, fallbackAlt: string) => /* groq */ `
+  "${field}": select(defined(${field}.asset) => {
+    "src": ${field}.asset->url,
+    "alt": coalesce(${field}.alt, "${fallbackAlt}"),
+    "crop": ${field}.crop,
+    "hotspot": ${field}.hotspot,
+    "asset": ${field}.asset
+  }, null)
+`;
+
+// ─── Homepage ─────────────────────────────────────────────────────────────────
+
+type FetchedHomepageImages = {
+  heroImage?: FetchedImage | null;
+  localSourcingImage?: FetchedImage | null;
+  locationsImage?: FetchedImage | null;
+};
+
+const HOMEPAGE_IMAGES_QUERY = /* groq */ `
+  *[_type == "homepageContent" && _id == "singleton-homepage"][0] {
+    ${IMAGE_PROJECTION('heroImage', 'Fresh salad from Aloha Salads')},
+    ${IMAGE_PROJECTION('localSourcingImage', 'Local ingredients used by Aloha Salads')},
+    ${IMAGE_PROJECTION('locationsImage', 'Aloha Salads store location')}
+  }
+`;
+
+export async function getSanityHomepageImages(): Promise<HomepageImages> {
+  const doc = await sanityClient.fetch<FetchedHomepageImages | null>(HOMEPAGE_IMAGES_QUERY);
+
+  return {
+    hero: resolveContentImage(doc?.heroImage),
+    localSourcing: resolveContentImage(doc?.localSourcingImage),
+    locations: resolveContentImage(doc?.locationsImage),
+  };
+}
+
+// ─── About ────────────────────────────────────────────────────────────────────
+
+type FetchedAboutImages = {
+  heroImage?: FetchedImage | null;
+  storyImage?: FetchedImage | null;
+  sustainabilityImage?: FetchedImage | null;
+  vendorsImage?: FetchedImage | null;
+};
+
+const ABOUT_IMAGES_QUERY = /* groq */ `
+  *[_type == "aboutContent" && _id == "singleton-about"][0] {
+    ${IMAGE_PROJECTION('heroImage', 'About Aloha Salads')},
+    ${IMAGE_PROJECTION('storyImage', 'Aloha Salads story')},
+    ${IMAGE_PROJECTION('sustainabilityImage', 'Aloha Salads sustainability')},
+    ${IMAGE_PROJECTION('vendorsImage', 'Aloha Salads vendors')}
+  }
+`;
+
+export async function getSanityAboutImages(): Promise<AboutImages> {
+  const doc = await sanityClient.fetch<FetchedAboutImages | null>(ABOUT_IMAGES_QUERY);
+
+  return {
+    hero: resolveContentImage(doc?.heroImage),
+    story: resolveContentImage(doc?.storyImage),
+    sustainability: resolveContentImage(doc?.sustainabilityImage),
+    vendors: resolveContentImage(doc?.vendorsImage),
+  };
+}
+
+// ─── Catering ─────────────────────────────────────────────────────────────────
+
+type FetchedCateringImages = {
+  menuImage?: FetchedImage | null;
+  corporateImage?: FetchedImage | null;
+  officeLunchImage?: FetchedImage | null;
+  meetingsImage?: FetchedImage | null;
+  eventsImage?: FetchedImage | null;
+  largeGroupsImage?: FetchedImage | null;
+};
+
+const CATERING_IMAGES_QUERY = /* groq */ `
+  *[_type == "cateringContent" && _id == "singleton-catering"][0] {
+    ${IMAGE_PROJECTION('menuImage', 'Aloha Salads catering trays')},
+    ${IMAGE_PROJECTION('corporateImage', 'Corporate catering from Aloha Salads')},
+    ${IMAGE_PROJECTION('officeLunchImage', 'Office lunch catering from Aloha Salads')},
+    ${IMAGE_PROJECTION('meetingsImage', 'Meeting catering from Aloha Salads')},
+    ${IMAGE_PROJECTION('eventsImage', 'Event catering from Aloha Salads')},
+    ${IMAGE_PROJECTION('largeGroupsImage', 'Large group catering from Aloha Salads')}
+  }
+`;
+
+export async function getSanityCateringImages(): Promise<CateringImages> {
+  const doc = await sanityClient.fetch<FetchedCateringImages | null>(CATERING_IMAGES_QUERY);
+
+  return {
+    menu: resolveContentImage(doc?.menuImage),
+    corporate: resolveContentImage(doc?.corporateImage),
+    officeLunch: resolveContentImage(doc?.officeLunchImage),
+    meetings: resolveContentImage(doc?.meetingsImage),
+    events: resolveContentImage(doc?.eventsImage),
+    largeGroups: resolveContentImage(doc?.largeGroupsImage),
+  };
+}
+
+// ─── Locations ────────────────────────────────────────────────────────────────
+
+type FetchedLocationImages = {
+  directoryImage?: FetchedImage | null;
+  kailuaImage?: FetchedImage | null;
+  kahalaImage?: FetchedImage | null;
+  kaneoheImage?: FetchedImage | null;
+  kapoleiImage?: FetchedImage | null;
+  mililaniImage?: FetchedImage | null;
+  pearlridgeImage?: FetchedImage | null;
+};
+
+const LOCATION_IMAGES_QUERY = /* groq */ `
+  *[_type == "locationsContent" && _id == "singleton-locations"][0] {
+    ${IMAGE_PROJECTION('directoryImage', 'Aloha Salads locations on Oahu')},
+    ${IMAGE_PROJECTION('kailuaImage', 'Aloha Salads Kailua location')},
+    ${IMAGE_PROJECTION('kahalaImage', 'Aloha Salads Kahala location')},
+    ${IMAGE_PROJECTION('kaneoheImage', 'Aloha Salads Kaneohe location')},
+    ${IMAGE_PROJECTION('kapoleiImage', 'Aloha Salads Kapolei location')},
+    ${IMAGE_PROJECTION('mililaniImage', 'Aloha Salads Mililani location')},
+    ${IMAGE_PROJECTION('pearlridgeImage', 'Aloha Salads Pearlridge location')}
+  }
+`;
+
+export async function getSanityLocationImages(): Promise<LocationImages> {
+  const doc = await sanityClient.fetch<FetchedLocationImages | null>(LOCATION_IMAGES_QUERY);
+
+  return {
+    directory: resolveContentImage(doc?.directoryImage),
+    kailua: resolveContentImage(doc?.kailuaImage),
+    kahala: resolveContentImage(doc?.kahalaImage),
+    kaneohe: resolveContentImage(doc?.kaneoheImage),
+    kapolei: resolveContentImage(doc?.kapoleiImage),
+    mililani: resolveContentImage(doc?.mililaniImage),
+    pearlridge: resolveContentImage(doc?.pearlridgeImage),
+  };
+}
+
+// ─── Ingredients ──────────────────────────────────────────────────────────────
+
+type FetchedIngredientsImages = {
+  heroImage?: FetchedImage | null;
+  freshLocalProduceImage?: FetchedImage | null;
+};
+
+const INGREDIENTS_IMAGES_QUERY = /* groq */ `
+  *[_type == "ingredientsContent" && _id == "singleton-ingredients"][0] {
+    ${IMAGE_PROJECTION('heroImage', 'Fresh ingredients at Aloha Salads')},
+    ${IMAGE_PROJECTION('freshLocalProduceImage', 'Fresh local produce used by Aloha Salads')}
+  }
+`;
+
+export async function getSanityIngredientsImages(): Promise<IngredientsImages> {
+  const doc = await sanityClient.fetch<FetchedIngredientsImages | null>(INGREDIENTS_IMAGES_QUERY);
+
+  return {
+    hero: resolveContentImage(doc?.heroImage),
+    freshLocalProduce: resolveContentImage(doc?.freshLocalProduceImage),
+  };
+}
 
 type FetchedNavSubLink = {
   text?: string;

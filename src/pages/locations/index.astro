@@ -5,6 +5,9 @@ import LocationDirectory from '~/components/widgets/LocationDirectory.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
+import { getSanityLocationImages } from '~/lib/content/sanity';
+
+const locationImages = await getSanityLocationImages();
 
 const metadata = {
   title: 'Aloha Salads Locations | Find Our 6 Oahu Restaurants',
@@ -25,13 +28,11 @@ const faqs = [
   },
   {
     title: 'Is parking available at your restaurants?',
-    description:
-      'Yes. Each of our mall and shopping center locations provides ample free parking for our guests.',
+    description: 'Yes. Each of our mall and shopping center locations provides ample free parking for our guests.',
   },
   {
     title: 'Can I collect a catering order from the stores?',
-    description:
-      'Yes. Catering trays can be collected from this store. Call ahead to arrange it.',
+    description: 'Yes. Catering trays can be collected from this store. Call ahead to arrange it.',
   },
   {
     title: 'Do you offer delivery from these locations?',
@@ -48,6 +49,7 @@ const faqs = [
     tagline="Locations"
     title={heroTitle}
     content={heroContent}
+    image={locationImages.directory}
     actions={[
       { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
       { variant: 'ghost', tone: 'dark', text: 'Order Catering', href: CATERING_CTA_HREF },
@@ -56,11 +58,7 @@ const faqs = [
 
   <LocationDirectory id="find-a-location" />
 
-  <FAQs
-    title="Frequently Asked Questions"
-    items={faqs}
-    isDark={true}
-  />
+  <FAQs title="Frequently Asked Questions" items={faqs} isDark={true} />
 
   <CTABanner
     title="Visit Us Today"

@@ -9,11 +9,14 @@ import Text from '~/components/ui/Text.astro';
 import { CATERING_CTA_HREF, LOCATION_CTA_HREF } from '~/config/cta';
 import peach from '~/assets/images/peach-motif.webp';
 import bigLeaf from '~/assets/images/big-leaf.webp';
+import { getSanityCateringImages } from '~/lib/content/sanity';
+
+const cateringImages = await getSanityCateringImages();
 
 const metadata = {
   title: 'Corporate Catering Oahu | Seminars & Events | Aloha Salads',
   description:
-    "Order fresh corporate catering for your Oahu business. We prepare salad trays and wrap platters for seminars, training days, client presentations, and company milestones.",
+    'Order fresh corporate catering for your Oahu business. We prepare salad trays and wrap platters for seminars, training days, client presentations, and company milestones.',
   ignoreTitleTemplate: true,
 };
 
@@ -53,6 +56,7 @@ const occasions = [
     tagline="Catering"
     title="Corporate Catering"
     content="Provide fresh meals for your next business event. We prepare large-format catering trays and wrap platters designed for corporate groups. All corporate orders are available for pickup across our six O'ahu locations."
+    image={cateringImages.corporate}
     actions={[
       { variant: 'primary', text: 'Order Catering Online', href: CATERING_CTA_HREF },
       { variant: 'ghost', tone: 'dark', text: 'View Full Catering Menu', href: '/catering' },
@@ -62,41 +66,59 @@ const occasions = [
   {/* ── 2. Corporate occasions — 2×2 editorial card grid ─── */}
   <section class="not-prose relative w-full overflow-hidden bg-page" aria-label="Corporate catering occasions">
     {/* Motifs */}
-    <img src={peach.src} alt="" aria-hidden="true" width={peach.width} height={peach.height}
-      class="pointer-events-none absolute right-0 top-0 w-[32%] max-w-[480px] select-none" loading="lazy" decoding="async" />
-    <img src={bigLeaf.src} alt="" aria-hidden="true" width={bigLeaf.width} height={bigLeaf.height}
-      class="pointer-events-none absolute bottom-0 left-[-20px] z-0 w-[28%] max-w-[420px] select-none" loading="lazy" decoding="async" />
+    <img
+      src={peach.src}
+      alt=""
+      aria-hidden="true"
+      width={peach.width}
+      height={peach.height}
+      class="pointer-events-none absolute right-0 top-0 w-[32%] max-w-[480px] select-none"
+      loading="lazy"
+      decoding="async"
+    />
+    <img
+      src={bigLeaf.src}
+      alt=""
+      aria-hidden="true"
+      width={bigLeaf.width}
+      height={bigLeaf.height}
+      class="pointer-events-none absolute bottom-0 left-[-20px] z-0 w-[28%] max-w-[420px] select-none"
+      loading="lazy"
+      decoding="async"
+    />
 
     <div class="relative z-[1] mx-auto w-full max-w-container px-5 py-16 sm:px-8 md:px-16 md:py-[120px]">
-
       {/* 2×2 card grid */}
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {occasions.map((occ) => (
-          <article class="group relative flex flex-col justify-between overflow-hidden bg-section-dark px-8 pb-8 pt-10 md:px-10 md:pb-10 md:pt-12">
-            {/* Large ghosted number — top-right decorative */}
-            <span
-              class="pointer-events-none absolute right-6 top-4 select-none font-rough text-[96px] leading-none text-page/[0.07] md:text-[120px]"
-              aria-hidden="true"
-            >
-              {occ.number}
-            </span>
-
-            {/* Content */}
-            <div class="relative flex flex-col gap-4">
-              {/* Small accent number badge */}
-              <span class="font-rough text-[15px] leading-none text-page/90">
+        {
+          occasions.map((occ) => (
+            <article class="group relative flex flex-col justify-between overflow-hidden bg-section-dark px-8 pb-8 pt-10 md:px-10 md:pb-10 md:pt-12">
+              {/* Large ghosted number — top-right decorative */}
+              <span
+                class="pointer-events-none absolute right-6 top-4 select-none font-rough text-[96px] leading-none text-page/[0.07] md:text-[120px]"
+                aria-hidden="true"
+              >
                 {occ.number}
               </span>
-              <Heading variant="h3" color="white">{occ.title}</Heading>
-              <Text color="white" class="text-page/75 leading-relaxed">{occ.description}</Text>
-            </div>
 
-            {/* Bottom accent rule */}
-            <div class="mt-8 h-px w-12 bg-accent"></div>
-          </article>
-        ))}
+              {/* Content */}
+              <div class="relative flex flex-col gap-4">
+                {/* Small accent number badge */}
+                <span class="font-rough text-[15px] leading-none text-page/90">{occ.number}</span>
+                <Heading variant="h3" color="white">
+                  {occ.title}
+                </Heading>
+                <Text color="white" class="text-page/75 leading-relaxed">
+                  {occ.description}
+                </Text>
+              </div>
+
+              {/* Bottom accent rule */}
+              <div class="mt-8 h-px w-12 bg-accent" />
+            </article>
+          ))
+        }
       </div>
-
     </div>
   </section>
 
@@ -113,29 +135,26 @@ const occasions = [
     title="Frequently Asked Questions"
     items={[
       {
-        title: "Do you provide corporate catering for multiple days?",
-        description:
-          "Yes. We can schedule pickup orders for multi-day seminars and training events.",
+        title: 'Do you provide corporate catering for multiple days?',
+        description: 'Yes. We can schedule pickup orders for multi-day seminars and training events.',
       },
       {
-        title: "Can I accommodate vegetarian and vegan employees?",
-        description:
-          "Yes. We prepare dedicated plant-based options including the meatless Aloha Passion Tray.",
+        title: 'Can I accommodate vegetarian and vegan employees?',
+        description: 'Yes. We prepare dedicated plant-based options including the meatless Aloha Passion Tray.',
       },
       {
-        title: "Are serving utensils included for office setups?",
-        description:
-          "Ask the store when you order and they will let you know what is included.",
+        title: 'Are serving utensils included for office setups?',
+        description: 'Ask the store when you order and they will let you know what is included.',
       },
       {
-        title: "How do I request an invoice for corporate billing?",
+        title: 'How do I request an invoice for corporate billing?',
         description:
-          "Please contact your nearest location directly to discuss payment options and receipt requirements for your accounting department.",
+          'Please contact your nearest location directly to discuss payment options and receipt requirements for your accounting department.',
       },
       {
-        title: "Can we add individual drinks to a corporate order?",
+        title: 'Can we add individual drinks to a corporate order?',
         description:
-          "Yes. You can include bottled beverages and our refreshing Big Island māmaki mint tea with your catering trays.",
+          'Yes. You can include bottled beverages and our refreshing Big Island māmaki mint tea with your catering trays.',
       },
     ]}
   />

@@ -10,11 +10,14 @@ import { CATERING_CTA_HREF, LOCATION_CTA_HREF } from '~/config/cta';
 import peach from '~/assets/images/peach-motif.webp';
 import bigLeaf from '~/assets/images/big-leaf.webp';
 import smallLeafMotif from '~/assets/images/small-leaf-motif.webp';
+import { getSanityCateringImages } from '~/lib/content/sanity';
+
+const cateringImages = await getSanityCateringImages();
 
 const metadata = {
   title: 'Catering Menu & Party Trays | Aloha Salads Oahu',
   description:
-    "Order fresh catering trays for your next event. View our full catering menu with pricing, including our Sandwich Platter and Ono Island Ahi Tray.",
+    'Order fresh catering trays for your next event. View our full catering menu with pricing, including our Sandwich Platter and Ono Island Ahi Tray.',
   ignoreTitleTemplate: true,
 };
 
@@ -54,7 +57,7 @@ const occasions = [
   {
     label: 'Large Group Catering',
     href: '/catering/large-groups',
-    description: 'Scaled-up trays and platters for big gatherings across O\'ahu.',
+    description: "Scaled-up trays and platters for big gatherings across O'ahu.",
   },
 ];
 ---
@@ -67,28 +70,34 @@ const occasions = [
     tagline="Catering"
     title="Catering Menu"
     content="Provide fresh meals for your next gathering with our catering trays. We prepare scaled-up versions of our signature salads and wraps for pickup across our six O'ahu locations."
-    actions={[
-      { variant: 'primary', text: 'Order Catering Online', href: CATERING_CTA_HREF },
-    ]}
+    image={cateringImages.menu}
+    actions={[{ variant: 'primary', text: 'Order Catering Online', href: CATERING_CTA_HREF }]}
   />
 
   {/* ── 2. Pricing section ───────────────────────────────── */}
   <section class="not-prose relative w-full overflow-hidden bg-page" aria-label="Catering menu and pricing">
     <img
-      src={peach.src} alt="" aria-hidden="true"
-      width={peach.width} height={peach.height}
+      src={peach.src}
+      alt=""
+      aria-hidden="true"
+      width={peach.width}
+      height={peach.height}
       class="pointer-events-none absolute right-0 top-0 w-[32%] max-w-[480px] select-none"
-      loading="lazy" decoding="async"
+      loading="lazy"
+      decoding="async"
     />
     <img
-      src={bigLeaf.src} alt="" aria-hidden="true"
-      width={bigLeaf.width} height={bigLeaf.height}
+      src={bigLeaf.src}
+      alt=""
+      aria-hidden="true"
+      width={bigLeaf.width}
+      height={bigLeaf.height}
       class="pointer-events-none absolute bottom-0 left-[-20px] z-0 w-[28%] max-w-[420px] select-none"
-      loading="lazy" decoding="async"
+      loading="lazy"
+      decoding="async"
     />
     <div class="relative z-[1] mx-auto w-full max-w-container px-5 py-16 sm:px-8 md:px-16 md:py-[120px]">
       <div class="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-24">
-
         {/* Left — heading + ordering note */}
         <div class="flex flex-1 flex-col gap-8 lg:sticky lg:top-32">
           <div class="flex flex-col gap-4">
@@ -101,7 +110,8 @@ const occasions = [
           <div class="flex flex-col gap-3 border-l-4 border-accent/30 pl-6">
             <Heading variant="h4">Ordering Details</Heading>
             <Text color="default">
-              Please contact your nearest location to confirm serving sizes per tray, minimum order requirements, and necessary lead times for large groups. Delivery availability and radius vary by restaurant.
+              Please contact your nearest location to confirm serving sizes per tray, minimum order requirements, and
+              necessary lead times for large groups. Delivery availability and radius vary by restaurant.
             </Text>
           </div>
           <div class="mt-2">
@@ -112,18 +122,21 @@ const occasions = [
         {/* Right — price list */}
         <div class="flex min-w-0 flex-1 flex-col">
           <ul class="flex flex-col" role="list">
-            {menuItems.map((item, i) => (
-              <li class:list={[
-                'flex items-baseline justify-between gap-6 py-5',
-                i < menuItems.length - 1 && 'border-b border-heading/10',
-              ]}>
-                <span class="font-rough text-[22px] leading-snug text-heading">{item.label}</span>
-                <span class="shrink-0 font-rough text-[22px] leading-snug text-accent">{item.price}</span>
-              </li>
-            ))}
+            {
+              menuItems.map((item, i) => (
+                <li
+                  class:list={[
+                    'flex items-baseline justify-between gap-6 py-5',
+                    i < menuItems.length - 1 && 'border-b border-heading/10',
+                  ]}
+                >
+                  <span class="font-rough text-[22px] leading-snug text-heading">{item.label}</span>
+                  <span class="shrink-0 font-rough text-[22px] leading-snug text-accent">{item.price}</span>
+                </li>
+              ))
+            }
           </ul>
         </div>
-
       </div>
     </div>
   </section>
@@ -134,38 +147,52 @@ const occasions = [
       class="pointer-events-none absolute inset-0"
       style={`background-image: url('${smallLeafMotif.src}'); background-size: 1700px auto; background-position: top left; background-repeat: repeat;`}
       aria-hidden="true"
-    ></div>
+    >
+    </div>
     <div class="relative z-[1] mx-auto w-full max-w-container px-5 py-16 sm:px-8 md:px-16 md:py-[120px]">
       <div class="flex flex-col gap-10 md:gap-16">
-
         <div class="flex flex-col gap-4">
           <Heading variant="eyebrow">By occasion</Heading>
           <Heading variant="h2">Catering for Every Occasion</Heading>
           <Text variant="body-lg" color="default" class="max-w-2xl">
-            We accommodate groups of all sizes across different event types. Select your event category below to learn more:
+            We accommodate groups of all sizes across different event types. Select your event category below to learn
+            more:
           </Text>
         </div>
 
         <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {occasions.map((occ) => (
-            <a
-              href={occ.href}
-              class="group flex h-full flex-col gap-4 bg-section-dark px-5 pb-5 pt-6 transition-opacity hover:opacity-90"
-            >
-              <div class="flex flex-1 flex-col gap-3">
-                <Heading variant="h4" color="white">{occ.label}</Heading>
-                <Text variant="small" color="white" class="text-page/75">{occ.description}</Text>
-              </div>
-              <div class="flex items-center gap-2 text-page/90">
-                <span class="font-heading text-[13px] uppercase tracking-widest leading-none">Learn more</span>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" class="size-3 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 8h10M9 4l4 4-4 4" />
-                </svg>
-              </div>
-            </a>
-          ))}
+          {
+            occasions.map((occ) => (
+              <a
+                href={occ.href}
+                class="group flex h-full flex-col gap-4 bg-section-dark px-5 pb-5 pt-6 transition-opacity hover:opacity-90"
+              >
+                <div class="flex flex-1 flex-col gap-3">
+                  <Heading variant="h4" color="white">
+                    {occ.label}
+                  </Heading>
+                  <Text variant="small" color="white" class="text-page/75">
+                    {occ.description}
+                  </Text>
+                </div>
+                <div class="flex items-center gap-2 text-page/90">
+                  <span class="font-heading text-[13px] uppercase tracking-widest leading-none">Learn more</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    class="size-3 transition-transform duration-200 group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 8h10M9 4l4 4-4 4" />
+                  </svg>
+                </div>
+              </a>
+            ))
+          }
         </div>
-
       </div>
     </div>
   </section>
@@ -177,29 +204,25 @@ const occasions = [
     title="Frequently Asked Questions"
     items={[
       {
-        title: "Do you offer vegetarian catering options?",
-        description:
-          "Yes. We prepare meatless options including the Aloha Passion Tray and Aloha Mediterranean Tray.",
+        title: 'Do you offer vegetarian catering options?',
+        description: 'Yes. We prepare meatless options including the Aloha Passion Tray and Aloha Mediterranean Tray.',
       },
       {
-        title: "Does catering include serving utensils?",
-        description:
-          "Ask the store when you order and they will let you know what is included.",
+        title: 'Does catering include serving utensils?',
+        description: 'Ask the store when you order and they will let you know what is included.',
       },
       {
-        title: "How do I place a catering order?",
+        title: 'How do I place a catering order?',
         description:
-          "You can place your catering order directly through our online ordering system or by calling your nearest location.",
+          'You can place your catering order directly through our online ordering system or by calling your nearest location.',
       },
       {
-        title: "Can I customize the catering trays?",
-        description:
-          "Trays are built to set recipes. Call the store to talk through anything specific.",
+        title: 'Can I customize the catering trays?',
+        description: 'Trays are built to set recipes. Call the store to talk through anything specific.',
       },
       {
-        title: "Where do I pick up my catering order?",
-        description:
-          "You can pick up your catering order at any of our six neighborhood restaurants across O'ahu.",
+        title: 'Where do I pick up my catering order?',
+        description: "You can pick up your catering order at any of our six neighborhood restaurants across O'ahu.",
       },
     ]}
   />

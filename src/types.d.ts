@@ -222,6 +222,8 @@ export interface Hero extends Omit<Headline, 'classes'>, Omit<Widget, 'isDark' |
   withImage?: boolean;
   /** `variant="split-dark"` only — omit the side image column for text-only heroes. */
   hideImage?: boolean;
+  /** `variant="split-dark"` only — use `contain` when the full image must stay visible. */
+  imageFit?: 'cover' | 'contain';
 }
 
 export interface Team extends Omit<Headline, 'classes'>, Widget {

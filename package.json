@@ -25,6 +25,11 @@
     "migrate:contact-reviews": "tsx --env-file=.env scripts/migrate-contact-reviews-to-sanity.ts",
     "seed:menu": "tsx --env-file=.env scripts/seed-menu-to-sanity.ts",
     "import:menu-images": "tsx --env-file=.env scripts/import-menu-images-to-sanity.ts",
+    "import:homepage-images": "tsx --env-file=.env scripts/import-homepage-images-to-sanity.ts",
+    "import:about-images": "tsx --env-file=.env scripts/import-about-images-to-sanity.ts",
+    "import:catering-images": "tsx --env-file=.env scripts/import-catering-images-to-sanity.ts",
+    "import:location-images": "tsx --env-file=.env scripts/import-location-images-to-sanity.ts",
+    "import:ingredients-images": "tsx --env-file=.env scripts/import-ingredients-images-to-sanity.ts",
     "studio": "cd studio && npm run dev"
   },
   "dependencies": {

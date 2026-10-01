@@ -9,9 +9,11 @@ import CTABanner from '~/components/widgets/CTABanner.astro';
 import Text from '~/components/ui/Text.astro';
 import { PRIMARY_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
 import { findStore } from '~/data/locations';
+import { getSanityLocationImages } from '~/lib/content/sanity';
 
 const store = findStore('kapolei');
 if (!store) throw new Error('Missing Kapolei store');
+const locationImages = await getSanityLocationImages();
 
 const metadata = {
   title: 'Kapolei Location | Aloha Salads Oahu',
@@ -31,8 +33,7 @@ const faqs = [
   },
   {
     title: 'Can I pick up catering orders in Kapolei?',
-    description:
-      'Yes. You can schedule large party trays and corporate catering orders for pickup at this location.',
+    description: 'Yes. You can schedule large party trays and corporate catering orders for pickup at this location.',
   },
   {
     title: 'Can I collect a catering order from Kapolei?',
@@ -53,6 +54,7 @@ const faqs = [
     tagline="Kapolei"
     title="Aloha Salads Kapolei"
     content="Visit our West O'ahu restaurant for a fresh meal at Kapolei Commons. We serve custom bowls and signature wraps for fast pickup or casual dine-in."
+    image={locationImages.kapolei}
     actions={[
       { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
       { variant: 'ghost', tone: 'dark', text: 'Order Catering', href: CATERING_CTA_HREF },
@@ -62,7 +64,10 @@ const faqs = [
   <TextSplit heading="Your Kapolei Neighborhood Stop">
     <div class="flex flex-col gap-6">
       <Text variant="body-lg" color="default">
-        Kapolei Commons serves West O'ahu with hearty salads alongside refreshing Big Island māmaki mint tea. Whether you are catching a movie or running errands near Target, our menu features crisp greens, house-made dressings, and never-frozen local ahi. We proudly serve the growing Kapolei community with a welcoming space to enjoy wholesome food.
+        Kapolei Commons serves West O'ahu with hearty salads alongside refreshing Big Island māmaki mint tea. Whether
+        you are catching a movie or running errands near Target, our menu features crisp greens, house-made dressings,
+        and never-frozen local ahi. We proudly serve the growing Kapolei community with a welcoming space to enjoy
+        wholesome food.
       </Text>
     </div>
   </TextSplit>
@@ -73,14 +78,10 @@ const faqs = [
     title="More Oahu Locations"
     subtitle="Find us across the island. Explore our other neighborhood restaurants below:"
     excludeHref={store.href}
+    motifs="leaf"
   />
 
-  <FAQs
-    isDark={true}
-    tagline="Common questions"
-    title="Frequently Asked Questions"
-    items={faqs}
-  />
+  <FAQs isDark={true} tagline="Common questions" title="Frequently Asked Questions" items={faqs} />
 
   <CTABanner
     title="Visit Us in Kapolei"

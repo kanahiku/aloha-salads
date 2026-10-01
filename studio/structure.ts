@@ -3,6 +3,11 @@ import type { StructureBuilder } from 'sanity/structure';
 const SINGLETONS: Record<string, string> = {
   siteNavigation: 'singleton-navigation',
   siteFooter: 'singleton-footer',
+  homepageContent: 'singleton-homepage',
+  aboutContent: 'singleton-about',
+  cateringContent: 'singleton-catering',
+  locationsContent: 'singleton-locations',
+  ingredientsContent: 'singleton-ingredients',
 };
 
 export const structure = (S: StructureBuilder) =>
@@ -16,6 +21,26 @@ export const structure = (S: StructureBuilder) =>
       S.listItem()
         .title('Footer')
         .child(S.document().schemaType('siteFooter').documentId('singleton-footer').title('Footer')),
+
+      S.listItem()
+        .title('Homepage')
+        .child(S.document().schemaType('homepageContent').documentId('singleton-homepage').title('Homepage')),
+
+      S.listItem()
+        .title('About')
+        .child(S.document().schemaType('aboutContent').documentId('singleton-about').title('About')),
+
+      S.listItem()
+        .title('Catering')
+        .child(S.document().schemaType('cateringContent').documentId('singleton-catering').title('Catering')),
+
+      S.listItem()
+        .title('Locations')
+        .child(S.document().schemaType('locationsContent').documentId('singleton-locations').title('Locations')),
+
+      S.listItem()
+        .title('Ingredients')
+        .child(S.document().schemaType('ingredientsContent').documentId('singleton-ingredients').title('Ingredients')),
 
       S.divider(),
 
