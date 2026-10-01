@@ -63,10 +63,7 @@ if (!propTestimonials) {
 const doubled = [...testimonials, ...testimonials];
 ---
 
-<section
-  {...id ? { id } : {}}
-  class="not-prose relative w-full overflow-hidden bg-page py-16 md:py-[120px]"
->
+<section {...id ? { id } : {}} class="not-prose relative w-full overflow-hidden bg-page py-16 md:py-[120px]">
   {/* ── Centered header ── */}
   <div class="mx-auto w-full max-w-container px-5 sm:px-8 md:px-16">
     <div class="flex flex-col items-center gap-6 text-center">
@@ -78,63 +75,68 @@ const doubled = [...testimonials, ...testimonials];
   {/* ── Marquee track ── */}
   <div class="t-mask mt-10 md:mt-16" aria-label="Customer reviews">
     <div class="t-track flex items-stretch gap-3">
-      {doubled.map((item) => (
-        <article class="t-slide flex h-[244px] w-[min(85vw,450px)] shrink-0 flex-col gap-5 bg-card p-4">
+      {
+        doubled.map((item) => (
+          <article class="t-slide flex h-[244px] w-[min(85vw,450px)] shrink-0 flex-col gap-5 bg-card p-4">
+            {/* Platform logo + stars */}
+            <div class="flex items-start gap-1.5">
+              {item.platform === 'yelp' ? (
+                <img
+                  src={yelpIcon.src}
+                  alt="Yelp"
+                  width={yelpIcon.width}
+                  height={yelpIcon.height}
+                  class="h-6 w-auto object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : (
+                <img
+                  src={googleIcon.src}
+                  alt="Google"
+                  width={googleIcon.width}
+                  height={googleIcon.height}
+                  class="h-6 w-auto object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
 
-          {/* Platform logo + stars */}
-          <div class="flex items-start gap-1.5">
-            {item.platform === 'yelp' ? (
-              <img
-                src={yelpIcon.src}
-                alt="Yelp"
-                width={yelpIcon.width}
-                height={yelpIcon.height}
-                class="h-6 w-auto object-contain"
-                loading="lazy"
-                decoding="async"
-              />
-            ) : (
-              <img
-                src={googleIcon.src}
-                alt="Google"
-                width={googleIcon.width}
-                height={googleIcon.height}
-                class="h-6 w-auto object-contain"
-                loading="lazy"
-                decoding="async"
-              />
-            )}
-
-            {/* 5-star row — rotate −1.82° matching Figma */}
-            <div class="-rotate-[1.82deg]" role="img" aria-label="5 out of 5 stars">
-              <svg width="139" height="20" viewBox="0 0 139 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                {[0,1,2,3,4].map((i) => (
-                  <g transform={`translate(${i * 27.8}, 0)`}>
-                    <path
-                      d="M10 1.5l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.77l-4.77 2.44.91-5.32L2.27 7.12l5.34-.78L10 1.5z"
-                      stroke="#3D2819"
-                      stroke-width="1"
-                      fill="none"
-                    />
-                  </g>
-                ))}
-              </svg>
+              {/* 5-star row — rotate −1.82° matching Figma */}
+              <div class="-rotate-[1.82deg]" role="img" aria-label="5 out of 5 stars">
+                <svg
+                  width="139"
+                  height="20"
+                  viewBox="0 0 139 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <g transform={`translate(${i * 27.8}, 0)`}>
+                      <path
+                        d="M10 1.5l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.77l-4.77 2.44.91-5.32L2.27 7.12l5.34-.78L10 1.5z"
+                        stroke="#3D2819"
+                        stroke-width="1"
+                        fill="#3D2819"
+                      />
+                    </g>
+                  ))}
+                </svg>
+              </div>
             </div>
-          </div>
 
-          {/* Quote — flex-1 so attribution is always pinned to the bottom */}
-          <p class="type-quote -rotate-[2.21deg] flex-1 text-heading leading-[1.2]">
-            {item.quote}
-          </p>
+            {/* Quote — flex-1 so attribution is always pinned to the bottom */}
+            <p class="type-quote -rotate-[2.21deg] flex-1 text-heading leading-[1.2]">{item.quote}</p>
 
-          {/* Attribution — right-aligned, Norca Regular 14px */}
-          <div class="-rotate-[2.17deg] flex flex-col items-end gap-3 text-right font-heading text-button leading-none">
-            <span class="text-heading">{item.name}</span>
-            <span class="text-accent">{item.location}</span>
-          </div>
-
-        </article>
-      ))}
+            {/* Attribution — right-aligned, Norca Regular 14px */}
+            <div class="-rotate-[2.17deg] flex flex-col items-end gap-3 text-right font-heading text-button leading-none">
+              <span class="text-heading">{item.name}</span>
+              <span class="text-accent">{item.location}</span>
+            </div>
+          </article>
+        ))
+      }
     </div>
   </div>
 </section>
@@ -143,20 +145,8 @@ const doubled = [...testimonials, ...testimonials];
   /* Edge fade mask */
   .t-mask {
     overflow: hidden;
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent 0,
-      black 24px,
-      black calc(100% - 24px),
-      transparent 100%
-    );
-    mask-image: linear-gradient(
-      to right,
-      transparent 0,
-      black 24px,
-      black calc(100% - 24px),
-      transparent 100%
-    );
+    -webkit-mask-image: linear-gradient(to right, transparent 0, black 24px, black calc(100% - 24px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, black 24px, black calc(100% - 24px), transparent 100%);
   }
 
   @media (min-width: 768px) {
@@ -168,20 +158,18 @@ const doubled = [...testimonials, ...testimonials];
         black calc(100% - 80px),
         transparent 100%
       );
-      mask-image: linear-gradient(
-        to right,
-        transparent 0,
-        black 80px,
-        black calc(100% - 80px),
-        transparent 100%
-      );
+      mask-image: linear-gradient(to right, transparent 0, black 80px, black calc(100% - 80px), transparent 100%);
     }
   }
 
   /* Marquee: translate exactly -50% → one full set → seamless loop */
   @keyframes t-marquee {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
   }
 
   .t-track {
@@ -194,6 +182,8 @@ const doubled = [...testimonials, ...testimonials];
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .t-track { animation: none; }
+    .t-track {
+      animation: none;
+    }
   }
 </style>
