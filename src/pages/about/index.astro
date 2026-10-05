@@ -22,7 +22,6 @@ const metadata = {
   <Hero2
     variant="split-dark"
     overlapHeader={false}
-    tagline="About Us"
     title="About Aloha Salads"
     content="Kailua-born since 2006. Six locations across O'ahu. Twenty years of fresh, locally sourced food made with ingredients you can trust."
     image={aboutImages.hero}
@@ -34,7 +33,7 @@ const metadata = {
   />
 
   {/* ── 1. Our Mission ────────────────────────────────────── */}
-  <TextSplit eyebrow="Our Mission" heading="Our Mission">
+  <TextSplit heading="Our Mission">
     <div class="flex flex-col gap-6">
       <blockquote class="border-l-4 border-accent pl-6">
         <Text variant="body-lg" color="default" class="italic">
@@ -52,12 +51,11 @@ const metadata = {
 
   {/* ── 2. Our Story ──────────────────────────────────────── */}
   <TextSplit
-    eyebrow="Our Story"
     heading="Our Story"
     withImage
     image={aboutImages.story}
     imageAspect="4 / 5"
-    class="bg-section-grey"
+    class="bg-card"
   >
     <div class="flex flex-col gap-6">
       <Text variant="body-lg" color="default">
@@ -83,7 +81,6 @@ const metadata = {
 
   {/* ── 3. Sustainability — image left / text right ──────────── */}
   <TextSplit
-    eyebrow="Sustainability"
     heading="Sustainability"
     withImage
     image={aboutImages.sustainability}
@@ -110,7 +107,6 @@ const metadata = {
 
   {/* ── 4. Our Vendors — text left / image right ─────────── */}
   <TextSplit
-    eyebrow="Our Vendors"
     heading="Our Vendors"
     withImage
     image={aboutImages.vendors}

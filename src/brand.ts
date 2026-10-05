@@ -100,8 +100,8 @@ export const brand = {
     body: { size: '14px', mobile: '14px', lineHeight: '1.3', tracking: '-0.01em' },
     bodyLg: { size: '16px', mobile: '15px', lineHeight: '1.3', tracking: '-0.01em' },
     button: { size: '14px', mobile: '14px', lineHeight: '1', tracking: '0' },
-    /** Figma `tag`. */
-    eyebrow: { size: '16px', mobile: '14px', lineHeight: '1', tracking: '0' },
+    /** Figma `tag`; bumped slightly for retained cursive section labels. */
+    eyebrow: { size: '19px', mobile: '19px', lineHeight: '1', tracking: '0' },
     small: { size: '12px', mobile: '12px', lineHeight: '1.3', tracking: '-0.01em' },
     caption: { size: '11px', mobile: '11px', lineHeight: '1.3', tracking: '0' },
     /** Footer column titles — extra, not in the Style Guide. */

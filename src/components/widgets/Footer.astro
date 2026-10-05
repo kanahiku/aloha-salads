@@ -5,7 +5,7 @@
  *
  */
 import { Icon } from 'astro-icon/components';
-import alohaWordsMotif from '~/assets/images/aloha-words-motif.svg?url';
+import alohaLogo from '~/assets/images/aloha-logo.svg?url';
 import circleMotif from '~/assets/images/circle-motif.svg?url';
 import { getHomePermalink } from '~/utils/permalinks';
 
@@ -132,14 +132,11 @@ const {
   )}
 
   <div class="mx-auto w-full max-w-container pt-6">
-    <img
-      src={alohaWordsMotif}
-      alt="Aloha Salads"
-      width="1440"
-      height="160"
-      class="block h-auto w-full"
-      loading="lazy"
-      decoding="async"
+    <div
+      role="img"
+      aria-label="Aloha Salads"
+      class="block w-full bg-accent"
+      style={`aspect-ratio: 174 / 20; -webkit-mask-image: url('${alohaLogo}'); mask-image: url('${alohaLogo}'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center bottom; mask-position: center bottom;`}
     />
   </div>
 </footer>

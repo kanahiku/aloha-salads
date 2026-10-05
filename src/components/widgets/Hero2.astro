@@ -152,13 +152,7 @@ const isLocalOverlayImage =
             />
           )}
           {isPhotoOverlay ? (
-            <>
-              <div class="absolute inset-0 z-[1] bg-black/60 md:bg-transparent md:bg-gradient-to-r md:from-black/60 md:to-black/0" />
-              <div
-                class="hero-progressive-blur absolute inset-y-0 left-0 z-[1] hidden w-1/2 backdrop-blur-[32px] md:block"
-                aria-hidden="true"
-              />
-            </>
+            <div class="absolute inset-0 z-[1] bg-black/40 md:bg-black/50" />
           ) : isWords || isTitle ? (
             <div class="absolute inset-0 z-[1] bg-heading/10" />
           ) : (
@@ -215,7 +209,7 @@ const isLocalOverlayImage =
               withImage ? 'items-stretch gap-6 md:gap-[72px]' : 'items-start gap-6',
             ]}
           >
-            {tagline && <p class="mb-2 font-script text-ticker text-heading/60 md:mb-4">{tagline}</p>}
+            {tagline && <Heading variant="eyebrow" color="inherit" class="mb-2 text-heading/60 md:mb-4" html={tagline} />}
             <div
               class:list={[
                 'flex w-full flex-col items-start',
@@ -271,7 +265,7 @@ const isLocalOverlayImage =
                 showSplitDarkImage ? 'lg:w-[55%]' : 'lg:w-full lg:max-w-[760px]',
               ]}
             >
-              {tagline && <p class="font-script text-[var(--aw-text-eyebrow)] leading-none text-page/55">{tagline}</p>}
+              {tagline && <Heading variant="eyebrow" color="inherit" class="text-page/55" html={tagline} />}
               {title && <h1 class="font-rough text-h1 font-normal leading-[1.05] text-page" set:html={title} />}
               {content && (
                 <div class="font-sans text-[16px] leading-[1.55] text-page/60 max-w-[480px]" set:html={content} />
@@ -433,9 +427,3 @@ const isLocalOverlayImage =
   )
 }
 
-<style>
-  .hero-progressive-blur {
-    -webkit-mask-image: linear-gradient(to right, black 0%, transparent 100%);
-    mask-image: linear-gradient(to right, black 0%, transparent 100%);
-  }
-</style>

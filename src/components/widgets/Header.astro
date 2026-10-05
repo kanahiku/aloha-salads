@@ -6,6 +6,7 @@ import ToggleMenu from '~/components/common/ToggleMenu.astro';
 import Image from '~/components/common/Image.astro';
 import Button from '~/components/ui/Button.astro';
 import NavList from '~/components/widgets/NavList.astro';
+import { SOCIAL } from '~/config/social';
 
 import { getHomePermalink } from '~/utils/permalinks';
 import { trimSlash, getAsset } from '~/utils/permalinks';
@@ -53,6 +54,9 @@ const phoneAction = phone
 const phoneLabel = phone ? `Call ${phone.text}` : '';
 const phoneBoxClass =
   'inline-flex items-center justify-center shrink-0 size-9 rounded-md bg-accent text-black border-2 border-accent hover:bg-accent-hover hover:border-accent-hover transition duration-200';
+const socialLinks = SOCIAL.nav;
+const socialIconClass =
+  'inline-flex size-9 items-center justify-center text-heading/75 transition-colors hover:text-accent';
 
 const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
 
@@ -83,8 +87,19 @@ const navBgStyle = `background-image: url('${navMotif.src}'); background-size: c
           >
             <NavList links={links} class="flex flex-col md:flex-row md:items-center gap-6" />
           </nav>
-          {extraActions.length > 0 && (
-            <div class="hidden md:flex items-center shrink-0">
+          {(socialLinks.length > 0 || extraActions.length > 0) && (
+            <div class="hidden md:flex items-center shrink-0 gap-3">
+              {socialLinks.length > 0 && (
+                <ul class="flex items-center gap-1" aria-label="Social media">
+                  {socialLinks.map(({ href, ariaLabel, icon }) => (
+                    <li>
+                      <a href={href} aria-label={ariaLabel} target="_blank" rel="noopener noreferrer" class={socialIconClass}>
+                        <Icon name={icon} class="size-5" aria-hidden="true" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
               {extraActions.map((btnProps) => (
                 <Button {...btnProps} hideNote class="whitespace-nowrap" />
               ))}
@@ -153,6 +168,17 @@ const navBgStyle = `background-image: url('${navMotif.src}'); background-size: c
               <a class="text-secondary" aria-label="RSS Feed" href={getAsset('/rss.xml')}>
                 <Icon name="tabler:rss" class="w-5 h-5" />
               </a>
+            )}
+            {socialLinks.length > 0 && (
+              <ul class="flex items-center gap-1" aria-label="Social media">
+                {socialLinks.map(({ href, ariaLabel, icon }) => (
+                  <li>
+                    <a href={href} aria-label={ariaLabel} target="_blank" rel="noopener noreferrer" class={socialIconClass}>
+                      <Icon name={icon} class="size-5" aria-hidden="true" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
             )}
             {extraActions.map((btnProps) => (
               <Button {...btnProps} hideNote class="whitespace-nowrap" />

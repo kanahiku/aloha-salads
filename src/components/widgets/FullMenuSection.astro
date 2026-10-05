@@ -32,7 +32,7 @@ export interface Props {
 }
 
 const {
-  eyebrow = 'Full menu',
+  eyebrow,
   title = 'The Full Aloha Salads Menu',
   subtitle,
   categories = [],
@@ -155,7 +155,7 @@ const slugify = (value: string) =>
 
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
               {category.items.map((item) => (
-                <article class="flex h-full flex-col overflow-hidden bg-card shadow-card">
+                <article class="flex h-full flex-col overflow-hidden bg-card">
                   <div class="relative w-full bg-section-grey" style="aspect-ratio: 4 / 3;">
                     {item.image?.src ? (
                       <Image

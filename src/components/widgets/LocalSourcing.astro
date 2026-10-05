@@ -41,7 +41,7 @@ export interface Props {
 }
 
 const {
-  eyebrow = 'Our ingredients & local sourcing',
+  eyebrow = 'We Support Local',
   title = 'Sourced close to home, on purpose.',
   subtitle = "We've bought from local farmers and fishermen since day one in Kailua. Here's what that actually means on your plate — in specifics, not adjectives.",
   ctaText = 'See where our food comes from',
@@ -62,10 +62,10 @@ const {
         <div class:list={['flex w-full flex-col', facts.length > 0 && factsLayout === 'grid-4' && 'md:mb-[-42px]']}>
           {withPhoto ? (
             /* withPhoto: text left / photo right */
-            <div class="flex w-full flex-col overflow-hidden bg-section-grey md:flex-row">
+            <div class="flex w-full flex-col overflow-hidden bg-card md:flex-row">
               <div class="flex flex-col items-start gap-6 px-6 py-10 md:w-[52%] md:px-14 md:py-16 md:pb-[100px]">
                 {eyebrow && (
-                  <Heading variant="eyebrow" color="inherit" class="text-heading mix-blend-overlay opacity-80">
+                  <Heading variant="eyebrow" color="inherit" class="text-heading opacity-80">
                     {eyebrow}
                   </Heading>
                 )}
@@ -97,11 +97,11 @@ const {
             </div>
           ) : (
             /* default: 2-col text split */
-            <div class="flex w-full flex-col bg-section-grey px-6 pb-10 pt-10 backdrop-blur-sm md:px-16 md:pb-[92px] md:pr-[100px] md:pt-16">
+            <div class="flex w-full flex-col bg-card px-6 pb-10 pt-10 backdrop-blur-sm md:px-16 md:pb-[92px] md:pr-[100px] md:pt-16">
               <div class="flex w-full flex-col items-start gap-8 md:flex-row md:gap-16">
                 <div class="flex min-w-0 flex-1 flex-col items-start gap-6">
                   {eyebrow && (
-                    <Heading variant="eyebrow" color="inherit" class="text-heading mix-blend-overlay opacity-80">
+                    <Heading variant="eyebrow" color="inherit" class="text-heading opacity-80">
                       {eyebrow}
                     </Heading>
                   )}
@@ -177,11 +177,11 @@ const {
       factsLayout === 'featured' && facts.length > 0 && (
         <div class="flex w-full flex-col gap-6">
           {/* ── Split panel — eyebrow + facts[0] heading + sub-points | image ── */}
-          <div class="flex w-full flex-col overflow-hidden bg-section-grey md:flex-row">
+          <div class="flex w-full flex-col overflow-hidden bg-card md:flex-row">
             {/* Left: text */}
             <div class="flex flex-col items-start gap-6 px-8 py-10 md:w-[52%] md:px-14 md:py-16">
               {eyebrow && (
-                <Heading variant="eyebrow" color="inherit" class="text-heading mix-blend-overlay opacity-80">
+                <Heading variant="eyebrow" color="inherit" class="text-heading opacity-80">
                   {eyebrow}
                 </Heading>
               )}
