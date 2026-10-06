@@ -22,8 +22,8 @@ const loadLocalImages = () => {
  * Accepts:
  *   - `null` / `undefined`         → returned as-is
  *   - `ImageMetadata`              → returned as-is (already imported)
- *   - `"http(s)://…"` or `"/path"` → returned as-is (external or public/)
- *   - `"~/assets/images/…"`        → resolved to its ImageMetadata via the glob
+ *   - `"http(s)://..."` or `"/path"` → returned as-is (external or public/)
+ *   - `"~/assets/images/..."`        → resolved to its ImageMetadata via the glob
  */
 export const findImage = async (
   imagePath?: string | ImageMetadata | null
@@ -61,7 +61,7 @@ export const adaptOpenGraphImages = async (
       const resolved = await findImage(image.url);
       if (!resolved) return { url: '' };
 
-      // Generate an optimized JPG via Astro's image service (Sharp by default).
+      // Generate an optimized JPG via Astros image service (Sharp by default).
       const optimized = await getImage({
         src: resolved,
         width: OG_WIDTH,

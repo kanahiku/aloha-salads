@@ -72,7 +72,7 @@ const colors: Record<string, string> = {
 };
 
 // twMerge only handles the color + className layer so `text-body-lg` (font-size utility)
-// is never stripped by twMerge's text-* conflict resolution.
+// is never stripped by twMerges text-* conflict resolution.
 const overrideCls = twMerge(colors[color as string] ?? '', className);
 const face = variant === 'button' ? 'font-rough' : 'font-sans';
 const cls = [face, scale[variant as string] ?? '', overrideCls].filter(Boolean).join(' ');

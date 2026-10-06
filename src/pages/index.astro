@@ -10,7 +10,7 @@ import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import Image from '~/components/common/Image.astro';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
-import { PRIMARY_CTA_HREF } from '~/config/cta';
+import { PRIMARY_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
 import { getSanityHomepageImages } from '~/lib/content/sanity';
 
 const homepageImages = await getSanityHomepageImages();
@@ -29,13 +29,13 @@ const metadata = {
     id="home-hero"
     variant="overlay"
     overlapHeader={false}
-    tagline="Kailua-born since 2006 · Six spots on O'ahu"
+    tagline="Kailua-born since 2006 · Six spots on Oahu"
     title="Aloha Salads: Fresh Food<br/>Crafted Daily on Oahu."
-    subtitle="Founded in Kailua in May 2006, Aloha Salads provides fresh, locally grown food tailored to active island lifestyles. Voted First Place Hawaii's Best 2024 in the People's Choice Awards by the Star Advertiser, we operate six neighborhood restaurants across O'ahu."
+    subtitle="Founded in Kailua in May 2006, Aloha Salads provides fresh, locally grown food tailored to active island lifestyles. Voted First Place Hawaiis Best 2024 in the Peoples Choice Awards by the Star Advertiser, we operate six neighborhood restaurants across Oahu."
     image={homepageImages.hero}
     actions={[
       { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
-      { variant: 'ghost', text: 'Find a Location', href: '/locations' },
+      { variant: 'ghost', text: 'Order Catering', href: CATERING_CTA_HREF },
     ]}
   />
 
@@ -65,7 +65,7 @@ const metadata = {
             <Heading variant="h2">Our Local Sourcing</Heading>
             <Text variant="body-lg" color="default">
               We partner with Hawaii growers and suppliers to bring quality ingredients into our kitchens. We feature
-              vine-ripe tomatoes from Hau'ula and exclusively use never-frozen local ahi sourced through a Honolulu
+              vine-ripe tomatoes from Hauula and exclusively use never-frozen local ahi sourced through a Honolulu
               seafood supplier with vessel-level catch traceability.
             </Text>
           </div>
@@ -104,7 +104,7 @@ const metadata = {
     id="locations"
     eyebrow="Visit Now"
     title="Visit a Store Near You"
-    subtitle="Stop by any of our six O'ahu locations in Kailua, Kahala, Kaneohe, Kapolei, Mililani, or Pearlridge."
+    subtitle="Stop by any of our six Oahu locations in Kailua, Kahala, Kaneohe, Kapolei, Mililani, or Pearlridge."
     ctaText="View All Locations"
     ctaHref="/locations"
     image={homepageImages.locations}

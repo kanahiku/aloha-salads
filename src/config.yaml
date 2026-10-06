@@ -13,7 +13,7 @@ metadata:
   title:
     default: Aloha Salads
     template: '%s | Aloha Salads'
-  description: 'Island-grown produce, never-frozen local ahi, and bowls built the way you like them. Kailua-born since 2006 — six spots on O‘ahu.'
+  description: 'Island-grown produce, never-frozen local ahi, and bowls built the way you like them. Kailua-born since 2006 — six spots on Oahu.'
   robots:
     index: true
     follow: true

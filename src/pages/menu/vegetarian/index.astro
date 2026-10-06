@@ -8,6 +8,9 @@ import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
 import { getMenuCategory } from '~/lib/content';
+import { getSanityMenuPagesImages } from '~/lib/content/sanity';
+
+const menuPagesImages = await getSanityMenuPagesImages().catch(() => ({} as Awaited<ReturnType<typeof getSanityMenuPagesImages>>));
 
 const metadata = {
   title: 'Vegetarian Salads & Wraps | Aloha Salads Oahu',
@@ -33,7 +36,7 @@ const vegetarianItems = [
       'Romaine, grape tomatoes, avocado, jicama, corn, black beans, green onions, cheddar cheese, cilantro, and BBQ ranch.',
   },
   {
-    title: 'Maui Mozzarella Salad',
+    title: 'Maui Mozzarella',
     description:
       'Mixed greens, tomatoes, fresh mozzarella, red onions, basil, balsamic vinaigrette, and balsamic glaze.',
   },
@@ -77,7 +80,7 @@ const faqs = [
   {
     title: 'Can I adapt a regular menu item to be vegetarian?',
     description:
-      "Yes. Some of our signature dishes can be adapted by leaving out the protein. Ask our team when you order and we'll talk you through the options.",
+      "Yes. Some of our signature dishes can be adapted by leaving out the protein. Ask our team when you order and we will talk you through the options.",
   },
   {
     title: 'Can I customize my vegetarian salad?',
@@ -86,12 +89,12 @@ const faqs = [
   },
   {
     title: 'Do your vegetarian salads contain local produce?',
-    description: "Yes. We feature local produce including vine-ripe tomatoes grown in Hau'ula.",
+    description: "Yes. We feature local produce including vine-ripe tomatoes grown in Hauula.",
   },
   {
     title: 'Where can I order vegetarian meals for takeout?',
     description:
-      "Our full vegetarian menu is available to order online for fast pickup at all six of our neighborhood restaurants across O'ahu.",
+      "Our full vegetarian menu is available to order online for fast pickup at all six of our neighborhood restaurants across Oahu.",
   },
 ];
 ---
@@ -102,6 +105,7 @@ const faqs = [
     overlapHeader={false}
     title="Vegetarian Menu Options"
     content="Our vegetarian menu offers a wide variety of meat-free meals. Choose from our established recipes or build your own bowl using our daily selection of fresh cheeses and produce."
+    image={menuPagesImages.vegetarianHero}
     actions={[
       { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
       { variant: 'ghost', tone: 'dark', text: 'Find a Location', href: LOCATION_CTA_HREF },
@@ -112,10 +116,11 @@ const faqs = [
 
   <LocalSourcing
     title="Quality Ingredients"
-    subtitle="Every vegetarian item is built using the same high-quality components as the rest of our menu, including our house-made dressings and vine-ripe Hau'ula tomatoes."
+    subtitle="Every vegetarian item is built using the same high-quality components as the rest of our menu, including our house-made dressings and vine-ripe Hauula tomatoes."
     ctaText="Learn More About Our Ingredients"
     ctaHref="/ingredients"
     withPhoto={true}
+    image={menuPagesImages.vegetarianIngredients}
   />
 
   <MenuCategories
@@ -125,8 +130,6 @@ const faqs = [
     ctaText=""
   />
 
-  <FAQs title="Frequently Asked Questions" items={faqs} isDark={true} />
-
   <CTABanner
     title="Ready to Order?"
     subtitle="Skip the line and place your order online for fast pickup. Planning a group event? We also offer a variety of meatless catering trays."
@@ -135,4 +138,6 @@ const faqs = [
     secondaryCtaText="Order Catering"
     secondaryCtaHref={CATERING_CTA_HREF}
   />
+
+  <FAQs title="Frequently Asked Questions" items={faqs} isDark={true} />
 </PageLayout>

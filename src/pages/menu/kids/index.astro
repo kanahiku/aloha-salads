@@ -8,6 +8,9 @@ import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
 import { getMenuCategory } from '~/lib/content';
+import { getSanityMenuPagesImages } from '~/lib/content/sanity';
+
+const menuPagesImages = await getSanityMenuPagesImages().catch(() => ({} as Awaited<ReturnType<typeof getSanityMenuPagesImages>>));
 
 const metadata = {
   title: 'Keiki Menu & Kids Meals | Aloha Salads Oahu',
@@ -41,7 +44,7 @@ const faqs = [
   },
   {
     title: 'Is the Keiki Menu available at all restaurants?',
-    description: "Yes. Our keiki options are available across all six of our neighborhood restaurants on O'ahu.",
+    description: "Yes. Our keiki options are available across all six of our neighborhood restaurants on Oahu.",
   },
   {
     title: 'Where are your Oahu locations?',
@@ -71,6 +74,7 @@ const faqs = [
     ctaText="Learn More About Our Ingredients"
     ctaHref="/ingredients"
     withPhoto={true}
+    image={menuPagesImages.kidsIngredients}
   />
 
   <MenuCategories
@@ -80,14 +84,14 @@ const faqs = [
     ctaText=""
   />
 
-  <FAQs title="Frequently Asked Questions" items={faqs} isDark={true} />
-
   <CTABanner
     title="Ready to Order?"
-    subtitle="Skip the line and place your family's order online for fast pickup. Planning a group event? We also offer a variety of catering options."
+    subtitle="Skip the line and place your family order online for fast pickup. Planning a group event? We also offer a variety of catering options."
     ctaText="Order Online"
     ctaHref={PRIMARY_CTA_HREF}
     secondaryCtaText="Order Catering"
     secondaryCtaHref={CATERING_CTA_HREF}
   />
+
+  <FAQs title="Frequently Asked Questions" items={faqs} isDark={true} />
 </PageLayout>

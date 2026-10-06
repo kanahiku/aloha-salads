@@ -10,6 +10,7 @@ import type {
   CateringImages,
   LocationImages,
   IngredientsImages,
+  MenuPagesImages,
   NavigationContent,
   NavLink,
   NavSubLink,
@@ -28,6 +29,41 @@ const IMAGE_PROJECTION = (field: string, fallbackAlt: string) => /* groq */ `
     "asset": ${field}.asset
   }, null)
 `;
+
+const COPY_REPLACEMENTS: Array<[string, string]> = [
+  ["We're", 'We are'],
+  ["we're", 'we are'],
+  ["We've", 'We have'],
+  ["we've", 'we have'],
+  ["that's", 'that is'],
+  ["That's", 'That is'],
+  ["what's", 'what is'],
+  ["What's", 'What is'],
+  ["doesn't", 'does not'],
+  ["Doesn't", 'Does not'],
+  ["you'll", 'you will'],
+  ["You'll", 'You will'],
+  ["we'll", 'we will'],
+  ["We'll", 'We will'],
+  ["family's", 'family'],
+  ["Family's", 'Family'],
+  ['site’s', 'site'],
+  ['Site’s', 'Site'],
+];
+
+function normalizeWebsiteCopy(value: string): string {
+  let text = value;
+  for (const [from, to] of COPY_REPLACEMENTS) {
+    text = text.replaceAll(from, to);
+  }
+
+  return text
+    .normalize('NFKD')
+    .replace(/\p{M}/gu, '')
+    .replace(/[ʻ‘’]/g, '')
+    .replace(/(?<=[A-Za-z])'(?=[A-Za-z])/g, '')
+    .normalize('NFC');
+}
 
 // ─── Homepage ─────────────────────────────────────────────────────────────────
 
@@ -180,6 +216,74 @@ export async function getSanityIngredientsImages(): Promise<IngredientsImages> {
   };
 }
 
+// ─── Menu Pages ───────────────────────────────────────────────────────────────
+
+type FetchedMenuPagesImages = {
+  saladsHeroImage?: FetchedImage | null;
+  saladsIngredientsImage?: FetchedImage | null;
+  wrapsHeroImage?: FetchedImage | null;
+  wrapsIngredientsImage?: FetchedImage | null;
+  soupsHeroImage?: FetchedImage | null;
+  soupsIngredientsImage?: FetchedImage | null;
+  drinksHeroImage?: FetchedImage | null;
+  drinksIngredientsImage?: FetchedImage | null;
+  veganIngredientsImage?: FetchedImage | null;
+  vegetarianHeroImage?: FetchedImage | null;
+  vegetarianIngredientsImage?: FetchedImage | null;
+  healthyOptionsHeroImage?: FetchedImage | null;
+  healthyOptionsIngredientsImage?: FetchedImage | null;
+  kidsIngredientsImage?: FetchedImage | null;
+  designYourOwnHeroImage?: FetchedImage | null;
+  designYourOwnBuildImage?: FetchedImage | null;
+  designYourOwnQualityImage?: FetchedImage | null;
+};
+
+const MENU_PAGES_IMAGES_QUERY = /* groq */ `
+  *[_type == "menuPagesContent" && _id == "singleton-menu-pages"][0] {
+    ${IMAGE_PROJECTION('saladsHeroImage', 'Signature salads at Aloha Salads')},
+    ${IMAGE_PROJECTION('saladsIngredientsImage', 'Fresh ingredients for Aloha Salads salads')},
+    ${IMAGE_PROJECTION('wrapsHeroImage', 'Wraps and subs at Aloha Salads')},
+    ${IMAGE_PROJECTION('wrapsIngredientsImage', 'Fresh ingredients for Aloha Salads wraps')},
+    ${IMAGE_PROJECTION('soupsHeroImage', 'Tomato bisque soup at Aloha Salads')},
+    ${IMAGE_PROJECTION('soupsIngredientsImage', 'Fresh ingredients for Aloha Salads soups')},
+    ${IMAGE_PROJECTION('drinksHeroImage', 'Drinks at Aloha Salads')},
+    ${IMAGE_PROJECTION('drinksIngredientsImage', 'Fresh ingredients for Aloha Salads drinks')},
+    ${IMAGE_PROJECTION('veganIngredientsImage', 'Fresh plant-based ingredients at Aloha Salads')},
+    ${IMAGE_PROJECTION('vegetarianHeroImage', 'Vegetarian options at Aloha Salads')},
+    ${IMAGE_PROJECTION('vegetarianIngredientsImage', 'Fresh vegetarian ingredients at Aloha Salads')},
+    ${IMAGE_PROJECTION('healthyOptionsHeroImage', 'Healthy menu options at Aloha Salads')},
+    ${IMAGE_PROJECTION('healthyOptionsIngredientsImage', 'Fresh healthy ingredients at Aloha Salads')},
+    ${IMAGE_PROJECTION('kidsIngredientsImage', 'Fresh keiki meal ingredients at Aloha Salads')},
+    ${IMAGE_PROJECTION('designYourOwnHeroImage', 'Custom salad bowl at Aloha Salads')},
+    ${IMAGE_PROJECTION('designYourOwnBuildImage', 'How to build your own salad at Aloha Salads')},
+    ${IMAGE_PROJECTION('designYourOwnQualityImage', 'Quality ingredients for custom salads at Aloha Salads')}
+  }
+`;
+
+export async function getSanityMenuPagesImages(): Promise<MenuPagesImages> {
+  const doc = await sanityClient.fetch<FetchedMenuPagesImages | null>(MENU_PAGES_IMAGES_QUERY);
+
+  return {
+    saladsHero: resolveContentImage(doc?.saladsHeroImage),
+    saladsIngredients: resolveContentImage(doc?.saladsIngredientsImage),
+    wrapsHero: resolveContentImage(doc?.wrapsHeroImage),
+    wrapsIngredients: resolveContentImage(doc?.wrapsIngredientsImage),
+    soupsHero: resolveContentImage(doc?.soupsHeroImage),
+    soupsIngredients: resolveContentImage(doc?.soupsIngredientsImage),
+    drinksHero: resolveContentImage(doc?.drinksHeroImage),
+    drinksIngredients: resolveContentImage(doc?.drinksIngredientsImage),
+    veganIngredients: resolveContentImage(doc?.veganIngredientsImage),
+    vegetarianHero: resolveContentImage(doc?.vegetarianHeroImage),
+    vegetarianIngredients: resolveContentImage(doc?.vegetarianIngredientsImage),
+    healthyOptionsHero: resolveContentImage(doc?.healthyOptionsHeroImage),
+    healthyOptionsIngredients: resolveContentImage(doc?.healthyOptionsIngredientsImage),
+    kidsIngredients: resolveContentImage(doc?.kidsIngredientsImage),
+    designYourOwnHero: resolveContentImage(doc?.designYourOwnHeroImage),
+    designYourOwnBuild: resolveContentImage(doc?.designYourOwnBuildImage),
+    designYourOwnQuality: resolveContentImage(doc?.designYourOwnQualityImage),
+  };
+}
+
 type FetchedNavSubLink = {
   text?: string;
   href?: string;
@@ -257,10 +361,10 @@ function normalizeNavSubLink(link: FetchedNavSubLink | null | undefined): NavSub
   if (!link?.text || !link.href) return null;
   const image = resolveContentImage(link.image);
   return {
-    text: link.text,
+    text: normalizeWebsiteCopy(link.text),
     href: link.href,
-    ...(link.description ? { description: link.description } : {}),
-    ...(image ? { image } : {}),
+    ...(link.description ? { description: normalizeWebsiteCopy(link.description) } : {}),
+    ...(image ? { image: { ...image, alt: normalizeWebsiteCopy(image.alt) } } : {}),
   };
 }
 
@@ -272,7 +376,7 @@ function normalizeNavLink(link: FetchedNavLink | null | undefined): NavLink | nu
     .filter((item): item is NonNullable<typeof item> => Boolean(item));
   const columns = (link.columns ?? [])
     .map((column) => ({
-      title: column?.title ?? '',
+      title: column?.title ? normalizeWebsiteCopy(column.title) : '',
       links: (column?.links ?? [])
         .map(normalizeNavSubLink)
         .filter((item): item is NonNullable<typeof item> => Boolean(item)),
@@ -280,12 +384,24 @@ function normalizeNavLink(link: FetchedNavLink | null | undefined): NavLink | nu
     .filter((column) => column.title && column.links.length);
 
   return {
-    text: link.text,
+    text: normalizeWebsiteCopy(link.text),
     ...(link.href ? { href: link.href } : {}),
-    ...(link.description ? { description: link.description } : {}),
-    ...(image ? { image } : {}),
+    ...(link.description ? { description: normalizeWebsiteCopy(link.description) } : {}),
+    ...(image ? { image: { ...image, alt: normalizeWebsiteCopy(image.alt) } } : {}),
     ...(links.length ? { links } : {}),
     ...(columns.length ? { columns } : {}),
+  };
+}
+
+function normalizeFooter(footer: NavigationContent['footer']): NavigationContent['footer'] {
+  return {
+    links: footer.links.map((column) => ({
+      title: normalizeWebsiteCopy(column.title),
+      links: column.links.map((link) => ({ ...link, text: normalizeWebsiteCopy(link.text) })),
+    })),
+    secondaryLinks: footer.secondaryLinks.map((link) => ({ ...link, text: normalizeWebsiteCopy(link.text) })),
+    socialLinks: footer.socialLinks.map((link) => ({ ...link, ariaLabel: normalizeWebsiteCopy(link.ariaLabel) })),
+    footNote: normalizeWebsiteCopy(footer.footNote),
   };
 }
 
@@ -300,15 +416,13 @@ export async function getSanityNavigationContent(): Promise<NavigationContent> {
       links: (nav.header?.links ?? [])
         .map(normalizeNavLink)
         .filter((item): item is NonNullable<typeof item> => Boolean(item)),
-      actions: nav.header?.actions ?? [],
-      ...(nav.header?.phone ? { phone: nav.header.phone } : {}),
+      actions: (nav.header?.actions ?? []).map((action) => ({
+        ...action,
+        ...(action.text ? { text: normalizeWebsiteCopy(action.text) } : {}),
+      })),
+      ...(nav.header?.phone ? { phone: { ...nav.header.phone, text: normalizeWebsiteCopy(nav.header.phone.text) } } : {}),
     },
-    footer: nav.footer ?? {
-      links: [],
-      secondaryLinks: [],
-      socialLinks: [],
-      footNote: '',
-    },
+    footer: normalizeFooter(nav.footer),
   };
 }
 
@@ -369,10 +483,10 @@ function normalizeMenuItem(item: FetchedMenuItem): MenuItem | null {
   if (!item.title) return null;
   const image = resolveContentImage(item.image);
   return {
-    title: item.title,
+    title: normalizeWebsiteCopy(item.title),
     ...(item.slug ? { slug: item.slug } : {}),
-    ...(item.description ? { description: item.description } : {}),
-    ...(image ? { image } : {}),
+    ...(item.description ? { description: normalizeWebsiteCopy(item.description) } : {}),
+    ...(image ? { image: { ...image, alt: normalizeWebsiteCopy(image.alt) } } : {}),
   };
 }
 
@@ -398,10 +512,10 @@ export async function getSanityMenuCategories(): Promise<MenuCategory[]> {
         .map(({ order: _order, ...item }) => item);
 
       return {
-        title: category.title!,
+        title: normalizeWebsiteCopy(category.title!),
         slug: category.slug,
         href: category.slug ? `/menu/${category.slug}` : undefined,
-        ...(category.description ? { description: category.description } : {}),
+        ...(category.description ? { description: normalizeWebsiteCopy(category.description) } : {}),
         items: categoryItems,
       };
     })

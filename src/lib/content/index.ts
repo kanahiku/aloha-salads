@@ -1,4 +1,4 @@
-import type { BlogPost, NavigationContent, Testimonial, MenuCategory } from './types';
+import type { BlogPost, NavigationContent, Testimonial, MenuCategory, MenuItem } from './types';
 import {
   getSanityBlogPost,
   getSanityBlogPosts,
@@ -188,9 +188,186 @@ export async function getTestimonials(): Promise<Testimonial[]> {
   }
 }
 
+const HIDDEN_MENU_ITEM_TITLES = new Set(['red bull']);
+const MENU_PHOTO_DONOR_TO_BASE_TITLE = new Map([
+  ['aloha caesar (with shrimp)', 'aloha caesar'],
+  ['the paniolo (with gyro meat)', 'the paniolo'],
+  ['spicy ahi poke bowl', 'poke bowl'],
+  ['spicy ahi poke wrap', 'poke wrap'],
+  ['spicy ahi salad (styling a)', 'poke salad'],
+  ['spicy ahi salad (styling b)', 'poke salad'],
+]);
+
+const MENU_TITLE_RENAMES = new Map([['maui mozzarella salad', 'Maui Mozzarella']]);
+const MENU_IMAGE_ALT_RENAMES = new Map([
+  ['hummis pita wrap', 'Hummus Pita Wrap'],
+  ['grilled cheese combo', 'Grilled Cheese Soup Combo'],
+  ['maui mozzarella salad', 'Maui Mozzarella'],
+]);
+
+function normalizeMenuTitle(title: string): string {
+  return title.trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function applyMenuItemTextCorrections(item: MenuItem): MenuItem {
+  const title = MENU_TITLE_RENAMES.get(normalizeMenuTitle(item.title)) ?? item.title;
+  const image = item.image
+    ? {
+        ...item.image,
+        alt: MENU_IMAGE_ALT_RENAMES.get(normalizeMenuTitle(item.image.alt)) ?? item.image.alt,
+      }
+    : undefined;
+
+  return { ...item, title, ...(image ? { image } : {}) };
+}
+
+const REQUESTED_MENU_ITEMS: Array<{
+  categorySlug: string;
+  categoryTitle: string;
+  categoryDescription: string;
+  title: string;
+  description?: string;
+  badge?: string;
+  note?: string;
+}> = [
+  {
+    categorySlug: 'salads',
+    categoryTitle: 'Signature Salads',
+    categoryDescription: 'Fresh bowls built with crisp greens, local ahi, and house-made dressings.',
+    title: 'Big Island Beet',
+    note: 'Not available at Kaneohe',
+  },
+  {
+    categorySlug: 'salads',
+    categoryTitle: 'Signature Salads',
+    categoryDescription: 'Fresh bowls built with crisp greens, local ahi, and house-made dressings.',
+    title: 'Poke Bowl',
+    badge: 'Coming soon',
+  },
+  {
+    categorySlug: 'salads',
+    categoryTitle: 'Signature Salads',
+    categoryDescription: 'Fresh bowls built with crisp greens, local ahi, and house-made dressings.',
+    title: 'Poke Salad',
+    badge: 'Coming soon',
+  },
+  {
+    categorySlug: 'wraps-subs',
+    categoryTitle: 'Wraps & Subs',
+    categoryDescription: 'Hearty wraps and sandwiches made with the same fresh components as our bowls.',
+    title: 'Pastrami Melt',
+  },
+  {
+    categorySlug: 'wraps-subs',
+    categoryTitle: 'Wraps & Subs',
+    categoryDescription: 'Hearty wraps and sandwiches made with the same fresh components as our bowls.',
+    title: 'Poke Wrap',
+    badge: 'Coming soon',
+  },
+  {
+    categorySlug: 'misc',
+    categoryTitle: 'Misc',
+    categoryDescription: 'Additional favorites and cafe-style selections.',
+    title: 'Avocado Toast',
+  },
+  {
+    categorySlug: 'misc',
+    categoryTitle: 'Misc',
+    categoryDescription: 'Additional favorites and cafe-style selections.',
+    title: 'Dessert Toast',
+  },
+  {
+    categorySlug: 'misc',
+    categoryTitle: 'Misc',
+    categoryDescription: 'Additional favorites and cafe-style selections.',
+    title: 'Acai Bowl',
+  },
+];
+
+function upsertRequestedMenuItem(items: MenuItem[], requested: (typeof REQUESTED_MENU_ITEMS)[number], image?: MenuItem['image']) {
+  const requestedTitle = normalizeMenuTitle(requested.title);
+  const existingIndex = items.findIndex((item) => normalizeMenuTitle(item.title) === requestedTitle);
+  const requestedFields = {
+    ...(requested.description ? { description: requested.description } : {}),
+    ...(requested.badge ? { badge: requested.badge } : {}),
+    ...(requested.note ? { note: requested.note } : {}),
+    ...(image?.src ? { image: { ...image, alt: requested.title } } : {}),
+  };
+
+  if (existingIndex === -1) return [...items, { title: requested.title, ...requestedFields }];
+
+  return items.map((item, index) =>
+    index === existingIndex
+      ? {
+          ...item,
+          ...requestedFields,
+          description: requested.description ?? item.description,
+          badge: requested.badge ?? item.badge,
+          note: requested.note ?? item.note,
+          image: image?.src ? { ...image, alt: requested.title } : item.image,
+        }
+      : item
+  );
+}
+
+function applyMenuDisplayOverrides(categories: MenuCategory[]): MenuCategory[] {
+  const variantImages = new Map<string, MenuItem['image']>();
+
+  for (const category of categories) {
+    for (const item of category.items) {
+      const baseTitle = MENU_PHOTO_DONOR_TO_BASE_TITLE.get(normalizeMenuTitle(item.title));
+      if (baseTitle && item.image?.src) variantImages.set(baseTitle, { ...item.image, alt: baseTitle });
+    }
+  }
+
+  const nextCategories = categories
+    .map((category) => ({
+      ...category,
+      items: category.items.flatMap((item) => {
+        const title = normalizeMenuTitle(item.title);
+
+        if (HIDDEN_MENU_ITEM_TITLES.has(title) || MENU_PHOTO_DONOR_TO_BASE_TITLE.has(title)) return [];
+
+        const variantImage = variantImages.get(title);
+        return [{ ...item, ...(variantImage?.src ? { image: { ...variantImage, alt: item.title } } : {}) }];
+      }),
+    }))
+    .filter((category) => category.items.length > 0);
+
+  for (const requested of REQUESTED_MENU_ITEMS) {
+    const href = `/menu/${requested.categorySlug}`;
+    const existingIndex = nextCategories.findIndex(
+      (category) => category.slug === requested.categorySlug || category.href === href
+    );
+    const image = variantImages.get(normalizeMenuTitle(requested.title));
+
+    if (existingIndex === -1) {
+      nextCategories.push({
+        title: requested.categoryTitle,
+        slug: requested.categorySlug,
+        href,
+        description: requested.categoryDescription,
+        items: upsertRequestedMenuItem([], requested, image),
+      });
+      continue;
+    }
+
+    const category = nextCategories[existingIndex];
+    nextCategories[existingIndex] = {
+      ...category,
+      items: upsertRequestedMenuItem(category.items, requested, image),
+    };
+  }
+
+  return nextCategories.map((category) => ({
+    ...category,
+    items: category.items.map(applyMenuItemTextCorrections),
+  }));
+}
+
 export async function getMenuCategories(): Promise<MenuCategory[]> {
   try {
-    return await getSanityMenuCategories();
+    return applyMenuDisplayOverrides(await getSanityMenuCategories());
   } catch (error) {
     console.warn('Sanity menu unavailable.', error);
     return [];

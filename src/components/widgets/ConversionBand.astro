@@ -1,45 +1,40 @@
 ---
 /**
- * Pre-footer conversion band — Nav tab, every page.
- * Three global CTAs: Order Online, Find a Location, Order Catering.
+ * ConversionBand — slim pre-footer conversion strip shown on every page.
+ * Three equal-weight actions: Order Online · Find a Location · Order Catering.
+ * Uses the card (cream) background so it sits between dark sections and the footer.
  */
-import Button from '~/components/ui/Button.astro';
-import {
-  CATERING_CTA_HREF,
-  CATERING_CTA_LABEL,
-  LOCATION_CTA_HREF,
-  LOCATION_CTA_LABEL,
-  PRIMARY_CTA_HREF,
-  PRIMARY_CTA_LABEL,
-} from '~/config/cta';
+import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
 
-export interface Props {
-  id?: string;
-}
-
-const { id = 'conversion-band' } = Astro.props;
+const links = [
+  { label: 'Order Online', href: PRIMARY_CTA_HREF },
+  { label: 'Find a Location', href: LOCATION_CTA_HREF },
+  { label: 'Order Catering', href: CATERING_CTA_HREF },
+];
 ---
 
-<section {...id ? { id } : {}} class="not-prose w-full bg-page">
-  <div
-    class="mx-auto flex w-full max-w-container flex-col items-stretch gap-3 px-5 py-12 sm:px-8 md:flex-row md:items-center md:justify-center md:gap-4 md:px-16 md:py-16"
-  >
-    <Button variant="primary" text={PRIMARY_CTA_LABEL} href={PRIMARY_CTA_HREF} hideNote class="justify-center" />
-    <Button
-      variant="ghost"
-      tone="light"
-      text={LOCATION_CTA_LABEL}
-      href={LOCATION_CTA_HREF}
-      hideNote
-      class="justify-center"
-    />
-    <Button
-      variant="ghost"
-      tone="light"
-      text={CATERING_CTA_LABEL}
-      href={CATERING_CTA_HREF}
-      hideNote
-      class="justify-center"
-    />
+<div class="not-prose w-full border-t border-heading/10 bg-card">
+  <div class="mx-auto flex w-full max-w-container flex-col divide-y divide-heading/10 sm:flex-row sm:divide-x sm:divide-y-0">
+    {links.map((link) => (
+      <a
+        href={link.href}
+        class="group flex flex-1 items-center justify-between gap-3 px-6 py-5 transition-colors duration-200 hover:bg-section-grey/30 md:px-10 md:py-6"
+      >
+        <span class="font-heading text-button uppercase tracking-[0.06em] text-heading transition-colors group-hover:text-heading">
+          {link.label}
+        </span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 16 16"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          class="size-3.5 shrink-0 text-heading/40 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-heading"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 13L13 3M7 3h6v6" />
+        </svg>
+      </a>
+    ))}
   </div>
-</section>
+</div>

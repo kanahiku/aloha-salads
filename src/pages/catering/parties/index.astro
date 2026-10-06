@@ -14,54 +14,56 @@ import { getSanityCateringImages } from '~/lib/content/sanity';
 const cateringImages = await getSanityCateringImages();
 
 const metadata = {
-  title: 'Event Catering Oahu | Large Gatherings & Banquets | Aloha Salads',
+  title: 'Party Catering Oahu | Birthdays, Graduations & Showers | Aloha Salads',
   description:
-    'Order fresh event catering for your gathering. We prepare salad trays, wrap platters, fresh soups, and beverages for pickup across our six Oahu locations.',
+    'Order fresh party catering for your next event. We provide salad trays and wrap platters for birthdays, graduations, baby showers, and sports banquets across our six Oahu locations.',
   ignoreTitleTemplate: true,
 };
 
 const occasions = [
   {
     number: '01',
-    title: 'Community Gatherings',
+    title: 'Birthday Party Catering',
     description:
-      'Feed your crowd with fresh and healthy meals. Our signature salad trays and wrap platters provide a fresh alternative to heavy event food for local gatherings.',
+      'Serve fresh options at your next birthday gathering. Our sandwich platters and signature salad trays provide easy meals for guests with varying dietary preferences.',
   },
   {
     number: '02',
-    title: 'Private Functions',
+    title: 'Graduation Party Catering',
     description:
-      'Serve a quality menu at your family reunion or banquet. We offer scaled-up versions of our signature items designed to accommodate large groups easily.',
+      'Celebrate your graduate with a fresh menu. We offer scaled-up versions of our signature items designed to feed large crowds during graduation season.',
   },
   {
     number: '03',
-    title: 'Accommodating Every Diet',
+    title: 'Shower Catering',
     description:
-      'Ensure every guest has a meal they can enjoy. We provide dedicated vegetarian options and plant-based trays to meet the dietary requirements of your attendees.',
+      'Our fresh salads provide a light menu option for baby showers and bridal showers. We can customize your order to include dedicated vegetarian or vegan platters, such as our Aloha Passion Tray.',
   },
   {
     number: '04',
-    title: 'Quality Event Food',
+    title: 'Sports Team Catering',
     description:
-      "A catering tray is our standard menu in a bigger format. Scratch-made dressings and vine-ripe Hauula tomatoes throughout.",
+      'Provide fresh food for your athletes. Our catering trays offer lean protein and fresh vegetables for post-game meals or end-of-season banquets.',
   },
 ];
 ---
 
 <PageLayout metadata={metadata}>
+  {/* ── 1. Hero ───────────────────────────────────────────── */}
   <Hero2
     variant="split-dark"
     overlapHeader={false}
-    title="Event Catering"
-    content="Provide fresh food for your next gathering. We prepare large-format catering trays and wrap platters for events of all sizes. All event orders are available for pickup across our six Oahu locations."
-    image={cateringImages.events}
+    title="Party Catering"
+    content="Provide fresh food for your next celebration. We prepare large-format catering trays and wrap platters for parties of all sizes. All party orders are available for pickup across our six O\u02BBahu locations."
+    image={cateringImages.largeGroups}
     actions={[
       { variant: 'primary', text: 'Order Catering Online', href: CATERING_CTA_HREF },
       { variant: 'ghost', tone: 'dark', text: 'View Full Catering Menu', href: '/catering' },
     ]}
   />
 
-  <section class="not-prose relative w-full overflow-hidden bg-page" aria-label="Event catering occasions">
+  {/* ── 2. Occasions — 2×2 editorial card grid ─── */}
+  <section class="not-prose relative w-full overflow-hidden bg-page" aria-label="Party catering occasions">
     <img
       src={peach.src}
       alt=""
@@ -94,6 +96,7 @@ const occasions = [
               >
                 {occ.number}
               </span>
+
               <div class="relative flex flex-col gap-4">
                 <span class="font-rough text-[15px] leading-none text-page/90">{occ.number}</span>
                 <Heading variant="h3" color="white">
@@ -103,6 +106,7 @@ const occasions = [
                   {occ.description}
                 </Text>
               </div>
+
               <div class="mt-8 h-px w-12 bg-accent" />
             </article>
           ))
@@ -111,44 +115,44 @@ const occasions = [
     </div>
   </section>
 
+  {/* ── 3. Other catering sub-pages ───────────────────────── */}
   <CateringSubNav
-    excludeHref="/catering/events"
+    excludeHref="/catering/parties"
     subtitle="We provide catering services for various event types. Explore our other catering menus below:"
   />
 
+  {/* ── 4. FAQs ──────────────────────────────────────────── */}
   <FAQs
     isDark={true}
     title="Frequently Asked Questions"
     items={[
       {
-        title: 'How far in advance should I order for a large event?',
-        description:
-          'Please contact your nearest location to confirm the required lead time for your specific event size.',
+        title: 'Can I order vegetarian trays for a party?',
+        description: 'Yes. The Aloha Passion Tray and Aloha Mediterranean Tray are both meatless.',
       },
       {
-        title: 'Do you provide serving utensils for events?',
+        title: 'Do you provide plates and napkins for parties?',
         description: 'Ask the store when you order and they will let you know what is included.',
       },
       {
-        title: 'Can I customize event catering trays?',
-        description:
-          'Yes. We can modify our catering trays to accommodate specific dietary requirements for your event guests.',
+        title: 'How far in advance should I order for a large party?',
+        description: 'Please contact your nearest location to confirm the required lead time for your specific party size.',
       },
       {
-        title: 'Do you offer meatless event catering options?',
-        description:
-          'Yes. We prepare dedicated plant-based items including the Aloha Mediterranean Tray and the Aloha Passion Tray.',
+        title: 'Can I pick up a party order at the weekend?',
+        description: "Weekend collection is available. Check your stores hours and call ahead to arrange the time.",
       },
       {
-        title: 'Where do I pick up my event catering order?',
-        description: "You can pick up your catering order at any of our six neighborhood restaurants across Oahu.",
+        title: 'Do you offer beverages for party catering?',
+        description: 'Yes. You can add bottled drinks and our refreshing Big Island m\u0101maki mint tea to complete your party menu.',
       },
     ]}
   />
 
+  {/* ── 5. Ready to order CTA ────────────────────────────── */}
   <CTABanner
     title="Ready to Order?"
-    subtitle="Order online for pickup. For a large event, call the store to talk through quantities and timing."
+    subtitle="Order online for pickup. Call your nearest store if you want to talk through numbers for a bigger party."
     ctaText="Order Catering Online"
     ctaHref={CATERING_CTA_HREF}
     secondaryCtaText="Find a Location"

@@ -14,9 +14,9 @@ export const site = {
   name: 'Aloha Salads',
   url: 'https://example.com',
   description:
-    'Island-grown produce, never-frozen local ahi, and bowls built the way you like them. Kailua-born since 2006 — six spots on O‘ahu.',
+    'Island-grown produce, never-frozen local ahi, and bowls built the way you like them. Kailua-born since 2006 — six spots on Oahu.',
   footerTagline:
-    'Fresh, healthy food that tastes worth coming back for — and feels like home. Six locations across O‘ahu.',
+    'Fresh, healthy food that tastes worth coming back for — and feels like home. Six locations across Oahu.',
   trailingSlash: false,
 
   /** Cloudflare Worker `sites.slug`. `PUBLIC_SITE_SLUG` in env overrides this. */

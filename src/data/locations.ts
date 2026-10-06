@@ -81,7 +81,7 @@ export const storeLocations: StoreLocation[] = [
     addressLine2: 'Kaneohe, HI 96744',
     phoneDisplay: '(808) 234-6414',
     phoneHref: 'tel:+18082346414',
-    hours: 'Monday - Saturday: 11:00 AM to 7:00 PM · Sunday: 11:00 AM to 7:00 PM',
+    hours: 'Monday - Saturday: 11:00 AM to 7:00 PM · Sunday: 11:00 AM to 6:00 PM',
     href: '/locations/kaneohe',
     mapsEmbedSrc:
       'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d449890.64104716387!2d-158.0817572!3d21.3684132!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c006bd6aef3c96f%3A0xd571e94ef8632356!2sAloha%20Salads!5e1!3m2!1sen!2sph!4v1788467490827!5m2!1sen!2sph',
@@ -105,7 +105,7 @@ export const storeLocations: StoreLocation[] = [
     mapsEmbedSrc:
       'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d56250.67233191676!2d-158.068371!3d21.331035!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c006327b0f280b3%3A0x3645d60b174c0125!2sAloha%20Salads!5e1!3m2!1sen!2sph!4v1788467950623!5m2!1sen!2sph',
     intro:
-      'Kapolei Commons serves West Oahu with hearty salads alongside refreshing Big Island māmaki mint tea.',
+      'Kapolei Commons serves West Oahu with hearty salads alongside refreshing Big Island mamaki mint tea.',
     orderPickupHref: 'https://alohasaladskapolei.hrpos.heartland.us/menu',
     orderDeliveryHref: 'https://order.online/store/aloha-salads-kapolei-275987/?delivery=true&hideModal=true',
   },

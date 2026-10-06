@@ -42,6 +42,35 @@ export interface IngredientsImages {
   freshLocalProduce?: ContentImage;
 }
 
+export interface MenuPagesImages {
+  // Salads
+  saladsHero?: ContentImage;
+  saladsIngredients?: ContentImage;
+  // Wraps & Subs
+  wrapsHero?: ContentImage;
+  wrapsIngredients?: ContentImage;
+  // Soups
+  soupsHero?: ContentImage;
+  soupsIngredients?: ContentImage;
+  // Drinks
+  drinksHero?: ContentImage;
+  drinksIngredients?: ContentImage;
+  // Vegan
+  veganIngredients?: ContentImage;
+  // Vegetarian
+  vegetarianHero?: ContentImage;
+  vegetarianIngredients?: ContentImage;
+  // Healthy Options
+  healthyOptionsHero?: ContentImage;
+  healthyOptionsIngredients?: ContentImage;
+  // Kids
+  kidsIngredients?: ContentImage;
+  // Design Your Own
+  designYourOwnHero?: ContentImage;
+  designYourOwnBuild?: ContentImage;
+  designYourOwnQuality?: ContentImage;
+}
+
 // ─── Navigation ───────────────────────────────────────────────────────────────
 
 export interface NavSubLink {
@@ -106,6 +135,8 @@ export interface MenuItem {
   title: string;
   slug?: string;
   description?: string;
+  badge?: string;
+  note?: string;
   image?: ContentImage;
 }
 

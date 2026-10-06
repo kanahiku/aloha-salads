@@ -55,23 +55,23 @@
  * ── pillar ──
  *   label     — eyebrow category label shown left in the header row (e.g. "MOVEMENT")
  *   iconBg    — when true, wraps the <slot name="icon"> in a bg-cta rounded-bl-[12px]
- *               container. Use for icons that don't already carry their own bg.
+ *               container. Use for icons that dont already carry their own bg.
  *               Default: false (icon SVG occupies the 50×50 area directly).
  *   <slot name="icon"> — SVG for the top-right icon area
  *   <slot>             — card body (heading, description, etc.)
  *
  * Usage:
- *   <Card label="Fill this first">…</Card>
+ *   <Card label="Fill this first">...</Card>
  *
  *   <Card variant="pillar" label="MOVEMENT">
- *     <Fragment slot="icon"><svg>…</svg></Fragment>
- *     <p class="font-heading text-h4 …">Heading</p>
- *     <p class="font-sans text-[12px] …">Description</p>
+ *     <Fragment slot="icon"><svg>...</svg></Fragment>
+ *     <p class="font-heading text-h4 ...">Heading</p>
+ *     <p class="font-sans text-[12px] ...">Description</p>
  *   </Card>
  *
  *   <Card variant="pillar" label="SLEEP" iconBg={true}>
- *     <Fragment slot="icon"><svg>…</svg></Fragment>
- *     …
+ *     <Fragment slot="icon"><svg>...</svg></Fragment>
+ *     ...
  *   </Card>
  */
 
@@ -172,7 +172,7 @@ const borderedBase =
 
 // ── pillar ──
 // Single soft drop-shadow (no coloured offset), cream bg, overflow-hidden so
-// the icon's rounded-bl-[12px] corner clips properly at the card edge.
+// the icons rounded-bl-[12px] corner clips properly at the card edge.
 const pillarBase =
   'bg-page rounded-none overflow-hidden flex flex-col items-end border-8 border-section-grey';
 

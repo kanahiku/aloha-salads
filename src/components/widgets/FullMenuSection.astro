@@ -11,6 +11,8 @@ import bigLeaf from '~/assets/images/big-leaf.webp';
 export interface FullMenuItem {
   title: string;
   description?: string;
+  badge?: string;
+  note?: string;
   image?: ContentImage;
 }
 
@@ -178,9 +180,21 @@ const slugify = (value: string) =>
                         />
                       </>
                     )}
+                    {item.badge && (
+                      <span class="absolute bottom-3 left-3 z-10 bg-section-dark px-2.5 pt-[4px] pb-[2px] font-heading text-[11px] font-medium leading-none tracking-[0.06em] text-page shadow-sm uppercase">
+                        {item.badge}
+                      </span>
+                    )}
                   </div>
                   <div class="flex flex-1 flex-col gap-3 px-5 py-5">
-                    <h4 class="font-rough text-h4 font-normal leading-none text-heading">{item.title}</h4>
+                    <div class="flex items-center justify-between gap-3">
+                      <h4 class="font-rough text-h4 font-normal leading-none text-heading">{item.title}</h4>
+                      {item.note && (
+                        <span class="shrink-0 text-right font-sans text-[11px] leading-snug tracking-[0.02em] text-section-dark">
+                          {item.note}
+                        </span>
+                      )}
+                    </div>
                     {item.description && (
                       <p class="font-sans text-body leading-[1.45] tracking-[-0.01em] text-muted">{item.description}</p>
                     )}
@@ -239,7 +253,7 @@ const slugify = (value: string) =>
       applyTop();
       const ro = new ResizeObserver(applyTop);
       if (siteHeader) ro.observe(siteHeader);
-      ro.observe(nav); // re-compute if the nav's own height changes
+      ro.observe(nav); // re-compute if the navs own height changes
 
       // ── 2. HORIZONTAL PILL SCROLL ────────────────────────────────────────────
       // Never call scrollIntoView() — it can trigger vertical page scroll as a
@@ -247,7 +261,7 @@ const slugify = (value: string) =>
       const scrollPillIntoView = (link: HTMLAnchorElement) => {
         const navRect = nav.getBoundingClientRect();
         const linkRect = link.getBoundingClientRect();
-        // Position of the link's left/right edges inside the nav's scroll container
+        // Position of the links left/right edges inside the navs scroll container
         const linkLeft = linkRect.left - navRect.left + nav.scrollLeft;
         const linkRight = linkLeft + linkRect.width;
         const pad = 16;

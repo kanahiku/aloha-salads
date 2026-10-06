@@ -15,6 +15,6 @@ export const CATERING_CTA_HREF = '/catering';
 export const FOOTER_CTA_EYEBROW = 'Hungry?';
 export const FOOTER_CTA_TITLE = 'Order ahead.<br />Skip the line.';
 export const FOOTER_CTA_BODY =
-  'Pickup or delivery from any of our six spots on O‘ahu. Island-grown produce, never-frozen local ahi.';
+  'Pickup or delivery from any of our six spots on Oahu. Island-grown produce, never-frozen local ahi.';
 export const FOOTER_CTA_LABEL = 'order online';
 export const FOOTER_CTA_HREF = '/order-online';

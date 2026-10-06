@@ -727,7 +727,7 @@ nav > ul > li > div > button.aw-link-active {
 [data-mobile-panel] a.aw-link-active,
 [data-mobile-panel] a.aw-link-active:hover {
   background-color: rgb(255 255 255 / 10%);
-  color: var(--aw-color-bg-cta);
+  color: var(--aw-color-accent);
 }
 
 /* Dropdown option hover */

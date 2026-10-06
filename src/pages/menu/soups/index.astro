@@ -8,6 +8,9 @@ import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
 import { getMenuCategory } from '~/lib/content';
+import { getSanityMenuPagesImages } from '~/lib/content/sanity';
+
+const menuPagesImages = await getSanityMenuPagesImages().catch(() => ({} as Awaited<ReturnType<typeof getSanityMenuPagesImages>>));
 
 const metadata = {
   title: 'Fresh Soups & Tomato Bisque | Aloha Salads Oahu',
@@ -46,7 +49,7 @@ const faqs = [
   },
   {
     title: 'Is the soup available at all locations?',
-    description: "Yes. Our menu is available across all six of our neighborhood restaurants on O'ahu.",
+    description: "Yes. Our menu is available across all six of our neighborhood restaurants on Oahu.",
   },
   {
     title: 'Can I order soup for takeout?',
@@ -61,6 +64,7 @@ const faqs = [
     overlapHeader={false}
     title="Soups"
     content="Our seasonal soups are crafted to perfectly complement our signature salads and wraps."
+    image={menuPagesImages.soupsHero}
     actions={[
       { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
       { variant: 'ghost', tone: 'dark', text: 'Find a Location', href: LOCATION_CTA_HREF },
@@ -75,6 +79,7 @@ const faqs = [
     ctaText="Learn More About Our Ingredients"
     ctaHref="/ingredients"
     withPhoto={true}
+    image={menuPagesImages.soupsIngredients}
   />
 
   <MenuCategories
@@ -84,8 +89,6 @@ const faqs = [
     ctaText=""
   />
 
-  <FAQs title="Frequently Asked Questions" items={faqs} isDark={true} />
-
   <CTABanner
     title="Ready to Order?"
     subtitle="Skip the line and place your order online for fast pickup. Planning a group event? We also offer a variety of catering options."
@@ -94,4 +97,6 @@ const faqs = [
     secondaryCtaText="Order Catering"
     secondaryCtaHref={CATERING_CTA_HREF}
   />
+
+  <FAQs title="Frequently Asked Questions" items={faqs} isDark={true} />
 </PageLayout>

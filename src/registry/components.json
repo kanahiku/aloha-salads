@@ -534,7 +534,7 @@
     {
       "id": "P-45",
       "name": "Locations",
-      "figmaNames": ["Six spots across O'ahu", "Locations section", "59:155"],
+      "figmaNames": ["Six spots across Oahu", "Locations section", "59:155"],
       "shape": "bg-page cream. 2-col: left = eyebrow+h2+body-lg+primary CTA then 2×2 blueberry location cards (name+address row + blueberry-light view-store button with pin icon) / right = square photo placeholder.",
       "component": "Locations",
       "import": "~/components/widgets/Locations.astro",
@@ -643,7 +643,7 @@
     {
       "id": "P-50",
       "name": "Build steps",
-      "figmaNames": ["How to Build Your Own Salad", "Build Steps", "What's included"],
+      "figmaNames": ["How to Build Your Own Salad", "Build Steps", "What is included"],
       "shape": "Split: left eyebrow+h2+lede+numbered steps+note+CTA / right bowl illustration. Numbered recipe for custom builds.",
       "component": "BuildSteps",
       "import": "~/components/widgets/BuildSteps.astro",

@@ -57,7 +57,7 @@ const occasions = [
   {
     label: 'Large Group Catering',
     href: '/catering/large-groups',
-    description: "Scaled-up trays and platters for big gatherings across O'ahu.",
+    description: "Scaled-up trays and platters for big gatherings across Oahu.",
   },
 ];
 ---
@@ -69,7 +69,7 @@ const occasions = [
     overlapHeader={false}
     tagline="Order Now"
     title="Catering Menu"
-    content="Provide fresh meals for your next gathering with our catering trays. We prepare scaled-up versions of our signature salads and wraps for pickup across our six O'ahu locations."
+    content="Provide fresh meals for your next gathering with our catering trays. We prepare scaled-up versions of our signature salads and wraps for pickup across our six Oahu locations."
     image={cateringImages.menu}
     actions={[{ variant: 'primary', text: 'Order Catering Online', href: CATERING_CTA_HREF }]}
   />
@@ -196,7 +196,17 @@ const occasions = [
     </div>
   </section>
 
-  {/* ── 4. FAQs ──────────────────────────────────────────── */}
+  {/* ── 4. Ready to order CTA ────────────────────────────── */}
+  <CTABanner
+    title="Ready to Order?"
+    subtitle="Order online for pickup at any of our six Oahu stores. For serving sizes, minimums or lead times, call the store you want to collect from."
+    ctaText="Order Catering Online"
+    ctaHref={CATERING_CTA_HREF}
+    secondaryCtaText="Find a Location"
+    secondaryCtaHref={LOCATION_CTA_HREF}
+  />
+
+  {/* ── 5. FAQs ──────────────────────────────────────────── */}
   <FAQs
     isDark={true}
     title="Frequently Asked Questions"
@@ -220,18 +230,8 @@ const occasions = [
       },
       {
         title: 'Where do I pick up my catering order?',
-        description: "You can pick up your catering order at any of our six neighborhood restaurants across O'ahu.",
+        description: "You can pick up your catering order at any of our six neighborhood restaurants across Oahu.",
       },
     ]}
-  />
-
-  {/* ── 5. Ready to order CTA ────────────────────────────── */}
-  <CTABanner
-    title="Ready to Order?"
-    subtitle="Order online for pickup at any of our six O'ahu stores. For serving sizes, minimums or lead times, call the store you want to collect from."
-    ctaText="Order Catering Online"
-    ctaHref={CATERING_CTA_HREF}
-    secondaryCtaText="Find a Location"
-    secondaryCtaHref={LOCATION_CTA_HREF}
   />
 </PageLayout>

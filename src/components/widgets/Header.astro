@@ -169,6 +169,9 @@ const navBgStyle = `background-image: url('${navMotif.src}'); background-size: c
                 <Icon name="tabler:rss" class="w-5 h-5" />
               </a>
             )}
+            {extraActions.map((btnProps) => (
+              <Button {...btnProps} hideNote class="whitespace-nowrap" />
+            ))}
             {socialLinks.length > 0 && (
               <ul class="flex items-center gap-1" aria-label="Social media">
                 {socialLinks.map(({ href, ariaLabel, icon }) => (
@@ -180,10 +183,8 @@ const navBgStyle = `background-image: url('${navMotif.src}'); background-size: c
                 ))}
               </ul>
             )}
-            {extraActions.map((btnProps) => (
-              <Button {...btnProps} hideNote class="whitespace-nowrap" />
-            ))}
           </div>
+
         </div>
 
         <div class={mobilePanelClass} data-mobile-panel style={navBgStyle}>
@@ -266,6 +267,15 @@ const navBgStyle = `background-image: url('${navMotif.src}'); background-size: c
               {phoneAction && <Button {...phoneAction} hideNote class="w-full justify-center" />}
               {extraActions.map((btnProps) => (
                 <Button {...btnProps} hideNote class="w-full justify-center" />
+              ))}
+            </div>
+          )}
+          {socialLinks.length > 0 && (
+            <div class="mt-3 flex items-center justify-center gap-2 border-t border-heading/10 pt-3">
+              {socialLinks.map(({ href, ariaLabel, icon }) => (
+                <a href={href} aria-label={ariaLabel} target="_blank" rel="noopener noreferrer" class={socialIconClass}>
+                  <Icon name={icon} class="size-5" aria-hidden="true" />
+                </a>
               ))}
             </div>
           )}

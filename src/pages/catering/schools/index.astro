@@ -14,46 +14,47 @@ import { getSanityCateringImages } from '~/lib/content/sanity';
 const cateringImages = await getSanityCateringImages();
 
 const metadata = {
-  title: 'Event Catering Oahu | Large Gatherings & Banquets | Aloha Salads',
+  title: 'School Catering Oahu | Teachers & Athletics | Aloha Salads',
   description:
-    'Order fresh event catering for your gathering. We prepare salad trays, wrap platters, fresh soups, and beverages for pickup across our six Oahu locations.',
+    'Order fresh school catering for your campus. We prepare salad trays, wrap platters, fresh soups, and beverages for pickup across our six Oahu locations.',
   ignoreTitleTemplate: true,
 };
 
 const occasions = [
   {
     number: '01',
-    title: 'Community Gatherings',
+    title: 'Faculty and Staff Lunches',
     description:
-      'Feed your crowd with fresh and healthy meals. Our signature salad trays and wrap platters provide a fresh alternative to heavy event food for local gatherings.',
+      'Keep your teachers going with healthy meals. Our signature salad trays provide a fresh alternative to heavy breakroom food during teacher appreciation days or planning sessions.',
   },
   {
     number: '02',
-    title: 'Private Functions',
+    title: 'Athletic Team Meals',
     description:
-      'Serve a quality menu at your family reunion or banquet. We offer scaled-up versions of our signature items designed to accommodate large groups easily.',
+      'Provide quality fuel for your student-athletes. Our catering trays offer lean protein and fresh vegetables for pre-game meals or end-of-season banquets.',
   },
   {
     number: '03',
     title: 'Accommodating Every Diet',
     description:
-      'Ensure every guest has a meal they can enjoy. We provide dedicated vegetarian options and plant-based trays to meet the dietary requirements of your attendees.',
+      'Ensure every student and faculty member has a meal. We provide dedicated vegetarian options and plant-based trays to meet diverse dietary requirements across your campus.',
   },
   {
     number: '04',
-    title: 'Quality Event Food',
+    title: 'Quality Ingredients',
     description:
-      "A catering tray is our standard menu in a bigger format. Scratch-made dressings and vine-ripe Hauula tomatoes throughout.",
+      "Campus orders come off the same line as everything else, with our scratch-made dressings and vine-ripe Hau\u02BBula tomatoes.",
   },
 ];
 ---
 
 <PageLayout metadata={metadata}>
+  {/* ── 1. Hero ───────────────────────────────────────────── */}
   <Hero2
     variant="split-dark"
     overlapHeader={false}
-    title="Event Catering"
-    content="Provide fresh food for your next gathering. We prepare large-format catering trays and wrap platters for events of all sizes. All event orders are available for pickup across our six Oahu locations."
+    title="School Catering"
+    content="Provide fresh food for your campus. We prepare large-format catering trays and wrap platters for school events and faculty lunches. All school orders are available for pickup across our six O\u02BBahu locations."
     image={cateringImages.events}
     actions={[
       { variant: 'primary', text: 'Order Catering Online', href: CATERING_CTA_HREF },
@@ -61,7 +62,8 @@ const occasions = [
     ]}
   />
 
-  <section class="not-prose relative w-full overflow-hidden bg-page" aria-label="Event catering occasions">
+  {/* ── 2. Occasions — 2×2 editorial card grid ─── */}
+  <section class="not-prose relative w-full overflow-hidden bg-page" aria-label="School catering occasions">
     <img
       src={peach.src}
       alt=""
@@ -94,6 +96,7 @@ const occasions = [
               >
                 {occ.number}
               </span>
+
               <div class="relative flex flex-col gap-4">
                 <span class="font-rough text-[15px] leading-none text-page/90">{occ.number}</span>
                 <Heading variant="h3" color="white">
@@ -103,6 +106,7 @@ const occasions = [
                   {occ.description}
                 </Text>
               </div>
+
               <div class="mt-8 h-px w-12 bg-accent" />
             </article>
           ))
@@ -111,44 +115,44 @@ const occasions = [
     </div>
   </section>
 
+  {/* ── 3. Other catering sub-pages ───────────────────────── */}
   <CateringSubNav
-    excludeHref="/catering/events"
+    excludeHref="/catering/schools"
     subtitle="We provide catering services for various event types. Explore our other catering menus below:"
   />
 
+  {/* ── 4. FAQs ──────────────────────────────────────────── */}
   <FAQs
     isDark={true}
     title="Frequently Asked Questions"
     items={[
       {
-        title: 'How far in advance should I order for a large event?',
-        description:
-          'Please contact your nearest location to confirm the required lead time for your specific event size.',
+        title: 'How far in advance should I order for a school event?',
+        description: 'Please contact your nearest location to confirm the required lead time for your specific campus headcount.',
       },
       {
-        title: 'Do you provide serving utensils for events?',
+        title: 'Are serving utensils included for school orders?',
         description: 'Ask the store when you order and they will let you know what is included.',
       },
       {
-        title: 'Can I customize event catering trays?',
-        description:
-          'Yes. We can modify our catering trays to accommodate specific dietary requirements for your event guests.',
+        title: 'Do you offer meatless options for students and staff?',
+        description: 'Yes. We prepare dedicated plant-based items including the Aloha Mediterranean Tray and the Aloha Passion Tray.',
       },
       {
-        title: 'Do you offer meatless event catering options?',
-        description:
-          'Yes. We prepare dedicated plant-based items including the Aloha Mediterranean Tray and the Aloha Passion Tray.',
+        title: 'Can we accommodate specific food allergies?',
+        description: 'Yes. We can modify our catering trays to accommodate specific dietary requirements for your school group.',
       },
       {
-        title: 'Where do I pick up my event catering order?',
-        description: "You can pick up your catering order at any of our six neighborhood restaurants across Oahu.",
+        title: 'Do you provide drinks for school catering?',
+        description: 'Yes. You can include bottled beverages and our refreshing Big Island m\u0101maki mint tea with your catering order.',
       },
     ]}
   />
 
+  {/* ── 5. Ready to order CTA ────────────────────────────── */}
   <CTABanner
     title="Ready to Order?"
-    subtitle="Order online for pickup. For a large event, call the store to talk through quantities and timing."
+    subtitle="Order online for pickup. For campus-sized orders, call the store to sort timing and quantities."
     ctaText="Order Catering Online"
     ctaHref={CATERING_CTA_HREF}
     secondaryCtaText="Find a Location"

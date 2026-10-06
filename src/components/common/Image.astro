@@ -3,13 +3,13 @@
  * AstroWind <Image /> wrapper.
  *
  * Behaviour:
- *   • Detectable CDN URL (Unsplash, Cloudinary, Imgix…) → rewritten with
+ *   • Detectable CDN URL (Unsplash, Cloudinary, Imgix...) → rewritten with
  *     CDN-side parameters via `transformUrl` from `unpic` and emitted as a
  *     plain <img> served straight from the source. No download, no Sharp.
- *   • Sanity CDN (`cdn.sanity.io`) → same plain <img> path, using Sanity's
+ *   • Sanity CDN (`cdn.sanity.io`) → same plain <img> path, using Sanitys
  *     own `w`/`h`/`fit` params. Not passed through Unpic (it treats Sanity as
  *     Imgix) and not loaded with `crossorigin` (Sanity 403s those requests).
- *   • Local image (ESM import or `~/assets/...` path) → delegated to Astro's
+ *   • Local image (ESM import or `~/assets/...` path) → delegated to Astros
  *     native <Image /> from `astro:assets`, which optimizes through Sharp and
  *     emits responsive `srcset` + styles for the chosen `layout` (enabled by
  *     `image.responsiveStyles` in astro.config.ts).
@@ -129,7 +129,7 @@ const sanityImageUrl = (variantWidth?: number, variantHeight?: number): string =
 
   if (variantWidth) url.searchParams.set('w', String(variantWidth));
 
-  // Studio crop is already `rect` on the URL. Don't recrop to a different
+  // Studio crop is already `rect` on the URL. Dont recrop to a different
   // aspect ratio here — CSS object-fit covers the slot from that crop.
   if (hasEditorCrop) {
     url.searchParams.set('fit', 'max');
@@ -147,7 +147,7 @@ const sanityImageUrl = (variantWidth?: number, variantHeight?: number): string =
 
 // --- Local images: native <Image layout> ----------------------------------
 // `cover` has no native layout equivalent; render it as `none` plus an
-// object-fit style (the usage's own classes usually cover this too).
+// object-fit style (the usages own classes usually cover this too).
 const nativeLayout = layout === 'cover' ? 'none' : layout;
 const localStyle =
   [layout === 'cover' ? 'object-fit:cover;width:100%;height:100%' : undefined, style].filter(Boolean).join(';') ||

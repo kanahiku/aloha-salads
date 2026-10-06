@@ -57,5 +57,5 @@ export const CONTACT = {
     },
   ],
 
-  areaServed: 'O‘ahu',
+  areaServed: 'Oahu',
 } as const;

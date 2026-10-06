@@ -42,7 +42,7 @@ const {
         const isDark = document.documentElement.classList.toggle('dark');
         localStorage.theme = isDark ? 'dark' : 'light';
         // Let the reveal-on-scroll controller drop its stagger delay so the
-        // theme change doesn't flicker mid-animation (see REF #643).
+        // theme change does not flicker mid-animation (see REF #643).
         document.dispatchEvent(new CustomEvent('aw:theme-change'));
       });
     }

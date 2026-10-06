@@ -19,18 +19,22 @@ import Button from '~/components/ui/Button.astro';
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import smallLeafMotif from '~/assets/images/small-leaf-motif.webp';
+import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
 
 export interface Props {
   eyebrow?: string;
   title: string;
   subtitle?: string;
-  ctaText?: string;
-  ctaHref?: string;
-  secondaryCtaText?: string;
-  secondaryCtaHref?: string;
-  disclaimer?: string;
   id?: string;
 
+  /** @deprecated Legacy template props — accepted but ignored. */
+  ctaText?: string;
+  /** @deprecated Legacy template props — accepted but ignored. */
+  ctaHref?: string;
+  /** @deprecated Legacy template props — accepted but ignored. */
+  secondaryCtaText?: string;
+  /** @deprecated Legacy template props — accepted but ignored. */
+  secondaryCtaHref?: string;
   /** @deprecated Legacy template props — accepted but ignored. */
   showAfterHoursNote?: boolean;
   /** @deprecated Legacy template prop — accepted but ignored. */
@@ -43,12 +47,14 @@ const {
   eyebrow,
   title,
   subtitle,
-  ctaText = 'Order Online',
-  ctaHref = '/order-online',
-  secondaryCtaText,
-  secondaryCtaHref,
   id,
 } = Astro.props;
+
+const conversionLinks = [
+  { text: 'Order Online', href: PRIMARY_CTA_HREF, variant: 'primary' as const },
+  { text: 'Find a Location', href: LOCATION_CTA_HREF, variant: 'ghost' as const },
+  { text: 'Order Catering', href: CATERING_CTA_HREF, variant: 'ghost' as const },
+];
 ---
 
 <section
@@ -77,9 +83,9 @@ const {
         <p class="font-script text-[var(--aw-text-eyebrow)] leading-none text-page/50">{eyebrow}</p>
       )}
 
-      {/* ── Display headline — h1 scale, full visual weight ─── */}
+      {/* ── Display headline — h2 scale (semantic: not a page title) ─── */}
       <Heading
-        variant="h1"
+        variant="h2"
         color="inherit"
         class="max-w-3xl text-balance text-page"
       >
@@ -95,21 +101,15 @@ const {
 
       {/* ── CTAs ─────────────────────────────────────────────── */}
       <div class="flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row">
-        <Button
-          variant="primary"
-          text={ctaText}
-          href={ctaHref}
-          hideNote={true}
-        />
-        {secondaryCtaText && secondaryCtaHref && (
+        {conversionLinks.map((link) => (
           <Button
-            variant="ghost"
+            variant={link.variant}
             tone="dark"
-            text={secondaryCtaText}
-            href={secondaryCtaHref}
+            text={link.text}
+            href={link.href}
             hideNote={true}
           />
-        )}
+        ))}
       </div>
     </div>
 

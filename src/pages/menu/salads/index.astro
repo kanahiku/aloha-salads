@@ -8,6 +8,9 @@ import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
 import { getMenuCategory } from '~/lib/content';
+import { getSanityMenuPagesImages } from '~/lib/content/sanity';
+
+const menuPagesImages = await getSanityMenuPagesImages().catch(() => ({} as Awaited<ReturnType<typeof getSanityMenuPagesImages>>));
 
 const metadata = {
   title: 'Signature Salads & Bowls | Aloha Salads Oahu',
@@ -30,6 +33,10 @@ const saladItems = [
   {
     title: 'Kamuela Cobb',
     description: 'Mixed greens, avocado, grape tomatoes, egg, bacon, blue cheese, chicken, and herb ranch.',
+  },
+  {
+    title: 'Big Island Beet',
+    note: 'Not available at Kaneohe',
   },
   {
     title: 'Aloha Caesar',
@@ -60,6 +67,14 @@ const saladItems = [
     description:
       'Includes your choice of lettuce, four regular toppings, one cheese, and one dressing (additional charge for extra items).',
   },
+  {
+    title: 'Poke Bowl',
+    badge: 'Coming soon',
+  },
+  {
+    title: 'Poke Salad',
+    badge: 'Coming soon',
+  },
 ];
 
 const cmsCategory = await getMenuCategory('salads');
@@ -82,11 +97,11 @@ const faqs = [
   },
   {
     title: 'Do your salads contain local produce?',
-    description: "Yes. We feature local produce including vine-ripe tomatoes grown in Hau'ula.",
+    description: "Yes. We feature local produce including vine-ripe tomatoes grown in Hauula.",
   },
   {
     title: 'Where can I order a salad for pickup?',
-    description: "You can order online for fast pickup at any of our six neighborhood restaurants across O'ahu.",
+    description: "You can order online for fast pickup at any of our six neighborhood restaurants across Oahu.",
   },
 ];
 ---
@@ -96,7 +111,8 @@ const faqs = [
     variant="split-dark"
     overlapHeader={false}
     title="Signature Salads"
-    content="Our salads are built with quality produce and seafood delivered directly to our kitchens across O'ahu. We prepare all of our signature dressings from scratch daily."
+    content="Our salads are built with quality produce and seafood delivered directly to our kitchens across Oahu. We prepare all of our signature dressings from scratch daily."
+    image={menuPagesImages.saladsHero}
     actions={[
       { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
       { variant: 'ghost', tone: 'dark', text: 'Find a Location', href: LOCATION_CTA_HREF },
@@ -107,10 +123,11 @@ const faqs = [
 
   <LocalSourcing
     title="Sourced with Care"
-    subtitle="We maintain a standing weekly order for vine-ripe tomatoes from Hau'ula and exclusively feature never-frozen local ahi with vessel-level catch traceability."
+    subtitle="We maintain a standing weekly order for vine-ripe tomatoes from Hauula and exclusively feature never-frozen local ahi with vessel-level catch traceability."
     ctaText="Learn More About Our Ingredients"
     ctaHref="/ingredients"
     withPhoto={true}
+    image={menuPagesImages.saladsIngredients}
   />
 
   <MenuCategories
@@ -120,8 +137,6 @@ const faqs = [
     ctaText=""
   />
 
-  <FAQs title="Frequently Asked Questions" items={faqs} isDark={true} />
-
   <CTABanner
     title="Ready to Order?"
     subtitle="Skip the line and place your order online for fast pickup. Planning a group event? We also offer a variety of priced catering trays."
@@ -130,4 +145,6 @@ const faqs = [
     secondaryCtaText="Order Catering"
     secondaryCtaHref={CATERING_CTA_HREF}
   />
+
+  <FAQs title="Frequently Asked Questions" items={faqs} isDark={true} />
 </PageLayout>

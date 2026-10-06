@@ -68,7 +68,7 @@ const colorClass = (() => {
 })();
 
 // twMerge only handles color vs className so `text-h2` (font-size utility) is
-// never stripped by twMerge's text-* conflict resolution.
+// never stripped by twMerges text-* conflict resolution.
 const overrideCls = twMerge(colorClass, className);
 const cls = [scale[variant as string] ?? '', overrideCls].filter(Boolean).join(' ');
 ---

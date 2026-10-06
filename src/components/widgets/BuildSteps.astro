@@ -1,6 +1,6 @@
 ---
 /**
- * BuildSteps — numbered “what’s included” recipe for custom builds.
+ * BuildSteps — numbered “whats included” recipe for custom builds.
  * Split: left = eyebrow + h2 + lede + numbered steps + note + CTA /
  *        right = bowl illustration (own-salad.png by default).
  * One widget for the whole site — pass steps from the page.
@@ -9,8 +9,10 @@ import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
+import Image from '~/components/common/Image.astro';
 import peachMotif from '~/assets/images/peach-motif.webp';
 import bigLeafMotif from '~/assets/images/big-leaf.webp';
+import type { ContentImage } from '~/lib/content/types';
 
 export interface BuildStep {
   title: string;
@@ -26,6 +28,7 @@ export interface Props {
   ctaHref?: string;
   steps?: BuildStep[];
   id?: string;
+  image?: ContentImage;
 }
 
 const {
@@ -37,6 +40,7 @@ const {
   ctaHref,
   steps = [],
   id,
+  image,
 } = Astro.props;
 
 ---
@@ -102,8 +106,21 @@ const {
     </div>
 
     <div class="relative w-full shrink-0 md:w-[42%] md:max-w-[520px]" style="aspect-ratio: 562 / 624;">
-      <!-- TODO: replace with <Image> when asset is ready -->
-      <HeroImagePlaceholder fill class="absolute inset-0" />
+      {image ? (
+        <Image
+          {...image}
+          class="absolute inset-0 h-full w-full object-cover"
+          widths={[400, 768, 1100]}
+          sizes="(max-width: 768px) 100vw, 42vw"
+          loading="lazy"
+          width={562}
+          height={624}
+          layout="cover"
+          format="webp"
+        />
+      ) : (
+        <HeroImagePlaceholder fill class="absolute inset-0" />
+      )}
     </div>
   </div>
 </section>

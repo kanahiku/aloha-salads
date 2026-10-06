@@ -44,6 +44,7 @@ const MENU_LINKS: InteriorLink[] = [
   { text: 'Vegan Options', href: '/menu/vegan' },
   { text: 'Vegetarian Options', href: '/menu/vegetarian' },
   { text: 'Healthy Food & Menu Options', href: '/menu/healthy-options' },
+  { text: 'Misc', href: '/menu/misc' },
   { text: 'Drinks', href: '/menu/drinks' },
 ];
 
@@ -105,12 +106,12 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     path: '/about',
     title: 'Our Story',
     metaDescription:
-      'Aloha Salads opened in Kailua in 2006. Fresh, healthy, local food — now at six spots across O‘ahu.',
+      'Aloha Salads opened in Kailua in 2006. Fresh, healthy, local food — now at six spots across Oahu.',
     heading: 'Our story',
-    lede: 'We opened in Kailua in 2006 with one idea: fresh, healthy food should taste worth coming back for — and feel like home. Six locations later, that’s still the whole plan.',
+    lede: 'We opened in Kailua in 2006 with one idea: fresh, healthy food should taste worth coming back for — and feel like home. Six locations later, thats still the whole plan.',
     sections: [
       {
-        heading: 'From Kailua to O‘ahu',
+        heading: 'From Kailua to Oahu',
         body: 'Healthy, fresh, and local is how we started, and how we still buy. The full sourcing story lives on Our Ingredients — this page is the short version of how we got here.',
         links: [
           { text: 'Our Ingredients', href: '/ingredients' },
@@ -123,9 +124,9 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     path: '/ingredients',
     title: 'Our Ingredients & Local Sourcing',
     metaDescription:
-      'Fresh local ahi never frozen, island produce, māmaki mint tea from the Big Island, and compostable packaging.',
+      'Fresh local ahi never frozen, island produce, mamaki mint tea from the Big Island, and compostable packaging.',
     heading: 'Our ingredients & local sourcing',
-    lede: 'We’ve bought from local farmers and fishermen since day one in Kailua. Here’s what that actually means on your plate.',
+    lede: 'Weve bought from local farmers and fishermen since day one in Kailua. Heres what that actually means on your plate.',
     sections: [
       {
         heading: 'Never-frozen local ahi',
@@ -133,11 +134,11 @@ export const interiorPages: Record<string, InteriorPageContent> = {
       },
       {
         heading: 'Local produce',
-        body: 'Greens and vegetables from local Hawai‘i farms, in season whenever we can.',
+        body: 'Greens and vegetables from local Hawaii farms, in season whenever we can.',
       },
       {
-        heading: 'Māmaki mint tea',
-        body: 'Brewed from māmaki (mamaki) grown on Hawai‘i Island — a true taste of the islands. Search either spelling and you’ll land here.',
+        heading: 'Mamaki mint tea',
+        body: 'Brewed from mamaki (mamaki) grown on Hawaii Island — a true taste of the islands. Search either spelling and youll land here.',
       },
       {
         heading: 'Packaging',
@@ -270,16 +271,24 @@ export const interiorPages: Record<string, InteriorPageContent> = {
   '/menu/drinks': {
     path: '/menu/drinks',
     title: 'Drinks',
-    metaDescription: 'Drinks at Aloha Salads, including māmaki mint tea from Hawai‘i Island.',
+    metaDescription: 'Drinks at Aloha Salads, including mamaki mint tea from Hawaii Island.',
     heading: 'Drinks',
-    lede: 'From māmaki mint tea to the rest of the cooler. Details land here when the menu is designed.',
+    lede: 'From mamaki mint tea to the rest of the cooler. Details land here when the menu is designed.',
     sections: [{ links: [{ text: 'Our Ingredients', href: '/ingredients' }] }],
+  },
+  '/menu/misc': {
+    path: '/menu/misc',
+    title: 'Misc Menu Favorites',
+    metaDescription: 'Additional Aloha Salads favorites including avocado toast, dessert toast, and acai bowls.',
+    heading: 'Misc menu favorites',
+    lede: 'Additional favorites and cafe-style selections from the Aloha Salads menu.',
+    sections: [{ links: [{ text: 'Full Menu', href: '/menu' }] }],
   },
   '/catering': {
     path: '/catering',
     title: 'Catering',
     metaDescription:
-      'Aloha Salads catering trays for offices, meetings, events, and large groups across O‘ahu.',
+      'Aloha Salads catering trays for offices, meetings, events, and large groups across Oahu.',
     heading: 'Catering',
     lede: 'Trays for the table, priced as they are on the current menu. Servings, minimums, lead time, and delivery radius will fill in once the shops confirm them.',
     sections: [
@@ -300,7 +309,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
   '/catering/corporate': {
     path: '/catering/corporate',
     title: 'Corporate Catering',
-    metaDescription: 'Corporate catering from Aloha Salads — trays for teams across O‘ahu.',
+    metaDescription: 'Corporate catering from Aloha Salads — trays for teams across Oahu.',
     heading: 'Corporate catering',
     lede: 'Fresh trays for the office, the boardroom, and the all-hands. See the catering hub for the full priced list.',
     sections: [{ links: [{ text: 'View all catering', href: CATERING_CTA_HREF }] }],
@@ -343,7 +352,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     metaDescription:
       'Find an Aloha Salads location near you. We operate six restaurants across Oahu offering fresh meals for dine-in or fast pickup.',
     heading: 'Aloha Salads Locations on Oahu',
-    lede: 'Find your nearest Aloha Salads. We operate six neighborhood restaurants across O‘ahu. Every location offers online ordering for fast pickup and convenient dine-in seating.',
+    lede: 'Find your nearest Aloha Salads. We operate six neighborhood restaurants across Oahu. Every location offers online ordering for fast pickup and convenient dine-in seating.',
     sections: [
       {
         heading: 'Find a shop',
@@ -354,7 +363,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
   '/order-online': {
     path: '/order-online',
     title: 'Order Online',
-    metaDescription: 'Order Aloha Salads online for pickup or delivery from any of our six O‘ahu locations.',
+    metaDescription: 'Order Aloha Salads online for pickup or delivery from any of our six Oahu locations.',
     heading: 'Order online',
     lede: 'Pickup or delivery from any of our six stores. Choose a location to start an order.',
     sections: [
@@ -399,7 +408,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     title: 'Press & Media',
     metaDescription: 'Press and media coverage of Aloha Salads.',
     heading: 'Press & media',
-    lede: 'Coverage and mentions live here, separate from the new blog. Existing posts currently on the live site’s /blog/ migrate here before the editorial blog publishes.',
+    lede: 'Coverage and mentions live here, separate from the new blog. Existing posts currently on the live site /blog/ migrate here before the editorial blog publishes.',
   },
   '/careers': {
     path: '/careers',

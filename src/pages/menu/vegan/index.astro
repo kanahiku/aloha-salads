@@ -8,6 +8,9 @@ import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
 import { getMenuCategory } from '~/lib/content';
+import { getSanityMenuPagesImages } from '~/lib/content/sanity';
+
+const menuPagesImages = await getSanityMenuPagesImages().catch(() => ({} as Awaited<ReturnType<typeof getSanityMenuPagesImages>>));
 
 const metadata = {
   title: 'Vegan Salads & Bowls | Aloha Salads Oahu',
@@ -48,11 +51,11 @@ const faqs = [
   },
   {
     title: 'Do your vegan options contain local produce?',
-    description: "Yes. We feature local produce including vine-ripe tomatoes grown in Hau'ula.",
+    description: "Yes. We feature local produce including vine-ripe tomatoes grown in Hauula.",
   },
   {
     title: 'Can I order a vegan meal for takeout?',
-    description: "Yes. You can order online for fast pickup at any of our six neighborhood restaurants across O'ahu.",
+    description: "Yes. You can order online for fast pickup at any of our six neighborhood restaurants across Oahu.",
   },
   {
     title: 'Do you offer catering for vegan diets?',
@@ -77,10 +80,11 @@ const faqs = [
 
   <LocalSourcing
     title="Quality Ingredients"
-    subtitle="Our plant-based options are built using the same high-quality components as the rest of our menu, including our house-made vegan dressings and vine-ripe Hau'ula tomatoes."
+    subtitle="Our plant-based options are built using the same high-quality components as the rest of our menu, including our house-made vegan dressings and vine-ripe Hauula tomatoes."
     ctaText="Learn More About Our Ingredients"
     ctaHref="/ingredients"
     withPhoto={true}
+    image={menuPagesImages.veganIngredients}
   />
 
   <MenuCategories
@@ -90,8 +94,6 @@ const faqs = [
     ctaText=""
   />
 
-  <FAQs title="Frequently Asked Questions" items={faqs} isDark={true} />
-
   <CTABanner
     title="Ready to Order?"
     subtitle="Skip the line and place your order online for fast pickup. Planning a group event? We also offer a variety of catering options."
@@ -100,4 +102,6 @@ const faqs = [
     secondaryCtaText="Order Catering"
     secondaryCtaHref={CATERING_CTA_HREF}
   />
+
+  <FAQs title="Frequently Asked Questions" items={faqs} isDark={true} />
 </PageLayout>
