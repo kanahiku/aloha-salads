@@ -24,6 +24,9 @@ export const menuPagesContent = defineType({
   type: 'document',
   icon: ImageIcon,
   fields: [
+    // ── Menu Hub ───────────────────────────────────────────────
+    imageField('menuHubHeroImage', 'Menu Hub — Hero image', 'Hero image for the main Menu page.'),
+
     // ── Salads ─────────────────────────────────────────────────
     imageField('saladsHeroImage', 'Salads — Hero image', 'Hero image for the Signature Salads page.'),
     imageField('saladsIngredientsImage', 'Salads — Ingredients image', 'Photo for the "Sourced with Care" panel on the Salads page.'),

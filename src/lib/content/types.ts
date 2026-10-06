@@ -43,6 +43,8 @@ export interface IngredientsImages {
 }
 
 export interface MenuPagesImages {
+  // Menu Hub
+  menuHubHero?: ContentImage;
   // Salads
   saladsHero?: ContentImage;
   saladsIngredients?: ContentImage;

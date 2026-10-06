@@ -7,6 +7,7 @@ import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF } from '~/config/cta';
 import { getMenuCategories } from '~/lib/content';
+import { getSanityMenuPagesImages } from '~/lib/content/sanity';
 
 const metadata = {
   title: 'Menu | Fresh Salads, Wraps & Local Ahi | Aloha Salads',
@@ -288,6 +289,7 @@ const fullMenuCategories = [
 
 const cmsMenuCategories = await getMenuCategories();
 const menuCategories = cmsMenuCategories.length ? cmsMenuCategories : fullMenuCategories;
+const menuPagesImages = await getSanityMenuPagesImages();
 
 const faqs = [
   {
@@ -322,6 +324,7 @@ const faqs = [
     overlapHeader={false}
     title={heroTitle}
     content={heroContent}
+    image={menuPagesImages.menuHubHero}
     actions={[
       { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
       { variant: 'ghost', tone: 'dark', text: 'Find a Location', href: LOCATION_CTA_HREF },
@@ -343,6 +346,7 @@ const faqs = [
     ctaText="Our Ingredients"
     ctaHref="/ingredients"
     withPhoto={true}
+    image={menuPagesImages.saladsIngredients}
   />
 
   <CTABanner
