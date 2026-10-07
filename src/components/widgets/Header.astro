@@ -41,10 +41,6 @@ const {
   embedded = false,
 } = Astro.props;
 
-const splitAt = Math.ceil(links.length / 2);
-const leftLinks = links.slice(0, splitAt);
-const rightLinks = links.slice(splitAt);
-
 const extraActions = (actions ?? []).filter(
   (action) => action.href !== phone?.href && !String(action.href ?? '').startsWith('tel:')
 );
@@ -137,7 +133,7 @@ const navBgStyle = `background-image: url('${navMotif.src}'); background-size: c
       >
         <div
           class:list={[
-            'relative mx-auto flex w-full items-center justify-between px-5 py-4 md:justify-center md:gap-12 md:px-16',
+            'relative mx-auto flex w-full items-center justify-between px-5 py-4 md:gap-10 md:px-16',
             { 'max-w-container': !isFullWidth },
           ]}
         >
@@ -153,16 +149,17 @@ const navBgStyle = `background-image: url('${navMotif.src}'); background-size: c
             <ToggleMenu class="flex size-12 flex-col items-center justify-center bg-heading/5 text-heading cursor-pointer group" />
           </div>
 
-          <nav class="hidden md:block" data-desktop-nav aria-label="Main navigation">
-            <NavList links={leftLinks} class="flex items-center gap-8" />
+          <div class="hidden md:flex md:flex-1 md:basis-0 md:items-center">
+            <a class="flex shrink-0 items-center" href={getHomePermalink()} aria-label="Aloha Salads home">
+              <Logo />
+            </a>
+          </div>
+
+          <nav class="hidden shrink-0 md:block" data-desktop-nav aria-label="Main navigation">
+            <NavList links={links} class="flex items-center gap-8" />
           </nav>
 
-          <a class="hidden shrink-0 items-center md:flex" href={getHomePermalink()} aria-label="Aloha Salads home">
-            <Logo />
-          </a>
-
-          <div class="hidden items-center gap-8 md:flex">
-            <NavList links={rightLinks} class="flex items-center gap-8" />
+          <div class="hidden items-center justify-end gap-8 md:flex md:flex-1 md:basis-0">
             {showToggleTheme && <ToggleTheme iconClass="w-5 h-5" />}
             {showRssFeed && (
               <a class="text-secondary" aria-label="RSS Feed" href={getAsset('/rss.xml')}>

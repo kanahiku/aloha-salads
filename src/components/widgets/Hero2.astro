@@ -152,7 +152,7 @@ const isLocalOverlayImage =
             />
           )}
           {isPhotoOverlay ? (
-            <div class="absolute inset-0 z-[1] bg-gradient-to-r from-black/70 from-[30%] via-black/25 via-[58%] to-transparent" />
+            <div class="absolute inset-0 z-[1] bg-black/60 md:bg-transparent md:bg-gradient-to-r md:from-black/70 md:from-[30%] md:via-black/25 md:via-[58%] md:to-transparent" />
           ) : isWords || isTitle ? (
             <div class="absolute inset-0 z-[1] bg-heading/10" />
           ) : (
@@ -306,7 +306,6 @@ const isLocalOverlayImage =
                         format="webp"
                       />
                     )}
-                    <div class="absolute inset-0 bg-gradient-to-r from-section-dark/60 from-[0%] via-transparent to-transparent" />
                   </div>
                 ) : (
                   /* TODO: replace with <Image> when asset is ready */
