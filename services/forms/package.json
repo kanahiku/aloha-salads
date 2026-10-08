@@ -8,7 +8,9 @@
     "db:migrate:local": "wrangler d1 execute massic-forms --local --file=./schema.sql",
     "db:seed:local": "wrangler d1 execute massic-forms --local --file=./seed.sql",
     "db:migrate": "wrangler d1 execute massic-forms --remote --file=./schema.sql",
-    "db:seed": "wrangler d1 execute massic-forms --remote --file=./seed.sql"
+    "db:seed": "wrangler d1 execute massic-forms --remote --file=./seed.sql",
+    "db:migrate:careers:local": "wrangler d1 execute massic-forms --local --file=./migrations/0002_careers_applications.sql",
+    "db:migrate:careers": "wrangler d1 execute massic-forms --remote --file=./migrations/0002_careers_applications.sql"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260828.1",

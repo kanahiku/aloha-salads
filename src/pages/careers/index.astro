@@ -1,10 +1,14 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
 import InteriorPage from '~/components/widgets/InteriorPage.astro';
+import CareersApplication from '~/components/widgets/CareersApplication.astro';
+import CTABanner from '~/components/widgets/CTABanner.astro';
 import { getInteriorPage } from '~/data/pages/interior';
 import { site } from '~/config/site';
 
 const page = getInteriorPage('/careers');
+
 const metadata = {
   title: `${page.title} | ${site.name}`,
   description: page.metaDescription,
@@ -13,5 +17,16 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <InteriorPage page={page} />
+  {/* Footer-only page: not in the primary nav. H1, intro, and Benefits come from interior.ts. */}
+  <Hero2 variant="split-dark" overlapHeader={false} hideImage title={page.heading} content={page.lede} />
+
+  {/* Same band as the Contact page: Benefits on the dark panel (left), application form on the cream card (right). */}
+  <CareersApplication>
+    <InteriorPage page={page} hideHero bare onDark />
+  </CareersApplication>
+
+  <CTABanner
+    title="Ready to Order?"
+    subtitle="Skip the line and place your order online for fast pickup. Planning a group event? We also offer a variety of catering options."
+  />
 </Layout>

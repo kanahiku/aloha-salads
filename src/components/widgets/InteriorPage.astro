@@ -12,31 +12,54 @@ import type { InteriorPageContent } from '~/data/pages/interior';
 
 export interface Props {
   page: InteriorPageContent;
+  /** Skip the built-in hero when the route composes its own (e.g. /careers). */
+  hideHero?: boolean;
+  /** Extra classes for the section container (merged over the WidgetWrapper defaults). */
+  containerClass?: string;
+  /** Render only the section content, with no section wrapper, so a parent layout can place it (e.g. beside a form). */
+  bare?: boolean;
+  /** Light text and dividers for use on a dark panel. */
+  onDark?: boolean;
 }
 
-const { page } = Astro.props;
+const { page, hideHero = false, containerClass = '', bare = false, onDark = false } = Astro.props;
+const Wrapper = bare ? Fragment : WidgetWrapper;
+const wrapperProps = bare ? {} : { containerClass: `max-w-container mx-auto ${containerClass}` };
 const sections = page.sections ?? [];
 const hasBody = sections.length > 0;
 ---
 
-<Hero2 variant="page" overlapHeader={false} stacked title={page.heading} subtitle={page.lede} />
+{hideHero ? null : <Hero2 variant="page" overlapHeader={false} stacked title={page.heading} subtitle={page.lede} />}
 
 {
   hasBody && (
-    <WidgetWrapper containerClass="max-w-container mx-auto">
+    <Wrapper {...wrapperProps}>
       <div class="flex max-w-3xl flex-col gap-12 md:gap-16">
         {sections.map((section) => (
           <section class="flex flex-col items-start gap-6">
-            {section.heading && <Heading variant="h2">{section.heading}</Heading>}
-            {section.body && <Text variant="body-lg">{section.body}</Text>}
+            {section.heading && (
+              <Heading variant="h2" color={onDark ? 'white' : 'default'}>
+                {section.heading}
+              </Heading>
+            )}
+            {section.body && (
+              <Text variant="body-lg" color={onDark ? 'white' : 'muted'}>
+                {section.body}
+              </Text>
+            )}
             {section.items && section.items.length > 0 && (
               <ul class="flex w-full flex-col gap-3">
                 {section.items.map((item) => (
-                  <li class="flex flex-col gap-1 border-b border-heading/10 pb-3 last:border-b-0 last:pb-0">
-                    <Heading variant="h4" as="p">
+                  <li
+                    class:list={[
+                      'flex flex-col gap-1 border-b pb-3 last:border-b-0 last:pb-0',
+                      onDark ? 'border-page/15' : 'border-heading/10',
+                    ]}
+                  >
+                    <Heading variant="h4" as="p" color={onDark ? 'white' : 'default'}>
                       {item.title}
                     </Heading>
-                    {item.description && <Text>{item.description}</Text>}
+                    {item.description && <Text color={onDark ? 'white' : 'muted'}>{item.description}</Text>}
                   </li>
                 ))}
               </ul>
@@ -60,6 +83,6 @@ const hasBody = sections.length > 0;
           </section>
         ))}
       </div>
-    </WidgetWrapper>
+    </Wrapper>
   )
 }

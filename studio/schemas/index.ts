@@ -11,6 +11,7 @@ import { blogPost } from './documents/blogPost';
 import { testimonial } from './documents/testimonial';
 import { menuCategory } from './documents/menuCategory';
 import { menuItem } from './documents/menuItem';
+import { pressItem } from './documents/pressItem';
 
 // Navigation objects
 import { navLink, navSubLink } from './objects/navLink';
@@ -30,6 +31,7 @@ export const schemaTypes = [
   testimonial,
   menuCategory,
   menuItem,
+  pressItem,
 
   // Objects — nav
   navLink,

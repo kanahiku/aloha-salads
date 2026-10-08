@@ -89,6 +89,18 @@ export const structure = (S: StructureBuilder) =>
         ),
 
       S.listItem()
+        .title('Press cards')
+        .schemaType('pressItem')
+        .child(
+          S.documentTypeList('pressItem')
+            .title('Press cards')
+            .defaultOrdering([
+              { field: 'order', direction: 'asc' },
+              { field: '_createdAt', direction: 'desc' },
+            ])
+        ),
+
+      S.listItem()
         .title('Testimonials')
         .schemaType('testimonial')
         .child(

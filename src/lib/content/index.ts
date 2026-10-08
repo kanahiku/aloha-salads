@@ -1,4 +1,4 @@
-import type { BlogPost, NavigationContent, Testimonial, MenuCategory, MenuItem } from './types';
+import type { BlogPost, NavigationContent, Testimonial, MenuCategory, MenuItem, PressItem } from './types';
 import {
   getSanityBlogPost,
   getSanityBlogPosts,
@@ -6,6 +6,7 @@ import {
   getSanityTestimonials,
   getSanityNavigationContent,
   getSanityMenuCategories,
+  getSanityPressItems,
 } from './sanity';
 import { blogPosts as localBlogPosts } from '../../data/pages/blogPosts';
 import { navigationData } from '../../data/navigation';
@@ -381,3 +382,14 @@ export async function getMenuCategory(slug: string): Promise<MenuCategory | unde
 }
 
 export type { MenuCategory };
+
+export async function getPressItems(): Promise<PressItem[]> {
+  try {
+    return await getSanityPressItems();
+  } catch (error) {
+    console.warn('Sanity press cards unavailable.', error);
+    return [];
+  }
+}
+
+export type { PressItem };

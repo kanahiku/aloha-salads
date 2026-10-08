@@ -1,0 +1,354 @@
+---
+/**
+ * CareersApplication — job application form for /careers.
+ *
+ * One general application, six fields, resume attached as a real file.
+ * Posts multipart/form-data to the forms Worker (`/careers`), which stores the
+ * application in D1 and emails it (resume attached) via Resend.
+ *
+ * Behaviour (from the client build reference):
+ *   - Validate on submit, inline error under each field, never a browser alert.
+ *   - Success replaces the whole form block. No redirect.
+ *   - Send failure keeps the form on screen (values intact) with the failure state above it.
+ *   - Honeypot `company_website`: if filled, show success and send nothing.
+ *   - No visible captcha: Turnstile runs in `interaction-only` mode.
+ *
+ * Atoms used: Heading, Text, Button. Field styling matches `ui/Form.astro`.
+ */
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+import Button from '~/components/ui/Button.astro';
+import { CONTACT } from '~/config/contact';
+import { CAREERS_ENDPOINT, CAREERS_SITE_SLUG, TURNSTILE_SITE_KEY } from '~/lib/forms';
+
+export interface Props {
+  id?: string;
+  title?: string;
+}
+
+const { id = 'apply', title = 'Apply Now' } = Astro.props;
+
+/** Values are sent as-is and must match the Worker allow-list (services/forms/src/index.ts). */
+const locations = ['Kailua', 'Kahala', 'Kaneohe (Windward Mall)', 'Kapolei', 'Mililani', 'Pearlridge'];
+
+const email = CONTACT.email;
+
+const fieldClass =
+  'block w-full rounded-none border border-heading/15 bg-page px-4 py-3 font-sans text-body text-heading placeholder:text-muted/55 transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20 aria-[invalid=true]:border-red-700';
+const fileClass = `${fieldClass} file:mr-4 file:cursor-pointer file:border-0 file:bg-section-grey file:px-4 file:py-2 file:font-sans file:text-body file:text-heading`;
+const labelClass = 'mb-2 block font-sans text-body font-normal text-heading';
+const helpClass = 'mt-2 font-sans text-small text-muted';
+const errorClass = 'mt-2 hidden font-sans text-[13.5px] leading-snug text-red-700';
+const stateClass = 'hidden border px-5 py-5 font-sans text-body leading-snug';
+---
+
+<section id={id} class="not-prose w-full scroll-mt-[72px] bg-page">
+  <div class="mx-auto w-full max-w-container px-5 py-16 sm:px-8 md:px-16 md:py-[120px]">
+    {/* Same split as the Contact page: dark panel (slot, e.g. Benefits) + cream form card. */}
+    <div class="grid grid-cols-1 gap-3 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
+      <aside class="flex h-full flex-col gap-8 bg-section-dark px-6 py-8 md:px-10 md:py-12">
+        <slot />
+      </aside>
+
+      <div
+        id="careers-application"
+        class="flex h-full min-w-0 flex-col gap-6 bg-card px-6 py-8 shadow-card-mist md:px-10 md:py-12"
+        data-endpoint={CAREERS_ENDPOINT}
+        data-site={CAREERS_SITE_SLUG}
+        data-turnstile-sitekey={TURNSTILE_SITE_KEY}
+      >
+        <Heading variant="h2">{title}</Heading>
+
+        <div
+          id="careers-failure"
+          role="alert"
+          class={`${stateClass} border-red-700/30 bg-red-50 text-red-800`}
+          data-state="failure"
+        >
+          <p class="m-0">
+            <strong class="font-semibold">Something went wrong.</strong><br />
+            Please email your resume to <a class="underline" href={`mailto:${email}`}>{email}</a> and we will pick it up from
+            there.
+          </p>
+        </div>
+
+        <div
+          id="careers-success"
+          role="status"
+          class={`${stateClass} border-heading/15 bg-page text-heading`}
+          data-state="success"
+          tabindex="-1"
+        >
+          <p class="m-0">
+            <strong class="font-semibold">Thanks, we got your application.</strong><br />
+            Someone from the team will be in touch. If you want to follow up, email
+            <a class="underline" href={`mailto:${email}`}>{email}</a>.
+          </p>
+        </div>
+
+        <form id="careers-form" novalidate enctype="multipart/form-data">
+          <div class="mb-6" data-field="name">
+            <label for="careers-name" class={labelClass}>
+              Full name <span class="text-accent" aria-hidden="true">*</span>
+            </label>
+            <input
+              type="text"
+              id="careers-name"
+              name="name"
+              autocomplete="name"
+              aria-required="true"
+              aria-describedby="careers-name-error"
+              class={fieldClass}
+            />
+            <p id="careers-name-error" class={errorClass} data-error>Please enter your full name.</p>
+          </div>
+
+          <div class="mb-6" data-field="email">
+            <label for="careers-email" class={labelClass}>
+              Email <span class="text-accent" aria-hidden="true">*</span>
+            </label>
+            <input
+              type="email"
+              id="careers-email"
+              name="email"
+              autocomplete="email"
+              aria-required="true"
+              aria-describedby="careers-email-error"
+              class={fieldClass}
+            />
+            <p id="careers-email-error" class={errorClass} data-error>Please enter a valid email address.</p>
+          </div>
+
+          <div class="mb-6" data-field="phone">
+            <label for="careers-phone" class={labelClass}>
+              Phone <span class="text-accent" aria-hidden="true">*</span>
+            </label>
+            <input
+              type="tel"
+              id="careers-phone"
+              name="phone"
+              autocomplete="tel"
+              aria-required="true"
+              aria-describedby="careers-phone-error"
+              class={fieldClass}
+            />
+            <p id="careers-phone-error" class={errorClass} data-error>Please enter a phone number.</p>
+          </div>
+
+          <fieldset
+            class="mb-6 min-w-0 border-0 p-0"
+            data-field="location"
+            aria-describedby="careers-location-help careers-location-error"
+          >
+            <legend class={labelClass}>
+              Which location are you applying to? <span class="text-accent" aria-hidden="true">*</span>
+            </legend>
+            <p id="careers-location-help" class="mb-3 font-sans text-small text-muted">Choose as many as you like.</p>
+            <div class="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
+              {
+                locations.map((location) => (
+                  <label class="flex cursor-pointer items-center gap-3 font-sans text-body text-heading">
+                    <input
+                      type="checkbox"
+                      name="location"
+                      value={location}
+                      class="size-4 shrink-0 cursor-pointer accent-accent"
+                    />
+                    {location}
+                  </label>
+                ))
+              }
+            </div>
+            <p id="careers-location-error" class={errorClass} data-error>Please choose at least one location.</p>
+          </fieldset>
+
+          <div class="mb-6" data-field="resume">
+            <label for="careers-resume" class={labelClass}>
+              Upload your resume <span class="text-accent" aria-hidden="true">*</span>
+            </label>
+            <input
+              type="file"
+              id="careers-resume"
+              name="resume"
+              accept=".pdf,.doc,.docx"
+              aria-required="true"
+              aria-describedby="careers-resume-help careers-resume-error"
+              class={fileClass}
+            />
+            <p id="careers-resume-help" class={helpClass}>PDF or Word, up to 10MB.</p>
+            <p id="careers-resume-error" class={errorClass} data-error>Please upload a PDF or Word file under 10MB.</p>
+          </div>
+
+          <div class="mb-6" data-field="notes">
+            <label for="careers-notes" class={labelClass}>Anything else we should know?</label>
+            <textarea id="careers-notes" name="notes" rows="4" class={fieldClass}></textarea>
+          </div>
+
+          {/* Honeypot: off screen, no label, no tab stop. Real visitors never fill it. */}
+          <div class="absolute -left-[9999px]" aria-hidden="true">
+            <input type="text" name="company_website" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div data-turnstile></div>
+
+          <div class="mt-8">
+            <Button variant="primary" type="submit" text="Submit Application" hideNote={true} />
+          </div>
+
+          <Text class="mt-6">
+            Prefer email? Send your resume to <a class="underline" href={`mailto:${email}`}>{email}</a>.
+          </Text>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { loadTurnstile, type TurnstileApi } from '~/lib/turnstile';
+
+  const MAX_BYTES = 10 * 1024 * 1024;
+  const OK_EXT = ['pdf', 'doc', 'docx'];
+  const SUBMIT_LABEL = 'Submit Application';
+
+  function setInvalid(root: HTMLElement, field: string, invalid: boolean) {
+    const wrap = root.querySelector<HTMLElement>(`[data-field="${field}"]`);
+    if (!wrap) return;
+    wrap.querySelector('[data-error]')?.classList.toggle('hidden', !invalid);
+    wrap.querySelectorAll<HTMLElement>('input:not([type="checkbox"]), textarea').forEach((el) => {
+      el.setAttribute('aria-invalid', invalid ? 'true' : 'false');
+    });
+    wrap.toggleAttribute('data-invalid', invalid);
+  }
+
+  async function bindCareersForm() {
+    const root = document.getElementById('careers-application');
+    const form = document.getElementById('careers-form') as HTMLFormElement | null;
+    const success = document.getElementById('careers-success');
+    const failure = document.getElementById('careers-failure');
+    if (!root || !form || !success || !failure || root.dataset.bound === 'true') return;
+    root.dataset.bound = 'true';
+
+    const endpoint = root.dataset.endpoint || '';
+    const site = root.dataset.site || '';
+    const sitekey = root.dataset.turnstileSitekey || '';
+    const slot = form.querySelector<HTMLElement>('[data-turnstile]');
+    const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+    let turnstile: TurnstileApi | undefined;
+    let widgetId = '';
+
+    // Interaction-only: stays invisible unless Cloudflare needs the visitor to do something.
+    if (slot && sitekey) {
+      loadTurnstile()
+        .then((api) => {
+          turnstile = api;
+          widgetId = api.render(slot, { sitekey, appearance: 'interaction-only' });
+        })
+        .catch((error) => console.error(error));
+    }
+
+    async function getToken(): Promise<string> {
+      for (let i = 0; i < 30; i++) {
+        const token = turnstile && widgetId ? turnstile.getResponse(widgetId) : '';
+        if (token) return token;
+        await new Promise((resolve) => setTimeout(resolve, 200));
+      }
+      return '';
+    }
+
+    function showSuccess() {
+      failure!.classList.add('hidden');
+      form!.classList.add('hidden');
+      success!.classList.remove('hidden');
+      success!.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      success!.focus({ preventScroll: true });
+    }
+
+    function showFailure() {
+      success!.classList.add('hidden');
+      form!.classList.remove('hidden');
+      failure!.classList.remove('hidden');
+      failure!.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function validate(): boolean {
+      const get = (name: string) => form!.elements.namedItem(name) as HTMLInputElement | null;
+
+      const nameOk = (get('name')?.value.trim().length ?? 0) > 1;
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(get('email')?.value.trim() ?? '');
+      const phoneOk = (get('phone')?.value.replace(/\D/g, '').length ?? 0) >= 7;
+      const locationOk = form!.querySelectorAll('input[name="location"]:checked').length > 0;
+
+      const file = get('resume')?.files?.[0];
+      const ext = file ? (file.name.split('.').pop() || '').toLowerCase() : '';
+      const resumeOk = Boolean(file) && OK_EXT.includes(ext) && (file?.size ?? 0) <= MAX_BYTES && (file?.size ?? 0) > 0;
+
+      setInvalid(root!, 'name', !nameOk);
+      setInvalid(root!, 'email', !emailOk);
+      setInvalid(root!, 'phone', !phoneOk);
+      setInvalid(root!, 'location', !locationOk);
+      setInvalid(root!, 'resume', !resumeOk);
+
+      const first = root!.querySelector<HTMLElement>('[data-invalid]');
+      if (first) {
+        first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        first.querySelector<HTMLElement>('input, textarea')?.focus({ preventScroll: true });
+        return false;
+      }
+      return true;
+    }
+
+    // Clear a field's error as soon as the visitor edits it.
+    form.addEventListener('input', (event) => {
+      const wrap = (event.target as HTMLElement).closest<HTMLElement>('[data-field]');
+      if (wrap?.hasAttribute('data-invalid')) setInvalid(root, wrap.dataset.field || '', false);
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (submit?.disabled) return;
+      if (!validate()) return;
+
+      const data = new FormData(form);
+
+      // Bots fill the honeypot. Look like a success, send nothing.
+      if (String(data.get('company_website') || '').trim()) {
+        showSuccess();
+        return;
+      }
+
+      if (submit) {
+        submit.disabled = true;
+        submit.textContent = 'Sending...';
+      }
+      failure.classList.add('hidden');
+
+      try {
+        if (!endpoint || !site) throw new Error('Form is not configured');
+        const token = await getToken();
+        if (!token) throw new Error('Spam check failed to load');
+
+        data.set('site', site);
+        data.set('cf-turnstile-response', token);
+
+        const res = await fetch(endpoint, { method: 'POST', headers: { Accept: 'application/json' }, body: data });
+        const payload = (await res.json().catch(() => null)) as { ok?: boolean } | null;
+        if (!res.ok || !payload?.ok) throw new Error(`Send failed (${res.status})`);
+
+        showSuccess();
+      } catch (error) {
+        console.error(error);
+        if (turnstile && widgetId) turnstile.reset(widgetId);
+        showFailure();
+      } finally {
+        if (submit) {
+          submit.disabled = false;
+          submit.textContent = SUBMIT_LABEL;
+        }
+      }
+    });
+  }
+
+  document.addEventListener('astro:page-load', bindCareersForm);
+</script>

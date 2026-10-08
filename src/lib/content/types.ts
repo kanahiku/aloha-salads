@@ -413,3 +413,19 @@ export interface Testimonial {
   tenure: string;
   order: number;
 }
+
+// ─── Press ────────────────────────────────────────────────────────────────────
+
+export interface PressItem {
+  _id: string;
+  /** Publication / broadcaster, e.g. "KHON2". */
+  outlet: string;
+  /** Publication or event date, shown as written. */
+  date?: string;
+  headline: string;
+  quote?: string;
+  ctaText: string;
+  href: string;
+  /** Card photo. Omitted when none is set in Sanity — the card shows the grey placeholder. */
+  image?: ContentImage;
+}

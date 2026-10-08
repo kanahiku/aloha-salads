@@ -1,17 +1,19 @@
 ---
-import Layout from '~/layouts/PageLayout.astro';
-import InteriorPage from '~/components/widgets/InteriorPage.astro';
-import { getInteriorPage } from '~/data/pages/interior';
-import { site } from '~/config/site';
+import PageLayout from '~/layouts/PageLayout.astro';
+import PressCards from '~/components/widgets/PressCards.astro';
+import { pressContent } from '~/data/pages/press';
+import { getPressItems } from '~/lib/content';
 
-const page = getInteriorPage('/press');
+// Cards are managed in Sanity (Studio → Press cards).
+const pressItems = await getPressItems();
+
 const metadata = {
-  title: `${page.title} | ${site.name}`,
-  description: page.metaDescription,
+  title: pressContent.metadata.title,
+  description: pressContent.metadata.description,
   ignoreTitleTemplate: true,
 };
 ---
 
-<Layout metadata={metadata}>
-  <InteriorPage page={page} />
-</Layout>
+<PageLayout metadata={metadata}>
+  <PressCards title={pressContent.heading} subtitle={pressContent.lede} items={pressItems} />
+</PageLayout>

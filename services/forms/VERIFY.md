@@ -8,6 +8,20 @@ Run through this every time you:
 
 All `wrangler` commands run from this directory (`services/forms/`).
 
+## Aloha Salads specifics
+
+- This repo deploys its own Worker, `massic-forms-aloha-salads` (https://massic-forms-aloha-salads.kanahiku.workers.dev). Use `--name massic-forms-aloha-salads` instead of `--name massic-forms` in the commands below. The shared `massic-forms` Worker belongs to other clients and is not touched.
+- Both Workers share the D1 database `massic-forms`. Aloha uses two site slugs: `aloha-contact` (contact form -> `leads`) and `aloha-careers` (careers form -> `applications`).
+- Routes: `POST /submit` (contact -> `leads`), `POST /careers` (multipart, resume emailed -> `applications`), `POST /email-summary`.
+- The resume is **not** stored. D1 keeps filename, size and type; the file is attached to the email via Resend.
+- Recipients: `sites.notify_email` (contact) and `sites.careers_notify_email` (careers, falls back to `notify_email`).
+- Secrets on the Worker: `RESEND_API_KEY`, `TURNSTILE_SECRET_ALOHA_CONTACT`, `TURNSTILE_SECRET_ALOHA_CAREERS` (same Turnstile secret can be used for both).
+- Careers check:
+  ```bash
+  npx wrangler d1 execute massic-forms --remote --command="SELECT name, locations, resume_filename, created_at, email_sent_at FROM applications WHERE site_slug='aloha-careers' ORDER BY created_at DESC LIMIT 20;"
+  ```
+- Before launch: verify `alohasalads.com` in Resend, then set `sites.from_email` to `Aloha Salads <hello@alohasalads.com>`; replace the test Turnstile secret/site key with a real widget.
+
 ---
 
 ## 1. Worker bindings — no bad globals

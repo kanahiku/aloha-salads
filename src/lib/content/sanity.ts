@@ -16,6 +16,7 @@ import type {
   NavSubLink,
   MenuCategory,
   MenuItem,
+  PressItem,
 } from './types';
 
 type FetchedImage = ContentImage & SanityImageFields;
@@ -423,7 +424,9 @@ export async function getSanityNavigationContent(): Promise<NavigationContent> {
         ...action,
         ...(action.text ? { text: normalizeWebsiteCopy(action.text) } : {}),
       })),
-      ...(nav.header?.phone ? { phone: { ...nav.header.phone, text: normalizeWebsiteCopy(nav.header.phone.text) } } : {}),
+      ...(nav.header?.phone
+        ? { phone: { ...nav.header.phone, text: normalizeWebsiteCopy(nav.header.phone.text) } }
+        : {}),
     },
     footer: normalizeFooter(nav.footer),
   };
@@ -889,4 +892,64 @@ function normalizeTestimonial(doc: SanityTestimonial): Testimonial | null {
 export async function getSanityTestimonials(): Promise<Testimonial[]> {
   const docs = await sanityClient.fetch<SanityTestimonial[]>(TESTIMONIALS_QUERY);
   return (docs ?? []).map(normalizeTestimonial).filter((item): item is Testimonial => Boolean(item));
+}
+
+// ─── Press ────────────────────────────────────────────────────────────────────
+
+type SanityPressItem = {
+  _id: string;
+  outlet?: string;
+  displayDate?: string;
+  headline?: string;
+  quote?: string;
+  ctaText?: string;
+  url?: string;
+  photo?: FetchedImage | null;
+};
+
+const PRESS_ITEMS_QUERY = /* groq */ `
+  *[_type == "pressItem" && defined(headline) && defined(url)] | order(coalesce(order, 0) asc, _createdAt desc) {
+    _id,
+    outlet,
+    displayDate,
+    headline,
+    quote,
+    ctaText,
+    url,
+    "photo": select(defined(photo.asset) => {
+      "src": photo.asset->url,
+      "alt": coalesce(photo.alt, headline),
+      "crop": photo.crop,
+      "hotspot": photo.hotspot,
+      "asset": photo.asset
+    }, null)
+  }
+`;
+
+// Press copy is verbatim from the publication (headlines, quotes), so it is not
+// run through normalizeWebsiteCopy like menu text.
+function normalizePressItem(doc: SanityPressItem): PressItem | null {
+  const headline = doc.headline?.trim();
+  const href = doc.url?.trim();
+  if (!doc._id || !headline || !href) return null;
+
+  const image = resolveContentImage(doc.photo);
+  const date = doc.displayDate?.trim();
+  const quote = doc.quote?.trim();
+
+  return {
+    _id: doc._id,
+    outlet: doc.outlet?.trim() ?? '',
+    headline,
+    ctaText: doc.ctaText?.trim() || 'Read more',
+    href,
+    ...(date ? { date } : {}),
+    ...(quote ? { quote } : {}),
+    ...(image?.src ? { image } : {}),
+  };
+}
+
+export async function getSanityPressItems(): Promise<PressItem[]> {
+  const docs = await sanityClient.fetch<SanityPressItem[]>(PRESS_ITEMS_QUERY);
+  return (docs ?? []).map(normalizePressItem).filter((item): item is PressItem => Boolean(item));
 }

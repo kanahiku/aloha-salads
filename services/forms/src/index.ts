@@ -21,6 +21,8 @@ interface SiteRow {
   from_email: string;
   from_name: string;
   allowed_origins: string;
+  /** Where /careers applications are emailed. Falls back to notify_email when null. */
+  careers_notify_email?: string | null;
 }
 
 interface Submission {
@@ -59,6 +61,22 @@ const MAX_PDF_B64 = 3_500_000;
 const DEFAULT_RESEND_DAILY_LIMIT = 1000;
 const PDF_KIND = 'checkup-pdf';
 const DEFAULT_PDF_FILENAME = 'aloha-salads-order.pdf';
+
+/** Careers application (multipart). Limits mirror the front-end copy: "PDF or Word, up to 10MB." */
+const CAREERS_MAX_FILE_BYTES = 10 * 1024 * 1024;
+/** File + form fields + multipart overhead. Rejected from Content-Length before the body is read. */
+const CAREERS_MAX_BODY_BYTES = CAREERS_MAX_FILE_BYTES + 512 * 1024;
+const CAREERS_MAX = { name: 120, email: 254, phone: 40, notes: 5000 };
+const CAREERS_RESUME_EXTENSIONS = ['pdf', 'doc', 'docx'] as const;
+/** Exact option values from the front-end checkboxes. Anything else is rejected. */
+const CAREERS_LOCATIONS = [
+  'Kailua',
+  'Kahala',
+  'Kaneohe (Windward Mall)',
+  'Kapolei',
+  'Mililani',
+  'Pearlridge',
+] as const;
 
 /**
  * Resolve the Turnstile secret for a given site slug.
@@ -103,6 +121,10 @@ export default {
 
     if (url.pathname === '/email-summary') {
       return handleEmailSummary(request, env, origin, patterns);
+    }
+
+    if (url.pathname === '/careers') {
+      return handleCareers(request, env, origin, patterns);
     }
 
     if (url.pathname !== '/submit' && url.pathname !== '/') {
@@ -261,6 +283,223 @@ async function handleEmailSummary(request: Request, env: Env, origin: string, pa
     console.error('email-summary failed', err);
     return withCors(origin, patterns, json({ ok: false, error: 'Unable to send right now' }, 500));
   }
+}
+
+interface CareersApplication {
+  site: string;
+  name: string;
+  email: string;
+  phone: string;
+  locations: string[];
+  notes: string;
+  resume: File;
+  turnstileToken: string;
+}
+
+/**
+ * POST /careers — multipart/form-data job application.
+ *
+ *   1. Honeypot (`company_website`) → silent success, nothing stored or sent.
+ *   2. Validate fields + resume (extension, size, magic bytes).
+ *   3. Origin allow-list + Turnstile.
+ *   4. Insert the application row in D1 (resume metadata only, not the file).
+ *   5. Email the application with the resume attached via Resend.
+ *
+ * Unlike /submit, a failed email is reported to the visitor (502): the resume only
+ * exists in this request, so the page must tell them to email it instead.
+ */
+async function handleCareers(request: Request, env: Env, origin: string, patterns: string[]): Promise<Response> {
+  try {
+    const declaredLength = Number(request.headers.get('Content-Length') || 0);
+    if (declaredLength > CAREERS_MAX_BODY_BYTES) {
+      return withCors(origin, patterns, json({ ok: false, error: 'Resume must be under 10MB' }, 413));
+    }
+
+    if (!(request.headers.get('Content-Type') || '').includes('multipart/form-data')) {
+      return withCors(origin, patterns, json({ ok: false, error: 'Unsupported content type' }, 415));
+    }
+
+    const form = await request.formData();
+
+    // Honeypot: look like a success, do nothing.
+    if (formText(form, 'company_website')) {
+      return withCors(origin, patterns, json({ ok: true }));
+    }
+
+    const parsed = await validateCareers(form);
+    if ('error' in parsed) {
+      return withCors(origin, patterns, json({ ok: false, error: parsed.error }, 400));
+    }
+
+    const site = await env.DB.prepare('SELECT * FROM sites WHERE slug = ?')
+      .bind(parsed.site)
+      .first<SiteRow>();
+
+    if (!site) {
+      return withCors(origin, patterns, json({ ok: false, error: 'Unknown site' }, 400));
+    }
+
+    const allowed = [...patterns, ...parseOrigins(site.allowed_origins)];
+    if (origin && !originAllowed(origin, allowed)) {
+      return json({ ok: false, error: 'Origin not allowed' }, 403);
+    }
+
+    const turnstileOk = await verifyTurnstile(parsed.turnstileToken, resolveTurnstileSecret(env, parsed.site), request);
+    if (!turnstileOk) {
+      return withCors(origin, allowed, json({ ok: false, error: 'Spam check failed' }, 400));
+    }
+
+    const notifyTo = (site.careers_notify_email || site.notify_email || '').trim();
+    if (!notifyTo || isPlaceholderEmail(notifyTo)) {
+      console.error(`careers: no real recipient configured for ${site.slug}`);
+      return withCors(origin, allowed, json({ ok: false, error: 'Unable to submit right now' }, 500));
+    }
+
+    const id = crypto.randomUUID();
+    const createdAt = new Date().toISOString();
+    const resumeName = sanitizeResumeFilename(parsed.resume.name);
+    const locationsLabel = parsed.locations.join(', ');
+
+    await env.DB.prepare(
+      `INSERT INTO applications
+         (id, site_slug, name, email, phone, locations, notes, resume_filename, resume_size, resume_type, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    )
+      .bind(
+        id,
+        site.slug,
+        parsed.name,
+        parsed.email,
+        parsed.phone,
+        locationsLabel,
+        parsed.notes || null,
+        resumeName,
+        parsed.resume.size,
+        parsed.resume.type || null,
+        createdAt
+      )
+      .run();
+
+    const content = arrayBufferToBase64(await parsed.resume.arrayBuffer());
+
+    const sent = await sendResend(env.RESEND_API_KEY, {
+      from: site.from_email,
+      to: notifyTo,
+      replyTo: parsed.email,
+      subject: oneLine(`New application: ${parsed.name} - ${locationsLabel}`),
+      html: careersEmailHtml(parsed, locationsLabel, resumeName),
+      text: careersEmailText(parsed, locationsLabel, resumeName),
+      attachments: [{ filename: resumeName, content }],
+      idempotencyKey: `application/${site.slug}/${id}`,
+    });
+
+    if (!sent.ok) {
+      console.error(`careers: email failed for application ${id}`, sent.error);
+      return withCors(origin, allowed, json({ ok: false, error: 'Unable to submit right now' }, 502));
+    }
+
+    await env.DB.prepare('UPDATE applications SET email_sent_at = ? WHERE id = ?')
+      .bind(new Date().toISOString(), id)
+      .run();
+
+    return withCors(origin, allowed, json({ ok: true }));
+  } catch (err) {
+    console.error('careers failed', err);
+    return withCors(origin, patterns, json({ ok: false, error: 'Unable to submit right now' }, 500));
+  }
+}
+
+function formText(form: FormData, key: string): string {
+  const value = form.get(key);
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+async function validateCareers(form: FormData): Promise<CareersApplication | { error: string }> {
+  const site = formText(form, 'site');
+  const name = formText(form, 'name');
+  const email = formText(form, 'email');
+  const phone = formText(form, 'phone');
+  const notes = formText(form, 'notes');
+  const turnstileToken = formText(form, 'cf-turnstile-response') || formText(form, 'turnstileToken');
+  const selected = form.getAll('location').filter((v): v is string => typeof v === 'string');
+  const locations = CAREERS_LOCATIONS.filter((option) => selected.includes(option));
+  const resume = form.get('resume');
+
+  if (!site) return { error: 'Missing site' };
+  if (name.length < 2 || name.length > CAREERS_MAX.name) return { error: 'Please enter your full name.' };
+  if (!EMAIL_RE.test(email) || email.length > CAREERS_MAX.email) return { error: 'Please enter a valid email address.' };
+  if (phoneDigits(phone).length < 7 || phone.length > CAREERS_MAX.phone) return { error: 'Please enter a phone number.' };
+  if (locations.length === 0 || locations.length !== new Set(selected).size) {
+    return { error: 'Please choose at least one location.' };
+  }
+  if (notes.length > CAREERS_MAX.notes) return { error: 'Notes are too long.' };
+  if (!turnstileToken) return { error: 'Spam check is required' };
+
+  const resumeError = 'Please upload a PDF or Word file under 10MB.';
+  if (!resume || typeof resume === 'string') return { error: resumeError };
+  if (resume.size === 0 || resume.size > CAREERS_MAX_FILE_BYTES) return { error: resumeError };
+  const ext = (resume.name.split('.').pop() || '').toLowerCase();
+  if (!(CAREERS_RESUME_EXTENSIONS as readonly string[]).includes(ext)) return { error: resumeError };
+  if (!(await resumeSignatureMatches(resume, ext))) return { error: resumeError };
+
+  return { site, name, email, phone, locations, notes, resume, turnstileToken };
+}
+
+/** Cheap content sniff so a renamed .exe cannot ride in as .pdf. */
+async function resumeSignatureMatches(file: File, ext: string): Promise<boolean> {
+  const head = new Uint8Array(await file.slice(0, 8).arrayBuffer());
+  const startsWith = (...bytes: number[]) => bytes.every((b, i) => head[i] === b);
+  if (ext === 'pdf') return startsWith(0x25, 0x50, 0x44, 0x46); // %PDF
+  if (ext === 'docx') return startsWith(0x50, 0x4b, 0x03, 0x04); // PK.. (zip container)
+  return startsWith(0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1); // legacy OLE .doc
+}
+
+function sanitizeResumeFilename(raw: string): string {
+  const ext = (raw.split('.').pop() || '').toLowerCase();
+  const base = raw
+    .replace(/\.[^.]+$/, '')
+    .replace(/[^a-zA-Z0-9._ -]/g, '_')
+    .trim()
+    .slice(0, 80);
+  return `${base || 'resume'}.${ext}`;
+}
+
+function oneLine(value: string): string {
+  return value.replace(/[\r\n]+/g, ' ').trim();
+}
+
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer);
+  const chunk = 0x8000;
+  let binary = '';
+  for (let i = 0; i < bytes.length; i += chunk) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+  }
+  return btoa(binary);
+}
+
+function careersEmailHtml(app: CareersApplication, locations: string, resumeName: string): string {
+  const row = (label: string, value: string) =>
+    `<p><strong>${escapeHtml(label)}:</strong> ${escapeHtml(value).replace(/\n/g, '<br />')}</p>`;
+  return [
+    row('Full name', app.name),
+    row('Email', app.email),
+    row('Phone', app.phone),
+    row('Location(s)', locations),
+    row('Resume', `${resumeName} (attached)`),
+    row('Anything else we should know?', app.notes || 'Not provided'),
+  ].join('\n');
+}
+
+function careersEmailText(app: CareersApplication, locations: string, resumeName: string): string {
+  return [
+    `Full name: ${app.name}`,
+    `Email: ${app.email}`,
+    `Phone: ${app.phone}`,
+    `Location(s): ${locations}`,
+    `Resume: ${resumeName} (attached)`,
+    `Anything else we should know?: ${app.notes || 'Not provided'}`,
+  ].join('\n');
 }
 
 function defaultPatterns(env: Env): string[] {

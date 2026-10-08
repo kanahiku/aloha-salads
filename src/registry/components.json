@@ -719,6 +719,34 @@
         "id": "section anchor"
       },
       "notes": "Used on location subpages. Hours live here, not in LocationDirectory. Pass mapsEmbedSrc on the store when the brief includes an embed URL."
+    },
+    {
+      "id": "P-54",
+      "name": "Careers application form",
+      "figmaNames": ["Careers application", "Apply Now", "Job application form"],
+      "shape": "Heading + six-field application form (name, email, phone, location checkboxes, resume upload, notes) with inline validation, success state that replaces the form, and failure state above it. Honeypot + interaction-only Turnstile.",
+      "component": "CareersApplication",
+      "import": "~/components/widgets/CareersApplication.astro",
+      "props": {
+        "id": "section anchor, default apply",
+        "title": "h2 heading, default Apply Now"
+      },
+      "notes": "Build reference, not a Figma frame (client HTML, 7 Oct 2026). Posts multipart to the forms Worker /careers (src/lib/forms.ts CAREERS_ENDPOINT) which writes D1 applications and emails the resume via Resend. Only used on /careers."
+    },
+    {
+      "id": "P-56",
+      "name": "Press cards",
+      "figmaNames": ["Press & Media", "Press cards", "In the news"],
+      "shape": "Flat light seaweed-green band (bg-section-grey/40 over bg-page, no gradient). Centered h1 + lede, then a 2-up grid of seaweed cards: 16/10 photo, Wreck Script outlet label, date, h3 headline, pull quote, primary CTA with arrow-up-right icon pinned mt-auto.",
+      "component": "PressCards",
+      "import": "~/components/widgets/PressCards.astro",
+      "props": {
+        "title": "h1 page heading",
+        "subtitle": "body-lg lede under the heading",
+        "items": "PressItem[] — { _id, outlet, date?, headline, quote?, ctaText, href, image? } (type in src/lib/content/types.ts), from getPressItems()",
+        "id": "section anchor"
+      },
+      "notes": "Used on /press. Cards are Sanity `pressItem` documents (Studio → Press cards), fetched via getPressItems() in src/lib/content. Heading/lede/meta live in src/data/pages/press.ts. Whole card is one stretched link; photo is a grey placeholder when the document has no photo. External hrefs open in a new tab."
     }
   ]
 }

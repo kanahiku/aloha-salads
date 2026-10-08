@@ -1,0 +1,113 @@
+---
+/**
+ * PressCards — Press & Media listing.
+ *
+ * Flat light seaweed-green band (bg-section-grey at 40% over solid bg-page, no
+ * gradient) so the solid seaweed cards stay distinct. Centered
+ * h1 + lede, then a 2-up grid of seaweed cards: photo, outlet label, date,
+ * headline, pull quote, and a primary CTA pinned to the bottom so buttons line
+ * up whatever the copy length. One widget for the whole site — content is
+ * passed from `src/data/pages/press.ts`.
+ */
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+import Button from '~/components/ui/Button.astro';
+import Image from '~/components/common/Image.astro';
+import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
+import type { PressItem } from '~/lib/content/types';
+
+export interface Props {
+  title: string;
+  subtitle?: string;
+  items: PressItem[];
+  id?: string;
+}
+
+const { title, subtitle, items, id } = Astro.props;
+const isExternal = (href: string) => /^https?:\/\//.test(href);
+---
+
+<section {...id ? { id } : {}} class="not-prose relative w-full bg-page" aria-label={title}>
+  {/* Flat light-green tint over a solid cream base, so the page gradient never shows through. */}
+  <div class="pointer-events-none absolute inset-0 bg-section-grey/40" aria-hidden="true"></div>
+  <div
+    class="relative mx-auto flex w-full max-w-container flex-col gap-10 px-5 py-12 sm:px-8 md:gap-12 md:px-16 md:pb-[120px] md:pt-20"
+  >
+    {/* ── Header ───────────────────────────────────────────────── */}
+    <div class="mx-auto flex max-w-[822px] flex-col items-center gap-4 text-center">
+      <Heading variant="h1">{title}</Heading>
+      {
+        subtitle && (
+          <Text variant="body-lg" color="default">
+            {subtitle}
+          </Text>
+        )
+      }
+    </div>
+
+    {/* ── Cards ────────────────────────────────────────────────── */}
+    <ul class="grid w-full grid-cols-1 items-stretch gap-4 md:grid-cols-2 md:gap-8">
+      {
+        items.map((item) => (
+          <li class="flex">
+            {/* The whole card is clickable: the CTA link is stretched over the article via ::after. */}
+            <article class="relative flex h-full w-full flex-col bg-section-grey transition-shadow duration-200 focus-within:shadow-card hover:shadow-card">
+              <div class="relative aspect-[16/10] w-full overflow-hidden">
+                {item.image?.src ? (
+                  <Image
+                    src={item.image.src}
+                    alt={item.image.alt || ''}
+                    width={900}
+                    height={563}
+                    layout="cover"
+                    loading="lazy"
+                    decoding="async"
+                    class="absolute inset-0 h-full w-full object-cover"
+                  />
+                ) : (
+                  <>
+                    {/* TODO: replace with <Image> when asset is ready */}
+                    <HeroImagePlaceholder fill class="absolute inset-0" label={`${item.outlet} photo placeholder`} />
+                  </>
+                )}
+              </div>
+
+              <div class="flex flex-1 flex-col gap-6 p-4 md:p-6">
+                <div class="flex flex-1 flex-col gap-3">
+                  <div class="flex flex-col gap-1">
+                    <Heading variant="eyebrow" as="p" color="inherit" class="text-heading">
+                      {item.outlet}
+                    </Heading>
+                    {item.date && (
+                      <Text variant="body" color="default">
+                        {item.date}
+                      </Text>
+                    )}
+                  </div>
+                  <Heading variant="h3" as="h2">
+                    {item.headline}
+                  </Heading>
+                  {item.quote && (
+                    <Text as="div" variant="body" color="default">
+                      <blockquote>{item.quote}</blockquote>
+                    </Text>
+                  )}
+                </div>
+
+                <Button
+                  variant="primary"
+                  text={item.ctaText}
+                  href={item.href}
+                  icon="tabler:arrow-up-right"
+                  hideNote
+                  class="mt-auto self-start after:absolute after:inset-0 after:content-['']"
+                  {...(isExternal(item.href) ? { target: '_blank' } : {})}
+                />
+              </div>
+            </article>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

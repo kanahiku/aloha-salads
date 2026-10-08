@@ -123,7 +123,7 @@ export const storeLocations: StoreLocation[] = [
     mapsEmbedSrc:
       'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d28101.750033920067!2d-158.0069756!3d21.4537402!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c00670933c5e6b7%3A0x544852c9d73eaf20!2sTown%20Center%20of%20Mililani!5e1!3m2!1sen!2sph!4v1788468690659!5m2!1sen!2sph',
     intro:
-      'Mililani is your local destination for wholesome, scratch-made food featuring ingredients sourced from Hawaii farmers.',
+      'Mililani is your local destination for wholesome, fresh food featuring ingredients sourced from Hawaii farmers.',
     orderPickupHref: 'https://alohasaladsmililani.hrpos.heartland.us/menu',
     orderDeliveryHref: 'https://order.online/store/aloha-salads-mililani-276015/?delivery=true&hideModal=true',
   },

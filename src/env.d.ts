@@ -14,6 +14,7 @@ interface ImportMetaEnv {
   readonly PUBLIC_FORM_ENDPOINT?: string;
   readonly PUBLIC_TURNSTILE_SITE_KEY?: string;
   readonly PUBLIC_SITE_SLUG?: string;
+  readonly PUBLIC_CAREERS_SITE_SLUG?: string;
   readonly SITE_NAME?: string;
   readonly SITE_URL?: string;
   readonly GOOGLE_PLACES_API_KEY?: string;

@@ -19,8 +19,10 @@ export const site = {
     'Fresh, healthy food that tastes worth coming back for — and feels like home. Six locations across Oahu.',
   trailingSlash: false,
 
-  /** Cloudflare Worker `sites.slug`. `PUBLIC_SITE_SLUG` in env overrides this. */
-  formSlug: 'aloha-salads',
+  /** Cloudflare Worker `sites.slug` for the contact form. `PUBLIC_SITE_SLUG` in env overrides this. */
+  formSlug: 'aloha-contact',
+  /** Cloudflare Worker `sites.slug` for the careers application. `PUBLIC_CAREERS_SITE_SLUG` overrides this. */
+  careersFormSlug: 'aloha-careers',
 
   analytics: {
     /** Google Tag Manager container. Empty until the client GTM is created. */

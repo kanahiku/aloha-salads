@@ -1,6 +1,7 @@
-# Local/staging copy only. The production `massic-forms` Worker is deployed
-# exclusively from the r-and-c-roofing repository.
-name = "massic-forms-aloha-salads-dev"
+# Aloha Salads forms Worker (contact /submit + careers /careers).
+# Separate Worker script from the shared `massic-forms` one (which is deployed from the
+# r-and-c-roofing repo), but bound to the same D1 database. Rows are scoped by site_slug.
+name = "massic-forms-aloha-salads"
 main = "src/index.ts"
 compatibility_date = "2026-01-15"
 workers_dev = true

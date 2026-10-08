@@ -209,15 +209,16 @@ export const interiorPages: Record<string, InteriorPageContent> = {
   '/menu/vegan': {
     path: '/menu/vegan',
     title: 'Vegan Options',
-    metaDescription: 'Vegan dishes at Aloha Salads: Vegan Aloha Mediterranean and Vegan Mandarin Ginger.',
+    metaDescription: 'Vegan dishes at Aloha Salads: Vegan Aloha Mediterranean, Vegan Mandarin Ginger, and Vegan Hummus Pita Wrap.',
     heading: 'Vegan options',
-    lede: 'Two dishes on the menu are vegan. For everything else, design your own salad without animal products.',
+    lede: 'Three dishes on the menu are vegan. For everything else, design your own salad without animal products.',
     sections: [
       {
         heading: 'On the menu',
         items: [
           { title: 'Vegan Aloha Mediterranean' },
           { title: 'Vegan Mandarin Ginger' },
+          { title: 'Vegan Hummus Pita Wrap' },
         ],
         links: [{ text: 'Design Your Own Salad', href: '/menu/design-your-own-salad' }],
       },
@@ -242,6 +243,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
           { title: 'Caprese Sub' },
           { title: 'Vegan Aloha Mediterranean' },
           { title: 'Vegan Mandarin Ginger' },
+          { title: 'Vegan Hummus Pita Wrap' },
           { title: 'Sides' },
         ],
       },
@@ -406,16 +408,18 @@ export const interiorPages: Record<string, InteriorPageContent> = {
   '/press': {
     path: '/press',
     title: 'Press & Media',
-    metaDescription: 'Press and media coverage of Aloha Salads.',
-    heading: 'Press & media',
-    lede: 'Coverage and mentions live here, separate from the new blog. Existing posts currently on the live site /blog/ migrate here before the editorial blog publishes.',
+    metaDescription:
+      "Explore recent television features, awards, and news coverage celebrating twenty years of Aloha Salads on O'ahu.",
+    heading: 'Press & Media',
+    lede: 'Explore recent news coverage and television features celebrating our twenty years in Hawaii.',
   },
   '/careers': {
     path: '/careers',
     title: 'Work With Us',
-    metaDescription: 'Work with Aloha Salads. Apply at info@alohasalads.com.',
-    heading: 'Work with us',
-    lede: 'One general page, no individual job postings. Email info@alohasalads.com to apply.',
+    metaDescription:
+      'Apply to work at Aloha Salads. Tell us which of our six Oahu locations you would like to join and send your resume.',
+    heading: 'Work With Us',
+    lede: 'Aloha Salads has been hiring from the neighborhoods we serve since our first store opened in Kailua in 2006. We have six locations across Oahu and we are always glad to hear from people who want to join a team that cares about fresh food and looking after customers. Fill in the form below and tell us which store you would like to work at. There are no individual job postings, we review every application that comes in.',
     sections: [
       {
         heading: 'Benefits',
@@ -426,7 +430,6 @@ export const interiorPages: Record<string, InteriorPageContent> = {
           { title: 'Discounted and free meals for staff' },
           { title: 'Parties and giveaways' },
         ],
-        links: [{ text: 'Email info@alohasalads.com', href: 'mailto:info@alohasalads.com' }],
       },
     ],
   },
