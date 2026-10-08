@@ -52,6 +52,7 @@ export const navigationData: NavigationContent = {
           { text: 'Our Story', href: '/about' },
           { text: 'Our Ingredients', href: '/ingredients' },
           { text: 'Blog', href: '/blog' },
+          { text: 'Careers', href: '/careers' },
         ],
       },
     ],

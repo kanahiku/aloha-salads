@@ -7,7 +7,7 @@
  *   - Section header: eyebrow + h2 left, CTA right
  *   - Photo-first cards with a bottom gradient overlay, consistent content height
  *   - Three-tier size hierarchy:
- *       Row 1 (hero):   Salads (7/12) + Design Your Own (5/12)
+ *       Row 1 (hero):   Salads (6/12) + Design Your Own (6/12)
  *       Row 2 (medium): Wraps & Subs · Soups · Drinks  (4/12 each)
  *       Row 3 (small):  Keiki · Vegan · Vegetarian · Healthy (3/12 each)
  */
@@ -66,7 +66,7 @@ const CATEGORIES: MenuCategory[] = [
     label: 'Salads',
     href: '/menu/salads',
     description: 'Signature bowls featuring crisp greens, local ahi, and house-made dressings.',
-    colSpan: 'md:col-span-7',
+    colSpan: 'md:col-span-6',
     row: 1,
     img: null,
   },
@@ -74,7 +74,7 @@ const CATEGORIES: MenuCategory[] = [
     label: 'Design Your Own Salad',
     href: '/menu/design-your-own-salad',
     description: 'Build a custom bowl with your choice of greens, toppings, and dressings.',
-    colSpan: 'md:col-span-5',
+    colSpan: 'md:col-span-6',
     row: 1,
     img: null,
   },
@@ -228,11 +228,10 @@ const visibleCategories = categories
       visibleCategories.map((cat) => (
         <a
           href={cat.href}
-          data-row={cat.row}
-          class:list={['group relative flex flex-col overflow-hidden rounded-sm', cat.colSpan]}
+          class:list={['group relative flex h-full flex-col overflow-hidden rounded-sm', cat.colSpan]}
         >
           {/* ── Photo ── */}
-          <div class="menu-cat-photo relative w-full flex-1 min-h-0 overflow-hidden bg-section-grey">
+          <div class="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-section-grey">
             {cat.img?.src ? (
               <Image
                 src={cat.img.src}
@@ -254,12 +253,10 @@ const visibleCategories = categories
                 />
               </>
             )}
-            {/* Dark gradient scrim — more depth at bottom for text legibility */}
-            <div class="absolute inset-0 bg-gradient-to-t from-heading/80 via-heading/20 to-transparent" />
           </div>
 
-          {/* ── Light footer strip — keeps card details readable against photo cards ── */}
-          <div class="relative z-[1] -mt-20 flex min-h-20 flex-col justify-end gap-1.5 border-t border-heading/10 bg-card px-5 pb-4 pt-5 shadow-card md:px-6">
+          {/* ── Footer strip — sits below the photo so the full 4:3 image stays visible ── */}
+          <div class="relative z-[1] flex flex-1 flex-col justify-end gap-1.5 border-t border-heading/10 bg-card px-5 pb-4 pt-5 shadow-card md:px-6">
             {/* Heading row + arrow */}
             <div class="flex items-start justify-between gap-3">
               <h3
@@ -297,39 +294,3 @@ const visibleCategories = categories
     }
   </div>
 </section>
-
-<style>
-  /* Mobile: natural aspect-ratio via the photo placeholder */
-  [data-row='1'] .menu-cat-photo {
-    aspect-ratio: 16 / 9;
-  }
-  [data-row='2'] .menu-cat-photo {
-    aspect-ratio: 4 / 3;
-  }
-  [data-row='3'] .menu-cat-photo {
-    aspect-ratio: 4 / 3;
-  }
-
-  @media (min-width: 768px) {
-    /* Desktop: fix total card heights so rows align */
-    [data-row='1'] {
-      height: 480px;
-    }
-    [data-row='2'] {
-      height: 360px;
-    }
-    [data-row='3'] {
-      height: 260px;
-    }
-
-    /* Photo fills all space above the fixed content strip */
-    .menu-cat-photo {
-      aspect-ratio: auto !important;
-      flex: 1 1 0%;
-    }
-
-    [data-layout='grid'] [data-row] {
-      height: 300px;
-    }
-  }
-</style>

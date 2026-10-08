@@ -8,7 +8,6 @@ import Testimonials from '~/components/widgets/Testimonials.astro';
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
-import Image from '~/components/common/Image.astro';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 import { PRIMARY_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
 import { getSanityHomepageImages } from '~/lib/content/sanity';
@@ -74,23 +73,8 @@ const metadata = {
 
         {/* Right — food photo placeholder */}
         <div class="relative w-full max-w-[400px] shrink-0" style="aspect-ratio: 562 / 624;">
-          {
-            homepageImages.localSourcing ? (
-              <Image
-                {...homepageImages.localSourcing}
-                class="absolute inset-0 h-full w-full object-cover"
-                widths={[320, 480, 640, 828]}
-                sizes="(max-width: 768px) 100vw, 400px"
-                loading="lazy"
-                width={562}
-                height={624}
-                layout="cover"
-                format="webp"
-              />
-            ) : (
-              <HeroImagePlaceholder fill class="absolute inset-0" />
-            )
-          }
+          {/* TODO: replace with <Image> when approved client photography is ready */}
+          <HeroImagePlaceholder fill class="absolute inset-0" />
         </div>
       </div>
     </div>

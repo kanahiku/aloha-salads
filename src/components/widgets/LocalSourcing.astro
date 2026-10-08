@@ -9,9 +9,6 @@ import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import basketIcon from '~/assets/icons/Shopping-Basket-Like--Streamline-Freehand.svg?url';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
-import Image from '~/components/common/Image.astro';
-import type { ContentImage } from '~/lib/content/types';
-
 export interface SourcingFact {
   title: string;
   description: string;
@@ -29,7 +26,6 @@ export interface Props {
    * The intro panel becomes a split layout: text+CTA left / photo right.
    */
   withPhoto?: boolean;
-  image?: ContentImage;
   /**
    * Controls the facts card layout.
    * 'grid-4'    — 4-column grid (default, homepage style, overlaps the intro panel)
@@ -47,7 +43,6 @@ const {
   ctaText = 'See where our food comes from',
   ctaHref = '/ingredients',
   withPhoto = false,
-  image,
   facts = [],
   factsLayout = 'grid-4',
   id,
@@ -78,21 +73,8 @@ const {
                 {ctaText && <Button variant="primary" text={ctaText} href={ctaHref} hideNote={true} />}
               </div>
               <div class="relative min-h-[280px] flex-1 overflow-hidden md:min-h-0">
-                {image ? (
-                  <Image
-                    {...image}
-                    class="absolute inset-0 h-full w-full object-cover"
-                    widths={[400, 768, 1200]}
-                    sizes="(max-width: 768px) 100vw, 48vw"
-                    loading="lazy"
-                    width={720}
-                    height={720}
-                    layout="cover"
-                    format="webp"
-                  />
-                ) : (
-                  <HeroImagePlaceholder fill class="absolute inset-0" />
-                )}
+                {/* TODO: replace with <Image> when approved client photography is ready */}
+                <HeroImagePlaceholder fill class="absolute inset-0" />
               </div>
             </div>
           ) : (
@@ -193,21 +175,8 @@ const {
             </div>
             {/* Right: image placeholder */}
             <div class="relative min-h-[280px] flex-1 overflow-hidden md:min-h-0">
-              {image ? (
-                <Image
-                  {...image}
-                  class="absolute inset-0 h-full w-full object-cover"
-                  widths={[400, 768, 1200]}
-                  sizes="(max-width: 768px) 100vw, 48vw"
-                  loading="lazy"
-                  width={720}
-                  height={720}
-                  layout="cover"
-                  format="webp"
-                />
-              ) : (
-                <HeroImagePlaceholder fill class="absolute inset-0" />
-              )}
+              {/* TODO: replace with <Image> when approved client photography is ready */}
+              <HeroImagePlaceholder fill class="absolute inset-0" />
             </div>
           </div>
 

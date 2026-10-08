@@ -620,7 +620,7 @@
         "ctaHref": "header CTA href",
         "excludeHref": "optional category href to omit (reflows to an even 4-col grid)"
       },
-      "notes": "Bento on /menu. Even 4-col grid on menu subpages via excludeHref. Card heights set via data-row CSS: 480px / 360px / 260px; grid layout uses 300px."
+      "notes": "Bento on /menu. Even 4-col grid on menu subpages via excludeHref. Every card photo is a fixed 4:3 box (matches 1600x1200 menu photos) so nothing is cropped; card height follows width."
     },
     {
       "id": "P-55",

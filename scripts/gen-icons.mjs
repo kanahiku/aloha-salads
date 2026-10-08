@@ -18,7 +18,7 @@ const ogBase = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="1200"
   <rect width="1200" height="630" fill="${BRAND_DARK}"/>
   <rect x="308" y="90" width="3" height="200" fill="${BRAND_SEAWEED}" opacity="0.5"/>
   <text x="340" y="160" font-family="Georgia,serif" font-size="72" fill="${BRAND_CREAM}">Aloha Salads</text>
-  <text x="342" y="220" font-family="Arial,sans-serif" font-size="28" fill="${BRAND_SEAWEED}">Island-grown produce. Never-frozen local ahi. Six spots on O‘ahu.</text>
+  <text x="342" y="220" font-family="Arial,sans-serif" font-size="28" fill="${BRAND_SEAWEED}">Island-grown produce. Never-frozen local ahi. Six spots on Oahu.</text>
   <rect x="0" y="610" width="1200" height="4" fill="${BRAND_ACCENT}" opacity="0.35"/>
 </svg>`);
 
