@@ -16,6 +16,7 @@ import Text from '~/components/ui/Text.astro';
 import smallLeafMotif from '~/assets/images/small-leaf-motif.webp';
 import Heading from '~/components/ui/Heading.astro';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
+import HeroVideo from '~/components/ui/HeroVideo.astro';
 import type { ContentImage } from '~/lib/content/types';
 
 import type { Hero as Props } from '~/types';
@@ -28,6 +29,7 @@ const {
   actions = await Astro.slots.render('actions'),
   image = await Astro.slots.render('image'),
   imageMobile,
+  video,
   variant = 'split',
   words = [],
   isReversed = false,
@@ -51,6 +53,8 @@ const isChrome = isOverlay || isPage || isSplitDark;
 const hasStats = variant === 'overlay' && Astro.slots.has('stats');
 const hasNav = Astro.slots.has('nav');
 const keepHomeHeroImage = id === 'home-hero';
+// Home hero only: a video replaces the photo (image OR video, never both).
+const showHomeHeroVideo = keepHomeHeroImage && isPhotoOverlay && Boolean(video?.mp4 && video?.poster);
 const showSplitDarkImage = isSplitDark && !hideImage;
 
 const wordAlignClass = {
@@ -111,7 +115,17 @@ const isLocalOverlayImage =
       {isOverlay && (
         <div class="absolute inset-0 pointer-events-none z-0" aria-hidden="true">
           <slot name="bg">{bg ? <Fragment set:html={bg} /> : null}</slot>
-          {keepHomeHeroImage && isLocalOverlayImage ? (
+          {showHomeHeroVideo && video ? (
+            // Full-bleed. The desktop cut is pre-composed (see src/config/hero.ts) so the burnt-in
+            // "aloha SALADS" logo sits on the right of the frame, clear of the left-aligned copy.
+            <HeroVideo
+              poster={video.poster}
+              mp4={video.mp4}
+              mp4Mobile={video.mp4Mobile}
+              width={video.width}
+              height={video.height}
+            />
+          ) : keepHomeHeroImage && isLocalOverlayImage ? (
             <img
               src={contentImage?.src}
               alt={contentImage?.alt ?? ''}
@@ -152,7 +166,16 @@ const isLocalOverlayImage =
             />
           )}
           {isPhotoOverlay ? (
-            <div class="absolute inset-0 z-[1] bg-black/60 md:bg-transparent md:bg-gradient-to-r md:from-black/70 md:from-[30%] md:via-black/25 md:via-[58%] md:to-transparent" />
+            <div
+              class:list={[
+                'absolute inset-0 z-[1] bg-black/60',
+                // Video: a light scrim only behind the left text column, fully clear by ~55% of the
+                // width so the logo on the right is never dimmed. Photo: original full-width gradient.
+                showHomeHeroVideo
+                  ? 'md:bg-transparent md:bg-gradient-to-r md:from-black/50 md:from-[0%] md:to-transparent md:to-[55%]'
+                  : 'md:bg-transparent md:bg-gradient-to-r md:from-black/70 md:from-[30%] md:via-black/25 md:via-[58%] md:to-transparent',
+              ]}
+            />
           ) : isWords || isTitle ? (
             <div class="absolute inset-0 z-[1] bg-heading/10" />
           ) : (

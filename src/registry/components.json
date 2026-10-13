@@ -67,6 +67,21 @@
         "html": "string (set:html shorthand)"
       },
       "notes": "Style Guide 110:2377: body-lg=16 / body=14 / small=12 Host Grotesk, tracking -1%. button=14px Norca-Rough. color=white is text/contrast cream. Default color is muted (cacao); color=default is text/default cacao-brown."
+    },
+    {
+      "id": "A-06",
+      "name": "HeroVideo",
+      "figmaNames": ["Hero / Video", "Hero Background Video"],
+      "shape": "Decorative muted looping background video that fills a full-bleed hero; poster paints first as LCP",
+      "component": "HeroVideo",
+      "import": "~/components/ui/HeroVideo.astro",
+      "props": {
+        "poster": "first frame of the loop (WebP) — preloaded, is the LCP element",
+        "mp4": "desktop/tablet cut",
+        "mp4Mobile": "optional small phone cut",
+        "width / height": "intrinsic size of the desktop cut"
+      },
+      "notes": "Only rendered by Hero2 (variant=overlay, id=home-hero) when a `video` prop is passed — it replaces the image (image OR video, never both). Content lives in Sanity (Homepage → Hero background / Hero video / Hero video poster); getSanityHomepageImages() returns `heroVideo` only when video is selected and the file + poster exist, otherwise the page falls back to the hero image. Playback starts after window.load + idle, skipped for reduced-motion / save-data / 2G-3G, paused off-screen. Re-encode with scripts/encode-hero-video.sh, upload with `npm run import:homepage-video`."
     }
   ],
   "patterns": [

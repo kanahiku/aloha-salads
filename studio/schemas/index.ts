@@ -4,6 +4,7 @@ import { siteFooter } from './singletons/footer';
 import { homepageContent } from './singletons/homepage';
 import { aboutContent } from './singletons/about';
 import { cateringContent } from './singletons/catering';
+import { careersContent } from './singletons/careers';
 import { locationsContent } from './singletons/locations';
 import { ingredientsContent } from './singletons/ingredients';
 import { menuPagesContent } from './singletons/menuPages';
@@ -24,6 +25,7 @@ export const schemaTypes = [
   homepageContent,
   aboutContent,
   cateringContent,
+  careersContent,
   locationsContent,
   ingredientsContent,
   menuPagesContent,

@@ -6,8 +6,10 @@ import CareersApplication from '~/components/widgets/CareersApplication.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { getInteriorPage } from '~/data/pages/interior';
 import { site } from '~/config/site';
+import { getSanityCareersImages } from '~/lib/content/sanity';
 
 const page = getInteriorPage('/careers');
+const careersImages = await getSanityCareersImages();
 
 const metadata = {
   title: `${page.title} | ${site.name}`,
@@ -17,8 +19,15 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  {/* Footer-only page: not in the primary nav. H1, intro, and Benefits come from interior.ts. */}
-  <Hero2 variant="split-dark" overlapHeader={false} hideImage title={page.heading} content={page.lede} />
+  {/* Footer-only page: not in the primary nav. H1, intro, and Benefits come from interior.ts; hero photo from Sanity (Careers). */}
+  <Hero2
+    variant="split-dark"
+    overlapHeader={false}
+    hideImage={!careersImages.hero}
+    title={page.heading}
+    content={page.lede}
+    image={careersImages.hero}
+  />
 
   {/* Same band as the Contact page: Benefits on the dark panel (left), application form on the cream card (right). */}
   <CareersApplication>

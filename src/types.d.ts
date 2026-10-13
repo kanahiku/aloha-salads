@@ -194,6 +194,17 @@ export interface Form {
   description?: string;
 }
 
+export interface HeroVideo {
+  /** First frame of the loop. Paints first and is the LCP element. */
+  poster: string;
+  /** Desktop / tablet cut (H.264 MP4). */
+  mp4: string;
+  /** Optional small phone cut. Falls back to `mp4`. */
+  mp4Mobile?: string;
+  width?: number;
+  height?: number;
+}
+
 export interface HeroWord {
   text: string;
   italic?: boolean;
@@ -208,6 +219,11 @@ export interface Hero extends Omit<Headline, 'classes'>, Omit<Widget, 'isDark' |
   image?: string | unknown;
   /** Optional phone-only crop. Falls back to `image` below the `md` breakpoint. */
   imageMobile?: string | unknown;
+  /**
+   * Looping background video for `variant="overlay"` on the home hero (`id="home-hero"`).
+   * When set it REPLACES the image — image or video, never both. Omit to keep the photo.
+   */
+  video?: HeroVideo;
   /** `split` = text + side image. `overlay` = photo + headline/CTAs. `words` = photo + three positioned words. `page` = light gradient + title left / lede right. `title` = photo + centered h1 (Figma 64:935 Chapters). */
   variant?: 'split' | 'overlay' | 'words' | 'page' | 'title' | 'split-dark';
   /** Three-word overlay hero (e.g. Peak. Slope. Floor.). Used when `variant="words"`. */

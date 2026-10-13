@@ -5,10 +5,26 @@ export interface ContentImage {
   alt: string;
 }
 
+/** Looping hero video served from the Sanity CDN. Only set when every required piece exists. */
+export interface HomepageHeroVideo {
+  /** First frame of the loop (Sanity image CDN URL). Paints first and is the LCP element. */
+  poster: string;
+  /** Desktop / tablet cut. */
+  mp4: string;
+  /** Optional small phone cut. */
+  mp4Mobile?: string;
+  width: number;
+  height: number;
+}
+
 export interface HomepageImages {
   hero?: ContentImage;
   localSourcing?: ContentImage;
   locations?: ContentImage;
+  /** Which hero background the editor picked in the Studio. Missing/unknown → 'image'. */
+  heroMedia?: 'image' | 'video';
+  /** Present only when heroMedia is 'video' AND the video + poster are uploaded. */
+  heroVideo?: HomepageHeroVideo;
 }
 
 export interface AboutImages {
@@ -16,6 +32,10 @@ export interface AboutImages {
   story?: ContentImage;
   sustainability?: ContentImage;
   vendors?: ContentImage;
+}
+
+export interface CareersImages {
+  hero?: ContentImage;
 }
 
 export interface CateringImages {

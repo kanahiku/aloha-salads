@@ -45,6 +45,8 @@ const fullMenuCategories = [
       },
       {
         title: 'Big Island Beet',
+        description:
+          'Mixed greens, roasted beets, mangoes, craisins, candied walnuts, goat cheese, balsamic glaze, and passion orange vinaigrette.',
         note: 'Not available at Kaneohe',
       },
       {
@@ -82,6 +84,8 @@ const fullMenuCategories = [
       },
       {
         title: 'Poke Salad',
+        description:
+          'Romaine, carrots, cucumbers, avocado, wonton strips, green onion, crispy onion, spicy ahi, and unagi sauce.',
         badge: 'Coming soon',
       },
     ],
@@ -94,54 +98,58 @@ const fullMenuCategories = [
       {
         title: 'Grilled Steak Wrap',
         description:
-          'Grilled steak, mushrooms, red onion, provolone, romaine, sundried tomatoes, and goddess dressing.',
-      },
-      {
-        title: 'Pastrami Melt',
+          'Grilled steak, mushrooms, red onion, provolone, romaine, sundried tomatoes, and goddess dressing, served on warmed pita.',
       },
       {
         title: 'Aloha Gyro Wrap',
         description:
-          'Thinly sliced Mediterranean seasoned lamb and beef with grilled onions, feta cheese, dill, mixed greens, and our famous goddess dressing.',
+          'Thinly sliced Mediterranean seasoned lamb and beef with grilled onions, feta cheese, dill, mixed greens, and our famous goddess dressing, served on warmed pita.',
       },
       {
         title: 'Curried Chicken Wrap',
-        description: 'Curried chicken, mango chutney, carrots, cranberries, grapes, coconut, romaine, and pita.',
+        description: 'Curried chicken, mango chutney, carrots, cranberries, grapes, coconut, and romaine, served on warmed pita.',
+      },
+      {
+        title: 'Tutus Chicken Salad Wrap',
+        description: 'Chicken breast, romaine, red onions, red grapes, envy apples, celery, and mayo, served on a spinach tortilla wrap.',
+      },
+      {
+        title: 'Fresh Island Ahi Wrap',
+        description:
+          'Never-frozen local ahi, grape tomatoes, red onion, mixed greens, capers, and champagne dressing, served on warmed pita.',
+      },
+      {
+        title: 'Hummus Pita Wrap',
+        description:
+          'Hummus, feta, kalamata olives, cucumbers, sundried tomatoes, red and green bell peppers, red onions, dill, grape tomatoes, romaine, and Mediterranean dressing, served on warmed pita.',
+      },
+      {
+        title: 'Poke Wrap',
+        description:
+          'Bean sprouts, avocado, cucumber, crispy onion, spicy ahi, and unagi sauce, served on warmed pita.',
+        badge: 'Coming soon',
       },
       {
         title: 'Club Sub',
-        description: 'Turkey bacon, avocado, lettuce, tomato, and mayo on your choice of bread.',
+        description: 'Turkey, bacon, avocado, lettuce, tomato, and mayo on your choice of bread.',
       },
       {
         title: 'Chicken Pesto Sandwich',
         description: 'Grilled chicken, pesto, basil, mixed greens, tomatoes, and mayo on your choice of bread.',
       },
       {
-        title: "Tutus Chicken Salad Tortilla Wrap",
-        description: 'Chicken breast, romaine, red onions, red grapes, envy apples, celery, and mayo.',
-      },
-      {
-        title: 'Fresh Island Ahi Wrap',
-        description:
-          'Never-frozen local ahi, grape tomatoes, red onion, mixed greens, capers, and champagne dressing in a pita.',
-      },
-      {
-        title: 'Hummus Pita Wrap',
-        description:
-          'Hummus, feta, kalamata olives, cucumbers, sundried tomatoes, red and green bell peppers, red onions, dill, grape tomatoes, and romaine.',
-      },
-      {
         title: 'Caprese Sub',
         description:
-          'Fresh mozzarella, tomatoes, basil, red onion, mixed greens, balsamic vinaigrette, and balsamic glaze.',
+          'Fresh mozzarella, tomatoes, basil, red onion, mixed greens, and balsamic vinaigrette.',
       },
       {
         title: 'Grilled Cheese Soup Combo',
         description: 'Havarti, cheddar, and fresh mozzarella on sourdough bread, served with a 6oz tomato bisque.',
       },
       {
-        title: 'Poke Wrap',
-        badge: 'Coming soon',
+        title: 'Pastrami Melt',
+        description:
+          'Grilled pastrami, provolone cheese, and spicy slaw on grilled sourdough.',
       },
     ],
   },
@@ -152,12 +160,22 @@ const fullMenuCategories = [
     items: [
       {
         title: 'Avocado Toast',
+        description:
+          'Toasted sourdough, avocado, tomatoes, basil, balsamic glaze, sea salt, and black pepper.',
       },
       {
         title: 'Dessert Toast',
+        description:
+          'Toasted sourdough, your choice of Nutella or peanut butter, strawberry, banana, blueberry, and honey.',
       },
       {
         title: 'Acai Bowl',
+        description:
+          'Acai, granola, strawberry, banana, blueberry, and honey.',
+      },
+      {
+        title: 'Cookies',
+        description: 'Our cookies, a sweet treat to pair with any meal.',
       },
     ],
   },
@@ -205,7 +223,7 @@ const fullMenuCategories = [
       {
         title: 'Vegan Hummus Pita Wrap',
         description:
-          'Hummus, kalamata olives, cucumbers, sundried tomatoes, red and green bell peppers, red onions, dill, grape tomatoes, and romaine.',
+          'Hummus, kalamata olives, cucumbers, sundried tomatoes, red and green bell peppers, red onions, dill, grape tomatoes, and romaine, served on warmed pita.',
       },
       {
         title: 'Design Your Own Salad',
@@ -241,11 +259,11 @@ const fullMenuCategories = [
       {
         title: 'Hummus Pita Wrap',
         description:
-          'Hummus, feta, kalamata olives, cucumbers, sundried tomatoes, red and green bell peppers, red onions, dill, grape tomatoes, and romaine.',
+          'Hummus, feta, kalamata olives, cucumbers, sundried tomatoes, red and green bell peppers, red onions, dill, grape tomatoes, romaine, and Mediterranean dressing, served on warmed pita.',
       },
       {
         title: 'Caprese Sub',
-        description: 'Fresh mozzarella, tomatoes, basil, red onion, mixed greens, balsamic vinaigrette.',
+        description: 'Fresh mozzarella, tomatoes, basil, red onion, mixed greens, and balsamic vinaigrette.',
       },
       {
         title: 'Vegan Aloha Mediterranean',
@@ -260,7 +278,7 @@ const fullMenuCategories = [
       {
         title: 'Vegan Hummus Pita Wrap',
         description:
-          'Hummus, kalamata olives, cucumbers, sundried tomatoes, red and green bell peppers, red onions, dill, grape tomatoes, and romaine.',
+          'Hummus, kalamata olives, cucumbers, sundried tomatoes, red and green bell peppers, red onions, dill, grape tomatoes, and romaine, served on warmed pita.',
       },
       {
         title: 'Sides',
@@ -283,6 +301,8 @@ const fullMenuCategories = [
       },
       {
         title: 'Kona Cold Brew Coffee',
+        description:
+          'Kona coffee and condensed milk.',
       },
       {
         title: 'Guava Lemonade',

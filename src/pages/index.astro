@@ -13,6 +13,10 @@ import { PRIMARY_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
 import { getSanityHomepageImages } from '~/lib/content/sanity';
 
 const homepageImages = await getSanityHomepageImages();
+// Hero background is chosen in Sanity (Homepage → "Hero background"). Image OR video, never both;
+// `heroVideo` is only set when video is selected and its file + poster are uploaded, otherwise
+// the hero falls back to the photo.
+const heroVideo = homepageImages.heroMedia === 'video' ? homepageImages.heroVideo : undefined;
 
 const metadata = {
   title: 'Aloha Salads | Fresh Salads & Local Ahi on Oahu',
@@ -31,7 +35,7 @@ const metadata = {
     tagline="Kailua-born since 2006 · Six spots on Oahu"
     title="Aloha Salads: Fresh Food<br/>Made Fresh on Oahu."
     subtitle="Founded in Kailua in May 2006, Aloha Salads provides fresh, locally grown food tailored to active island lifestyles. Voted First Place Hawaiis Best 2024 in the Peoples Choice Awards by the Star Advertiser, we operate six neighborhood restaurants across Oahu."
-    image={homepageImages.hero}
+    {...heroVideo ? { video: heroVideo } : { image: homepageImages.hero }}
     actions={[
       { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
       { variant: 'ghost', text: 'Order Catering', href: CATERING_CTA_HREF },

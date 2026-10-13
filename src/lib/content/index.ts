@@ -230,12 +230,14 @@ const REQUESTED_MENU_ITEMS: Array<{
   description?: string;
   badge?: string;
   note?: string;
+  insertAfter?: string;
 }> = [
   {
     categorySlug: 'salads',
     categoryTitle: 'Signature Salads',
     categoryDescription: 'Fresh bowls built with crisp greens, local ahi, and house-made dressings.',
     title: 'Big Island Beet',
+    description: 'Mixed greens, roasted beets, mangoes, craisins, candied walnuts, goat cheese, balsamic glaze, and passion orange vinaigrette.',
     note: 'Not available at Kaneohe',
   },
   {
@@ -250,6 +252,7 @@ const REQUESTED_MENU_ITEMS: Array<{
     categoryTitle: 'Signature Salads',
     categoryDescription: 'Fresh bowls built with crisp greens, local ahi, and house-made dressings.',
     title: 'Poke Salad',
+    description: 'Romaine, carrots, cucumbers, avocado, wonton strips, green onion, crispy onion, spicy ahi, and unagi sauce.',
     badge: 'Coming soon',
   },
   {
@@ -257,12 +260,15 @@ const REQUESTED_MENU_ITEMS: Array<{
     categoryTitle: 'Wraps & Subs',
     categoryDescription: 'Hearty wraps and sandwiches made with the same fresh components as our bowls.',
     title: 'Pastrami Melt',
+    description: 'Grilled pastrami, provolone cheese, and spicy slaw on grilled sourdough.',
   },
   {
     categorySlug: 'wraps-subs',
     categoryTitle: 'Wraps & Subs',
     categoryDescription: 'Hearty wraps and sandwiches made with the same fresh components as our bowls.',
     title: 'Poke Wrap',
+    insertAfter: 'Hummus Pita Wrap',
+    description: 'Bean sprouts, avocado, cucumber, crispy onion, spicy ahi, and unagi sauce, served on warmed pita.',
     badge: 'Coming soon',
   },
   {
@@ -270,18 +276,28 @@ const REQUESTED_MENU_ITEMS: Array<{
     categoryTitle: 'Misc',
     categoryDescription: 'Additional favorites and cafe-style selections.',
     title: 'Avocado Toast',
+    description: 'Toasted sourdough, avocado, tomatoes, basil, balsamic glaze, sea salt, and black pepper.',
   },
   {
     categorySlug: 'misc',
     categoryTitle: 'Misc',
     categoryDescription: 'Additional favorites and cafe-style selections.',
     title: 'Dessert Toast',
+    description: 'Toasted sourdough, your choice of Nutella or peanut butter, strawberry, banana, blueberry, and honey.',
   },
   {
     categorySlug: 'misc',
     categoryTitle: 'Misc',
     categoryDescription: 'Additional favorites and cafe-style selections.',
     title: 'Acai Bowl',
+    description: 'Acai, granola, strawberry, banana, blueberry, and honey.',
+  },
+  {
+    categorySlug: 'drinks',
+    categoryTitle: 'Drinks',
+    categoryDescription: 'Chilled beverages, including our Big Island mamaki mint tea.',
+    title: 'Kona Cold Brew Coffee',
+    description: 'Kona coffee and condensed milk.',
   },
 ];
 
@@ -295,7 +311,14 @@ function upsertRequestedMenuItem(items: MenuItem[], requested: (typeof REQUESTED
     ...(image?.src ? { image: { ...image, alt: requested.title } } : {}),
   };
 
-  if (existingIndex === -1) return [...items, { title: requested.title, ...requestedFields }];
+  if (existingIndex === -1) {
+    const newItem = { title: requested.title, ...requestedFields };
+    const afterIndex = requested.insertAfter
+      ? items.findIndex((item) => normalizeMenuTitle(item.title) === normalizeMenuTitle(requested.insertAfter!))
+      : -1;
+    if (afterIndex === -1) return [...items, newItem];
+    return [...items.slice(0, afterIndex + 1), newItem, ...items.slice(afterIndex + 1)];
+  }
 
   return items.map((item, index) =>
     index === existingIndex

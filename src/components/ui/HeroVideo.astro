@@ -1,0 +1,122 @@
+---
+/**
+ * Decorative looping background video for a full-bleed hero.
+ *
+ * Performance contract (keep it — this is what protects LCP / CLS / INP / data):
+ *  - The `poster` is what paints first and is the LCP element. It is preloaded with
+ *    fetchpriority="high" (a <video poster> cannot carry fetchpriority itself).
+ *  - `preload="none"` and NO `autoplay` attribute → zero video bytes on the critical path.
+ *  - Playback starts only after `window.load` + an idle callback, and only if the visitor
+ *    has not asked for reduced motion / data saving and is not on a 2G/3G connection.
+ *    In every other case the poster simply stays on screen.
+ *  - Phones get the small centre-cropped cut; everyone else gets the desktop cut.
+ *  - Playback pauses whenever the hero scrolls out of view.
+ *  - Fills its (already sized) parent absolutely → no layout shift.
+ *  - `object-position: 50% 90%` anchors the crop low. The footage has the "aloha SALADS" logo
+ *    burnt in near the bottom of the frame (~63–91% of the desktop cut's height); on wide
+ *    screens the hero is a fixed 760px tall, so a centred crop would slice the logo. 90% keeps
+ *    it whole at every common width.
+ *
+ * The poster must be the first frame of the loop so poster → playback has no jump.
+ *
+ * Content (video files + poster) comes from Sanity: Homepage → "Hero background". This component
+ * only knows URLs; see getSanityHomepageImages() in src/lib/content/sanity.ts.
+ */
+export interface Props {
+  poster: string;
+  mp4: string;
+  mp4Mobile?: string;
+  width?: number;
+  height?: number;
+  class?: string;
+}
+
+const { poster, mp4, mp4Mobile, width = 1280, height = 720, class: className = '' } = Astro.props;
+
+// Poster + video are served from the Sanity CDN (cross-origin). Open that connection immediately
+// — the poster is the LCP element. Same-origin (relative) URLs need no preconnect.
+let posterOrigin: string | undefined;
+try {
+  const origin = new URL(poster).origin;
+  if (origin !== Astro.url.origin) posterOrigin = origin;
+} catch {
+  posterOrigin = undefined;
+}
+---
+
+{posterOrigin && <link rel="preconnect" href={posterOrigin} />}
+<link rel="preload" as="image" href={poster} fetchpriority="high" />
+<video
+  data-hero-video
+  data-mp4={mp4}
+  data-mp4-mobile={mp4Mobile}
+  poster={poster}
+  width={width}
+  height={height}
+  muted
+  loop
+  playsinline
+  preload="none"
+  disablepictureinpicture
+  disableremoteplayback
+  aria-hidden="true"
+  tabindex="-1"
+  class:list={['absolute inset-0 h-full w-full object-cover object-[50%_90%]', className]}
+>
+</video>
+
+<script>
+  const MOBILE_QUERY = '(max-width: 767px)';
+  const SLOW_CONNECTIONS = /^(slow-2g|2g|3g)$/;
+
+  type NetworkInformation = { saveData?: boolean; effectiveType?: string };
+  let observer: IntersectionObserver | undefined;
+
+  function shouldSkip(): boolean {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return true;
+    const connection = (navigator as Navigator & { connection?: NetworkInformation }).connection;
+    if (connection?.saveData) return true;
+    if (connection?.effectiveType && SLOW_CONNECTIONS.test(connection.effectiveType)) return true;
+    return false;
+  }
+
+  function start(video: HTMLVideoElement) {
+    if (video.dataset.started === 'true' || !video.isConnected) return;
+
+    const src = (window.matchMedia(MOBILE_QUERY).matches && video.dataset.mp4Mobile) || video.dataset.mp4;
+    if (!src) return;
+
+    video.dataset.started = 'true';
+    video.muted = true;
+    video.src = src;
+
+    observer?.disconnect();
+    observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) video.play().catch(() => {});
+        else video.pause();
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(video);
+  }
+
+  function init() {
+    const video = document.querySelector<HTMLVideoElement>('video[data-hero-video]');
+    if (!video || shouldSkip()) return;
+
+    const schedule = () => {
+      if ('requestIdleCallback' in window) window.requestIdleCallback(() => start(video), { timeout: 2500 });
+      else setTimeout(() => start(video), 300);
+    };
+
+    if (document.readyState === 'complete') schedule();
+    else window.addEventListener('load', schedule, { once: true });
+  }
+
+  // Run now (first full page load) and again after every client-router navigation.
+  // `start()` is idempotent, so a double call is harmless.
+  init();
+  document.addEventListener('astro:page-load', init);
+  document.addEventListener('astro:before-swap', () => observer?.disconnect());
+</script>

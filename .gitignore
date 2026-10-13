@@ -31,3 +31,5 @@ pnpm-lock.yaml
 
 # Local source photos for one-off Sanity imports.
 src/menu-images/
+# Hero loop masters (encoded with scripts/encode-hero-video.sh, uploaded to Sanity)
+/site-videos/

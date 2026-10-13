@@ -1,12 +1,14 @@
 import { sanityClient } from '../sanity/client';
-import { resolveContentImage, type SanityImageFields } from '../sanity/image';
+import { resolveContentImage, urlFor, type SanityImageFields } from '../sanity/image';
 import type {
   BlogContentBlock,
   BlogPost,
   Testimonial,
   ContentImage,
   HomepageImages,
+  HomepageHeroVideo,
   AboutImages,
+  CareersImages,
   CateringImages,
   LocationImages,
   IngredientsImages,
@@ -72,15 +74,47 @@ type FetchedHomepageImages = {
   heroImage?: FetchedImage | null;
   localSourcingImage?: FetchedImage | null;
   locationsImage?: FetchedImage | null;
+  heroMedia?: string | null;
+  heroVideoUrl?: string | null;
+  heroVideoMobileUrl?: string | null;
+  heroVideoPosterRef?: string | null;
+  heroVideoPosterSize?: { width?: number; height?: number } | null;
 };
 
 const HOMEPAGE_IMAGES_QUERY = /* groq */ `
   *[_type == "homepageContent" && _id == "singleton-homepage"][0] {
     ${IMAGE_PROJECTION('heroImage', 'Fresh salad from Aloha Salads')},
     ${IMAGE_PROJECTION('localSourcingImage', 'Local ingredients used by Aloha Salads')},
-    ${IMAGE_PROJECTION('locationsImage', 'Aloha Salads store location')}
+    ${IMAGE_PROJECTION('locationsImage', 'Aloha Salads store location')},
+    heroMedia,
+    "heroVideoUrl": heroVideo.asset->url,
+    "heroVideoMobileUrl": heroVideoMobile.asset->url,
+    "heroVideoPosterRef": heroVideoPoster.asset._ref,
+    "heroVideoPosterSize": heroVideoPoster.asset->metadata.dimensions{ width, height }
   }
 `;
+
+/**
+ * Video is used only when the editor picked it AND the desktop file + poster exist; any missing
+ * piece falls back to the hero image so the homepage never renders an empty hero.
+ */
+function resolveHomepageHeroVideo(doc: FetchedHomepageImages | null): HomepageHeroVideo | undefined {
+  if (doc?.heroMedia !== 'video' || !doc.heroVideoUrl || !doc.heroVideoPosterRef) return undefined;
+
+  const poster = urlFor({ _type: 'image', asset: { _type: 'reference', _ref: doc.heroVideoPosterRef } })
+    .width(1440)
+    .format('webp')
+    .quality(85)
+    .url();
+
+  return {
+    poster,
+    mp4: doc.heroVideoUrl,
+    mp4Mobile: doc.heroVideoMobileUrl || undefined,
+    width: doc.heroVideoPosterSize?.width ?? 1440,
+    height: doc.heroVideoPosterSize?.height ?? 760,
+  };
+}
 
 export async function getSanityHomepageImages(): Promise<HomepageImages> {
   const doc = await sanityClient.fetch<FetchedHomepageImages | null>(HOMEPAGE_IMAGES_QUERY);
@@ -89,6 +123,8 @@ export async function getSanityHomepageImages(): Promise<HomepageImages> {
     hero: resolveContentImage(doc?.heroImage),
     localSourcing: resolveContentImage(doc?.localSourcingImage),
     locations: resolveContentImage(doc?.locationsImage),
+    heroMedia: doc?.heroMedia === 'video' ? 'video' : 'image',
+    heroVideo: resolveHomepageHeroVideo(doc ?? null),
   };
 }
 
@@ -119,6 +155,20 @@ export async function getSanityAboutImages(): Promise<AboutImages> {
     sustainability: resolveContentImage(doc?.sustainabilityImage),
     vendors: resolveContentImage(doc?.vendorsImage),
   };
+}
+
+// ─── Careers ──────────────────────────────────────────────────────────────────
+
+const CAREERS_IMAGES_QUERY = /* groq */ `
+  *[_type == "careersContent" && _id == "singleton-careers"][0] {
+    ${IMAGE_PROJECTION('heroImage', 'Aloha Salads team members holding fresh salads')}
+  }
+`;
+
+export async function getSanityCareersImages(): Promise<CareersImages> {
+  const doc = await sanityClient.fetch<{ heroImage?: FetchedImage | null } | null>(CAREERS_IMAGES_QUERY);
+
+  return { hero: resolveContentImage(doc?.heroImage) };
 }
 
 // ─── Catering ─────────────────────────────────────────────────────────────────
