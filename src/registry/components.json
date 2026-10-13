@@ -22,6 +22,20 @@
       "notes": "Style Guide 110:2377 button = Norca-Rough 14px. primary = square hibiscus fill, cream type. ghost tone=dark = 2px cream outline on photos. ghost tone=light = 2px cacao outline on cream."
     },
     {
+      "id": "A-TC",
+      "name": "Tray card",
+      "figmaNames": ["Catering Menu and Pricing / Tray"],
+      "shape": "Cream card with 4:3 photo (same as MenuItemsSection cards) on top, tray name and price on one row below",
+      "component": "TrayCard",
+      "import": "~/components/ui/TrayCard.astro",
+      "props": {
+        "label": "tray name; also the key used to look up the photo in Sanity (catering → trayImages)",
+        "price": "price string, e.g. $42",
+        "image": "optional ContentImage; grey placeholder when missing"
+      },
+      "notes": "Used by the Catering Menu and Pricing section. Photos live in Sanity (cateringContent.trayImages), never in the repo."
+    },
+    {
       "id": "A-03",
       "name": "Heading",
       "figmaNames": ["Heading / H1", "Heading / H2", "Heading / H3", "Section Title", "Eyebrow", "Label / Eyebrow"],

@@ -1,0 +1,47 @@
+---
+/**
+ * TrayCard — catering tray with photo, name and price.
+ * Image comes from Sanity (catering → tray photos); falls back to a grey placeholder.
+ */
+import Image from '~/components/common/Image.astro';
+import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
+import type { ContentImage } from '~/lib/content/types';
+
+export interface Props {
+  label: string;
+  price: string;
+  image?: ContentImage;
+}
+
+const { label, price, image } = Astro.props;
+---
+
+<article class="flex h-full flex-col overflow-hidden bg-card">
+  <div class="relative w-full bg-section-grey" style="aspect-ratio: 4 / 3;">
+    {
+      image?.src ? (
+        <Image
+          src={image.src}
+          alt={image.alt || label}
+          width={640}
+          height={480}
+          layout="cover"
+          loading="lazy"
+          decoding="async"
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+      ) : (
+        <>
+          {/* TODO: replace with <Image> when asset is ready */}
+          <HeroImagePlaceholder fill class="absolute inset-0" label={`${label} placeholder`} />
+        </>
+      )
+    }
+  </div>
+  <div class="flex flex-1 flex-col gap-3 px-5 py-5">
+    <div class="flex items-center justify-between gap-3">
+      <h3 class="font-rough text-h4 font-normal leading-none text-heading">{label}</h3>
+      <span class="shrink-0 font-rough text-h4 font-normal leading-none text-accent">{price}</span>
+    </div>
+  </div>
+</article>

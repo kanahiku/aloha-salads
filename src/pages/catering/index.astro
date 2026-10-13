@@ -6,6 +6,7 @@ import CTABanner from '~/components/widgets/CTABanner.astro';
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
+import TrayCard from '~/components/ui/TrayCard.astro';
 import { CATERING_CTA_HREF, LOCATION_CTA_HREF } from '~/config/cta';
 import peach from '~/assets/images/peach-motif.webp';
 import bigLeaf from '~/assets/images/big-leaf.webp';
@@ -97,44 +98,36 @@ const occasions = [
       decoding="async"
     />
     <div class="relative z-[1] mx-auto w-full max-w-container px-5 py-16 sm:px-8 md:px-16 md:py-[120px]">
-      <div class="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-24">
-        {/* Left — heading + ordering note */}
-        <div class="flex flex-1 flex-col gap-8 lg:sticky lg:top-32">
-          <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-10 md:gap-14">
+        {/* Heading + ordering note */}
+        <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-24">
+          <div class="flex max-w-2xl flex-1 flex-col gap-4">
             <Heading variant="h2">Catering Menu and Pricing</Heading>
             <Text variant="body-lg" color="default">
               Our trays are built using the same high-quality components as our standard menu.
             </Text>
           </div>
-          <div class="flex flex-col gap-3 border-l-4 border-accent/30 pl-6">
-            <Heading variant="h4">Ordering Details</Heading>
-            <Text color="default">
-              Please contact your nearest location to confirm serving sizes per tray, minimum order requirements, and
-              necessary lead times for large groups. Delivery availability and radius vary by restaurant.
-            </Text>
-          </div>
-          <div class="mt-2">
-            <Button variant="primary" text="Order Catering Online" href={CATERING_CTA_HREF} hideNote={true} />
+          <div class="flex max-w-xl flex-1 flex-col gap-6">
+            <div class="flex flex-col gap-3 border-l-4 border-accent/30 pl-6">
+              <Heading variant="h4">Ordering Details</Heading>
+              <Text color="default">
+                Please contact your nearest location to confirm serving sizes per tray, minimum order requirements,
+                and necessary lead times for large groups. Delivery availability and radius vary by restaurant.
+              </Text>
+            </div>
+            <div>
+              <Button variant="primary" text="Order Catering Online" href={CATERING_CTA_HREF} hideNote={true} />
+            </div>
           </div>
         </div>
 
-        {/* Right — price list */}
-        <div class="flex min-w-0 flex-1 flex-col">
-          <ul class="flex flex-col" role="list">
-            {
-              menuItems.map((item, i) => (
-                <li
-                  class:list={[
-                    'flex items-baseline justify-between gap-6 py-5',
-                    i < menuItems.length - 1 && 'border-b border-heading/10',
-                  ]}
-                >
-                  <span class="font-rough text-[22px] leading-snug text-heading">{item.label}</span>
-                  <span class="shrink-0 font-rough text-[22px] leading-snug text-accent">{item.price}</span>
-                </li>
-              ))
-            }
-          </ul>
+        {/* Tray cards */}
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {
+            menuItems.map((item) => (
+              <TrayCard label={item.label} price={item.price} image={cateringImages.trays[item.label]} />
+            ))
+          }
         </div>
       </div>
     </div>

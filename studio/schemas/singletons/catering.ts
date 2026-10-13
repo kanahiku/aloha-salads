@@ -1,5 +1,5 @@
 import { ImageIcon } from '@sanity/icons';
-import { defineField, defineType } from 'sanity';
+import { defineArrayMember, defineField, defineType } from 'sanity';
 
 const imageField = (name: string, title: string, description?: string) =>
   defineField({
@@ -34,6 +34,31 @@ export const cateringContent = defineType({
     imageField('meetingsImage', 'Meeting catering hero image', 'Hero image for the meeting catering page.'),
     imageField('eventsImage', 'Event catering hero image', 'Hero image for the event catering page.'),
     imageField('largeGroupsImage', 'Large group catering hero image', 'Hero image for the large group catering page.'),
+    defineField({
+      name: 'trayImages',
+      title: 'Catering tray photos',
+      description:
+        'Photos for the cards in "Catering Menu and Pricing". The label must match the tray name on the catering page exactly (for example "Aloha Passion Tray").',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'cateringTray',
+          title: 'Tray photo',
+          fields: [
+            defineField({ name: 'label', title: 'Tray name', type: 'string', validation: (r) => r.required() }),
+            defineField({
+              name: 'image',
+              title: 'Photo',
+              type: 'image',
+              options: { hotspot: true },
+              fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+            }),
+          ],
+          preview: { select: { title: 'label', media: 'image' } },
+        }),
+      ],
+    }),
   ],
   preview: {
     select: { media: 'menuImage' },

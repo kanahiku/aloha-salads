@@ -45,6 +45,8 @@ export interface CateringImages {
   meetings?: ContentImage;
   events?: ContentImage;
   largeGroups?: ContentImage;
+  /** Tray photos keyed by tray label (e.g. "Aloha Passion Tray"). */
+  trays: Record<string, ContentImage>;
 }
 
 export interface LocationImages {

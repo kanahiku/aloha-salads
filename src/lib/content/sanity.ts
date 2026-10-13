@@ -180,6 +180,7 @@ type FetchedCateringImages = {
   meetingsImage?: FetchedImage | null;
   eventsImage?: FetchedImage | null;
   largeGroupsImage?: FetchedImage | null;
+  trayImages?: Array<{ label?: string; image?: FetchedImage | null }> | null;
 };
 
 const CATERING_IMAGES_QUERY = /* groq */ `
@@ -189,7 +190,11 @@ const CATERING_IMAGES_QUERY = /* groq */ `
     ${IMAGE_PROJECTION('officeLunchImage', 'Office lunch catering from Aloha Salads')},
     ${IMAGE_PROJECTION('meetingsImage', 'Meeting catering from Aloha Salads')},
     ${IMAGE_PROJECTION('eventsImage', 'Event catering from Aloha Salads')},
-    ${IMAGE_PROJECTION('largeGroupsImage', 'Large group catering from Aloha Salads')}
+    ${IMAGE_PROJECTION('largeGroupsImage', 'Large group catering from Aloha Salads')},
+    "trayImages": trayImages[defined(image.asset)] {
+      label,
+      ${IMAGE_PROJECTION('image', 'Aloha Salads catering tray')}
+    }
   }
 `;
 
@@ -203,6 +208,12 @@ export async function getSanityCateringImages(): Promise<CateringImages> {
     meetings: resolveContentImage(doc?.meetingsImage),
     events: resolveContentImage(doc?.eventsImage),
     largeGroups: resolveContentImage(doc?.largeGroupsImage),
+    trays: Object.fromEntries(
+      (doc?.trayImages ?? []).flatMap((tray) => {
+        const image = resolveContentImage(tray.image);
+        return tray.label && image ? [[tray.label, image] as const] : [];
+      })
+    ),
   };
 }
 
