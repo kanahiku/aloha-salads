@@ -404,6 +404,17 @@ export async function getMenuCategory(slug: string): Promise<MenuCategory | unde
   return categories.find((category) => category.slug === normalized || category.href === `/menu/${normalized}`);
 }
 
+/** First photo found for a menu item title, across all categories (used for cards that reuse a dish photo). */
+export async function getMenuItemImage(title: string): Promise<MenuItem['image'] | undefined> {
+  const target = normalizeMenuTitle(title);
+  const categories = await getMenuCategories();
+  for (const category of categories) {
+    const match = category.items.find((item) => normalizeMenuTitle(item.title) === target && item.image?.src);
+    if (match?.image) return match.image;
+  }
+  return undefined;
+}
+
 export type { MenuCategory };
 
 export async function getPressItems(): Promise<PressItem[]> {

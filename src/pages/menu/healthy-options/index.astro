@@ -8,6 +8,7 @@ import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
 import { getSanityMenuPagesImages } from '~/lib/content/sanity';
+import { getMenuItemImage } from '~/lib/content';
 
 const menuPagesImages = await getSanityMenuPagesImages().catch(() => ({} as Awaited<ReturnType<typeof getSanityMenuPagesImages>>));
 
@@ -17,6 +18,8 @@ const metadata = {
     'Looking for a healthy meal? Discover fresh salads, lean proteins, and custom bowls at Aloha Salads. Order online across our six Oahu locations.',
   ignoreTitleTemplate: true,
 };
+
+const designYourOwnImage = await getMenuItemImage('Design Your Own Salad');
 
 const approachItems = [
   {
@@ -31,6 +34,7 @@ const approachItems = [
     title: 'Design Your Own Salad',
     description:
       'Build a custom bowl. You control exactly which ingredients and dressings go into your meal to meet your specific dietary goals.',
+    ...(designYourOwnImage ? { image: designYourOwnImage } : {}),
   },
 ];
 

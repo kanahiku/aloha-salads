@@ -17,7 +17,7 @@ import Button from '~/components/ui/Button.astro';
 import Image from '~/components/common/Image.astro';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 import { CATERING_CTA_HREF, CATERING_CTA_LABEL } from '~/config/cta';
-import { getMenuCategories } from '~/lib/content';
+import { getMenuCategories, getMenuItemImage } from '~/lib/content';
 import type { ContentImage } from '~/lib/content/types';
 
 import bigLeaf from '~/assets/images/big-leaf.webp';
@@ -150,11 +150,15 @@ const excludedCategoryHrefs = new Set([excludeHref, ...excludeHrefs].filter(Bool
 const isGrid = excludedCategoryHrefs.size > 0;
 
 const cmsCategories = await getMenuCategories();
+const designYourOwnImage = await getMenuItemImage('Design Your Own Salad');
 const cmsCategoryByHref = new Map(cmsCategories.map((category) => [category.href, category]));
 
 const categories = CATEGORIES.map((cat) => {
   const cmsCategory = cmsCategoryByHref.get(cat.href);
-  const image = cmsCategory?.items.find((item) => item.image?.src)?.image;
+  const image =
+    cat.href === '/menu/design-your-own-salad'
+      ? designYourOwnImage
+      : cmsCategory?.items.find((item) => item.image?.src)?.image;
 
   return {
     ...cat,
