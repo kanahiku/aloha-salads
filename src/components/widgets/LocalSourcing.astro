@@ -37,6 +37,8 @@ export interface Props {
    * 'featured'  — full-width first card + 3-col grid for the remaining items
    */
   factsLayout?: 'grid-4' | 'grid-2' | 'featured';
+  /** Tighter vertical space. Use when another section sits directly underneath. */
+  compact?: boolean;
   id?: string;
 }
 
@@ -50,12 +52,18 @@ const {
   image,
   facts = [],
   factsLayout = 'grid-4',
+  compact = false,
   id,
 } = Astro.props;
 ---
 
 <section {...id ? { id } : {}} class="not-prose relative w-full">
-  <div class="mx-auto flex w-full max-w-container flex-col px-5 py-16 sm:px-8 md:px-16 md:py-[120px]">
+  <div
+    class:list={[
+      'mx-auto flex w-full max-w-container flex-col px-5 sm:px-8 md:px-16',
+      compact ? 'py-8 md:pt-16 md:pb-4' : 'py-16 md:py-[120px]',
+    ]}
+  >
     {/* ── Standard intro panel (grid-4 and grid-2 only) ─────────── */}
     {
       factsLayout !== 'featured' && (
@@ -179,25 +187,21 @@ const {
     {
       factsLayout === 'featured' && facts.length > 0 && (
         <div class="flex w-full flex-col gap-6">
-          {/* ── Split panel — eyebrow + facts[0] heading + sub-points | image ── */}
-          <div class="flex w-full flex-col overflow-hidden bg-card md:flex-row">
-            {/* Left: text */}
-            <div class="flex flex-col items-start gap-6 px-8 py-10 md:w-[52%] md:px-14 md:py-16">
-              {eyebrow && (
-                <Heading variant="eyebrow" color="inherit" class="text-heading opacity-80">
-                  {eyebrow}
-                </Heading>
-              )}
-              <Heading variant="h2">{facts[0].title}</Heading>
+          {/* ── Text panel — eyebrow + facts[0] heading | body, no photo ── */}
+          <div class="flex w-full flex-col bg-card px-6 pb-10 pt-10 md:px-16 md:pb-16 md:pr-[100px] md:pt-16">
+            <div class="flex w-full flex-col items-start gap-8 md:flex-row md:gap-16">
+              <div class="flex min-w-0 flex-1 flex-col items-start gap-6">
+                {eyebrow && (
+                  <Heading variant="eyebrow" color="inherit" class="text-heading opacity-80">
+                    {eyebrow}
+                  </Heading>
+                )}
+                <Heading variant="h2">{facts[0].title}</Heading>
+              </div>
               <div
-                class="sourcing-featured-body w-full font-sans text-[15px] leading-relaxed text-heading"
+                class="sourcing-featured-body flex min-w-0 flex-1 flex-col font-sans text-[15px] leading-relaxed text-heading"
                 set:html={facts[0].description}
               />
-            </div>
-            {/* Right: image placeholder */}
-            <div class="relative min-h-[280px] flex-1 overflow-hidden md:min-h-0">
-              {/* TODO: replace with <Image> when approved client photography is ready */}
-              <HeroImagePlaceholder fill class="absolute inset-0" />
             </div>
           </div>
 

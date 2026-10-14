@@ -57,7 +57,7 @@ export const menuPagesContent = defineType({
 
     // ── Kids ───────────────────────────────────────────────────
     imageField('kidsIngredientsImage', 'Kids — Ingredients image', 'Photo for the sourcing panel on the Keiki / Kids page.'),
-    imageField('kidsHeroImage', 'Kids — Hero image', 'Hero image for the Keiki / Kids page. Use the same photo on the Keiki Combo menu item.'),
+    imageField('kidsHeroImage', 'Kids — Hero image', 'Hero image for the Keiki / Kids page. This is separate from the Keiki Combo menu item photo.'),
 
     // ── Design Your Own Salad ──────────────────────────────────
     imageField('designYourOwnHeroImage', 'Design Your Own — Hero image', 'Hero image for the Design Your Own Salad page.'),
