@@ -106,13 +106,13 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     path: '/about',
     title: 'Our Story',
     metaDescription:
-      'Aloha Salads opened in Kailua in 2006. Fresh, healthy, local food — now at six spots across Oahu.',
+      'Aloha Salads opened in Kailua in 2006. Fresh, healthy, local food, now at six spots across Oahu.',
     heading: 'Our story',
-    lede: 'We opened in Kailua in 2006 with one idea: fresh, healthy food should taste worth coming back for — and feel like home. Six locations later, thats still the whole plan.',
+    lede: 'We opened in Kailua in 2006 with one idea: fresh, healthy food should taste worth coming back for, and feel like home. Six locations later, thats still the whole plan.',
     sections: [
       {
         heading: 'From Kailua to Oahu',
-        body: 'Healthy, fresh, and local is how we started, and how we still buy. The full sourcing story lives on Our Ingredients — this page is the short version of how we got here.',
+        body: 'Healthy, fresh, and local is how we started, and how we still buy. The full sourcing story lives on Our Ingredients. This page is the short version of how we got here.',
         links: [
           { text: 'Our Ingredients', href: '/ingredients' },
           { text: LOCATION_CTA_LABEL, href: LOCATION_CTA_HREF },
@@ -130,7 +130,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     sections: [
       {
         heading: 'Never-frozen local ahi',
-        body: 'Fresh local ahi, never frozen — delivered, not shipped in from far away.',
+        body: 'Fresh local ahi, never frozen, delivered, not shipped in from far away.',
       },
       {
         heading: 'Local produce',
@@ -138,7 +138,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
       },
       {
         heading: 'Mamaki mint tea',
-        body: 'Brewed from mamaki (mamaki) grown on Hawaii Island — a true taste of the islands. Search either spelling and youll land here.',
+        body: 'Brewed from mamaki (mamaki) grown on Hawaii Island, a true taste of the islands. Search either spelling and youll land here.',
       },
       {
         heading: 'Packaging',
@@ -151,7 +151,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     title: 'Menu',
     metaDescription: 'Salads, wraps, soups, keiki plates, drinks, and design-your-own bowls at Aloha Salads.',
     heading: 'The menu',
-    lede: 'Individual dishes live inside these categories — they never get their own URL. Start with a favorite, or skip the list and build your own.',
+    lede: 'Individual dishes live inside these categories. They never get their own URL. Start with a favorite, or skip the list and build your own.',
     sections: [
       {
         heading: 'Browse by category',
@@ -162,7 +162,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
   '/menu/salads': {
     path: '/menu/salads',
     title: 'Salads',
-    metaDescription: 'Island salads from Aloha Salads — including never-frozen local ahi and design-your-own bowls.',
+    metaDescription: 'Island salads from Aloha Salads, including never-frozen local ahi and design-your-own bowls.',
     heading: 'Salads',
     lede: 'The bowls people come back for, plus plenty of room to build your own.',
     sections: [{ links: [{ text: 'Design Your Own Salad', href: '/menu/design-your-own-salad' }] }],
@@ -184,7 +184,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
   '/menu/kids': {
     path: '/menu/kids',
     title: 'Keiki / Kids Menu',
-    metaDescription: 'Keiki menu at Aloha Salads — smaller portions for kids.',
+    metaDescription: 'Keiki menu at Aloha Salads: smaller portions for kids.',
     heading: 'Keiki / kids menu',
     lede: 'Smaller plates for smaller appetites, made with the same ingredients we serve everyone else.',
   },
@@ -198,7 +198,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     sections: [
       {
         heading: 'Build your own salad',
-        body: 'This is the page vegan, vegetarian, and anyone with a specific combination should start from. Dishes never get their own URL — the builder lives here.',
+        body: 'This is the page vegan, vegetarian, and anyone with a specific combination should start from. Dishes never get their own URL. The builder lives here.',
         links: [
           { text: 'Vegan options', href: '/menu/vegan' },
           { text: 'Vegetarian options', href: '/menu/vegetarian' },
@@ -258,7 +258,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     path: '/menu/healthy-options',
     title: 'Healthy Food & Menu Options',
     metaDescription:
-      'Healthy food and menu options at Aloha Salads — island-grown produce, never-frozen local ahi, and bowls you control.',
+      'Healthy food and menu options at Aloha Salads: island-grown produce, never-frozen local ahi, and bowls you control.',
     heading: 'Healthy food & menu options',
     lede: 'Fresh, healthy food that still tastes like something you want to eat. Island-grown produce, never-frozen local ahi, and a builder if you want to keep it exactly how you like it.',
     sections: [
@@ -311,7 +311,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
   '/catering/corporate': {
     path: '/catering/corporate',
     title: 'Corporate Catering',
-    metaDescription: 'Corporate catering from Aloha Salads — trays for teams across Oahu.',
+    metaDescription: 'Corporate catering from Aloha Salads: trays for teams across Oahu.',
     heading: 'Corporate catering',
     lede: 'Fresh trays for the office, the boardroom, and the all-hands. See the catering hub for the full priced list.',
     sections: [{ links: [{ text: 'View all catering', href: CATERING_CTA_HREF }] }],
@@ -321,7 +321,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     title: 'Office Lunch Catering',
     metaDescription: 'Office lunch catering from Aloha Salads.',
     heading: 'Office lunch catering',
-    lede: 'Lunch that shows up ready — salads, wraps, and trays for the workday.',
+    lede: 'Lunch that shows up ready: salads, wraps, and trays for the workday.',
     sections: [{ links: [{ text: 'View all catering', href: CATERING_CTA_HREF }] }],
   },
   '/catering/meetings': {
@@ -384,8 +384,8 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     sections: [
       {
         items: [
-          { title: 'Buy a gift card', description: 'Heartland checkout — URL pending.' },
-          { title: 'Check balance', description: 'Heartland balance check — URL pending.' },
+          { title: 'Buy a gift card', description: 'Heartland checkout. URL pending.' },
+          { title: 'Check balance', description: 'Heartland balance check. URL pending.' },
         ],
       },
     ],
