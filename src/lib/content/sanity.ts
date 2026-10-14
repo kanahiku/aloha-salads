@@ -282,6 +282,7 @@ export async function getSanityIngredientsImages(): Promise<IngredientsImages> {
 
 type FetchedMenuPagesImages = {
   menuHubHeroImage?: FetchedImage | null;
+  menuHubIngredientsImage?: FetchedImage | null;
   saladsHeroImage?: FetchedImage | null;
   saladsIngredientsImage?: FetchedImage | null;
   wrapsHeroImage?: FetchedImage | null;
@@ -296,6 +297,7 @@ type FetchedMenuPagesImages = {
   healthyOptionsHeroImage?: FetchedImage | null;
   healthyOptionsIngredientsImage?: FetchedImage | null;
   kidsIngredientsImage?: FetchedImage | null;
+  kidsHeroImage?: FetchedImage | null;
   designYourOwnHeroImage?: FetchedImage | null;
   designYourOwnBuildImage?: FetchedImage | null;
   designYourOwnQualityImage?: FetchedImage | null;
@@ -304,6 +306,7 @@ type FetchedMenuPagesImages = {
 const MENU_PAGES_IMAGES_QUERY = /* groq */ `
   *[_type == "menuPagesContent" && _id == "singleton-menu-pages"][0] {
     ${IMAGE_PROJECTION('menuHubHeroImage', 'Fresh salad bowls from Aloha Salads')},
+    ${IMAGE_PROJECTION('menuHubIngredientsImage', 'Oahu InsideOut magazine cover, May 2012, Family ties, with vine-ripe tomatoes')},
     ${IMAGE_PROJECTION('saladsHeroImage', 'Signature salads at Aloha Salads')},
     ${IMAGE_PROJECTION('saladsIngredientsImage', 'Fresh ingredients for Aloha Salads salads')},
     ${IMAGE_PROJECTION('wrapsHeroImage', 'Wraps and subs at Aloha Salads')},
@@ -318,6 +321,7 @@ const MENU_PAGES_IMAGES_QUERY = /* groq */ `
     ${IMAGE_PROJECTION('healthyOptionsHeroImage', 'Healthy menu options at Aloha Salads')},
     ${IMAGE_PROJECTION('healthyOptionsIngredientsImage', 'Fresh healthy ingredients at Aloha Salads')},
     ${IMAGE_PROJECTION('kidsIngredientsImage', 'Fresh keiki meal ingredients at Aloha Salads')},
+    ${IMAGE_PROJECTION('kidsHeroImage', 'Keiki with vine-ripe tomatoes at Aloha Salads')},
     ${IMAGE_PROJECTION('designYourOwnHeroImage', 'Custom salad bowl at Aloha Salads')},
     ${IMAGE_PROJECTION('designYourOwnBuildImage', 'How to build your own salad at Aloha Salads')},
     ${IMAGE_PROJECTION('designYourOwnQualityImage', 'Quality ingredients for custom salads at Aloha Salads')}
@@ -329,6 +333,7 @@ export async function getSanityMenuPagesImages(): Promise<MenuPagesImages> {
 
   return {
     menuHubHero: resolveContentImage(doc?.menuHubHeroImage),
+    menuHubIngredients: resolveContentImage(doc?.menuHubIngredientsImage),
     saladsHero: resolveContentImage(doc?.saladsHeroImage),
     saladsIngredients: resolveContentImage(doc?.saladsIngredientsImage),
     wrapsHero: resolveContentImage(doc?.wrapsHeroImage),
@@ -343,6 +348,7 @@ export async function getSanityMenuPagesImages(): Promise<MenuPagesImages> {
     healthyOptionsHero: resolveContentImage(doc?.healthyOptionsHeroImage),
     healthyOptionsIngredients: resolveContentImage(doc?.healthyOptionsIngredientsImage),
     kidsIngredients: resolveContentImage(doc?.kidsIngredientsImage),
+    kidsHero: resolveContentImage(doc?.kidsHeroImage),
     designYourOwnHero: resolveContentImage(doc?.designYourOwnHeroImage),
     designYourOwnBuild: resolveContentImage(doc?.designYourOwnBuildImage),
     designYourOwnQuality: resolveContentImage(doc?.designYourOwnQualityImage),

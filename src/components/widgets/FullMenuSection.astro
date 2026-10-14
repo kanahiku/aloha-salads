@@ -163,10 +163,12 @@ const slugify = (value: string) =>
                       <Image
                         src={item.image.src}
                         alt={item.image.alt || ''}
+                        title={item.image.title || item.image.alt || undefined}
                         width={640}
                         height={480}
-                        layout="cover"
-                        loading="lazy"
+                    layout="cover"
+                    format="webp"
+                    loading="lazy"
                         decoding="async"
                         class="absolute inset-0 h-full w-full object-cover"
                       />

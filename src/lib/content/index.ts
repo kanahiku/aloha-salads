@@ -199,12 +199,43 @@ const MENU_PHOTO_DONOR_TO_BASE_TITLE = new Map([
   ['spicy ahi salad (styling b)', 'poke salad'],
 ]);
 
-const MENU_TITLE_RENAMES = new Map([['maui mozzarella salad', 'Maui Mozzarella']]);
+const MENU_TITLE_RENAMES = new Map([
+  ['maui mozzarella salad', 'Maui Mozzarella'],
+  ['poke wrap', 'Aloha Poke Wrap'],
+  ['spicy ahi poke wrap', 'Aloha Poke Wrap'],
+  ['tutus chicken salad wrap', "Tutu's Chicken Salad Wrap"],
+  ["tutu's chicken salad wrap", "Tutu's Chicken Salad Wrap"],
+  ["tutu's chicken salad tortilla wrap", "Tutu's Chicken Salad Wrap"],
+  ['tutus chicken salad tortilla wrap', "Tutu's Chicken Salad Wrap"],
+]);
 const MENU_IMAGE_ALT_RENAMES = new Map([
   ['hummis pita wrap', 'Hummus Pita Wrap'],
   ['grilled cheese combo', 'Grilled Cheese Soup Combo'],
   ['maui mozzarella salad', 'Maui Mozzarella'],
+  ['poke wrap', 'Aloha Poke Wrap'],
+  ['tutus chicken salad wrap', "Tutu's Chicken Salad Wrap"],
+  ["tutu's chicken salad wrap", "Tutu's Chicken Salad Wrap"],
 ]);
+const MENU_DESCRIPTION_OVERRIDES = new Map([
+  [
+    'maui mozzarella',
+    'Mixed greens, tomatoes, fresh mozzarella, red onions, basil, balsamic glaze, and balsamic vinaigrette.',
+  ],
+  [
+    'maui mozzarella salad',
+    'Mixed greens, tomatoes, fresh mozzarella, red onions, basil, balsamic glaze, and balsamic vinaigrette.',
+  ],
+  ['caprese sub', 'Fresh mozzarella, tomatoes, basil, red onion, mixed greens, and balsamic vinaigrette.'],
+]);
+const WRAP_SERVED_ON = 'served on warmed pita bread.';
+
+function withWarmedPita(description: string): string {
+  const withoutServing = description
+    .replace(/,?\s*served on (?:a |an )?(?:warmed pita bread|warmed pita|spinach tortilla wrap|pita bread|pita)\.?$/i, '')
+    .trim()
+    .replace(/[,\s]+$/, '');
+  return `${withoutServing}, ${WRAP_SERVED_ON}`;
+}
 
 function normalizeMenuTitle(title: string): string {
   return title.trim().toLowerCase().replace(/\s+/g, ' ');
@@ -212,14 +243,22 @@ function normalizeMenuTitle(title: string): string {
 
 function applyMenuItemTextCorrections(item: MenuItem): MenuItem {
   const title = MENU_TITLE_RENAMES.get(normalizeMenuTitle(item.title)) ?? item.title;
+  const descriptionOverride = MENU_DESCRIPTION_OVERRIDES.get(normalizeMenuTitle(title));
+  let description = descriptionOverride ?? item.description;
+  if (description && /\bwrap\b/i.test(title)) description = withWarmedPita(description);
+
+  const renamedAlt = item.image
+    ? (MENU_IMAGE_ALT_RENAMES.get(normalizeMenuTitle(item.image.alt)) ?? (title !== item.title ? title : item.image.alt))
+    : undefined;
   const image = item.image
     ? {
         ...item.image,
-        alt: MENU_IMAGE_ALT_RENAMES.get(normalizeMenuTitle(item.image.alt)) ?? item.image.alt,
+        alt: renamedAlt ?? item.image.alt,
+        title: item.image.title || renamedAlt || item.image.alt,
       }
     : undefined;
 
-  return { ...item, title, ...(image ? { image } : {}) };
+  return { ...item, title, ...(description ? { description } : {}), ...(image ? { image } : {}) };
 }
 
 const REQUESTED_MENU_ITEMS: Array<{
@@ -268,7 +307,7 @@ const REQUESTED_MENU_ITEMS: Array<{
     categoryDescription: 'Hearty wraps and sandwiches made with the same fresh components as our bowls.',
     title: 'Poke Wrap',
     insertAfter: 'Hummus Pita Wrap',
-    description: 'Bean sprouts, avocado, cucumber, crispy onion, spicy ahi, and unagi sauce, served on warmed pita.',
+    description: 'Bean sprouts, avocado, cucumber, crispy onion, spicy ahi, and unagi sauce, served on warmed pita bread.',
     badge: 'Coming soon',
   },
   {
@@ -301,20 +340,26 @@ const REQUESTED_MENU_ITEMS: Array<{
   },
 ];
 
+function canonicalMenuTitle(title: string): string {
+  const normalized = normalizeMenuTitle(title);
+  return normalizeMenuTitle(MENU_TITLE_RENAMES.get(normalized) ?? title);
+}
+
 function upsertRequestedMenuItem(items: MenuItem[], requested: (typeof REQUESTED_MENU_ITEMS)[number], image?: MenuItem['image']) {
-  const requestedTitle = normalizeMenuTitle(requested.title);
-  const existingIndex = items.findIndex((item) => normalizeMenuTitle(item.title) === requestedTitle);
+  const requestedTitle = canonicalMenuTitle(requested.title);
+  const displayTitle = MENU_TITLE_RENAMES.get(normalizeMenuTitle(requested.title)) ?? requested.title;
+  const existingIndex = items.findIndex((item) => canonicalMenuTitle(item.title) === requestedTitle);
   const requestedFields = {
     ...(requested.description ? { description: requested.description } : {}),
     ...(requested.badge ? { badge: requested.badge } : {}),
     ...(requested.note ? { note: requested.note } : {}),
-    ...(image?.src ? { image: { ...image, alt: requested.title } } : {}),
+    ...(image?.src ? { image: { ...image, alt: displayTitle, title: displayTitle } } : {}),
   };
 
   if (existingIndex === -1) {
-    const newItem = { title: requested.title, ...requestedFields };
+    const newItem = { title: displayTitle, ...requestedFields };
     const afterIndex = requested.insertAfter
-      ? items.findIndex((item) => normalizeMenuTitle(item.title) === normalizeMenuTitle(requested.insertAfter!))
+      ? items.findIndex((item) => canonicalMenuTitle(item.title) === canonicalMenuTitle(requested.insertAfter!))
       : -1;
     if (afterIndex === -1) return [...items, newItem];
     return [...items.slice(0, afterIndex + 1), newItem, ...items.slice(afterIndex + 1)];
@@ -324,11 +369,12 @@ function upsertRequestedMenuItem(items: MenuItem[], requested: (typeof REQUESTED
     index === existingIndex
       ? {
           ...item,
+          title: displayTitle,
           ...requestedFields,
           description: requested.description ?? item.description,
           badge: requested.badge ?? item.badge,
           note: requested.note ?? item.note,
-          image: image?.src ? { ...image, alt: requested.title } : item.image,
+          image: image?.src ? { ...image, alt: displayTitle, title: displayTitle } : item.image,
         }
       : item
   );

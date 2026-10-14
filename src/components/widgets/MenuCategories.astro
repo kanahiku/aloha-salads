@@ -240,9 +240,11 @@ const visibleCategories = categories
               <Image
                 src={cat.img.src}
                 alt={cat.img.alt || ''}
+                title={cat.img.title || cat.img.alt || undefined}
                 width={900}
                 height={675}
                 layout="cover"
+                format="webp"
                 loading="lazy"
                 decoding="async"
                 class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"

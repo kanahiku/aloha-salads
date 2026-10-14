@@ -26,6 +26,7 @@ export const menuPagesContent = defineType({
   fields: [
     // ── Menu Hub ───────────────────────────────────────────────
     imageField('menuHubHeroImage', 'Menu Hub — Hero image', 'Hero image for the main Menu page.'),
+    imageField('menuHubIngredientsImage', 'Menu Hub — Quality Ingredients image', 'Photo for the Quality Ingredients panel on the main Menu page.'),
 
     // ── Salads ─────────────────────────────────────────────────
     imageField('saladsHeroImage', 'Salads — Hero image', 'Hero image for the Signature Salads page.'),
@@ -56,6 +57,7 @@ export const menuPagesContent = defineType({
 
     // ── Kids ───────────────────────────────────────────────────
     imageField('kidsIngredientsImage', 'Kids — Ingredients image', 'Photo for the sourcing panel on the Keiki / Kids page.'),
+    imageField('kidsHeroImage', 'Kids — Hero image', 'Hero image for the Keiki / Kids page. Use the same photo on the Keiki Combo menu item.'),
 
     // ── Design Your Own Salad ──────────────────────────────────
     imageField('designYourOwnHeroImage', 'Design Your Own — Hero image', 'Hero image for the Design Your Own Salad page.'),

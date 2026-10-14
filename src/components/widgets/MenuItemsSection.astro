@@ -78,9 +78,11 @@ const { eyebrow, title, intro, items = [], ctaText, ctaHref, id } = Astro.props;
                   <Image
                     src={item.image.src}
                     alt={item.image.alt || ''}
+                    title={item.image.title || item.image.alt || undefined}
                     width={640}
                     height={480}
                     layout="cover"
+                    format="webp"
                     loading="lazy"
                     decoding="async"
                     class="absolute inset-0 h-full w-full object-cover"

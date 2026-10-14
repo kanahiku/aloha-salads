@@ -109,6 +109,7 @@ const {
       {image ? (
         <Image
           {...image}
+          title={image.title || image.alt}
           class="absolute inset-0 h-full w-full object-cover"
           widths={[400, 768, 1100]}
           sizes="(max-width: 768px) 100vw, 42vw"

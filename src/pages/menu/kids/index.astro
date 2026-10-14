@@ -8,6 +8,9 @@ import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
 import { getMenuCategory } from '~/lib/content';
+import { getSanityMenuPagesImages } from '~/lib/content/sanity';
+
+const menuPagesImages = await getSanityMenuPagesImages().catch(() => ({} as Awaited<ReturnType<typeof getSanityMenuPagesImages>>));
 
 const metadata = {
   title: 'Keiki Menu & Kids Meals | Aloha Salads Oahu',
@@ -57,6 +60,7 @@ const faqs = [
     overlapHeader={false}
     title="Keiki Menu"
     content="Wholesome and portioned for children, our keiki options offer balanced meals built with the same quality ingredients found across our entire menu."
+    image={menuPagesImages.kidsHero}
     actions={[
       { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
       { variant: 'ghost', tone: 'dark', text: 'Find a Location', href: LOCATION_CTA_HREF },
@@ -70,7 +74,7 @@ const faqs = [
     subtitle="Every item on our menu is built on a foundation of quality ingredients and careful preparation."
     ctaText="Learn More About Our Ingredients"
     ctaHref="/ingredients"
-    withPhoto={true}
+    withPhoto={false}
   />
 
   <MenuCategories

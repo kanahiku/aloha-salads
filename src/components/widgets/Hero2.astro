@@ -68,7 +68,8 @@ const asContentImage = (value: unknown): ContentImage | undefined => {
   const src = 'src' in value && typeof value.src === 'string' ? value.src.trim() : '';
   if (!src) return undefined;
   const alt = 'alt' in value && typeof value.alt === 'string' ? value.alt : '';
-  return { src, alt };
+  const title = 'title' in value && typeof value.title === 'string' && value.title.trim() ? value.title : alt;
+  return { src, alt, title };
 };
 
 const imageRecord =
@@ -316,6 +317,7 @@ const isLocalOverlayImage =
                       <Image
                         src={contentImage?.src}
                         alt={contentImage?.alt ?? ''}
+                        title={contentImage?.title || contentImage?.alt || undefined}
                         class:list={[
                           'h-full w-full object-center',
                           isContainImage ? 'object-contain bg-section-dark' : 'object-cover',
@@ -430,6 +432,7 @@ const isLocalOverlayImage =
                   <Image
                     src={contentImage?.src}
                     alt={contentImage?.alt ?? ''}
+                    title={contentImage?.title || contentImage?.alt || undefined}
                     class="w-full h-full object-cover"
                     widths={[400, 768, 1200]}
                     sizes="(max-width: 768px) 100vw, 50vw"

@@ -3,6 +3,8 @@
 export interface ContentImage {
   src: string;
   alt: string;
+  /** Image title attribute. Renderers fall back to `alt` when this is omitted. */
+  title?: string;
 }
 
 /** Looping hero video served from the Sanity CDN. Only set when every required piece exists. */
@@ -67,6 +69,7 @@ export interface IngredientsImages {
 export interface MenuPagesImages {
   // Menu Hub
   menuHubHero?: ContentImage;
+  menuHubIngredients?: ContentImage;
   // Salads
   saladsHero?: ContentImage;
   saladsIngredients?: ContentImage;
@@ -89,6 +92,7 @@ export interface MenuPagesImages {
   healthyOptionsIngredients?: ContentImage;
   // Kids
   kidsIngredients?: ContentImage;
+  kidsHero?: ContentImage;
   // Design Your Own
   designYourOwnHero?: ContentImage;
   designYourOwnBuild?: ContentImage;
