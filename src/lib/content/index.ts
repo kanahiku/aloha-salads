@@ -18,8 +18,8 @@ const LEGAL_FOOTER_LINKS = [
   { text: 'Accessibility', href: '/accessibility' },
 ];
 
-const HIDDEN_NAV_HREFS = new Set(['/chapters', '/guidebooks']);
-const HIDDEN_NAV_LABELS = new Set(['chapters', 'guidebooks', 'guidebook series']);
+const HIDDEN_NAV_HREFS = new Set(['/chapters', '/guidebooks', '/menu/vegan']);
+const HIDDEN_NAV_LABELS = new Set(['chapters', 'guidebooks', 'guidebook series', 'vegan options']);
 
 function isHiddenNavLink(link: { text: string; href?: string }): boolean {
   return (link.href != null && HIDDEN_NAV_HREFS.has(link.href)) || HIDDEN_NAV_LABELS.has(link.text.toLowerCase());
@@ -30,7 +30,20 @@ function hidePagesFromUi(nav: NavigationContent): NavigationContent {
     ...nav,
     header: {
       ...nav.header,
-      links: nav.header.links.filter((link) => !isHiddenNavLink(link)),
+      links: nav.header.links
+        .filter((link) => !isHiddenNavLink(link))
+        .map((link) => ({
+          ...link,
+          ...(link.links ? { links: link.links.filter((child) => !isHiddenNavLink(child)) } : {}),
+          ...(link.columns
+            ? {
+                columns: link.columns.map((column) => ({
+                  ...column,
+                  links: column.links.filter((child) => !isHiddenNavLink(child)),
+                })),
+              }
+            : {}),
+        })),
     },
     footer: {
       ...nav.footer,
@@ -189,7 +202,28 @@ export async function getTestimonials(): Promise<Testimonial[]> {
   }
 }
 
-const HIDDEN_MENU_ITEM_TITLES = new Set(['red bull']);
+const HIDDEN_MENU_ITEM_TITLES = new Set([
+  'red bull',
+  // Pre-launch: hide these cards until a photo exists. Remove a title here to show it again.
+  'extra pita',
+  'keiki combo',
+  'cookies',
+  'fountain drink',
+  'bottle water',
+  'vegan aloha mediterranean',
+  'vegan mandarin ginger',
+  'vegan hummus pita wrap',
+  'sides',
+]);
+
+export function omitHiddenMenuItems<T extends { title: string }>(items: T[]): T[] {
+  return items.filter((item) => !HIDDEN_MENU_ITEM_TITLES.has(normalizeMenuTitle(item.title)));
+}
+
+export function isHiddenMenuHub(href?: string): boolean {
+  return href === '/menu/vegan';
+}
+
 const MENU_PHOTO_DONOR_TO_BASE_TITLE = new Map([
   ['aloha caesar (with shrimp)', 'aloha caesar'],
   ['the paniolo (with gyro meat)', 'the paniolo'],
@@ -231,7 +265,10 @@ const WRAP_SERVED_ON = 'served on warmed pita bread.';
 
 function withWarmedPita(description: string): string {
   const withoutServing = description
-    .replace(/,?\s*served on (?:a |an )?(?:warmed pita bread|warmed pita|spinach tortilla wrap|pita bread|pita)\.?$/i, '')
+    .replace(
+      /,?\s*served on (?:a |an )?(?:warmed pita bread|warmed pita|spinach tortilla wrap|pita bread|pita)\.?$/i,
+      ''
+    )
     .trim()
     .replace(/[,\s]+$/, '');
   return `${withoutServing}, ${WRAP_SERVED_ON}`;
@@ -248,7 +285,8 @@ function applyMenuItemTextCorrections(item: MenuItem): MenuItem {
   if (description && /\bwrap\b/i.test(title)) description = withWarmedPita(description);
 
   const renamedAlt = item.image
-    ? (MENU_IMAGE_ALT_RENAMES.get(normalizeMenuTitle(item.image.alt)) ?? (title !== item.title ? title : item.image.alt))
+    ? (MENU_IMAGE_ALT_RENAMES.get(normalizeMenuTitle(item.image.alt)) ??
+      (title !== item.title ? title : item.image.alt))
     : undefined;
   const image = item.image
     ? {
@@ -276,7 +314,8 @@ const REQUESTED_MENU_ITEMS: Array<{
     categoryTitle: 'Signature Salads',
     categoryDescription: 'Fresh bowls built with crisp greens, local ahi, and house-made dressings.',
     title: 'Big Island Beet',
-    description: 'Mixed greens, roasted beets, mangoes, craisins, candied walnuts, goat cheese, balsamic glaze, and passion orange vinaigrette.',
+    description:
+      'Mixed greens, roasted beets, mangoes, craisins, candied walnuts, goat cheese, balsamic glaze, and passion orange vinaigrette.',
     note: 'Not available at Kaneohe',
   },
   {
@@ -291,7 +330,8 @@ const REQUESTED_MENU_ITEMS: Array<{
     categoryTitle: 'Signature Salads',
     categoryDescription: 'Fresh bowls built with crisp greens, local ahi, and house-made dressings.',
     title: 'Poke Salad',
-    description: 'Romaine, carrots, cucumbers, avocado, wonton strips, green onion, crispy onion, spicy ahi, and unagi sauce.',
+    description:
+      'Romaine, carrots, cucumbers, avocado, wonton strips, green onion, crispy onion, spicy ahi, and unagi sauce.',
     badge: 'Coming soon',
   },
   {
@@ -307,7 +347,8 @@ const REQUESTED_MENU_ITEMS: Array<{
     categoryDescription: 'Hearty wraps and sandwiches made with the same fresh components as our bowls.',
     title: 'Poke Wrap',
     insertAfter: 'Hummus Pita Wrap',
-    description: 'Bean sprouts, avocado, cucumber, crispy onion, spicy ahi, and unagi sauce, served on warmed pita bread.',
+    description:
+      'Bean sprouts, avocado, cucumber, crispy onion, spicy ahi, and unagi sauce, served on warmed pita bread.',
     badge: 'Coming soon',
   },
   {
@@ -322,7 +363,8 @@ const REQUESTED_MENU_ITEMS: Array<{
     categoryTitle: 'Misc',
     categoryDescription: 'Additional favorites and cafe-style selections.',
     title: 'Dessert Toast',
-    description: 'Toasted sourdough, your choice of Nutella or peanut butter, strawberry, banana, blueberry, and honey.',
+    description:
+      'Toasted sourdough, your choice of Nutella or peanut butter, strawberry, banana, blueberry, and honey.',
   },
   {
     categorySlug: 'misc',
@@ -345,7 +387,11 @@ function canonicalMenuTitle(title: string): string {
   return normalizeMenuTitle(MENU_TITLE_RENAMES.get(normalized) ?? title);
 }
 
-function upsertRequestedMenuItem(items: MenuItem[], requested: (typeof REQUESTED_MENU_ITEMS)[number], image?: MenuItem['image']) {
+function upsertRequestedMenuItem(
+  items: MenuItem[],
+  requested: (typeof REQUESTED_MENU_ITEMS)[number],
+  image?: MenuItem['image']
+) {
   const requestedTitle = canonicalMenuTitle(requested.title);
   const displayTitle = MENU_TITLE_RENAMES.get(normalizeMenuTitle(requested.title)) ?? requested.title;
   const existingIndex = items.findIndex((item) => canonicalMenuTitle(item.title) === requestedTitle);
@@ -429,10 +475,12 @@ function applyMenuDisplayOverrides(categories: MenuCategory[]): MenuCategory[] {
     };
   }
 
-  return nextCategories.map((category) => ({
-    ...category,
-    items: category.items.map(applyMenuItemTextCorrections),
-  }));
+  return nextCategories
+    .filter((category) => category.slug !== 'vegan' && category.href !== '/menu/vegan')
+    .map((category) => ({
+      ...category,
+      items: category.items.map(applyMenuItemTextCorrections),
+    }));
 }
 
 export async function getMenuCategories(): Promise<MenuCategory[]> {

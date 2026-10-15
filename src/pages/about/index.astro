@@ -4,6 +4,7 @@ import Hero2 from '~/components/widgets/Hero2.astro';
 import TextSplit from '~/components/widgets/TextSplit.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import Text from '~/components/ui/Text.astro';
+import Heading from '~/components/ui/Heading.astro';
 import { getSanityAboutImages } from '~/lib/content/sanity';
 
 const aboutImages = await getSanityAboutImages();
@@ -22,6 +23,7 @@ const metadata = {
     variant="split-dark"
     overlapHeader={false}
     title="About Aloha Salads"
+    subtitle="Fresh From Hawaii. Rooted in Aloha."
     image={aboutImages.hero}
     imageFit="contain"
   />
@@ -40,22 +42,28 @@ const metadata = {
   </TextSplit>
 
   {/* ── 2. Our Story ──────────────────────────────────────── */}
-  <TextSplit
-    heading="Our Story"
-    withImage
-    image={aboutImages.story}
-    imageAspect="4 / 5"
-    class="bg-card"
-  >
+  <TextSplit heading="Our Story" withImage image={aboutImages.story} imageAspect="4 / 5" class="bg-card">
     <div class="flex flex-col gap-6">
       <Text variant="body-lg" color="default">
-        Aloha Salads began in May 2006 in Kailua, Oahu. As we mark twenty years of serving our community, we have grown
-        across Oahu with six neighborhood restaurants.
+        It started with a simple idea: Hawaii deserved a place where eating healthy could be fresh, delicious and
+        convenient.
+      </Text>
+      <Text variant="body" color="default">
+        In May 2006 we opened the doors to our first Aloha Salads in Kailua, bringing locally grown ingredients to our
+        community. What started as a small family business quickly became a neighborhood favorite.
       </Text>
       <Text variant="body" color="default">
         Since then we have opened at Kahala Mall, Kapolei Commons, Pearlridge Center, Windward Mall in Kaneohe and
         Mililani Town Center. The menu has grown over those twenty years, but the dishes people come back for have not
         changed. The Aloha Passion and the Ono Island Ahi have been on it since the start.
+      </Text>
+      <Text variant="body" color="default">
+        Twenty years later, our mission remains the same. We are proud to serve food made with quality ingredients,
+        support local farmers and fishermen, and bring a little more aloha to every meal.
+      </Text>
+      <Text variant="body" color="default">
+        Today, with six locations across Oahu, Aloha Salads is still a family affair. Our roots are in Kailua, our heart
+        is in Hawaii, and we are committed to keeping fresh, healthy and affordable food accessible to everyone.
       </Text>
       <Text
         variant="body"
@@ -65,20 +73,61 @@ const metadata = {
     </div>
   </TextSplit>
 
-  {/* ── 3. Sustainability — image left / text right ──────────── */}
-  <TextSplit
-    heading="Sustainability"
-    withImage
-    image={aboutImages.sustainability}
-    imageReverse
-    imageAspect="4 / 3"
-  >
+  {/* ── 3. Founder Story ──────────────────────────────────── */}
+  <section class="not-prose w-full bg-section-grey">
+    <div
+      class="mx-auto flex w-full max-w-container flex-col gap-8 px-5 py-12 sm:px-8 md:px-16 md:py-16 lg:px-[120px] lg:py-[120px]"
+    >
+      <div class="flex max-w-3xl flex-col gap-4">
+        <Heading variant="h2">Founder Story</Heading>
+        <Heading variant="eyebrow">From a Simple Idea to a Family Legacy</Heading>
+      </div>
+      <div class="flex max-w-3xl flex-col gap-6">
+        <Text variant="body-lg" color="default">
+          Twenty years ago, Sara Lufrano moved back home to Hawaii after living in Chicago. She missed being able to
+          grab a fresh, healthy salad on the go, and at the time there wasn't much like it here. So she and her husband
+          asked themselves, why don't we create it ourselves?
+        </Text>
+        <Text variant="body" color="default">
+          With a credit card, a lot of hope and plenty of hard work, they opened the very first Aloha Salads in Kailua.
+          Living at Sara's parents' house, they stayed up late creating the menu and spent their days chopping, prepping
+          and getting everything ready. On opening day it was just the two of them behind the counter. Then came a
+          moment they will never forget: a line out the door.
+        </Text>
+        <Text variant="body" color="default">
+          What started as a small idea soon became a family business. Their children grew up in the restaurants, with
+          their youngest just a newborn when they opened. Over the years both boys worked alongside their friends,
+          becoming part of the family business their parents built from the ground up.
+        </Text>
+        <blockquote class="border-l-4 border-accent pl-6">
+          <Text variant="body-lg" color="default" class="italic">
+            "It's wonderful to have the whole family be a part of this business."
+          </Text>
+          <p class="mt-3 font-heading text-[15px] leading-none text-heading">Sara Lufrano</p>
+        </blockquote>
+        <blockquote class="border-l-4 border-accent pl-6">
+          <Text variant="body-lg" color="default" class="italic">
+            "Growing up, the restaurant's always been such a big part of our family. I can't remember a time when it
+            wasn't."
+          </Text>
+          <p class="mt-3 font-heading text-[15px] leading-none text-heading">Kekoa Lufrano</p>
+        </blockquote>
+        <Text variant="body" color="default">
+          Mahalo for being part of our story. Here's to many more years of sharing fresh food and aloha.
+        </Text>
+      </div>
+    </div>
+  </section>
+
+  {/* ── 4. Sustainability — image left / text right ──────────── */}
+  <TextSplit heading="Sustainability" withImage image={aboutImages.sustainability} imageReverse imageAspect="4 / 3">
     <div class="flex flex-col gap-6">
       <Text variant="body-lg" color="default">
-        Our commitment to our island home starts with what we source locally. We rely on vine-ripe tomatoes from Green
-        Growers, a Hauula farm, on a standing weekly order, alongside fresh produce from other Oahu farms. Our menu
-        features fresh, local, never-frozen ahi sourced from Garden & Valley Isle Seafood, a Honolulu seafood company
-        that delivers straight to our kitchens.
+        For us, sustainability starts close to home. We buy local every week, not because it is a trend, but because it
+        is how we have always believed food should be sourced. We rely on vine-ripe tomatoes from Green Growers, a
+        Hauula farm, on a standing weekly order, alongside fresh produce from other Oahu farms. Our menu features fresh,
+        local, never-frozen ahi sourced from Garden & Valley Isle Seafood, a Honolulu seafood company that delivers
+        straight to our kitchens.
       </Text>
       <Text
         variant="body"
@@ -88,14 +137,8 @@ const metadata = {
     </div>
   </TextSplit>
 
-  {/* ── 4. Our Vendors — text left / image right ─────────── */}
-  <TextSplit
-    heading="Our Vendors"
-    withImage
-    image={aboutImages.vendors}
-    imageAspect="4 / 3"
-    class="bg-section-grey"
-  >
+  {/* ── 5. Our Vendors — text left / image right ─────────── */}
+  <TextSplit heading="Our Vendors" withImage image={aboutImages.vendors} imageAspect="4 / 3" class="bg-section-grey">
     <div class="flex flex-col gap-6">
       <Text variant="body-lg" color="default">
         Every delivery of our local ahi carries strict traceability, including lot numbers, an origin of USA wild catch,

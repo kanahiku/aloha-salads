@@ -5,6 +5,7 @@ import Button from '~/components/ui/Button.astro';
 import Image from '~/components/common/Image.astro';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 import type { ContentImage } from '~/lib/content/types';
+import { isHiddenMenuHub, omitHiddenMenuItems } from '~/lib/content';
 import peach from '~/assets/images/peach-motif.webp';
 import bigLeaf from '~/assets/images/big-leaf.webp';
 
@@ -37,11 +38,16 @@ const {
   eyebrow,
   title = 'The Full Aloha Salads Menu',
   subtitle,
-  categories = [],
+  categories: menuCategories = [],
   ctaText,
   ctaHref,
   id,
 } = Astro.props;
+
+const categories = menuCategories
+  .filter((category) => !isHiddenMenuHub(category.href))
+  .map((category) => ({ ...category, items: omitHiddenMenuItems(category.items) }))
+  .filter((category) => category.items.length > 0);
 
 const slugify = (value: string) =>
   value
@@ -166,9 +172,9 @@ const slugify = (value: string) =>
                         title={item.image.title || item.image.alt || undefined}
                         width={640}
                         height={480}
-                    layout="cover"
-                    format="webp"
-                    loading="lazy"
+                        layout="cover"
+                        format="webp"
+                        loading="lazy"
                         decoding="async"
                         class="absolute inset-0 h-full w-full object-cover"
                       />

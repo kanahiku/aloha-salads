@@ -233,7 +233,9 @@ const isLocalOverlayImage =
               withImage ? 'items-stretch gap-6 md:gap-[72px]' : 'items-start gap-6',
             ]}
           >
-            {tagline && <Heading variant="eyebrow" color="inherit" class="mb-2 text-heading/60 md:mb-4" html={tagline} />}
+            {tagline && (
+              <Heading variant="eyebrow" color="inherit" class="mb-2 text-heading/60 md:mb-4" html={tagline} />
+            )}
             <div
               class:list={[
                 'flex w-full flex-col items-start',
@@ -290,7 +292,12 @@ const isLocalOverlayImage =
               ]}
             >
               {tagline && <Heading variant="eyebrow" color="inherit" class="text-page/55" html={tagline} />}
-              {title && <h1 class="font-rough text-h1 font-normal leading-[1.05] text-page" set:html={title} />}
+              {title && (
+                <div class="flex flex-col gap-3">
+                  <h1 class="font-rough text-h1 font-normal leading-[1.05] text-page" set:html={title} />
+                  {subtitle && <Heading variant="eyebrow" color="inherit" class="text-page/70" html={subtitle} />}
+                </div>
+              )}
               {content && (
                 <div class="font-sans text-[16px] leading-[1.55] text-page/60 max-w-[480px]" set:html={content} />
               )}
@@ -451,4 +458,3 @@ const isLocalOverlayImage =
     </section>
   )
 }
-

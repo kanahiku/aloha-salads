@@ -12,6 +12,7 @@ import peach from '~/assets/images/peach-motif.webp';
 import bigLeaf from '~/assets/images/big-leaf.webp';
 import smallLeafMotif from '~/assets/images/small-leaf-motif.webp';
 import { getSanityCateringImages } from '~/lib/content/sanity';
+import { cateringPages } from '~/data/catering';
 
 const cateringImages = await getSanityCateringImages();
 
@@ -34,33 +35,11 @@ const menuItems = [
   { label: 'Tray of Pita Bread', price: '$24' },
 ];
 
-const occasions = [
-  {
-    label: 'Corporate Catering',
-    href: '/catering/corporate',
-    description: 'Fresh trays for client meetings, team events, and office gatherings.',
-  },
-  {
-    label: 'Office Lunch Catering',
-    href: '/catering/office-lunches',
-    description: 'Healthy lunch options delivered to your workplace.',
-  },
-  {
-    label: 'Meeting Catering',
-    href: '/catering/meetings',
-    description: 'Nourish your team with wholesome food during any size meeting.',
-  },
-  {
-    label: 'Event Catering',
-    href: '/catering/events',
-    description: 'Custom salad and wrap trays built for special events.',
-  },
-  {
-    label: 'Large Group Catering',
-    href: '/catering/large-groups',
-    description: "Scaled-up trays and platters for big gatherings across Oahu.",
-  },
-];
+const occasions = [...cateringPages];
+
+const textOnlyTrayLabels = new Set(['Aloha Caesar with Chicken Tray', 'Tray of Pita Bread']);
+const photoTrays = menuItems.filter((item) => !textOnlyTrayLabels.has(item.label));
+const textTrays = menuItems.filter((item) => textOnlyTrayLabels.has(item.label));
 ---
 
 <PageLayout metadata={metadata}>
@@ -111,8 +90,8 @@ const occasions = [
             <div class="flex flex-col gap-3 border-l-4 border-accent/30 pl-6">
               <Heading variant="h4">Ordering Details</Heading>
               <Text color="default">
-                Please contact your nearest location to confirm serving sizes per tray, minimum order requirements,
-                and necessary lead times for large groups. Delivery availability and radius vary by restaurant.
+                Please contact your nearest location to confirm serving sizes per tray, minimum order requirements, and
+                necessary lead times for large groups. Delivery availability and radius vary by restaurant.
               </Text>
             </div>
             <div>
@@ -124,11 +103,21 @@ const occasions = [
         {/* Tray cards */}
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {
-            menuItems.map((item) => (
+            photoTrays.map((item) => (
               <TrayCard label={item.label} price={item.price} image={cateringImages.trays[item.label]} />
             ))
           }
         </div>
+        <ul class="flex flex-col border-t border-heading/15" aria-label="Catering items without photos">
+          {
+            textTrays.map((item) => (
+              <li class="flex items-center justify-between gap-4 border-b border-heading/15 py-4">
+                <span class="font-rough text-h4 font-normal leading-none text-heading">{item.label}</span>
+                <span class="shrink-0 font-rough text-h4 font-normal leading-none text-accent">{item.price}</span>
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </div>
   </section>
@@ -223,7 +212,7 @@ const occasions = [
       },
       {
         title: 'Where do I pick up my catering order?',
-        description: "You can pick up your catering order at any of our six neighborhood restaurants across Oahu.",
+        description: 'You can pick up your catering order at any of our six neighborhood restaurants across Oahu.',
       },
     ]}
   />

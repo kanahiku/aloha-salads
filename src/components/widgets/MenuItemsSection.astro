@@ -9,6 +9,7 @@ import Button from '~/components/ui/Button.astro';
 import Image from '~/components/common/Image.astro';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 import type { ContentImage } from '~/lib/content/types';
+import { omitHiddenMenuItems } from '~/lib/content';
 import peach from '~/assets/images/peach-motif.webp';
 import bigLeaf from '~/assets/images/big-leaf.webp';
 
@@ -30,7 +31,8 @@ export interface Props {
   id?: string;
 }
 
-const { eyebrow, title, intro, items = [], ctaText, ctaHref, id } = Astro.props;
+const { eyebrow, title, intro, items: menuItems = [], ctaText, ctaHref, id } = Astro.props;
+const items = omitHiddenMenuItems(menuItems);
 ---
 
 <section {...id ? { id } : {}} class="not-prose relative w-full scroll-mt-24 overflow-hidden bg-page md:scroll-mt-32">

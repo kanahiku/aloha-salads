@@ -9,7 +9,7 @@
  *   - Three-tier size hierarchy:
  *       Row 1 (hero):   Salads (6/12) + Design Your Own (6/12)
  *       Row 2 (medium): Wraps & Subs · Soups · Drinks  (4/12 each)
- *       Row 3 (small):  Keiki · Vegan · Vegetarian · Healthy (3/12 each)
+ *       Row 3 (small):  Keiki · Vegetarian · Healthy · Misc (3/12 each)
  */
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
@@ -108,14 +108,6 @@ const CATEGORIES: MenuCategory[] = [
     label: 'Keiki / Kids Menu',
     href: '/menu/kids',
     description: 'Wholesome options sized for children.',
-    colSpan: 'md:col-span-3',
-    row: 3,
-    img: null,
-  },
-  {
-    label: 'Vegan Options',
-    href: '/menu/vegan',
-    description: 'Dedicated plant-based choices and meatless meal selections.',
     colSpan: 'md:col-span-3',
     row: 3,
     img: null,
@@ -230,10 +222,7 @@ const visibleCategories = categories
   >
     {
       visibleCategories.map((cat) => (
-        <a
-          href={cat.href}
-          class:list={['group relative flex h-full flex-col overflow-hidden rounded-sm', cat.colSpan]}
-        >
+        <a href={cat.href} class:list={['group relative flex h-full flex-col overflow-hidden rounded-sm', cat.colSpan]}>
           {/* ── Photo ── */}
           <div class="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-section-grey">
             {cat.img?.src ? (
