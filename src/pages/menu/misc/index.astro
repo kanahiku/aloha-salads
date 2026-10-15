@@ -7,7 +7,7 @@ import MenuCategories from '~/components/widgets/MenuCategories.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
-import { getMenuCategory } from '~/lib/content';
+import { getMenuCategory, getMenuItemImage } from '~/lib/content';
 
 const metadata = {
   title: 'Misc Menu Favorites | Aloha Salads Oahu',
@@ -19,8 +19,7 @@ const metadata = {
 const miscItems = [
   {
     title: 'Avocado Toast',
-    description:
-      'Toasted sourdough, avocado, tomatoes, basil, balsamic glaze, sea salt, and black pepper.',
+    description: 'Toasted sourdough, avocado, tomatoes, basil, balsamic glaze, sea salt, and black pepper.',
   },
   {
     title: 'Dessert Toast',
@@ -29,8 +28,7 @@ const miscItems = [
   },
   {
     title: 'Acai Bowl',
-    description:
-      'Acai, granola, strawberry, banana, blueberry, and honey.',
+    description: 'Acai, granola, strawberry, banana, blueberry, and honey.',
   },
   {
     title: 'Cookies',
@@ -40,12 +38,13 @@ const miscItems = [
 
 const cmsCategory = await getMenuCategory('misc');
 const menuItems = cmsCategory?.items.length ? cmsCategory.items : miscItems;
+const acaiBowlImage = await getMenuItemImage('Acai Bowl');
 
 const faqs = [
   {
     title: 'Where can I find these menu items?',
     description:
-      "Availability may vary by location. Order online or contact your neighborhood Aloha Salads to confirm what is available today.",
+      'Availability may vary by location. Order online or contact your neighborhood Aloha Salads to confirm what is available today.',
   },
   {
     title: 'Can I order these items online?',
@@ -64,6 +63,7 @@ const faqs = [
     overlapHeader={false}
     title="Misc Menu Favorites"
     content="Explore additional favorites and cafe-style selections from the Aloha Salads menu."
+    image={acaiBowlImage}
     actions={[
       { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
       { variant: 'ghost', tone: 'dark', text: 'Find a Location', href: LOCATION_CTA_HREF },

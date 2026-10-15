@@ -9,7 +9,7 @@
  *   - Three-tier size hierarchy:
  *       Row 1 (hero):   Salads (6/12) + Design Your Own (6/12)
  *       Row 2 (medium): Wraps & Subs · Soups · Drinks  (4/12 each)
- *       Row 3 (small):  Keiki · Vegetarian · Healthy · Misc (3/12 each)
+ *       Row 3 (small):  Vegetarian · Healthy · Misc (3/12 each)
  */
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
@@ -105,14 +105,6 @@ const CATEGORIES: MenuCategory[] = [
   },
   // ── Row 3 ────────────────────────────────────────────────────────────
   {
-    label: 'Keiki / Kids Menu',
-    href: '/menu/kids',
-    description: 'Wholesome options sized for children.',
-    colSpan: 'md:col-span-3',
-    row: 3,
-    img: null,
-  },
-  {
     label: 'Vegetarian Options',
     href: '/menu/vegetarian',
     description: 'Dedicated meatless meal selections for vegetarians.',
@@ -143,6 +135,7 @@ const isGrid = excludedCategoryHrefs.size > 0;
 
 const cmsCategories = await getMenuCategories();
 const designYourOwnImage = await getMenuItemImage('Design Your Own Salad');
+const healthyFoodImage = await getMenuItemImage('Ono Island Ahi');
 const cmsCategoryByHref = new Map(cmsCategories.map((category) => [category.href, category]));
 
 const categories = CATEGORIES.map((cat) => {
@@ -150,7 +143,9 @@ const categories = CATEGORIES.map((cat) => {
   const image =
     cat.href === '/menu/design-your-own-salad'
       ? designYourOwnImage
-      : cmsCategory?.items.find((item) => item.image?.src)?.image;
+      : cat.href === '/menu/healthy-options'
+        ? healthyFoodImage
+        : cmsCategory?.items.find((item) => item.image?.src)?.image;
 
   return {
     ...cat,

@@ -10,7 +10,9 @@ import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config
 import { getSanityMenuPagesImages } from '~/lib/content/sanity';
 import { getMenuItemImage } from '~/lib/content';
 
-const menuPagesImages = await getSanityMenuPagesImages().catch(() => ({} as Awaited<ReturnType<typeof getSanityMenuPagesImages>>));
+const menuPagesImages = await getSanityMenuPagesImages().catch(
+  () => ({}) as Awaited<ReturnType<typeof getSanityMenuPagesImages>>
+);
 
 const metadata = {
   title: 'Healthy Food & Menu Options | Aloha Salads Oahu',
@@ -20,15 +22,19 @@ const metadata = {
 };
 
 const designYourOwnImage = await getMenuItemImage('Design Your Own Salad');
+const kamuelaCobbImage = await getMenuItemImage('Kamuela Cobb');
+const alohaPassionImage = await getMenuItemImage('Aloha Passion');
 
 const approachItems = [
   {
     title: 'Signature Salads',
     description: 'Choose from our established recipes featuring fresh greens and lean proteins.',
+    ...(kamuelaCobbImage ? { image: kamuelaCobbImage } : {}),
   },
   {
     title: 'Plant-Based Meals',
     description: 'Explore our dedicated vegan and vegetarian menus.',
+    ...(alohaPassionImage ? { image: alohaPassionImage } : {}),
   },
   {
     title: 'Design Your Own Salad',
@@ -56,12 +62,12 @@ const faqs = [
   {
     title: 'Do you serve local ingredients?',
     description:
-      "Yes. We feature local produce including vine-ripe tomatoes from Hauula, as well as fresh, vessel-tracked local ahi.",
+      'Yes. We feature local produce including vine-ripe tomatoes from Hauula, as well as fresh, vessel-tracked local ahi.',
   },
   {
     title: 'Where can I pick up a healthy meal?',
     description:
-      "Our full menu is available to order online for fast pickup at all six of our neighborhood restaurants across Oahu.",
+      'Our full menu is available to order online for fast pickup at all six of our neighborhood restaurants across Oahu.',
   },
 ];
 ---

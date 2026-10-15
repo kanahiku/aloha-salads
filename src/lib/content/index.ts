@@ -18,8 +18,16 @@ const LEGAL_FOOTER_LINKS = [
   { text: 'Accessibility', href: '/accessibility' },
 ];
 
-const HIDDEN_NAV_HREFS = new Set(['/chapters', '/guidebooks', '/menu/vegan']);
-const HIDDEN_NAV_LABELS = new Set(['chapters', 'guidebooks', 'guidebook series', 'vegan options']);
+const HIDDEN_NAV_HREFS = new Set(['/chapters', '/guidebooks', '/menu/vegan', '/menu/kids']);
+const HIDDEN_NAV_LABELS = new Set([
+  'chapters',
+  'guidebooks',
+  'guidebook series',
+  'vegan options',
+  'keiki / kids',
+  'keiki / kids menu',
+  'kids menu',
+]);
 
 function isHiddenNavLink(link: { text: string; href?: string }): boolean {
   return (link.href != null && HIDDEN_NAV_HREFS.has(link.href)) || HIDDEN_NAV_LABELS.has(link.text.toLowerCase());

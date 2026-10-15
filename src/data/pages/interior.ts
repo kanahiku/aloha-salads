@@ -39,7 +39,6 @@ const MENU_LINKS: InteriorLink[] = [
   { text: 'Salads', href: '/menu/salads' },
   { text: 'Wraps & Subs', href: '/menu/wraps-subs' },
   { text: 'Soups', href: '/menu/soups' },
-  { text: 'Keiki / Kids Menu', href: '/menu/kids' },
   { text: 'Design Your Own Salad', href: '/menu/design-your-own-salad' },
   { text: 'Vegetarian Options', href: '/menu/vegetarian' },
   { text: 'Healthy Food & Menu Options', href: '/menu/healthy-options' },
