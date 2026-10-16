@@ -376,13 +376,10 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     title: 'Gift Cards',
     metaDescription: 'Buy Aloha Salads gift cards and check your balance through Heartland.',
     heading: 'Gift cards',
-    lede: 'Purchase a card or check a balance through Heartland. This page will link out once the live Heartland URL is confirmed.',
+    lede: 'Give the gift of a fresh, local meal. Purchase a card or check a balance through Heartland.',
     sections: [
       {
-        items: [
-          { title: 'Buy a gift card', description: 'Heartland checkout. URL pending.' },
-          { title: 'Check balance', description: 'Heartland balance check. URL pending.' },
-        ],
+        links: [{ text: 'Buy or check a gift card', href: 'https://alohasaladskailua.hrpos.heartland.us/gift' }],
       },
     ],
   },
