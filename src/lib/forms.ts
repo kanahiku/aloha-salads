@@ -12,8 +12,15 @@ const FORM_WORKER_ORIGIN = FORM_ENDPOINT.replace(/\/submit\/?$/, '');
 /** Check-up PDF emails. Separate from contact `/submit` so answers are not stored as leads. */
 export const EMAIL_SUMMARY_ENDPOINT = `${FORM_WORKER_ORIGIN}/email-summary`;
 
-/** Careers application (multipart, resume attached). Same Worker + D1, separate route. */
-export const CAREERS_ENDPOINT = `${FORM_WORKER_ORIGIN}/careers`;
+/**
+ * Resume uploads. The shared massic-forms worker has no /careers route (it returns 404).
+ * That route lives on the Aloha worker, so careers does not follow PUBLIC_FORM_ENDPOINT.
+ */
+export const CAREERS_ENDPOINT =
+  import.meta.env.PUBLIC_CAREERS_ENDPOINT ||
+  (import.meta.env.PROD
+    ? 'https://massic-forms-aloha-salads.kanahiku.workers.dev/careers'
+    : 'http://localhost:8787/careers');
 
 export const TURNSTILE_SITE_KEY =
   import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';

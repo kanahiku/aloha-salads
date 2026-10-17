@@ -12,6 +12,7 @@ interface ImportMetaEnv {
   readonly ISR_BYPASS_TOKEN?: string;
   readonly SANITY_REVALIDATE_SECRET?: string;
   readonly PUBLIC_FORM_ENDPOINT?: string;
+  readonly PUBLIC_CAREERS_ENDPOINT?: string;
   readonly PUBLIC_TURNSTILE_SITE_KEY?: string;
   readonly PUBLIC_SITE_SLUG?: string;
   readonly PUBLIC_CAREERS_SITE_SLUG?: string;
