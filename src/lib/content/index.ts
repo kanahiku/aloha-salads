@@ -3,6 +3,7 @@ import {
   getSanityBlogPost,
   getSanityBlogPosts,
   getSanityBlogPostSlugs,
+  getSanitySitemapContent,
   getSanityTestimonials,
   getSanityNavigationContent,
   getSanityMenuCategories,
@@ -10,7 +11,6 @@ import {
 } from './sanity';
 import { blogPosts as localBlogPosts } from '../../data/pages/blogPosts';
 import { navigationData } from '../../data/navigation';
-import { interiorPaths } from '../../data/pages/interior';
 
 const LEGAL_FOOTER_LINKS = [
   { text: 'Privacy Policy', href: '/privacy-policy' },
@@ -100,20 +100,49 @@ export async function getBlogPostSlugs(): Promise<string[]> {
   return [...new Set([...localSlugs, ...sanitySlugs])];
 }
 
-const STATIC_PATHS = [
-  '/',
-  '/blog',
-  '/reviews',
-  '/privacy-policy',
-  '/terms',
-  '/accessibility',
-  '/contact',
-  ...interiorPaths,
-];
+const SITEMAP_EXCLUDED_PATHS = new Set(['/menu/vegan', '/menu/kids', '/404']);
+
+const pageModules = import.meta.glob('/src/pages/**/*.astro');
+
+function getDiscoveredStaticPaths(): string[] {
+  const paths: string[] = [];
+  for (const file of Object.keys(pageModules)) {
+    if (file.includes('/[') || file.endsWith('/404.astro') || file.includes('/api/')) continue;
+    let route = file
+      .replace(/^.*\/src\/pages/, '')
+      .replace(/\/index\.astro$/, '')
+      .replace(/\.astro$/, '');
+    if (route === '') route = '/';
+    if (!SITEMAP_EXCLUDED_PATHS.has(route) && !HIDDEN_NAV_HREFS.has(route)) paths.push(route);
+  }
+  return paths;
+}
+
+export interface SitemapEntry {
+  path: string;
+  lastmod?: string;
+}
+
+export async function getSitemapEntries(): Promise<SitemapEntry[]> {
+  const [sanityEntries, staticPaths] = await Promise.all([
+    getSanitySitemapContent().catch(() => []),
+    Promise.resolve(getDiscoveredStaticPaths()),
+  ]);
+
+  const map = new Map<string, string | undefined>();
+  for (const path of staticPaths) map.set(path, undefined);
+
+  for (const entry of sanityEntries) {
+    if (SITEMAP_EXCLUDED_PATHS.has(entry.path) || HIDDEN_NAV_HREFS.has(entry.path)) continue;
+    map.set(entry.path, entry.lastmod);
+  }
+
+  return [...map.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([path, lastmod]) => ({ path, lastmod }));
+}
 
 export async function getPublicContentPaths(): Promise<string[]> {
-  const postSlugs = await getBlogPostSlugs();
-  return [...STATIC_PATHS, ...postSlugs.map((slug) => `/blog/${slug.replace(/^\/+/, '')}`)];
+  const entries = await getSitemapEntries();
+  return entries.map((entry) => entry.path);
 }
 
 export function getBlogPermalink(slug: string): string {

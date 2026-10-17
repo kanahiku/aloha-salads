@@ -1,4 +1,6 @@
-import { site, siteOrigin } from '~/config/site';
+import { site } from '~/config/site';
+
+const FALLBACK_ORIGIN = 'https://www.alohasalads.com';
 
 function hostnameOf(value: string): string | null {
   try {
@@ -17,22 +19,26 @@ function isTemporaryHost(hostname: string): boolean {
   );
 }
 
+function isPlaceholderHost(hostname: string): boolean {
+  return hostname === 'example.com' || hostname.endsWith('.example.com');
+}
+
 /**
- * Canonical public origin (apex or www from src/config/site.ts).
- * Never returns a Vercel preview/staging host — those must not appear in sitemaps.
+ * Canonical public origin. Production URLs use www.
+ * Preview hosts and the example.com placeholder never appear in sitemaps or canonicals.
  */
 export function canonicalSiteOrigin(): string {
-  const candidates = [site.url, import.meta.env.SITE_URL ?? ''];
+  const candidates = [site.url, import.meta.env.SITE_URL ?? '', FALLBACK_ORIGIN];
 
   for (const raw of candidates) {
     const origin = raw.replace(/\/+$/, '');
     if (!origin) continue;
     const hostname = hostnameOf(origin);
-    if (!hostname || isTemporaryHost(hostname)) continue;
+    if (!hostname || isTemporaryHost(hostname) || isPlaceholderHost(hostname)) continue;
     return origin;
   }
 
-  return siteOrigin();
+  return FALLBACK_ORIGIN;
 }
 
 export function indexableHosts(): Set<string> {

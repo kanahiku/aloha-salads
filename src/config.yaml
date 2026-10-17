@@ -3,7 +3,7 @@
 
 site:
   name: Aloha Salads
-  site: 'https://example.com'
+  site: 'https://www.alohasalads.com'
   base: '/'
   trailingSlash: false
   googleSiteVerificationId: ''

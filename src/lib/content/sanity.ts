@@ -919,6 +919,37 @@ export async function getSanityBlogPostSlugs(): Promise<string[]> {
   return (slugs ?? []).filter((slug): slug is string => typeof slug === 'string' && slug.length > 0);
 }
 
+export interface SitemapContentEntry {
+  path: string;
+  lastmod?: string;
+}
+
+const SITEMAP_BLOG_POSTS_QUERY = /* groq */ `
+  *[_type == "blogPost" && !(_id in path("drafts.**")) && defined(slug.current)]{
+    "slug": slug.current,
+    _updatedAt,
+    publishDate
+  }
+`;
+
+export async function getSanitySitemapContent(): Promise<SitemapContentEntry[]> {
+  const blogs = await sanityClient
+    .fetch<Array<{ slug: string; _updatedAt?: string; publishDate?: string }>>(SITEMAP_BLOG_POSTS_QUERY)
+    .catch(() => []);
+
+  const entries: SitemapContentEntry[] = [];
+  for (const post of blogs ?? []) {
+    if (!post?.slug) continue;
+    const cleanSlug = post.slug.replace(/^\/+/, '').replace(/^blog\//, '');
+    const dateStr = post._updatedAt || post.publishDate;
+    entries.push({
+      path: `/blog/${cleanSlug}`,
+      lastmod: dateStr ? dateStr.slice(0, 10) : undefined,
+    });
+  }
+  return entries;
+}
+
 // ─── Testimonials ─────────────────────────────────────────────────────────────
 
 const TESTIMONIALS_QUERY = /* groq */ `
