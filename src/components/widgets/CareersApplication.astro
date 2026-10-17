@@ -243,7 +243,7 @@ const stateClass = 'hidden border px-5 py-5 font-sans text-body leading-snug';
       loadTurnstile()
         .then((api) => {
           turnstile = api;
-          widgetId = api.render(slot, { sitekey, appearance: 'interaction-only' });
+          widgetId = api.render(slot, { sitekey, action: site, appearance: 'interaction-only' });
         })
         .catch((error) => console.error(error));
     }

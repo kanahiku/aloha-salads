@@ -186,7 +186,7 @@ const textareaId = textarea?.name ?? 'message';
     if (slot && sitekey) {
       try {
         const turnstile = await loadTurnstile();
-        widgetId = turnstile.render(slot, { sitekey });
+        widgetId = turnstile.render(slot, { sitekey, action: form.dataset.site || '' });
       } catch (error) {
         console.error(error);
       }
