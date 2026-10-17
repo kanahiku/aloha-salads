@@ -11,7 +11,7 @@
  *   - Success replaces the whole form block. No redirect.
  *   - Send failure keeps the form on screen (values intact) with the failure state above it.
  *   - Honeypot `company_website`: if filled, show success and send nothing.
- *   - No visible captcha: Turnstile runs in `interaction-only` mode.
+ *   - Turnstile is visible, same widget as the contact form.
  *
  * Atoms used: Heading, Text, Button. Field styling matches `ui/Form.astro`.
  */
@@ -81,7 +81,7 @@ const stateClass = 'hidden border px-5 py-5 font-sans text-body leading-snug';
         >
           <p class="m-0">
             <strong class="font-semibold">Thanks, we got your application.</strong><br />
-            Someone from the team will be in touch. If you want to follow up, email
+            Someone from the team will be in touch. If you want to follow up, email{' '}
             <a class="underline" href={`mailto:${email}`}>{email}</a>.
           </p>
         </div>
@@ -238,12 +238,11 @@ const stateClass = 'hidden border px-5 py-5 font-sans text-body leading-snug';
     let turnstile: TurnstileApi | undefined;
     let widgetId = '';
 
-    // Interaction-only: stays invisible unless Cloudflare needs the visitor to do something.
     if (slot && sitekey) {
       loadTurnstile()
         .then((api) => {
           turnstile = api;
-          widgetId = api.render(slot, { sitekey, action: site, appearance: 'interaction-only' });
+          widgetId = api.render(slot, { sitekey, action: site });
         })
         .catch((error) => console.error(error));
     }
