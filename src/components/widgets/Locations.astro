@@ -30,6 +30,8 @@ export interface Props {
   subtitle?: string;
   ctaText?: string;
   ctaHref?: string;
+  /** Store card button label; `{name}` is replaced with the store name. */
+  viewLabel?: string;
   locations?: Location[];
   image?: ContentImage;
   id?: string;
@@ -41,6 +43,7 @@ const {
   subtitle = 'Dine in, grab and go, or order ahead. There\u2019s an Aloha Salads closer than you think.',
   ctaText = 'view all locations',
   ctaHref = '/locations',
+  viewLabel = 'View {name}',
   locations = storeLocations.slice(0, 4).map((store) => ({
     name: store.name,
     shopName: store.shopName,
@@ -122,7 +125,7 @@ const {
                       fill="currentColor"
                     />
                   </svg>
-                  <span class="font-heading text-button leading-none">View {loc.name}</span>
+                  <span class="font-heading text-button leading-none">{viewLabel.replace('{name}', loc.name)}</span>
                 </a>
               </div>
             ))

@@ -29,11 +29,11 @@
       "component": "TrayCard",
       "import": "~/components/ui/TrayCard.astro",
       "props": {
-        "label": "tray name; also the key used to look up the photo in Sanity (catering → trayImages)",
+        "label": "tray name (Sanity: Catering → Menu & pricing → Trays)",
         "price": "price string, e.g. $42",
         "image": "optional ContentImage; grey placeholder when missing"
       },
-      "notes": "Used by the Catering Menu and Pricing section. Photos live in Sanity (cateringContent.trayImages), never in the repo."
+      "notes": "Used by the Catering Menu and Pricing section. Name, price and photo live in Sanity (cateringContent.trays), never in the repo."
     },
     {
       "id": "A-03",
@@ -556,7 +556,8 @@
         "subtitle": "body-lg lede",
         "ctaText": "primary button label",
         "ctaHref": "button href",
-        "facts": "Array<{ title, description }> — 4 icon+title cards"
+        "facts": "Array<{ title, description }> — 4 icon+title cards",
+        "withPhoto": "text + photo split panel (grey placeholder until the image pass)"
       },
       "notes": "Homepage 59:106. Transparent section so the page gradient + leaf motif show through. Cream fact cards stay filled. Cards overlap the intro by 42px. Basket icons are grey placeholders until the image pass. Do not fork per page."
     },
@@ -731,9 +732,66 @@
       "import": "~/components/widgets/CateringSubNav.astro",
       "props": {
         "excludeHref": "href of the current sub-page to omit from the list",
+        "eyebrow / title / subtitle": "heading copy (Sanity: Catering → Shared with sub-pages)",
+        "options": "{ label, href }[] — the pages to list, from the cateringSubpage documents",
         "id": "section anchor"
       },
-      "notes": "Appears on all 7 catering sub-pages (corporate, office-lunches, meetings, events, parties, schools, large-groups). Always placed before FAQs."
+      "notes": "Rendered by CateringOccasionPage on all 7 catering sub-pages. Always placed before FAQs."
+    },
+    {
+      "id": "P-CAT",
+      "name": "Catering occasion page",
+      "figmaNames": ["Corporate Catering", "Office Lunch Catering", "Meeting Catering", "Event Catering", "Party Catering", "School Catering", "Large Group Catering"],
+      "shape": "Whole sub-page body: split-dark hero, numbered 2×2 occasion cards, More Catering Options list, FAQs, CTA banner.",
+      "component": "CateringOccasionPage",
+      "import": "~/components/widgets/CateringOccasionPage.astro",
+      "props": {
+        "page": "CateringSubpageContent for this page (one Sanity document per page, listed under Catering in the Studio sidebar)",
+        "subpages": "all sub-pages, for the More Catering Options list",
+        "shared": "CateringSharedContent — labels shared by every catering page"
+      },
+      "notes": "One widget for all 7 routes under src/pages/catering/<slug>/. Copy from getCateringContent() in ~/lib/content/pageContent."
+    },
+    {
+      "id": "P-MENU",
+      "name": "Menu category page",
+      "figmaNames": ["Signature Salads", "Wraps & Subs", "Soups", "Drinks", "Keiki Menu", "Vegan Options", "Vegetarian Options", "Healthy Food", "Misc", "Design Your Own Salad"],
+      "shape": "Whole category page body: split-dark hero, dish list (or numbered build guide), quality-ingredients panel with photo, other-categories grid, CTA banner, FAQs.",
+      "component": "MenuPage",
+      "import": "~/components/widgets/MenuPage.astro",
+      "props": {
+        "page": "MenuSubpageContent for this page (one Sanity document per page, listed under Menu in the Studio sidebar)",
+        "shared": "MenuSharedContent — labels shared by the Menu page and every category page",
+        "items": "dishes to list (Menu items placed in the category, or the page's custom cards)"
+      },
+      "notes": "One widget for all 10 routes under src/pages/menu/<slug>/. Data from getMenuPageData(slug) in ~/lib/content/menuContent. The Menu landing page composes Hero2 / FullMenuSection / LocalSourcing / CTABanner / FAQs from getMenuHubData()."
+    },
+    {
+      "id": "P-LEGAL",
+      "name": "Legal page",
+      "figmaNames": ["Privacy Policy", "Terms", "Accessibility Statement"],
+      "shape": "Whole legal page body: page hero (headline + one line of text), titled sections of paragraphs and bullet lists, closing CTA banner.",
+      "component": "LegalPage",
+      "import": "~/components/widgets/LegalPage.astro",
+      "props": {
+        "page": "LegalPageContent from getLegalPage(slug) in ~/lib/content/legalContent (one Sanity document per page, listed under Legal pages in the Studio sidebar)"
+      },
+      "notes": "One widget for /privacy-policy, /terms and /accessibility. Section text is Sanity rich text rendered to safe HTML; {business} {host} {email} {phone} {street} {cityLine} tokens are filled from src/config."
+    },
+    {
+      "id": "P-LOC",
+      "name": "Location page",
+      "figmaNames": ["Kailua Location", "Kahala Location", "Kaneohe Location", "Kapolei Location", "Mililani Location", "Pearlridge Location"],
+      "shape": "Whole store page body: split-dark hero, neighbourhood text, StoreVisit, More Oahu Locations list, FAQs, CTA banner.",
+      "component": "LocationPage",
+      "import": "~/components/widgets/LocationPage.astro",
+      "props": {
+        "store": "StoreLocation (facts from this store's Sanity document)",
+        "page": "LocationPageCopy for this store",
+        "shared": "LocationsSharedContent — labels shared by the hub and every store page",
+        "stores": "all stores, for the More Oahu Locations list"
+      },
+      "notes": "One widget for all 6 routes under src/pages/locations/<slug>/. Data from getLocationPageData(slug) in ~/lib/content/locationContent. Stores are Sanity documents (Locations folder in the Studio)."
     },
     {
       "id": "P-53",
@@ -743,9 +801,10 @@
       "component": "StoreVisit",
       "import": "~/components/widgets/StoreVisit.astro",
       "props": {
-        "store": "StoreLocation from src/data/locations.ts",
+        "store": "StoreLocation (from getStoreLocations())",
         "title": "h2 section heading",
-        "id": "section anchor"
+        "id": "section anchor",
+        "pickupLabel / deliveryLabel / directionsLabel": "button labels (Locations shared fields in Sanity)"
       },
       "notes": "Used on location subpages. Hours live here, not in LocationDirectory. Pass mapsEmbedSrc on the store when the brief includes an embed URL."
     },

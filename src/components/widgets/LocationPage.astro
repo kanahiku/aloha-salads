@@ -1,0 +1,82 @@
+---
+/**
+ * LocationPage — one store page (/locations/<store>). Every store uses this widget; the copy and the
+ * store facts come from that store's Sanity document, the shared labels from the Locations page.
+ * Hero → neighbourhood text → StoreVisit → other stores → FAQs → CTA banner.
+ */
+import Hero2 from '~/components/widgets/Hero2.astro';
+import TextSplit from '~/components/widgets/TextSplit.astro';
+import StoreVisit from '~/components/widgets/StoreVisit.astro';
+import LocationDirectory from '~/components/widgets/LocationDirectory.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import CTABanner from '~/components/widgets/CTABanner.astro';
+import Text from '~/components/ui/Text.astro';
+import { PRIMARY_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
+import type { StoreLocation } from '~/data/locations';
+import type { LocationPageCopy, LocationsSharedContent } from '~/lib/content/types';
+import { textToHtml } from '~/lib/content/richText';
+
+export interface Props {
+  store: StoreLocation;
+  page: LocationPageCopy;
+  shared: LocationsSharedContent;
+  /** All stores; this one is left out of the "more locations" list. */
+  stores: StoreLocation[];
+}
+
+const { store, page, shared, stores } = Astro.props;
+const faqs = page.faqs.map((faq) => ({ title: faq.question, description: faq.answer }));
+---
+
+<Hero2
+  variant="split-dark"
+  overlapHeader={false}
+  title={textToHtml(page.heroTitle)}
+  content={textToHtml(page.heroContent)}
+  image={page.heroImage}
+  actions={[
+    { variant: 'primary', text: page.heroPrimaryCtaLabel ?? shared.heroPrimaryCtaLabel, href: PRIMARY_CTA_HREF },
+    { variant: 'ghost', tone: 'dark', text: shared.heroSecondaryCtaLabel, href: CATERING_CTA_HREF },
+  ]}
+/>
+
+<TextSplit heading={page.aboutHeading}>
+  <div class="flex flex-col gap-6">
+    {
+      page.aboutParagraphs.map((paragraph) => (
+        <Text variant="body-lg" color="default">
+          {paragraph}
+        </Text>
+      ))
+    }
+  </div>
+</TextSplit>
+
+<StoreVisit
+  store={store}
+  id="visit"
+  title={shared.visitTitle}
+  pickupLabel={shared.pickupLabel}
+  deliveryLabel={shared.deliveryLabel}
+  directionsLabel={shared.directionsLabel}
+/>
+
+<LocationDirectory
+  title={shared.moreTitle}
+  subtitle={shared.moreSubtitle}
+  excludeHref={store.href}
+  motifs="leaf"
+  stores={stores}
+  viewLabel={shared.viewLabel}
+/>
+
+{faqs.length > 0 && <FAQs isDark={true} title={shared.faqTitle} items={faqs} />}
+
+<CTABanner
+  title={page.cta.title}
+  subtitle={page.cta.subtitle}
+  ctaText="View Full Menu"
+  ctaHref="/menu"
+  secondaryCtaText="Order Online"
+  secondaryCtaHref={PRIMARY_CTA_HREF}
+/>

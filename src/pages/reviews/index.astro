@@ -6,43 +6,35 @@ import SectionBg from '~/components/ui/SectionBg.astro';
 import Hero2 from '~/components/widgets/Hero2.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import ReviewsGrid from '~/components/widgets/ReviewsGrid.astro';
-import { CONTACT } from '~/config/contact';
-import { PRIMARY_CTA_HREF } from '~/config/cta';
+import { getReviewsPageContent } from '~/lib/content/pageContent';
 
 export const prerender = false;
 
+// Page text: Studio → Reviews page. The review cards themselves come live from Google and Yelp.
+const page = await getReviewsPageContent();
 const metadata = {
-  title: `Reviews | ${CONTACT.businessName}`,
-  description: `Read recent Google and Yelp reviews for ${CONTACT.businessName}.`,
+  title: page.meta.title,
+  description: page.meta.description,
   ignoreTitleTemplate: true,
 };
 ---
 
 <Layout metadata={metadata}>
   <Hero2>
-    <Fragment slot="title">Reviews</Fragment>
-    <Fragment slot="subtitle">
-      What people are saying about {CONTACT.businessName}.
-    </Fragment>
+    <Fragment slot="title">{page.heroTitle}</Fragment>
+    {page.heroSubtitle && <Fragment slot="subtitle">{page.heroSubtitle}</Fragment>}
     <Fragment slot="bg">
       <SectionBg variant="hero" />
     </Fragment>
   </Hero2>
 
   <WidgetWrapper containerClass="max-w-container mx-auto">
-    <Headline title="Recent reviews" classes={{ container: 'mb-[9px]' }} />
+    {page.listTitle && <Headline title={page.listTitle} classes={{ container: 'mb-[9px]' }} />}
     <ReviewsGrid showHeader={false} sources={['google', 'yelp']} variant="dark" showCta={false} />
     <Fragment slot="bg">
       <SectionBg variant="grey" />
     </Fragment>
   </WidgetWrapper>
 
-  <CTABanner
-    title="Find a Location"
-    subtitle="Six neighborhood restaurants across Oahu. Come see us."
-    ctaText="Find a Location"
-    ctaHref="/locations"
-    secondaryCtaText="Order Online"
-    secondaryCtaHref={PRIMARY_CTA_HREF}
-  />
+  <CTABanner title={page.cta.title} subtitle={page.cta.subtitle || undefined} />
 </Layout>

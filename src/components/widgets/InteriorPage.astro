@@ -8,10 +8,11 @@ import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
+import { textToHtml } from '~/lib/content/richText';
 import type { InteriorPageContent } from '~/data/pages/interior';
 
 export interface Props {
-  page: InteriorPageContent;
+  page: Pick<InteriorPageContent, 'heading' | 'lede' | 'sections'>;
   /** Skip the built-in hero when the route composes its own (e.g. /careers). */
   hideHero?: boolean;
   /** Extra classes for the section container (merged over the WidgetWrapper defaults). */
@@ -29,7 +30,7 @@ const sections = page.sections ?? [];
 const hasBody = sections.length > 0;
 ---
 
-{hideHero ? null : <Hero2 variant="page" overlapHeader={false} stacked title={page.heading} subtitle={page.lede} />}
+{hideHero ? null : <Hero2 variant="page" overlapHeader={false} stacked title={textToHtml(page.heading)} subtitle={page.lede ? textToHtml(page.lede) : undefined} />}
 
 {
   hasBody && (

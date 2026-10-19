@@ -1,7 +1,15 @@
 import type { NavigationContent } from '~/lib/content/types';
-import { CONTACT, PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF, SOCIAL } from '~/config';
+import { CONTACT } from '~/config/contact';
+import { PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
+import { SOCIAL } from '~/config/social';
 
 export const navigationData: NavigationContent = {
+  announcement: {
+    enabled: true,
+    text: 'Try our new',
+    linkLabel: 'Mamaki mint tea',
+    linkHref: '/menu/drinks#our-drink-menu',
+  },
   header: {
     links: [
       {
@@ -121,6 +129,7 @@ export const navigationData: NavigationContent = {
       { text: 'Accessibility', href: '/accessibility' },
     ],
     socialLinks: SOCIAL.nav as unknown as NavigationContent['footer']['socialLinks'],
-    footNote: `&copy; ${new Date().getFullYear()} ${CONTACT.businessName}. All rights reserved.`,
+    // {year} is replaced with the current year when the page renders.
+    footNote: `© {year} ${CONTACT.businessName}. All rights reserved.`,
   },
 };

@@ -4,38 +4,44 @@ import Hero2 from '~/components/widgets/Hero2.astro';
 import InteriorPage from '~/components/widgets/InteriorPage.astro';
 import CareersApplication from '~/components/widgets/CareersApplication.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
-import { getInteriorPage } from '~/data/pages/interior';
-import { site } from '~/config/site';
 import { getSanityCareersImages } from '~/lib/content/sanity';
+import { getSanityCareersContent } from '~/lib/content/pageContent';
+import { textToHtml } from '~/lib/content/richText';
 
-const page = getInteriorPage('/careers');
-const careersImages = await getSanityCareersImages();
+const [careersImages, content] = await Promise.all([getSanityCareersImages(), getSanityCareersContent()]);
 
 const metadata = {
-  title: `${page.title} | ${site.name}`,
-  description: page.metaDescription,
+  title: content.meta.title,
+  description: content.meta.description,
   ignoreTitleTemplate: true,
+};
+
+// Benefits render through the shared InteriorPage section list.
+const benefitsPage = {
+  heading: content.hero.title,
+  lede: content.hero.content,
+  sections:
+    content.benefits.items.length > 0
+      ? [{ heading: content.benefits.heading, items: content.benefits.items.map((title) => ({ title })) }]
+      : [],
 };
 ---
 
 <Layout metadata={metadata}>
-  {/* Footer-only page: not in the primary nav. H1, intro, and Benefits come from interior.ts; hero photo from Sanity (Careers). */}
+  {/* Footer-only page: not in the primary nav. Copy and hero photo come from Sanity (Careers). */}
   <Hero2
     variant="split-dark"
     overlapHeader={false}
     hideImage={!careersImages.hero}
-    title={page.heading}
-    content={page.lede}
+    title={textToHtml(content.hero.title)}
+    content={textToHtml(content.hero.content)}
     image={careersImages.hero}
   />
 
   {/* Same band as the Contact page: Benefits on the dark panel (left), application form on the cream card (right). */}
-  <CareersApplication>
-    <InteriorPage page={page} hideHero bare onDark />
+  <CareersApplication title={content.applyTitle}>
+    <InteriorPage page={benefitsPage} hideHero bare onDark />
   </CareersApplication>
 
-  <CTABanner
-    title="Ready to Order?"
-    subtitle="Skip the line and place your order online for fast pickup. Planning a group event? We also offer a variety of catering options."
-  />
+  <CTABanner title={content.cta.title} subtitle={content.cta.subtitle} />
 </Layout>

@@ -2,22 +2,23 @@ import { defineField, defineType } from 'sanity';
 
 export const siteNavigation = defineType({
   name: 'siteNavigation',
-  title: 'Navigation',
+  title: 'Header & navigation',
   type: 'document',
   // Prevent creating multiple navigation documents
   __experimental_actions: ['update', 'publish'],
   fields: [
     defineField({
       name: 'links',
-      title: 'Navigation Links',
-      description: 'Top-level nav items. Each can have sub-links for dropdown menus.',
+      title: 'Menu links',
+      description:
+        'The links in the header, in order. Each can have sub-links for a dropdown. The same links appear in the mobile menu.',
       type: 'array',
       of: [{ type: 'navLink' }],
     }),
     defineField({
       name: 'phone',
       title: 'Header phone',
-      description: 'Phone number shown in the header.',
+      description: 'Optional. A tap-to-call button in the header. Leave empty to hide it.',
       type: 'object',
       fields: [
         defineField({ name: 'text', title: 'Display number', type: 'string' }),
@@ -26,8 +27,8 @@ export const siteNavigation = defineType({
     }),
     defineField({
       name: 'actions',
-      title: 'CTA Buttons (optional)',
-      description: 'Buttons shown in the nav bar (e.g. "Get a Quote").',
+      title: 'Header buttons',
+      description: 'Buttons at the right of the header, for example "order online".',
       type: 'array',
       of: [
         {
@@ -50,7 +51,7 @@ export const siteNavigation = defineType({
   ],
   preview: {
     prepare() {
-      return { title: 'Navigation' };
+      return { title: 'Header & navigation', subtitle: 'Menu links and header buttons' };
     },
   },
 });

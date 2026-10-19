@@ -134,13 +134,24 @@ async function main() {
   if (!token) throw new Error('SANITY_WRITE_TOKEN or SANITY_API_TOKEN is required when running with --commit.');
 
   const uploadedSlots = await Promise.all(slots.map(uploadSlot));
-  const imageFields = Object.fromEntries(uploadedSlots.map(({ field, value }) => [field, value]));
 
-  await client
-    .transaction()
-    .createIfNotExists({ _id: cateringDocumentId, _type: 'cateringContent' })
-    .patch(cateringDocumentId, (patch) => patch.set(imageFields))
-    .commit({ autoGenerateArrayKeys: true });
+  // The main page keeps `menuImage`; each sub-page is its own document with a `heroImage`.
+  const SUBPAGE_SLUG: Record<string, string> = {
+    corporateImage: 'corporate',
+    officeLunchImage: 'office-lunches',
+    meetingsImage: 'meetings',
+    eventsImage: 'events',
+    largeGroupsImage: 'large-groups',
+  };
+
+  const tx = client.transaction();
+  for (const { field, value } of uploadedSlots) {
+    const slug = SUBPAGE_SLUG[field];
+    const id = slug ? `singleton-catering-${slug}` : cateringDocumentId;
+    tx.createIfNotExists(slug ? { _id: id, _type: 'cateringSubpage', slug } : { _id: id, _type: 'cateringContent' });
+    tx.patch(id, (patch) => patch.set({ [slug ? 'heroImage' : field]: value }));
+  }
+  await tx.commit({ autoGenerateArrayKeys: true });
 
   console.log(`\nDone. Uploaded and patched ${uploadedSlots.length} catering images.`);
 }

@@ -1,0 +1,89 @@
+---
+/**
+ * MenuPage — one menu category page (/menu/<slug>). Every category page uses this widget; the copy, images and
+ * dish list come from that page's Sanity document and the Menu items placed in the category.
+ * Hero → dish list (or the "how to build" guide) → quality ingredients → other categories → CTA banner → FAQs.
+ */
+import Hero2 from '~/components/widgets/Hero2.astro';
+import MenuItemsSection from '~/components/widgets/MenuItemsSection.astro';
+import BuildSteps from '~/components/widgets/BuildSteps.astro';
+import LocalSourcing from '~/components/widgets/LocalSourcing.astro';
+import MenuCategories from '~/components/widgets/MenuCategories.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import CTABanner from '~/components/widgets/CTABanner.astro';
+import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
+import type { MenuListItem, MenuSharedContent, MenuSubpageContent } from '~/lib/content/types';
+import { textToHtml } from '~/lib/content/richText';
+
+export interface Props {
+  page: MenuSubpageContent;
+  shared: MenuSharedContent;
+  /** Dishes to list (ignored on pages that show a build guide). */
+  items: MenuListItem[];
+}
+
+const { page, shared, items } = Astro.props;
+
+const BUILD_PAGE_HREF = '/menu/design-your-own-salad';
+/** The "other categories" grid leaves out this page, and the custom-salad card on every page except these. */
+const KEEPS_BUILD_CARD = new Set(['design-your-own-salad', 'drinks', 'vegan', 'vegetarian', 'healthy-options']);
+const excludeHrefs = [`/menu/${page.slug}`, ...(KEEPS_BUILD_CARD.has(page.slug) ? [] : [BUILD_PAGE_HREF])];
+
+const faqs = page.faqs.map((faq) => ({ title: faq.question, description: faq.answer }));
+---
+
+<Hero2
+  variant="split-dark"
+  overlapHeader={false}
+  title={textToHtml(page.hero.title)}
+  content={textToHtml(page.hero.content)}
+  image={page.hero.image}
+  actions={[
+    { variant: 'primary', text: shared.orderLabel, href: PRIMARY_CTA_HREF },
+    { variant: 'ghost', tone: 'dark', text: shared.locationLabel, href: LOCATION_CTA_HREF },
+  ]}
+/>
+
+{
+  page.build ? (
+    <BuildSteps
+      id="how-to-build"
+      title={page.build.title}
+      subtitle={page.build.subtitle}
+      note={page.build.note}
+      ctaText={page.build.ctaLabel}
+      ctaHref={PRIMARY_CTA_HREF}
+      image={page.build.image}
+      steps={page.build.steps}
+    />
+  ) : (
+    page.list && <MenuItemsSection title={page.list.title} intro={page.list.intro} items={items} />
+  )
+}
+
+<LocalSourcing
+  title={page.sourcing.title}
+  subtitle={page.sourcing.subtitle}
+  ctaText={page.sourcing.ctaLabel}
+  ctaHref="/ingredients"
+  withPhoto={true}
+/>
+
+<MenuCategories
+  id={page.build ? 'explore-menu' : undefined}
+  title={shared.exploreTitle}
+  subtitle={page.explore.subtitle}
+  excludeHrefs={excludeHrefs}
+  ctaText=""
+/>
+
+<CTABanner
+  title={shared.readyTitle}
+  subtitle={page.cta.subtitle}
+  ctaText={shared.orderLabel}
+  ctaHref={PRIMARY_CTA_HREF}
+  secondaryCtaText={shared.cateringLabel}
+  secondaryCtaHref={CATERING_CTA_HREF}
+/>
+
+{faqs.length > 0 && <FAQs title={shared.faqTitle} items={faqs} isDark={true} />}

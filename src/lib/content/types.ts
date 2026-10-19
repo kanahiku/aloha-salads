@@ -27,6 +27,24 @@ export interface HomepageImages {
   heroVideo?: HomepageHeroVideo;
 }
 
+/** Every piece of homepage text. Authored in Sanity (Homepage singleton). */
+export interface HomepageContent {
+  meta: { title: string; description: string };
+  hero: {
+    tagline: string;
+    /** Newlines are line breaks. */
+    title: string;
+    subtitle: string;
+    primaryCtaLabel: string;
+    secondaryCtaLabel: string;
+  };
+  brandBar: Array<{ text: string; tilt?: boolean }>;
+  menu: { eyebrow: string; title: string; subtitle: string; ctaLabel: string };
+  localSourcing: { eyebrow: string; title: string; body: string; ctaLabel: string };
+  reviews: { eyebrow: string; title: string };
+  locations: { eyebrow: string; title: string; subtitle: string; ctaLabel: string; viewLabel: string };
+}
+
 export interface AboutImages {
   hero?: ContentImage;
   story?: ContentImage;
@@ -38,61 +56,9 @@ export interface CareersImages {
   hero?: ContentImage;
 }
 
-export interface CateringImages {
-  menu?: ContentImage;
-  corporate?: ContentImage;
-  officeLunch?: ContentImage;
-  meetings?: ContentImage;
-  events?: ContentImage;
-  largeGroups?: ContentImage;
-  /** Tray photos keyed by tray label (e.g. "Aloha Passion Tray"). */
-  trays: Record<string, ContentImage>;
-}
-
-export interface LocationImages {
-  directory?: ContentImage;
-  kailua?: ContentImage;
-  kahala?: ContentImage;
-  kaneohe?: ContentImage;
-  kapolei?: ContentImage;
-  mililani?: ContentImage;
-  pearlridge?: ContentImage;
-}
-
 export interface IngredientsImages {
   hero?: ContentImage;
   freshLocalProduce?: ContentImage;
-}
-
-export interface MenuPagesImages {
-  // Menu Hub
-  menuHubHero?: ContentImage;
-  // Salads
-  saladsHero?: ContentImage;
-  saladsIngredients?: ContentImage;
-  // Wraps & Subs
-  wrapsHero?: ContentImage;
-  wrapsIngredients?: ContentImage;
-  // Soups
-  soupsHero?: ContentImage;
-  soupsIngredients?: ContentImage;
-  // Drinks
-  drinksHero?: ContentImage;
-  drinksIngredients?: ContentImage;
-  // Vegan
-  veganIngredients?: ContentImage;
-  // Vegetarian
-  vegetarianHero?: ContentImage;
-  vegetarianIngredients?: ContentImage;
-  // Healthy Options
-  healthyOptionsHero?: ContentImage;
-  healthyOptionsIngredients?: ContentImage;
-  // Kids
-  kidsIngredients?: ContentImage;
-  // Design Your Own
-  designYourOwnHero?: ContentImage;
-  designYourOwnBuild?: ContentImage;
-  designYourOwnQuality?: ContentImage;
 }
 
 // ─── Navigation ───────────────────────────────────────────────────────────────
@@ -139,7 +105,16 @@ export interface SocialLink {
   href: string;
 }
 
+/** The thin banner above the header. */
+export interface AnnouncementContent {
+  enabled: boolean;
+  text: string;
+  linkLabel?: string;
+  linkHref?: string;
+}
+
 export interface NavigationContent {
+  announcement?: AnnouncementContent;
   header: {
     links: NavLink[];
     actions: { variant?: string; text?: string; href?: string }[];
@@ -450,4 +425,248 @@ export interface PressItem {
   href: string;
   /** Card photo. Omitted when none is set in Sanity — the card shows the grey placeholder. */
   image?: ContentImage;
+}
+
+// ─── About + Catering page copy ───────────────────────────────────────────────
+
+export interface FaqEntry {
+  question: string;
+  answer: string;
+}
+
+/** Every piece of About page text. Authored in Sanity (About singleton). */
+export interface AboutContent {
+  meta: { title: string; description: string };
+  hero: { title: string; content: string; primaryCtaLabel: string; secondaryCtaLabel: string };
+  mission: { heading: string; quote: string; body: string };
+  /** First paragraph renders as the lead. `**bold**` is supported. Empty note hides it. */
+  story: { heading: string; paragraphs: string[]; note: string };
+  sustainability: { heading: string; paragraphs: string[]; note: string; ctaLabel: string };
+  vendors: { heading: string; paragraphs: string[]; ctaLabel: string };
+  cta: { title: string; subtitle: string };
+}
+
+/** Labels reused on the catering main page and every catering sub-page. */
+export interface CateringSharedContent {
+  orderLabel: string;
+  menuLabel: string;
+  locationLabel: string;
+  readyTitle: string;
+  faqTitle: string;
+  subNavEyebrow: string;
+  subNavTitle: string;
+  subNavSubtitle: string;
+}
+
+export interface CateringTray {
+  name: string;
+  price: string;
+  image?: ContentImage;
+}
+
+/** Catering main page (Catering singleton). */
+export interface CateringMainContent {
+  meta: { title: string; description: string };
+  hero: { tagline: string; title: string; content: string; image?: ContentImage };
+  pricing: { title: string; intro: string; orderingTitle: string; orderingText: string };
+  trays: CateringTray[];
+  occasions: { eyebrow: string; title: string; intro: string; linkLabel: string };
+  cta: { subtitle: string };
+  faqs: FaqEntry[];
+  shared: CateringSharedContent;
+}
+
+/** One catering sub-page (one Sanity document per page). */
+export interface CateringSubpageContent {
+  slug: string;
+  order: number;
+  /** Hero headline and the label used in "More catering options". */
+  title: string;
+  meta: { title: string; description: string };
+  heroContent: string;
+  heroImage?: ContentImage;
+  occasions: Array<{ title: string; description: string }>;
+  faqs: FaqEntry[];
+  ctaSubtitle: string;
+  /** Blurb on the catering page's occasion grid. */
+  cardDescription: string;
+  showOnCateringPage: boolean;
+}
+
+// ─── Careers, Ingredients, simple interior pages ──────────────────────────────
+
+export interface CareersContent {
+  meta: { title: string; description: string };
+  hero: { title: string; content: string };
+  benefits: { heading: string; items: string[] };
+  applyTitle: string;
+  cta: { title: string; subtitle: string };
+}
+
+export interface IngredientsContent {
+  meta: { title: string; description: string };
+  hero: { tagline: string; title: string; content: string; primaryCtaLabel: string; secondaryCtaLabel: string };
+  /** Eyebrow above the first (large) card. */
+  sourcingEyebrow: string;
+  /** Blank line = new paragraph; `**bold**` supported. */
+  facts: Array<{ title: string; description: string }>;
+  cta: { title: string; subtitle: string };
+  faqTitle: string;
+  faqs: FaqEntry[];
+}
+
+/** A simple page: heading, lede, then optional sections of text, item lists and links. */
+export interface InteriorPageCopy {
+  slug: string;
+  meta: { title: string; description: string };
+  heading: string;
+  lede: string;
+  sections: Array<{
+    heading?: string;
+    body?: string;
+    items?: Array<{ title: string; description?: string }>;
+    links?: Array<{ text: string; href: string }>;
+  }>;
+}
+
+// ─── Press, Reviews and legal pages ──────────────────────────────────────────
+
+/** Press & Media page text. The cards themselves are separate documents (`pressItem`). */
+export interface PressPageContent {
+  meta: { title: string; description: string };
+  heading: string;
+  lede: string;
+}
+
+/** Reviews page text. The reviews themselves come live from Google and Yelp. */
+export interface ReviewsPageContent {
+  meta: { title: string; description: string };
+  heroTitle: string;
+  heroSubtitle: string;
+  listTitle: string;
+  cta: { title: string; subtitle: string };
+}
+
+/** One rendered block of a legal page. `html` is already escaped and safe for `set:html`. */
+export type LegalBlock = { kind: 'paragraph'; html: string } | { kind: 'list'; items: string[] };
+
+export interface LegalPageContent {
+  slug: string;
+  meta: { title: string; description: string };
+  heading: string;
+  /** Plain text under the headline. */
+  subtitle: string;
+  sections: Array<{ heading: string; blocks: LegalBlock[] }>;
+  cta: { title: string; subtitle: string };
+}
+
+// ─── Locations ────────────────────────────────────────────────────────────────
+
+/** Labels reused on the locations hub and every store page. */
+export interface LocationsSharedContent {
+  heroPrimaryCtaLabel: string;
+  heroSecondaryCtaLabel: string;
+  visitTitle: string;
+  moreTitle: string;
+  moreSubtitle: string;
+  pickupLabel: string;
+  deliveryLabel: string;
+  directionsLabel: string;
+  viewLabel: string;
+  faqTitle: string;
+}
+
+/** Locations hub page (/locations). */
+export interface LocationsHubContent {
+  meta: { title: string; description: string };
+  hero: { tagline: string; title: string; content: string; image?: ContentImage };
+  directoryTitle: string;
+  faqs: FaqEntry[];
+  cta: { title: string; subtitle: string };
+}
+
+/** Page copy for one store page. Store facts (address, hours, links) live in `StoreLocation`. */
+export interface LocationPageCopy {
+  slug: string;
+  meta: { title: string; description: string };
+  heroTitle: string;
+  heroContent: string;
+  /** Optional store-specific main button label; falls back to the shared label. */
+  heroPrimaryCtaLabel?: string;
+  heroImage?: ContentImage;
+  aboutHeading: string;
+  /** One entry per paragraph. */
+  aboutParagraphs: string[];
+  faqs: FaqEntry[];
+  cta: { title: string; subtitle: string };
+}
+
+// ─── Menu pages ───────────────────────────────────────────────────────────────
+
+/** One dish row on a menu page. */
+export interface MenuListItem {
+  title: string;
+  description?: string;
+  badge?: string;
+  note?: string;
+  image?: ContentImage;
+}
+
+/** Labels shared by the Menu page and every menu sub-page. */
+export interface MenuSharedContent {
+  orderLabel: string;
+  locationLabel: string;
+  cateringLabel: string;
+  faqTitle: string;
+  readyTitle: string;
+  exploreTitle: string;
+}
+
+/** Name + one-line description on a menu category card (homepage and menu pages). */
+export interface MenuCardCopy {
+  slug: string;
+  label: string;
+  description: string;
+}
+
+export interface MenuSourcingContent {
+  title: string;
+  subtitle: string;
+  ctaLabel: string;
+}
+
+/** Menu landing page (/menu). The dishes come from Menu categories and items. */
+export interface MenuHubContent {
+  meta: { title: string; description: string };
+  hero: { title: string; content: string; image?: ContentImage };
+  fullMenu: { title: string; subtitle: string };
+  sourcing: MenuSourcingContent;
+  cta: { subtitle: string };
+  faqs: FaqEntry[];
+}
+
+/** One menu sub-page (/menu/<slug>). */
+export interface MenuSubpageContent {
+  slug: string;
+  /** Name used in the Studio sidebar and as the page's internal label. */
+  title: string;
+  meta: { title: string; description: string };
+  hero: { title: string; content: string; image?: ContentImage };
+  /** Heading above the dish list. Absent on pages that show a build guide instead. */
+  list?: { title: string; intro?: string };
+  /** When set, replaces the category's dishes (used by Healthy Food). */
+  customItems?: MenuListItem[];
+  sourcing: MenuSourcingContent;
+  explore: { subtitle: string };
+  cta: { subtitle: string };
+  faqs: FaqEntry[];
+  /** "How to build" guide (Design Your Own Salad). */
+  build?: {
+    title: string;
+    subtitle: string;
+    note: string;
+    ctaLabel: string;
+    steps: Array<{ title: string; description: string }>;
+    image?: ContentImage;
+  };
 }

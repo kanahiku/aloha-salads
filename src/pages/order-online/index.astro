@@ -4,7 +4,9 @@ import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import smallLeafMotif from '~/assets/images/small-leaf-motif.webp';
-import { storeLocations } from '~/data/locations';
+import { getStoreLocations } from '~/lib/content/locationContent';
+
+const storeLocations = await getStoreLocations();
 
 const metadata = {
   title: 'Order Online | Aloha Salads',

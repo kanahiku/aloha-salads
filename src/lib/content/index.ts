@@ -59,16 +59,25 @@ function ensureLegalFooterLinks(nav: NavigationContent): NavigationContent {
   };
 }
 
+/** `{year}` in the copyright line becomes the current year, so the line never goes stale. */
+function fillFootNoteYear(nav: NavigationContent): NavigationContent {
+  return {
+    ...nav,
+    footer: { ...nav.footer, footNote: nav.footer.footNote.replaceAll('{year}', String(new Date().getFullYear())) },
+  };
+}
+
+/** Header, footer and announcement bar. Sanity first; the local data in `~/data/navigation` is the safety net. */
 export async function getNavigationContent(): Promise<NavigationContent> {
   try {
     const nav = await getSanityNavigationContent();
     if (nav?.header && nav?.footer) {
-      return hidePagesFromUi(ensureLegalFooterLinks(nav));
+      return fillFootNoteYear(hidePagesFromUi(ensureLegalFooterLinks(nav)));
     }
   } catch (error) {
     console.warn('Sanity navigation unavailable; using local fallback.', error);
   }
-  return hidePagesFromUi(ensureLegalFooterLinks(navigationData));
+  return fillFootNoteYear(hidePagesFromUi(ensureLegalFooterLinks(navigationData)));
 }
 
 export async function getBlogPostSlugs(): Promise<string[]> {
@@ -237,7 +246,8 @@ const REQUESTED_MENU_ITEMS: Array<{
     categoryTitle: 'Signature Salads',
     categoryDescription: 'Fresh bowls built with crisp greens, local ahi, and house-made dressings.',
     title: 'Big Island Beet',
-    description: 'Mixed greens, roasted beets, mangoes, craisins, candied walnuts, goat cheese, balsamic glaze, and passion orange vinaigrette.',
+    description:
+      'Mixed greens, roasted beets, mangoes, craisins, candied walnuts, goat cheese, balsamic glaze, and passion orange vinaigrette.',
     note: 'Not available at Kaneohe',
   },
   {
@@ -252,7 +262,8 @@ const REQUESTED_MENU_ITEMS: Array<{
     categoryTitle: 'Signature Salads',
     categoryDescription: 'Fresh bowls built with crisp greens, local ahi, and house-made dressings.',
     title: 'Poke Salad',
-    description: 'Romaine, carrots, cucumbers, avocado, wonton strips, green onion, crispy onion, spicy ahi, and unagi sauce.',
+    description:
+      'Romaine, carrots, cucumbers, avocado, wonton strips, green onion, crispy onion, spicy ahi, and unagi sauce.',
     badge: 'Coming soon',
   },
   {
@@ -283,7 +294,8 @@ const REQUESTED_MENU_ITEMS: Array<{
     categoryTitle: 'Misc',
     categoryDescription: 'Additional favorites and cafe-style selections.',
     title: 'Dessert Toast',
-    description: 'Toasted sourdough, your choice of Nutella or peanut butter, strawberry, banana, blueberry, and honey.',
+    description:
+      'Toasted sourdough, your choice of Nutella or peanut butter, strawberry, banana, blueberry, and honey.',
   },
   {
     categorySlug: 'misc',
@@ -301,7 +313,11 @@ const REQUESTED_MENU_ITEMS: Array<{
   },
 ];
 
-function upsertRequestedMenuItem(items: MenuItem[], requested: (typeof REQUESTED_MENU_ITEMS)[number], image?: MenuItem['image']) {
+function upsertRequestedMenuItem(
+  items: MenuItem[],
+  requested: (typeof REQUESTED_MENU_ITEMS)[number],
+  image?: MenuItem['image']
+) {
   const requestedTitle = normalizeMenuTitle(requested.title);
   const existingIndex = items.findIndex((item) => normalizeMenuTitle(item.title) === requestedTitle);
   const requestedFields = {

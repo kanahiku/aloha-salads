@@ -6,13 +6,11 @@ import type {
   Testimonial,
   ContentImage,
   HomepageImages,
+  HomepageContent,
   HomepageHeroVideo,
   AboutImages,
   CareersImages,
-  CateringImages,
-  LocationImages,
   IngredientsImages,
-  MenuPagesImages,
   NavigationContent,
   NavLink,
   NavSubLink,
@@ -20,10 +18,11 @@ import type {
   MenuItem,
   PressItem,
 } from './types';
+import { HOMEPAGE_DEFAULTS } from './homepageDefaults';
 
 type FetchedImage = ContentImage & SanityImageFields;
 
-const IMAGE_PROJECTION = (field: string, fallbackAlt: string) => /* groq */ `
+export const IMAGE_PROJECTION = (field: string, fallbackAlt: string) => /* groq */ `
   "${field}": select(defined(${field}.asset) => {
     "src": ${field}.asset->url,
     "alt": coalesce(${field}.alt, "${fallbackAlt}"),
@@ -54,7 +53,7 @@ const COPY_REPLACEMENTS: Array<[string, string]> = [
   ['Site’s', 'Site'],
 ];
 
-function normalizeWebsiteCopy(value: string): string {
+export function normalizeWebsiteCopy(value: string): string {
   let text = value;
   for (const [from, to] of COPY_REPLACEMENTS) {
     text = text.replaceAll(from, to);
@@ -128,6 +127,108 @@ export async function getSanityHomepageImages(): Promise<HomepageImages> {
   };
 }
 
+// ─── Homepage text ────────────────────────────────────────────────────────────
+
+type FetchedHomepageText = {
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  heroTagline?: string | null;
+  heroTitle?: string | null;
+  heroSubtitle?: string | null;
+  heroPrimaryCtaLabel?: string | null;
+  heroSecondaryCtaLabel?: string | null;
+  brandBarItems?: Array<{ text?: string | null; tilt?: boolean | null }> | null;
+  menuEyebrow?: string | null;
+  menuTitle?: string | null;
+  menuSubtitle?: string | null;
+  menuCtaLabel?: string | null;
+  localSourcingEyebrow?: string | null;
+  localSourcingTitle?: string | null;
+  localSourcingBody?: string | null;
+  localSourcingCtaLabel?: string | null;
+  reviewsEyebrow?: string | null;
+  reviewsTitle?: string | null;
+  locationsEyebrow?: string | null;
+  locationsTitle?: string | null;
+  locationsSubtitle?: string | null;
+  locationsCtaLabel?: string | null;
+  locationsViewLabel?: string | null;
+};
+
+const HOMEPAGE_TEXT_QUERY = /* groq */ `
+  *[_type == "homepageContent" && _id == "singleton-homepage"][0] {
+    metaTitle, metaDescription,
+    heroTagline, heroTitle, heroSubtitle, heroPrimaryCtaLabel, heroSecondaryCtaLabel,
+    brandBarItems[]{ text, tilt },
+    menuEyebrow, menuTitle, menuSubtitle, menuCtaLabel,
+    localSourcingEyebrow, localSourcingTitle, localSourcingBody, localSourcingCtaLabel,
+    reviewsEyebrow, reviewsTitle,
+    locationsEyebrow, locationsTitle, locationsSubtitle, locationsCtaLabel, locationsViewLabel
+  }
+`;
+
+/** Editor text → normalized copy; an empty/missing field falls back to the approved default. */
+export function textOr(value: string | null | undefined, fallback: string): string {
+  const trimmed = value?.trim();
+  return trimmed ? normalizeWebsiteCopy(trimmed) : fallback;
+}
+
+/**
+ * All homepage copy from Sanity (Homepage singleton). Any field the editor leaves empty — or the whole
+ * document if Sanity is unreachable — falls back to HOMEPAGE_DEFAULTS so the page never renders blank.
+ */
+export async function getSanityHomepageContent(): Promise<HomepageContent> {
+  const d = HOMEPAGE_DEFAULTS;
+  let doc: FetchedHomepageText | null = null;
+  try {
+    doc = await sanityClient.fetch<FetchedHomepageText | null>(HOMEPAGE_TEXT_QUERY);
+  } catch (error) {
+    console.warn('[homepage] Sanity text fetch failed, using defaults:', (error as Error).message);
+  }
+
+  const brandBar = (doc?.brandBarItems ?? [])
+    .filter((item) => item.text?.trim())
+    .map((item) => ({ text: normalizeWebsiteCopy(item.text!.trim()), ...(item.tilt ? { tilt: true } : {}) }));
+
+  return {
+    meta: {
+      title: textOr(doc?.metaTitle, d.meta.title),
+      description: textOr(doc?.metaDescription, d.meta.description),
+    },
+    hero: {
+      tagline: textOr(doc?.heroTagline, d.hero.tagline),
+      title: textOr(doc?.heroTitle, d.hero.title),
+      subtitle: textOr(doc?.heroSubtitle, d.hero.subtitle),
+      primaryCtaLabel: textOr(doc?.heroPrimaryCtaLabel, d.hero.primaryCtaLabel),
+      secondaryCtaLabel: textOr(doc?.heroSecondaryCtaLabel, d.hero.secondaryCtaLabel),
+    },
+    brandBar: brandBar.length > 0 ? brandBar : d.brandBar,
+    menu: {
+      eyebrow: textOr(doc?.menuEyebrow, d.menu.eyebrow),
+      title: textOr(doc?.menuTitle, d.menu.title),
+      subtitle: textOr(doc?.menuSubtitle, d.menu.subtitle),
+      ctaLabel: textOr(doc?.menuCtaLabel, d.menu.ctaLabel),
+    },
+    localSourcing: {
+      eyebrow: textOr(doc?.localSourcingEyebrow, d.localSourcing.eyebrow),
+      title: textOr(doc?.localSourcingTitle, d.localSourcing.title),
+      body: textOr(doc?.localSourcingBody, d.localSourcing.body),
+      ctaLabel: textOr(doc?.localSourcingCtaLabel, d.localSourcing.ctaLabel),
+    },
+    reviews: {
+      eyebrow: textOr(doc?.reviewsEyebrow, d.reviews.eyebrow),
+      title: textOr(doc?.reviewsTitle, d.reviews.title),
+    },
+    locations: {
+      eyebrow: textOr(doc?.locationsEyebrow, d.locations.eyebrow),
+      title: textOr(doc?.locationsTitle, d.locations.title),
+      subtitle: textOr(doc?.locationsSubtitle, d.locations.subtitle),
+      ctaLabel: textOr(doc?.locationsCtaLabel, d.locations.ctaLabel),
+      viewLabel: textOr(doc?.locationsViewLabel, d.locations.viewLabel),
+    },
+  };
+}
+
 // ─── About ────────────────────────────────────────────────────────────────────
 
 type FetchedAboutImages = {
@@ -171,90 +272,6 @@ export async function getSanityCareersImages(): Promise<CareersImages> {
   return { hero: resolveContentImage(doc?.heroImage) };
 }
 
-// ─── Catering ─────────────────────────────────────────────────────────────────
-
-type FetchedCateringImages = {
-  menuImage?: FetchedImage | null;
-  corporateImage?: FetchedImage | null;
-  officeLunchImage?: FetchedImage | null;
-  meetingsImage?: FetchedImage | null;
-  eventsImage?: FetchedImage | null;
-  largeGroupsImage?: FetchedImage | null;
-  trayImages?: Array<{ label?: string; image?: FetchedImage | null }> | null;
-};
-
-const CATERING_IMAGES_QUERY = /* groq */ `
-  *[_type == "cateringContent" && _id == "singleton-catering"][0] {
-    ${IMAGE_PROJECTION('menuImage', 'Aloha Salads catering trays')},
-    ${IMAGE_PROJECTION('corporateImage', 'Corporate catering from Aloha Salads')},
-    ${IMAGE_PROJECTION('officeLunchImage', 'Office lunch catering from Aloha Salads')},
-    ${IMAGE_PROJECTION('meetingsImage', 'Meeting catering from Aloha Salads')},
-    ${IMAGE_PROJECTION('eventsImage', 'Event catering from Aloha Salads')},
-    ${IMAGE_PROJECTION('largeGroupsImage', 'Large group catering from Aloha Salads')},
-    "trayImages": trayImages[defined(image.asset)] {
-      label,
-      ${IMAGE_PROJECTION('image', 'Aloha Salads catering tray')}
-    }
-  }
-`;
-
-export async function getSanityCateringImages(): Promise<CateringImages> {
-  const doc = await sanityClient.fetch<FetchedCateringImages | null>(CATERING_IMAGES_QUERY);
-
-  return {
-    menu: resolveContentImage(doc?.menuImage),
-    corporate: resolveContentImage(doc?.corporateImage),
-    officeLunch: resolveContentImage(doc?.officeLunchImage),
-    meetings: resolveContentImage(doc?.meetingsImage),
-    events: resolveContentImage(doc?.eventsImage),
-    largeGroups: resolveContentImage(doc?.largeGroupsImage),
-    trays: Object.fromEntries(
-      (doc?.trayImages ?? []).flatMap((tray) => {
-        const image = resolveContentImage(tray.image);
-        return tray.label && image ? [[tray.label, image] as const] : [];
-      })
-    ),
-  };
-}
-
-// ─── Locations ────────────────────────────────────────────────────────────────
-
-type FetchedLocationImages = {
-  directoryImage?: FetchedImage | null;
-  kailuaImage?: FetchedImage | null;
-  kahalaImage?: FetchedImage | null;
-  kaneoheImage?: FetchedImage | null;
-  kapoleiImage?: FetchedImage | null;
-  mililaniImage?: FetchedImage | null;
-  pearlridgeImage?: FetchedImage | null;
-};
-
-const LOCATION_IMAGES_QUERY = /* groq */ `
-  *[_type == "locationsContent" && _id == "singleton-locations"][0] {
-    ${IMAGE_PROJECTION('directoryImage', 'Aloha Salads locations on Oahu')},
-    ${IMAGE_PROJECTION('kailuaImage', 'Aloha Salads Kailua location')},
-    ${IMAGE_PROJECTION('kahalaImage', 'Aloha Salads Kahala location')},
-    ${IMAGE_PROJECTION('kaneoheImage', 'Aloha Salads Kaneohe location')},
-    ${IMAGE_PROJECTION('kapoleiImage', 'Aloha Salads Kapolei location')},
-    ${IMAGE_PROJECTION('mililaniImage', 'Aloha Salads Mililani location')},
-    ${IMAGE_PROJECTION('pearlridgeImage', 'Aloha Salads Pearlridge location')}
-  }
-`;
-
-export async function getSanityLocationImages(): Promise<LocationImages> {
-  const doc = await sanityClient.fetch<FetchedLocationImages | null>(LOCATION_IMAGES_QUERY);
-
-  return {
-    directory: resolveContentImage(doc?.directoryImage),
-    kailua: resolveContentImage(doc?.kailuaImage),
-    kahala: resolveContentImage(doc?.kahalaImage),
-    kaneohe: resolveContentImage(doc?.kaneoheImage),
-    kapolei: resolveContentImage(doc?.kapoleiImage),
-    mililani: resolveContentImage(doc?.mililaniImage),
-    pearlridge: resolveContentImage(doc?.pearlridgeImage),
-  };
-}
-
 // ─── Ingredients ──────────────────────────────────────────────────────────────
 
 type FetchedIngredientsImages = {
@@ -278,77 +295,6 @@ export async function getSanityIngredientsImages(): Promise<IngredientsImages> {
   };
 }
 
-// ─── Menu Pages ───────────────────────────────────────────────────────────────
-
-type FetchedMenuPagesImages = {
-  menuHubHeroImage?: FetchedImage | null;
-  saladsHeroImage?: FetchedImage | null;
-  saladsIngredientsImage?: FetchedImage | null;
-  wrapsHeroImage?: FetchedImage | null;
-  wrapsIngredientsImage?: FetchedImage | null;
-  soupsHeroImage?: FetchedImage | null;
-  soupsIngredientsImage?: FetchedImage | null;
-  drinksHeroImage?: FetchedImage | null;
-  drinksIngredientsImage?: FetchedImage | null;
-  veganIngredientsImage?: FetchedImage | null;
-  vegetarianHeroImage?: FetchedImage | null;
-  vegetarianIngredientsImage?: FetchedImage | null;
-  healthyOptionsHeroImage?: FetchedImage | null;
-  healthyOptionsIngredientsImage?: FetchedImage | null;
-  kidsIngredientsImage?: FetchedImage | null;
-  designYourOwnHeroImage?: FetchedImage | null;
-  designYourOwnBuildImage?: FetchedImage | null;
-  designYourOwnQualityImage?: FetchedImage | null;
-};
-
-const MENU_PAGES_IMAGES_QUERY = /* groq */ `
-  *[_type == "menuPagesContent" && _id == "singleton-menu-pages"][0] {
-    ${IMAGE_PROJECTION('menuHubHeroImage', 'Fresh salad bowls from Aloha Salads')},
-    ${IMAGE_PROJECTION('saladsHeroImage', 'Signature salads at Aloha Salads')},
-    ${IMAGE_PROJECTION('saladsIngredientsImage', 'Fresh ingredients for Aloha Salads salads')},
-    ${IMAGE_PROJECTION('wrapsHeroImage', 'Wraps and subs at Aloha Salads')},
-    ${IMAGE_PROJECTION('wrapsIngredientsImage', 'Fresh ingredients for Aloha Salads wraps')},
-    ${IMAGE_PROJECTION('soupsHeroImage', 'Tomato bisque soup at Aloha Salads')},
-    ${IMAGE_PROJECTION('soupsIngredientsImage', 'Fresh ingredients for Aloha Salads soups')},
-    ${IMAGE_PROJECTION('drinksHeroImage', 'Drinks at Aloha Salads')},
-    ${IMAGE_PROJECTION('drinksIngredientsImage', 'Fresh ingredients for Aloha Salads drinks')},
-    ${IMAGE_PROJECTION('veganIngredientsImage', 'Fresh plant-based ingredients at Aloha Salads')},
-    ${IMAGE_PROJECTION('vegetarianHeroImage', 'Vegetarian options at Aloha Salads')},
-    ${IMAGE_PROJECTION('vegetarianIngredientsImage', 'Fresh vegetarian ingredients at Aloha Salads')},
-    ${IMAGE_PROJECTION('healthyOptionsHeroImage', 'Healthy menu options at Aloha Salads')},
-    ${IMAGE_PROJECTION('healthyOptionsIngredientsImage', 'Fresh healthy ingredients at Aloha Salads')},
-    ${IMAGE_PROJECTION('kidsIngredientsImage', 'Fresh keiki meal ingredients at Aloha Salads')},
-    ${IMAGE_PROJECTION('designYourOwnHeroImage', 'Custom salad bowl at Aloha Salads')},
-    ${IMAGE_PROJECTION('designYourOwnBuildImage', 'How to build your own salad at Aloha Salads')},
-    ${IMAGE_PROJECTION('designYourOwnQualityImage', 'Quality ingredients for custom salads at Aloha Salads')}
-  }
-`;
-
-export async function getSanityMenuPagesImages(): Promise<MenuPagesImages> {
-  const doc = await sanityClient.fetch<FetchedMenuPagesImages | null>(MENU_PAGES_IMAGES_QUERY);
-
-  return {
-    menuHubHero: resolveContentImage(doc?.menuHubHeroImage),
-    saladsHero: resolveContentImage(doc?.saladsHeroImage),
-    saladsIngredients: resolveContentImage(doc?.saladsIngredientsImage),
-    wrapsHero: resolveContentImage(doc?.wrapsHeroImage),
-    wrapsIngredients: resolveContentImage(doc?.wrapsIngredientsImage),
-    soupsHero: resolveContentImage(doc?.soupsHeroImage),
-    soupsIngredients: resolveContentImage(doc?.soupsIngredientsImage),
-    drinksHero: resolveContentImage(doc?.drinksHeroImage),
-    drinksIngredients: resolveContentImage(doc?.drinksIngredientsImage),
-    veganIngredients: resolveContentImage(doc?.veganIngredientsImage),
-    vegetarianHero: resolveContentImage(doc?.vegetarianHeroImage),
-    vegetarianIngredients: resolveContentImage(doc?.vegetarianIngredientsImage),
-    healthyOptionsHero: resolveContentImage(doc?.healthyOptionsHeroImage),
-    healthyOptionsIngredients: resolveContentImage(doc?.healthyOptionsIngredientsImage),
-    kidsIngredients: resolveContentImage(doc?.kidsIngredientsImage),
-    designYourOwnHero: resolveContentImage(doc?.designYourOwnHeroImage),
-    designYourOwnBuild: resolveContentImage(doc?.designYourOwnBuildImage),
-    designYourOwnQuality: resolveContentImage(doc?.designYourOwnQualityImage),
-  };
-}
-
 type FetchedNavSubLink = {
   text?: string;
   href?: string;
@@ -366,7 +312,13 @@ type FetchedNavLink = FetchedNavSubLink & {
   columns?: FetchedNavColumn[] | null;
 };
 
-type FetchedNavigationContent = Omit<NavigationContent, 'header' | 'footer'> & {
+type FetchedNavigationContent = Omit<NavigationContent, 'header' | 'footer' | 'announcement'> & {
+  announcement?: {
+    enabled?: boolean | null;
+    text?: string | null;
+    linkLabel?: string | null;
+    linkHref?: string | null;
+  } | null;
   header?: {
     links?: FetchedNavLink[] | null;
     actions?: NavigationContent['header']['actions'];
@@ -394,6 +346,9 @@ const NAV_SUB_LINK_PROJECTION = /* groq */ `
 
 const NAVIGATION_QUERY = /* groq */ `
   {
+    "announcement": *[_type == "announcementBar" && _id == "singleton-announcement"][0] {
+      enabled, text, linkLabel, linkHref
+    },
     "header": *[_type == "siteNavigation" && _id == "singleton-navigation"][0] {
       "links": links[] {
         ${NAV_SUB_LINK_PROJECTION},
@@ -476,7 +431,19 @@ export async function getSanityNavigationContent(): Promise<NavigationContent> {
     throw new Error('Sanity navigation/footer singletons are not published yet.');
   }
 
+  const announcement = nav.announcement
+    ? {
+        enabled: nav.announcement.enabled !== false && Boolean(nav.announcement.text?.trim()),
+        text: normalizeWebsiteCopy((nav.announcement.text ?? '').trim()),
+        ...(nav.announcement.linkLabel?.trim()
+          ? { linkLabel: normalizeWebsiteCopy(nav.announcement.linkLabel.trim()) }
+          : {}),
+        ...(nav.announcement.linkHref?.trim() ? { linkHref: nav.announcement.linkHref.trim() } : {}),
+      }
+    : undefined;
+
   return {
+    ...(announcement ? { announcement } : {}),
     header: {
       links: (nav.header?.links ?? [])
         .map(normalizeNavLink)

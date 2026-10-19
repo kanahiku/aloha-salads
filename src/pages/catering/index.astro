@@ -7,60 +7,26 @@ import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import TrayCard from '~/components/ui/TrayCard.astro';
-import { CATERING_CTA_HREF, LOCATION_CTA_HREF } from '~/config/cta';
+import { CATERING_CTA_HREF } from '~/config/cta';
 import peach from '~/assets/images/peach-motif.webp';
 import bigLeaf from '~/assets/images/big-leaf.webp';
 import smallLeafMotif from '~/assets/images/small-leaf-motif.webp';
-import { getSanityCateringImages } from '~/lib/content/sanity';
+import { getCateringContent } from '~/lib/content/pageContent';
+import { textToHtml } from '~/lib/content/richText';
 
-const cateringImages = await getSanityCateringImages();
+const { main: content, subpages } = await getCateringContent();
+const { shared } = content;
 
 const metadata = {
-  title: 'Catering Menu & Party Trays | Aloha Salads Oahu',
-  description:
-    'Order fresh catering trays for your next event. View our full catering menu with pricing, including our Sandwich Platter and Ono Island Ahi Tray.',
+  title: content.meta.title,
+  description: content.meta.description,
   ignoreTitleTemplate: true,
 };
 
-const menuItems = [
-  { label: 'Sandwich Platter', price: '$85' },
-  { label: 'Ono Island Ahi Tray', price: '$60' },
-  { label: 'Kamuela Cobb Tray', price: '$55' },
-  { label: 'Mandarin Ginger Tray', price: '$52' },
-  { label: 'Aloha Caesar with Chicken Tray', price: '$45' },
-  { label: 'Aloha Passion Tray', price: '$42' },
-  { label: 'Aloha Mediterranean Tray', price: '$42' },
-  { label: 'The Paniolo Tray', price: '$42' },
-  { label: 'Tray of Pita Bread', price: '$24' },
-];
-
-const occasions = [
-  {
-    label: 'Corporate Catering',
-    href: '/catering/corporate',
-    description: 'Fresh trays for client meetings, team events, and office gatherings.',
-  },
-  {
-    label: 'Office Lunch Catering',
-    href: '/catering/office-lunches',
-    description: 'Healthy lunch options delivered to your workplace.',
-  },
-  {
-    label: 'Meeting Catering',
-    href: '/catering/meetings',
-    description: 'Nourish your team with wholesome food during any size meeting.',
-  },
-  {
-    label: 'Event Catering',
-    href: '/catering/events',
-    description: 'Custom salad and wrap trays built for special events.',
-  },
-  {
-    label: 'Large Group Catering',
-    href: '/catering/large-groups',
-    description: "Scaled-up trays and platters for big gatherings across Oahu.",
-  },
-];
+// Occasion cards come from the sub-page documents (Catering → each page → "Catering page card").
+const occasions = subpages
+  .filter((sub) => sub.showOnCateringPage)
+  .map((sub) => ({ label: sub.title, href: `/catering/${sub.slug}`, description: sub.cardDescription }));
 ---
 
 <PageLayout metadata={metadata}>
@@ -68,11 +34,11 @@ const occasions = [
   <Hero2
     variant="split-dark"
     overlapHeader={false}
-    tagline="Order Now"
-    title="Catering Menu"
-    content="Provide fresh meals for your next gathering with our catering trays. We prepare scaled-up versions of our signature salads and wraps for pickup across our six Oahu locations."
-    image={cateringImages.menu}
-    actions={[{ variant: 'primary', text: 'Order Catering Online', href: CATERING_CTA_HREF }]}
+    tagline={textToHtml(content.hero.tagline)}
+    title={textToHtml(content.hero.title)}
+    content={textToHtml(content.hero.content)}
+    image={content.hero.image}
+    actions={[{ variant: 'primary', text: shared.orderLabel, href: CATERING_CTA_HREF }]}
   />
 
   {/* ── 2. Pricing section ───────────────────────────────── */}
@@ -102,32 +68,27 @@ const occasions = [
         {/* Heading + ordering note */}
         <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-24">
           <div class="flex max-w-2xl flex-1 flex-col gap-4">
-            <Heading variant="h2">Catering Menu and Pricing</Heading>
+            <Heading variant="h2">{content.pricing.title}</Heading>
             <Text variant="body-lg" color="default">
-              Our trays are built using the same high-quality components as our standard menu.
+              {content.pricing.intro}
             </Text>
           </div>
           <div class="flex max-w-xl flex-1 flex-col gap-6">
             <div class="flex flex-col gap-3 border-l-4 border-accent/30 pl-6">
-              <Heading variant="h4">Ordering Details</Heading>
+              <Heading variant="h4">{content.pricing.orderingTitle}</Heading>
               <Text color="default">
-                Please contact your nearest location to confirm serving sizes per tray, minimum order requirements,
-                and necessary lead times for large groups. Delivery availability and radius vary by restaurant.
+                {content.pricing.orderingText}
               </Text>
             </div>
             <div>
-              <Button variant="primary" text="Order Catering Online" href={CATERING_CTA_HREF} hideNote={true} />
+              <Button variant="primary" text={shared.orderLabel} href={CATERING_CTA_HREF} hideNote={true} />
             </div>
           </div>
         </div>
 
         {/* Tray cards */}
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {
-            menuItems.map((item) => (
-              <TrayCard label={item.label} price={item.price} image={cateringImages.trays[item.label]} />
-            ))
-          }
+          {content.trays.map((tray) => <TrayCard label={tray.name} price={tray.price} image={tray.image} />)}
         </div>
       </div>
     </div>
@@ -144,11 +105,10 @@ const occasions = [
     <div class="relative z-[1] mx-auto w-full max-w-container px-5 py-16 sm:px-8 md:px-16 md:py-[120px]">
       <div class="flex flex-col gap-10 md:gap-16">
         <div class="flex flex-col gap-4">
-          <Heading variant="eyebrow">By occasion</Heading>
-          <Heading variant="h2">Catering for Every Occasion</Heading>
+          <Heading variant="eyebrow">{content.occasions.eyebrow}</Heading>
+          <Heading variant="h2">{content.occasions.title}</Heading>
           <Text variant="body-lg" color="default" class="max-w-2xl">
-            We accommodate groups of all sizes across different event types. Select your event category below to learn
-            more:
+            {content.occasions.intro}
           </Text>
         </div>
 
@@ -168,7 +128,9 @@ const occasions = [
                   </Text>
                 </div>
                 <div class="flex items-center gap-2 text-page/90">
-                  <span class="font-heading text-[13px] uppercase tracking-widest leading-none">Learn more</span>
+                  <span class="font-heading text-[13px] uppercase tracking-widest leading-none">
+                    {content.occasions.linkLabel}
+                  </span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 16 16"
@@ -190,41 +152,16 @@ const occasions = [
   </section>
 
   {/* ── 4. Ready to order CTA ────────────────────────────── */}
-  <CTABanner
-    title="Ready to Order?"
-    subtitle="Order online for pickup at any of our six Oahu stores. For serving sizes, minimums or lead times, call the store you want to collect from."
-    ctaText="Order Catering Online"
-    ctaHref={CATERING_CTA_HREF}
-    secondaryCtaText="Find a Location"
-    secondaryCtaHref={LOCATION_CTA_HREF}
-  />
+  <CTABanner title={shared.readyTitle} subtitle={content.cta.subtitle} />
 
   {/* ── 5. FAQs ──────────────────────────────────────────── */}
-  <FAQs
-    isDark={true}
-    title="Frequently Asked Questions"
-    items={[
-      {
-        title: 'Do you offer vegetarian catering options?',
-        description: 'Yes. We prepare meatless options including the Aloha Passion Tray and Aloha Mediterranean Tray.',
-      },
-      {
-        title: 'Does catering include serving utensils?',
-        description: 'Ask the store when you order and they will let you know what is included.',
-      },
-      {
-        title: 'How do I place a catering order?',
-        description:
-          'You can place your catering order directly through our online ordering system or by calling your nearest location.',
-      },
-      {
-        title: 'Can I customize the catering trays?',
-        description: 'Trays are built to set recipes. Call the store to talk through anything specific.',
-      },
-      {
-        title: 'Where do I pick up my catering order?',
-        description: "You can pick up your catering order at any of our six neighborhood restaurants across Oahu.",
-      },
-    ]}
-  />
+  {
+    content.faqs.length > 0 && (
+      <FAQs
+        isDark={true}
+        title={shared.faqTitle}
+        items={content.faqs.map((faq) => ({ title: faq.question, description: textToHtml(faq.answer) }))}
+      />
+    )
+  }
 </PageLayout>

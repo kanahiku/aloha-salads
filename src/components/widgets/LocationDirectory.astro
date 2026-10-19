@@ -9,7 +9,7 @@
  */
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
-import { storeLocations } from '~/data/locations';
+import { storeLocations, type StoreLocation } from '~/data/locations';
 import bigLeaf from '~/assets/images/big-leaf.webp';
 import peach from '~/assets/images/peach-motif.webp';
 
@@ -21,6 +21,9 @@ export interface Props {
   excludeHrefs?: string[];
   motifs?: 'both' | 'peach' | 'leaf' | 'none';
   id?: string;
+  /** Stores to list (from Sanity). Defaults to the static store data. */
+  stores?: StoreLocation[];
+  viewLabel?: string;
 }
 
 const {
@@ -31,10 +34,12 @@ const {
   excludeHrefs = [],
   motifs = 'both',
   id,
+  stores = storeLocations,
+  viewLabel = 'View Location',
 } = Astro.props;
 
 const hidden = new Set([excludeHref, ...excludeHrefs].filter(Boolean));
-const locations = storeLocations.filter((store) => !hidden.has(store.href));
+const locations = stores.filter((store) => !hidden.has(store.href));
 const showPeach = motifs === 'both' || motifs === 'peach';
 const showLeaf = motifs === 'both' || motifs === 'leaf';
 ---
@@ -137,7 +142,7 @@ const showLeaf = motifs === 'both' || motifs === 'leaf';
                   fill="currentColor"
                 />
               </svg>
-              <span class="font-heading text-button leading-none">View Location</span>
+              <span class="font-heading text-button leading-none">{viewLabel}</span>
             </a>
           </article>
         ))

@@ -10,18 +10,26 @@ import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 import { PRIMARY_CTA_HREF, CATERING_CTA_HREF } from '~/config/cta';
-import { getSanityHomepageImages } from '~/lib/content/sanity';
+import { escapeHtml, textToHtml } from '~/lib/content/richText';
+import { getSanityHomepageImages, getSanityHomepageContent } from '~/lib/content/sanity';
+import { getStoreLocations } from '~/lib/content/locationContent';
 
-const homepageImages = await getSanityHomepageImages();
+const [homepageImages, content, stores] = await Promise.all([
+  getSanityHomepageImages(),
+  getSanityHomepageContent(),
+  getStoreLocations(),
+]);
+
+// Copy comes from Sanity as plain text; Hero2 renders title/subtitle as HTML, so escape it first.
+const heroTitleHtml = textToHtml(content.hero.title);
 // Hero background is chosen in Sanity (Homepage → "Hero background"). Image OR video, never both;
 // `heroVideo` is only set when video is selected and its file + poster are uploaded, otherwise
 // the hero falls back to the photo.
 const heroVideo = homepageImages.heroMedia === 'video' ? homepageImages.heroVideo : undefined;
 
 const metadata = {
-  title: 'Aloha Salads | Fresh Salads & Local Ahi on Oahu',
-  description:
-    'Founded in Kailua in 2006, Aloha Salads serves fresh island-grown produce and never-frozen local ahi across six Oahu locations. Order online for pickup.',
+  title: content.meta.title,
+  description: content.meta.description,
   ignoreTitleTemplate: true,
 };
 ---
@@ -32,25 +40,25 @@ const metadata = {
     id="home-hero"
     variant="overlay"
     overlapHeader={false}
-    tagline="Kailua-born since 2006 · Six spots on Oahu"
-    title="Aloha Salads: Fresh Food<br/>Crafted Daily on Oahu."
-    subtitle="Founded in Kailua in May 2006, Aloha Salads provides fresh, locally grown food tailored to active island lifestyles. Voted First Place Hawaiis Best 2024 in the Peoples Choice Awards by the Star Advertiser, we operate six neighborhood restaurants across Oahu."
+    tagline={escapeHtml(content.hero.tagline)}
+    title={heroTitleHtml}
+    subtitle={escapeHtml(content.hero.subtitle)}
     {...heroVideo ? { video: heroVideo } : { image: homepageImages.hero }}
     actions={[
-      { variant: 'primary', text: 'Order Online', href: PRIMARY_CTA_HREF },
-      { variant: 'ghost', text: 'Order Catering', href: CATERING_CTA_HREF },
+      { variant: 'primary', text: content.hero.primaryCtaLabel, href: PRIMARY_CTA_HREF },
+      { variant: 'ghost', text: content.hero.secondaryCtaLabel, href: CATERING_CTA_HREF },
     ]}
   />
 
   {/* ── 2. Brand bar ─────────────────────────────────────── */}
-  <BrandBar />
+  <BrandBar items={content.brandBar} />
 
   {/* ── 3. Menu categories ───────────────────────────────── */}
   <MenuCategories
-    eyebrow="Order Now"
-    title="Explore Our Full Menu"
-    subtitle="We prepare fresh meals daily across our six Oahu locations. Browse our core categories below to find your meal or order ahead for fast pickup."
-    ctaText="View Full Menu"
+    eyebrow={content.menu.eyebrow}
+    title={content.menu.title}
+    subtitle={content.menu.subtitle}
+    ctaText={content.menu.ctaLabel}
     ctaHref="/menu"
     maxRows={2}
   />
@@ -64,15 +72,15 @@ const metadata = {
         {/* Left — text + CTA */}
         <div class="flex min-w-0 flex-1 flex-col items-start gap-6">
           <div class="flex w-full flex-col gap-6">
-            <Heading variant="eyebrow" color="inherit" class="text-accent opacity-80"> Local sourcing </Heading>
-            <Heading variant="h2">Our Local Sourcing</Heading>
+            <Heading variant="eyebrow" color="inherit" class="text-accent opacity-80"
+              >{content.localSourcing.eyebrow}</Heading
+            >
+            <Heading variant="h2">{content.localSourcing.title}</Heading>
             <Text variant="body-lg" color="default">
-              We partner with Hawaii growers and suppliers to bring quality ingredients into our kitchens. We feature
-              vine-ripe tomatoes from Hauula and exclusively use never-frozen local ahi sourced through a Honolulu
-              seafood supplier with vessel-level catch traceability.
+              {content.localSourcing.body}
             </Text>
           </div>
-          <Button variant="primary" text="Our Ingredients" href="/ingredients" hideNote={true} />
+          <Button variant="primary" text={content.localSourcing.ctaLabel} href="/ingredients" hideNote={true} />
         </div>
 
         {/* Right — food photo placeholder */}
@@ -85,16 +93,18 @@ const metadata = {
   </section>
 
   {/* ── 5. Testimonials — fetched from Sanity ────────────── */}
-  <Testimonials id="reviews" heading="What Our Customers Say" />
+  <Testimonials id="reviews" eyebrow={content.reviews.eyebrow} heading={content.reviews.title} />
 
   {/* ── 6. Locations ─────────────────────────────────────── */}
   <Locations
     id="locations"
-    eyebrow="Visit Now"
-    title="Visit a Store Near You"
-    subtitle="Stop by any of our six Oahu locations in Kailua, Kahala, Kaneohe, Kapolei, Mililani, or Pearlridge."
-    ctaText="View All Locations"
+    eyebrow={content.locations.eyebrow}
+    title={content.locations.title}
+    subtitle={content.locations.subtitle}
+    ctaText={content.locations.ctaLabel}
     ctaHref="/locations"
+    viewLabel={content.locations.viewLabel}
+    locations={stores.slice(0, 4)}
     image={homepageImages.locations}
   />
 

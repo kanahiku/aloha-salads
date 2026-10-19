@@ -18,6 +18,7 @@ import Image from '~/components/common/Image.astro';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 import { CATERING_CTA_HREF, CATERING_CTA_LABEL } from '~/config/cta';
 import { getMenuCategories, getMenuItemImage } from '~/lib/content';
+import { getMenuCardCopy } from '~/lib/content/menuContent';
 import type { ContentImage } from '~/lib/content/types';
 
 import bigLeaf from '~/assets/images/big-leaf.webp';
@@ -52,94 +53,73 @@ const {
 } = Astro.props;
 
 interface MenuCategory {
-  label: string;
   href: string;
-  description: string;
   colSpan: string;
   row: 1 | 2 | 3;
   img?: ContentImage | null;
 }
 
+// Layout and links are fixed here; names and descriptions come from Sanity (Menu → Menu page → Category cards).
 const CATEGORIES: MenuCategory[] = [
   // ── Row 1 ────────────────────────────────────────────────────────────
   {
-    label: 'Salads',
     href: '/menu/salads',
-    description: 'Signature bowls featuring crisp greens, local ahi, and house-made dressings.',
     colSpan: 'md:col-span-6',
     row: 1,
     img: null,
   },
   {
-    label: 'Design Your Own Salad',
     href: '/menu/design-your-own-salad',
-    description: 'Build a custom bowl with your choice of greens, toppings, and dressings.',
     colSpan: 'md:col-span-6',
     row: 1,
     img: null,
   },
   // ── Row 2 ────────────────────────────────────────────────────────────
   {
-    label: 'Wraps & Subs',
     href: '/menu/wraps-subs',
-    description: 'Hearty options wrapped in fresh tortillas or served on artisan bread.',
     colSpan: 'md:col-span-4',
     row: 2,
     img: null,
   },
   {
-    label: 'Soups',
     href: '/menu/soups',
-    description: 'Comforting warm seasonal selections.',
     colSpan: 'md:col-span-4',
     row: 2,
     img: null,
   },
   {
-    label: 'Drinks',
     href: '/menu/drinks',
-    description: 'Chilled Big Island mamaki mint tea and local beverages.',
     colSpan: 'md:col-span-4',
     row: 2,
     img: null,
   },
   // ── Row 3 ────────────────────────────────────────────────────────────
   {
-    label: 'Keiki / Kids Menu',
     href: '/menu/kids',
-    description: 'Wholesome options sized for children.',
     colSpan: 'md:col-span-3',
     row: 3,
     img: null,
   },
   {
-    label: 'Vegan Options',
     href: '/menu/vegan',
-    description: 'Dedicated plant-based choices and meatless meal selections.',
     colSpan: 'md:col-span-3',
     row: 3,
     img: null,
   },
   {
-    label: 'Vegetarian Options',
     href: '/menu/vegetarian',
-    description: 'Dedicated meatless meal selections for vegetarians.',
     colSpan: 'md:col-span-3',
     row: 3,
     img: null,
   },
   {
-    label: 'Healthy Food',
     href: '/menu/healthy-options',
-    description: 'Wholesome menu choices for an active island lifestyle.',
     colSpan: 'md:col-span-3',
     row: 3,
     img: null,
   },
   {
-    label: 'Misc',
     href: '/menu/misc',
-    description: 'Additional favorites and cafe-style selections.',
     colSpan: 'md:col-span-3',
     row: 3,
     img: null,
@@ -149,6 +129,7 @@ const CATEGORIES: MenuCategory[] = [
 const excludedCategoryHrefs = new Set([excludeHref, ...excludeHrefs].filter(Boolean));
 const isGrid = excludedCategoryHrefs.size > 0;
 
+const cardCopy = await getMenuCardCopy();
 const cmsCategories = await getMenuCategories();
 const designYourOwnImage = await getMenuItemImage('Design Your Own Salad');
 const cmsCategoryByHref = new Map(cmsCategories.map((category) => [category.href, category]));
@@ -160,9 +141,12 @@ const categories = CATEGORIES.map((cat) => {
       ? designYourOwnImage
       : cmsCategory?.items.find((item) => item.image?.src)?.image;
 
+  const copy = cardCopy.get(cat.href.replace('/menu/', ''));
+
   return {
     ...cat,
-    description: cmsCategory?.description || cat.description,
+    label: copy?.label ?? cat.href,
+    description: copy?.description ?? '',
     img: image ?? cat.img,
   };
 });

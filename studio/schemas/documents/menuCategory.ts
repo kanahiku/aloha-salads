@@ -24,6 +24,8 @@ export const menuCategory = defineType({
     defineField({
       name: 'description',
       title: 'Description',
+      description:
+        'Shown on the category page. The cards that link to categories use Menu → Menu page → Category cards (this text is their fallback).',
       type: 'text',
       rows: 3,
     }),

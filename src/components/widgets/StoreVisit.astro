@@ -15,9 +15,19 @@ export interface Props {
   store: StoreLocation;
   title?: string;
   id?: string;
+  pickupLabel?: string;
+  deliveryLabel?: string;
+  directionsLabel?: string;
 }
 
-const { store, title = 'Location, Hours, and Contact', id } = Astro.props;
+const {
+  store,
+  title = 'Location, Hours, and Contact',
+  id,
+  pickupLabel = 'Order Pickup',
+  deliveryLabel = 'Order Delivery',
+  directionsLabel = 'Get Directions',
+} = Astro.props;
 const hoursLines = store.hours
   .split(' · ')
   .map((line) => line.trim())
@@ -89,25 +99,27 @@ const mapSrc = storeMapEmbedSrc(store);
         <div class="mt-auto flex flex-col gap-3 sm:flex-row">
           <Button
             variant="primary"
-            text="Order Pickup"
+            text={pickupLabel}
             href={store.orderPickupHref ?? PRIMARY_CTA_HREF}
             target="_blank"
             hideNote={true}
           />
-          {store.orderDeliveryHref && (
-            <Button
-              variant="ghost"
-              tone="dark"
-              text="Order Delivery"
-              href={store.orderDeliveryHref}
-              target="_blank"
-              hideNote={true}
-            />
-          )}
+          {
+            store.orderDeliveryHref && (
+              <Button
+                variant="ghost"
+                tone="dark"
+                text={deliveryLabel}
+                href={store.orderDeliveryHref}
+                target="_blank"
+                hideNote={true}
+              />
+            )
+          }
           <Button
             variant="ghost"
             tone="dark"
-            text="Get Directions"
+            text={directionsLabel}
             href={directionsHref}
             target="_blank"
             hideNote={true}

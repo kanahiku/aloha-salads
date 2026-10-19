@@ -19,6 +19,8 @@ export interface Props {
   links?: NavLink[];
   actions?: Array<CallToAction>;
   phone?: { text: string; href: string };
+  /** Social icons (from the footer's social links in Sanity). Defaults to the config list. */
+  socialLinks?: Array<{ href: string; ariaLabel: string; icon: string }>;
   isSticky?: boolean;
   isDark?: boolean;
   isFullWidth?: boolean;
@@ -34,6 +36,7 @@ const {
   links = [],
   actions = [],
   phone,
+  socialLinks = SOCIAL.nav as unknown as Array<{ href: string; ariaLabel: string; icon: string }>,
   isSticky = false,
   isFullWidth = false,
   showToggleTheme = false,
@@ -50,7 +53,6 @@ const phoneAction = phone
 const phoneLabel = phone ? `Call ${phone.text}` : '';
 const phoneBoxClass =
   'inline-flex items-center justify-center shrink-0 size-9 rounded-md bg-accent text-black border-2 border-accent hover:bg-accent-hover hover:border-accent-hover transition duration-200';
-const socialLinks = SOCIAL.nav;
 const socialIconClass =
   'inline-flex size-9 items-center justify-center text-heading/75 transition-colors hover:text-accent';
 

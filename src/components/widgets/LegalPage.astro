@@ -1,0 +1,65 @@
+---
+/**
+ * LegalPage — whole body of a legal page (Accessibility, Privacy Policy, Terms): page hero with the
+ * headline + a line of text, titled sections of paragraphs and bullet lists, and the closing CTA banner.
+ * One widget for every legal route; copy comes from the legal page's Sanity document.
+ */
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import SectionBg from '~/components/ui/SectionBg.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import CTABanner from '~/components/widgets/CTABanner.astro';
+import type { LegalPageContent } from '~/lib/content/types';
+
+export interface Props {
+  page: LegalPageContent;
+}
+
+const { page } = Astro.props;
+
+const headingClass =
+  'text-[22px] md:text-[26px] font-normal leading-[130%] tracking-tight font-heading text-heading mb-4';
+const bodyClass = 'text-[16px] md:text-[17px] font-normal leading-[160%] text-muted';
+const listClass = `${bodyClass} space-y-1 list-disc pl-5`;
+---
+
+<Hero2>
+  <Fragment slot="title">{page.heading}</Fragment>
+  {page.subtitle && <Fragment slot="subtitle">{page.subtitle}</Fragment>}
+  <Fragment slot="bg">
+    <SectionBg variant="hero" />
+  </Fragment>
+</Hero2>
+
+<WidgetWrapper containerClass="max-w-container mx-auto">
+  <div class="max-w-3xl space-y-10 md:space-y-14">
+    {
+      page.sections.map((section) => (
+        <section>
+          {section.heading && <h2 class={headingClass}>{section.heading}</h2>}
+          {section.blocks.map((block, index) =>
+            block.kind === 'list' ? (
+              <ul class:list={[listClass, index > 0 && 'mt-4']}>
+                {block.items.map((item) => (
+                  <li set:html={item} />
+                ))}
+              </ul>
+            ) : (
+              <p
+                class:list={[
+                  bodyClass,
+                  index > 0 && (section.blocks[index - 1].kind === 'list' ? 'mt-4' : 'mt-5'),
+                ]}
+                set:html={block.html}
+              />
+            )
+          )}
+        </section>
+      ))
+    }
+  </div>
+  <Fragment slot="bg">
+    <SectionBg variant="grey" />
+  </Fragment>
+</WidgetWrapper>
+
+<CTABanner title={page.cta.title} subtitle={page.cta.subtitle || undefined} />

@@ -70,7 +70,7 @@ const {
                         href={href}
                         aria-label={ariaLabel}
                       >
-                        <Fragment set:html={text} />
+                        {text}
                       </a>
                     </li>
                   ))}
@@ -108,7 +108,7 @@ const {
 
       {/* Centre — copyright sits in an auto column so it is the true midpoint */}
       {footNote && (
-        <p class="text-small leading-none text-muted md:whitespace-nowrap" set:html={footNote} />
+        <p class="text-small leading-none text-muted md:whitespace-nowrap">{footNote}</p>
       )}
 
       {/* Right — legal links, text flush with the content edge */}

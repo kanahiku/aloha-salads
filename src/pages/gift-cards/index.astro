@@ -1,13 +1,12 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 import InteriorPage from '~/components/widgets/InteriorPage.astro';
-import { getInteriorPage } from '~/data/pages/interior';
-import { site } from '~/config/site';
+import { getSanityInteriorPage } from '~/lib/content/pageContent';
 
-const page = getInteriorPage('/gift-cards');
+const page = await getSanityInteriorPage('gift-cards');
 const metadata = {
-  title: `${page.title} | ${site.name}`,
-  description: page.metaDescription,
+  title: page.meta.title,
+  description: page.meta.description,
   ignoreTitleTemplate: true,
 };
 ---
