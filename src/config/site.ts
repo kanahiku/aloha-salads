@@ -12,11 +12,11 @@
  */
 export const site = {
   name: 'Aloha Salads',
-  url: 'https://example.com',
+  url: 'https://www.alohasalads.com',
   description:
-    'Island-grown produce, never-frozen local ahi, and bowls built the way you like them. Kailua-born since 2006 — six spots on Oahu.',
+    'Island-grown produce, never-frozen local ahi, and bowls built the way you like them. Kailua-born since 2006. Six spots on Oahu.',
   footerTagline:
-    'Fresh, healthy food that tastes worth coming back for — and feels like home. Six locations across Oahu.',
+    'Fresh, healthy food that tastes worth coming back for, and feels like home. Six locations across Oahu.',
   trailingSlash: false,
 
   /** Cloudflare Worker `sites.slug` for the contact form. `PUBLIC_SITE_SLUG` in env overrides this. */
@@ -26,11 +26,11 @@ export const site = {
 
   analytics: {
     /** Google Tag Manager container. Empty until the client GTM is created. */
-    googleTagManagerId: '',
+    googleTagManagerId: 'GTM-WM6CJ72K',
     /** Optional. Leave empty when tags are installed through GTM. */
     googleAnalyticsId: '',
     /** Search Console HTML-tag verification (`content=` value only). */
-    googleSiteVerificationId: '',
+    googleSiteVerificationId: 'L8BBn70tTKxuExKZsNZqIEwK8STu45EiJFu2gm7E5ys',
   },
 } as const;
 

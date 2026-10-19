@@ -11,6 +11,7 @@ import type {
   AboutImages,
   CareersImages,
   IngredientsImages,
+  MenuPagesImages,
   NavigationContent,
   NavLink,
   NavSubLink,
@@ -292,6 +293,83 @@ export async function getSanityIngredientsImages(): Promise<IngredientsImages> {
   return {
     hero: resolveContentImage(doc?.heroImage),
     freshLocalProduce: resolveContentImage(doc?.freshLocalProduceImage),
+  };
+}
+
+// ─── Menu Pages ───────────────────────────────────────────────────────────────
+
+type FetchedMenuPagesImages = {
+  menuHubHeroImage?: FetchedImage | null;
+  menuHubIngredientsImage?: FetchedImage | null;
+  saladsHeroImage?: FetchedImage | null;
+  saladsIngredientsImage?: FetchedImage | null;
+  wrapsHeroImage?: FetchedImage | null;
+  wrapsIngredientsImage?: FetchedImage | null;
+  soupsHeroImage?: FetchedImage | null;
+  soupsIngredientsImage?: FetchedImage | null;
+  drinksHeroImage?: FetchedImage | null;
+  drinksIngredientsImage?: FetchedImage | null;
+  veganIngredientsImage?: FetchedImage | null;
+  vegetarianHeroImage?: FetchedImage | null;
+  vegetarianIngredientsImage?: FetchedImage | null;
+  healthyOptionsHeroImage?: FetchedImage | null;
+  healthyOptionsIngredientsImage?: FetchedImage | null;
+  kidsIngredientsImage?: FetchedImage | null;
+  kidsHeroImage?: FetchedImage | null;
+  designYourOwnHeroImage?: FetchedImage | null;
+  designYourOwnBuildImage?: FetchedImage | null;
+  designYourOwnQualityImage?: FetchedImage | null;
+};
+
+const MENU_PAGES_IMAGES_QUERY = /* groq */ `
+  *[_type == "menuPagesContent" && _id == "singleton-menu-pages"][0] {
+    ${IMAGE_PROJECTION('menuHubHeroImage', 'Fresh salad bowls from Aloha Salads')},
+    ${IMAGE_PROJECTION('menuHubIngredientsImage', 'Oahu InsideOut magazine cover, May 2012, Family ties, with vine-ripe tomatoes')},
+    ${IMAGE_PROJECTION('saladsHeroImage', 'Signature salads at Aloha Salads')},
+    ${IMAGE_PROJECTION('saladsIngredientsImage', 'Fresh ingredients for Aloha Salads salads')},
+    ${IMAGE_PROJECTION('wrapsHeroImage', 'Wraps and subs at Aloha Salads')},
+    ${IMAGE_PROJECTION('wrapsIngredientsImage', 'Fresh ingredients for Aloha Salads wraps')},
+    ${IMAGE_PROJECTION('soupsHeroImage', 'Tomato bisque soup at Aloha Salads')},
+    ${IMAGE_PROJECTION('soupsIngredientsImage', 'Fresh ingredients for Aloha Salads soups')},
+    ${IMAGE_PROJECTION('drinksHeroImage', 'Drinks at Aloha Salads')},
+    ${IMAGE_PROJECTION('drinksIngredientsImage', 'Fresh ingredients for Aloha Salads drinks')},
+    ${IMAGE_PROJECTION('veganIngredientsImage', 'Fresh plant-based ingredients at Aloha Salads')},
+    ${IMAGE_PROJECTION('vegetarianHeroImage', 'Vegetarian options at Aloha Salads')},
+    ${IMAGE_PROJECTION('vegetarianIngredientsImage', 'Fresh vegetarian ingredients at Aloha Salads')},
+    ${IMAGE_PROJECTION('healthyOptionsHeroImage', 'Healthy menu options at Aloha Salads')},
+    ${IMAGE_PROJECTION('healthyOptionsIngredientsImage', 'Fresh healthy ingredients at Aloha Salads')},
+    ${IMAGE_PROJECTION('kidsIngredientsImage', 'Fresh keiki meal ingredients at Aloha Salads')},
+    ${IMAGE_PROJECTION('kidsHeroImage', 'Keiki with vine-ripe tomatoes at Aloha Salads')},
+    ${IMAGE_PROJECTION('designYourOwnHeroImage', 'Custom salad bowl at Aloha Salads')},
+    ${IMAGE_PROJECTION('designYourOwnBuildImage', 'How to build your own salad at Aloha Salads')},
+    ${IMAGE_PROJECTION('designYourOwnQualityImage', 'Quality ingredients for custom salads at Aloha Salads')}
+  }
+`;
+
+export async function getSanityMenuPagesImages(): Promise<MenuPagesImages> {
+  const doc = await sanityClient.fetch<FetchedMenuPagesImages | null>(MENU_PAGES_IMAGES_QUERY);
+
+  return {
+    menuHubHero: resolveContentImage(doc?.menuHubHeroImage),
+    menuHubIngredients: resolveContentImage(doc?.menuHubIngredientsImage),
+    saladsHero: resolveContentImage(doc?.saladsHeroImage),
+    saladsIngredients: resolveContentImage(doc?.saladsIngredientsImage),
+    wrapsHero: resolveContentImage(doc?.wrapsHeroImage),
+    wrapsIngredients: resolveContentImage(doc?.wrapsIngredientsImage),
+    soupsHero: resolveContentImage(doc?.soupsHeroImage),
+    soupsIngredients: resolveContentImage(doc?.soupsIngredientsImage),
+    drinksHero: resolveContentImage(doc?.drinksHeroImage),
+    drinksIngredients: resolveContentImage(doc?.drinksIngredientsImage),
+    veganIngredients: resolveContentImage(doc?.veganIngredientsImage),
+    vegetarianHero: resolveContentImage(doc?.vegetarianHeroImage),
+    vegetarianIngredients: resolveContentImage(doc?.vegetarianIngredientsImage),
+    healthyOptionsHero: resolveContentImage(doc?.healthyOptionsHeroImage),
+    healthyOptionsIngredients: resolveContentImage(doc?.healthyOptionsIngredientsImage),
+    kidsIngredients: resolveContentImage(doc?.kidsIngredientsImage),
+    kidsHero: resolveContentImage(doc?.kidsHeroImage),
+    designYourOwnHero: resolveContentImage(doc?.designYourOwnHeroImage),
+    designYourOwnBuild: resolveContentImage(doc?.designYourOwnBuildImage),
+    designYourOwnQuality: resolveContentImage(doc?.designYourOwnQualityImage),
   };
 }
 
@@ -878,6 +956,37 @@ const BLOG_POST_SLUGS_QUERY = /* groq */ `
 export async function getSanityBlogPostSlugs(): Promise<string[]> {
   const slugs = await sanityClient.fetch<string[]>(BLOG_POST_SLUGS_QUERY);
   return (slugs ?? []).filter((slug): slug is string => typeof slug === 'string' && slug.length > 0);
+}
+
+export interface SitemapContentEntry {
+  path: string;
+  lastmod?: string;
+}
+
+const SITEMAP_BLOG_POSTS_QUERY = /* groq */ `
+  *[_type == "blogPost" && !(_id in path("drafts.**")) && defined(slug.current)]{
+    "slug": slug.current,
+    _updatedAt,
+    publishDate
+  }
+`;
+
+export async function getSanitySitemapContent(): Promise<SitemapContentEntry[]> {
+  const blogs = await sanityClient
+    .fetch<Array<{ slug: string; _updatedAt?: string; publishDate?: string }>>(SITEMAP_BLOG_POSTS_QUERY)
+    .catch(() => []);
+
+  const entries: SitemapContentEntry[] = [];
+  for (const post of blogs ?? []) {
+    if (!post?.slug) continue;
+    const cleanSlug = post.slug.replace(/^\/+/, '').replace(/^blog\//, '');
+    const dateStr = post._updatedAt || post.publishDate;
+    entries.push({
+      path: `/blog/${cleanSlug}`,
+      lastmod: dateStr ? dateStr.slice(0, 10) : undefined,
+    });
+  }
+  return entries;
 }
 
 // ─── Testimonials ─────────────────────────────────────────────────────────────

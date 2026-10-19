@@ -46,10 +46,6 @@ export const CATERING_MAIN_DEFAULTS: CateringMainContent = {
       price: '$52',
     },
     {
-      name: 'Aloha Caesar with Chicken Tray',
-      price: '$45',
-    },
-    {
       name: 'Aloha Passion Tray',
       price: '$42',
     },
@@ -60,10 +56,6 @@ export const CATERING_MAIN_DEFAULTS: CateringMainContent = {
     {
       name: 'The Paniolo Tray',
       price: '$42',
-    },
-    {
-      name: 'Tray of Pita Bread',
-      price: '$24',
     },
   ],
   occasions: {

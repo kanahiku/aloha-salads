@@ -37,6 +37,16 @@ const metadata = {
     eyebrow={content.sourcingEyebrow}
     factsLayout="featured"
     facts={content.facts.map((fact) => ({ title: fact.title, description: paragraphsToHtml(fact.description) }))}
+    appendCard={{
+      title: 'Our Packaging',
+      description: [
+        'We use different packaging materials depending on what you order. From salad containers to drink cups and utensils, each item has its own materials and purpose.',
+        'Our salad containers come in two sizes, and both are made from molded fiber with no added PFAS. PFAS are chemicals sometimes added to food packaging to help resist grease and water.',
+        'For soups and bowls, we use containers featuring the Aloha Salads logo, paired with lids made from PLA (polylactic acid), a type of plastic typically made from plant-based materials. Our 20-ounce cold drink cups and flat lids are also made from PLA.',
+        'We use AirCarbon straws, made with a material produced from greenhouse gases using naturally occurring microorganisms. We also use Karat PLA forks and spoons.',
+        'By sharing these details, we want you to know more about the materials used for each item, just as we share information about the ingredients in our food.',
+      ].map((p) => `<p>${p}</p>`).join(''),
+    }}
   />
 
   {/* ── Closing CTA ───────────────────────────────────────── */}

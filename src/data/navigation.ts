@@ -2,6 +2,9 @@ import type { NavigationContent } from '~/lib/content/types';
 import { CONTACT } from '~/config/contact';
 import { PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
 import { SOCIAL } from '~/config/social';
+import { cateringPages } from '~/data/catering';
+
+const cateringNavLinks = cateringPages.map(({ label, href }) => ({ text: label, href }));
 
 export const navigationData: NavigationContent = {
   announcement: {
@@ -19,9 +22,7 @@ export const navigationData: NavigationContent = {
           { text: 'Salads', href: '/menu/salads' },
           { text: 'Wraps & Subs', href: '/menu/wraps-subs' },
           { text: 'Soups', href: '/menu/soups' },
-          { text: 'Keiki / Kids', href: '/menu/kids' },
           { text: 'Design Your Own Salad', href: '/menu/design-your-own-salad' },
-          { text: 'Vegan Options', href: '/menu/vegan' },
           { text: 'Vegetarian Options', href: '/menu/vegetarian' },
           { text: 'Healthy Options', href: '/menu/healthy-options' },
           { text: 'Misc', href: '/menu/misc' },
@@ -31,15 +32,7 @@ export const navigationData: NavigationContent = {
       {
         text: 'catering',
         href: '/catering',
-        links: [
-          { text: 'Corporate Catering', href: '/catering/corporate' },
-          { text: 'Office Lunch Catering', href: '/catering/office-lunches' },
-          { text: 'Meeting Catering', href: '/catering/meetings' },
-          { text: 'Event Catering', href: '/catering/events' },
-          { text: 'Party Catering', href: '/catering/parties' },
-          { text: 'School Catering', href: '/catering/schools' },
-          { text: 'Large Group Catering', href: '/catering/large-groups' },
-        ],
+        links: cateringNavLinks,
       },
       {
         text: 'locations',
@@ -76,9 +69,7 @@ export const navigationData: NavigationContent = {
           { text: 'Salads', href: '/menu/salads' },
           { text: 'Wraps & Subs', href: '/menu/wraps-subs' },
           { text: 'Soups', href: '/menu/soups' },
-          { text: 'Kids Menu', href: '/menu/kids' },
           { text: 'Design Your Own Salad', href: '/menu/design-your-own-salad' },
-          { text: 'Vegan Options', href: '/menu/vegan' },
           { text: 'Vegetarian Options', href: '/menu/vegetarian' },
           { text: 'Misc', href: '/menu/misc' },
           { text: 'Nutrition & Allergens', href: '/nutrition-allergens' },
@@ -86,16 +77,7 @@ export const navigationData: NavigationContent = {
       },
       {
         title: 'catering',
-        links: [
-          { text: 'Catering', href: '/catering' },
-          { text: 'Corporate Catering', href: '/catering/corporate' },
-          { text: 'Office Lunch Catering', href: '/catering/office-lunches' },
-          { text: 'Meeting Catering', href: '/catering/meetings' },
-          { text: 'Event Catering', href: '/catering/events' },
-          { text: 'Party Catering', href: '/catering/parties' },
-          { text: 'School Catering', href: '/catering/schools' },
-          { text: 'Large Group Catering', href: '/catering/large-groups' },
-        ],
+        links: [{ text: 'Catering', href: '/catering' }, ...cateringNavLinks],
       },
       {
         title: 'locations',

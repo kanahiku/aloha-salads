@@ -82,6 +82,7 @@ const HUB_QUERY = /* groq */ `
     ${IMAGE_PROJECTION('heroImage', 'Fresh salad bowls from Aloha Salads')},
     fullMenuTitle, fullMenuSubtitle,
     sourcingTitle, sourcingSubtitle, sourcingCtaLabel,
+    ${IMAGE_PROJECTION('sourcingImage', 'Fresh local ingredients at Aloha Salads')},
     ctaSubtitle,
     "faqs": faqs[]{ question, answer },
     sharedOrderLabel, sharedLocationLabel, sharedCateringLabel, sharedReadyTitle, sharedExploreTitle, sharedFaqTitle
@@ -120,13 +121,16 @@ function resolveShared(doc: FetchedHub | null): MenuSharedContent {
 }
 
 function resolveSourcing(
-  doc: Pick<FetchedHub, 'sourcingTitle' | 'sourcingSubtitle' | 'sourcingCtaLabel'>,
+  doc: Pick<FetchedHub, 'sourcingTitle' | 'sourcingSubtitle' | 'sourcingCtaLabel'> & {
+    sourcingImage?: FetchedImage | null;
+  },
   d: MenuSourcingContent
 ): MenuSourcingContent {
   return {
     title: textOr(doc.sourcingTitle, d.title),
     subtitle: textOr(doc.sourcingSubtitle, d.subtitle),
     ctaLabel: textOr(doc.sourcingCtaLabel, d.ctaLabel),
+    image: resolveContentImage(doc.sourcingImage),
   };
 }
 

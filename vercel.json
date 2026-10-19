@@ -28,11 +28,11 @@
       "missing": [
         {
           "type": "host",
-          "value": "example.com"
+          "value": "alohasalads.com"
         },
         {
           "type": "host",
-          "value": "www.example.com"
+          "value": "www.alohasalads.com"
         }
       ],
       "headers": [

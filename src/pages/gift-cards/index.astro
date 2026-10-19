@@ -1,6 +1,11 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import InteriorPage from '~/components/widgets/InteriorPage.astro';
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+import Button from '~/components/ui/Button.astro';
+import Logo from '~/components/Logo.astro';
+import CTABanner from '~/components/widgets/CTABanner.astro';
+import smallLeafMotif from '~/assets/images/small-leaf-motif.webp';
 import { getSanityInteriorPage } from '~/lib/content/pageContent';
 
 const page = await getSanityInteriorPage('gift-cards');
@@ -9,8 +14,94 @@ const metadata = {
   description: page.meta.description,
   ignoreTitleTemplate: true,
 };
+
+const GIFT_CARD_HREF = 'https://alohasaladskailua.hrpos.heartland.us/gift';
 ---
 
 <Layout metadata={metadata}>
-  <InteriorPage page={page} />
+  <section class="not-prose relative w-full overflow-hidden bg-section-grey" aria-label="Aloha Salads gift cards">
+    <div
+      class="pointer-events-none absolute inset-0"
+      style={`background-image: url('${smallLeafMotif.src}'); background-size: 1700px auto; background-position: top left; background-repeat: repeat;`}
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="relative z-[1] mx-auto w-full max-w-container px-5 py-16 sm:px-8 md:px-16 md:py-[120px]">
+      <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20">
+        <div class="flex flex-col items-start gap-6">
+          <Heading variant="eyebrow">Share the aloha</Heading>
+          <Heading variant="h1">Aloha Salads Gift Cards</Heading>
+          <Text variant="body-lg" color="default" class="max-w-xl">
+            Give the gift of a fresh, local meal. Purchase a card or check a balance through Heartland.
+          </Text>
+          <Button
+            variant="primary"
+            text="Buy or Check a Gift Card"
+            href={GIFT_CARD_HREF}
+            target="_blank"
+            hideNote={true}
+          />
+        </div>
+
+        <a
+          href={GIFT_CARD_HREF}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group mx-auto block w-full max-w-[520px] focus:outline-none"
+          aria-label="Buy or check an Aloha Salads gift card on Heartland"
+        >
+          <div
+            class="relative flex aspect-[1.586/1] w-full flex-col justify-between overflow-hidden rounded-[24px] bg-section-dark p-7 shadow-card transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-[-1deg] group-focus-visible:ring-4 group-focus-visible:ring-accent/40 md:p-9"
+          >
+            <div
+              class="pointer-events-none absolute inset-0 opacity-15"
+              style={`background-image: url('${smallLeafMotif.src}'); background-size: 900px auto; background-position: center;`}
+              aria-hidden="true"
+            >
+            </div>
+            <div
+              class="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-accent/25 blur-2xl"
+              aria-hidden="true"
+            >
+            </div>
+
+            <div class="relative flex items-start justify-between gap-4">
+              <div class="rounded-full bg-page px-4 py-2">
+                <Logo width={140} height={16} />
+              </div>
+              <span class="font-heading text-[11px] uppercase tracking-[0.2em] text-page/60">Gift Card</span>
+            </div>
+
+            <div class="relative flex items-end justify-between gap-4">
+              <div class="flex flex-col gap-2">
+                <Heading variant="eyebrow" color="inherit" class="text-page/70">Fresh from Hawaii</Heading>
+                <p class="font-rough text-[28px] leading-none text-page md:text-[36px]">Mahalo for sharing</p>
+              </div>
+              <span
+                class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-page/30 text-page transition-colors duration-200 group-hover:border-page group-hover:bg-page group-hover:text-heading"
+                aria-hidden="true"
+              >
+                <svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M1 7H13M13 7L7 1M13 7L7 13"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    title="Visit Your Local Restaurant"
+    subtitle="Stop by one of our six neighborhood spots across the island for a fresh meal."
+    ctaText="Find a Location"
+    ctaHref="/locations"
+  />
 </Layout>

@@ -39,9 +39,7 @@ const MENU_LINKS: InteriorLink[] = [
   { text: 'Salads', href: '/menu/salads' },
   { text: 'Wraps & Subs', href: '/menu/wraps-subs' },
   { text: 'Soups', href: '/menu/soups' },
-  { text: 'Keiki / Kids Menu', href: '/menu/kids' },
   { text: 'Design Your Own Salad', href: '/menu/design-your-own-salad' },
-  { text: 'Vegan Options', href: '/menu/vegan' },
   { text: 'Vegetarian Options', href: '/menu/vegetarian' },
   { text: 'Healthy Food & Menu Options', href: '/menu/healthy-options' },
   { text: 'Misc', href: '/menu/misc' },
@@ -49,10 +47,12 @@ const MENU_LINKS: InteriorLink[] = [
 ];
 
 const CATERING_LINKS: InteriorLink[] = [
-  { text: 'Corporate Catering', href: '/catering/corporate' },
   { text: 'Office Lunch Catering', href: '/catering/office-lunches' },
+  { text: 'School Catering', href: '/catering/schools' },
+  { text: 'Corporate Catering', href: '/catering/corporate' },
   { text: 'Meeting Catering', href: '/catering/meetings' },
   { text: 'Event Catering', href: '/catering/events' },
+  { text: 'Party Catering', href: '/catering/parties' },
   { text: 'Large Group Catering', href: '/catering/large-groups' },
 ];
 
@@ -105,14 +105,13 @@ export const interiorPages: Record<string, InteriorPageContent> = {
   '/about': {
     path: '/about',
     title: 'Our Story',
-    metaDescription:
-      'Aloha Salads opened in Kailua in 2006. Fresh, healthy, local food — now at six spots across Oahu.',
+    metaDescription: 'Aloha Salads opened in Kailua in 2006. Fresh, healthy, local food, now at six spots across Oahu.',
     heading: 'Our story',
-    lede: 'We opened in Kailua in 2006 with one idea: fresh, healthy food should taste worth coming back for — and feel like home. Six locations later, thats still the whole plan.',
+    lede: 'We opened in Kailua in 2006 with one idea: fresh, healthy food should taste worth coming back for, and feel like home. Six locations later, thats still the whole plan.',
     sections: [
       {
         heading: 'From Kailua to Oahu',
-        body: 'Healthy, fresh, and local is how we started, and how we still buy. The full sourcing story lives on Our Ingredients — this page is the short version of how we got here.',
+        body: 'Healthy, fresh, and local is how we started, and how we still buy. The full sourcing story lives on Our Ingredients. This page is the short version of how we got here.',
         links: [
           { text: 'Our Ingredients', href: '/ingredients' },
           { text: LOCATION_CTA_LABEL, href: LOCATION_CTA_HREF },
@@ -130,7 +129,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     sections: [
       {
         heading: 'Never-frozen local ahi',
-        body: 'Fresh local ahi, never frozen — delivered, not shipped in from far away.',
+        body: 'Fresh local ahi, never frozen, delivered, not shipped in from far away.',
       },
       {
         heading: 'Local produce',
@@ -138,7 +137,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
       },
       {
         heading: 'Mamaki mint tea',
-        body: 'Brewed from mamaki (mamaki) grown on Hawaii Island — a true taste of the islands. Search either spelling and youll land here.',
+        body: 'Brewed from mamaki (mamaki) grown on Hawaii Island, a true taste of the islands. Search either spelling and youll land here.',
       },
       {
         heading: 'Packaging',
@@ -151,7 +150,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     title: 'Menu',
     metaDescription: 'Salads, wraps, soups, keiki plates, drinks, and design-your-own bowls at Aloha Salads.',
     heading: 'The menu',
-    lede: 'Individual dishes live inside these categories — they never get their own URL. Start with a favorite, or skip the list and build your own.',
+    lede: 'Individual dishes live inside these categories. They never get their own URL. Start with a favorite, or skip the list and build your own.',
     sections: [
       {
         heading: 'Browse by category',
@@ -162,7 +161,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
   '/menu/salads': {
     path: '/menu/salads',
     title: 'Salads',
-    metaDescription: 'Island salads from Aloha Salads — including never-frozen local ahi and design-your-own bowls.',
+    metaDescription: 'Island salads from Aloha Salads, including never-frozen local ahi and design-your-own bowls.',
     heading: 'Salads',
     lede: 'The bowls people come back for, plus plenty of room to build your own.',
     sections: [{ links: [{ text: 'Design Your Own Salad', href: '/menu/design-your-own-salad' }] }],
@@ -184,7 +183,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
   '/menu/kids': {
     path: '/menu/kids',
     title: 'Keiki / Kids Menu',
-    metaDescription: 'Keiki menu at Aloha Salads — smaller portions for kids.',
+    metaDescription: 'Keiki menu at Aloha Salads: smaller portions for kids.',
     heading: 'Keiki / kids menu',
     lede: 'Smaller plates for smaller appetites, made with the same ingredients we serve everyone else.',
   },
@@ -198,18 +197,16 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     sections: [
       {
         heading: 'Build your own salad',
-        body: 'This is the page vegan, vegetarian, and anyone with a specific combination should start from. Dishes never get their own URL — the builder lives here.',
-        links: [
-          { text: 'Vegan options', href: '/menu/vegan' },
-          { text: 'Vegetarian options', href: '/menu/vegetarian' },
-        ],
+        body: 'This is the page vegan, vegetarian, and anyone with a specific combination should start from. Dishes never get their own URL. The builder lives here.',
+        links: [{ text: 'Vegetarian options', href: '/menu/vegetarian' }],
       },
     ],
   },
   '/menu/vegan': {
     path: '/menu/vegan',
     title: 'Vegan Options',
-    metaDescription: 'Vegan dishes at Aloha Salads: Vegan Aloha Mediterranean, Vegan Mandarin Ginger, and Vegan Hummus Pita Wrap.',
+    metaDescription:
+      'Vegan dishes at Aloha Salads: Vegan Aloha Mediterranean, Vegan Mandarin Ginger, and Vegan Hummus Pita Wrap.',
     heading: 'Vegan options',
     lede: 'Three dishes on the menu are vegan. For everything else, design your own salad without animal products.',
     sections: [
@@ -258,7 +255,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     path: '/menu/healthy-options',
     title: 'Healthy Food & Menu Options',
     metaDescription:
-      'Healthy food and menu options at Aloha Salads — island-grown produce, never-frozen local ahi, and bowls you control.',
+      'Healthy food and menu options at Aloha Salads: island-grown produce, never-frozen local ahi, and bowls you control.',
     heading: 'Healthy food & menu options',
     lede: 'Fresh, healthy food that still tastes like something you want to eat. Island-grown produce, never-frozen local ahi, and a builder if you want to keep it exactly how you like it.',
     sections: [
@@ -289,8 +286,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
   '/catering': {
     path: '/catering',
     title: 'Catering',
-    metaDescription:
-      'Aloha Salads catering trays for offices, meetings, events, and large groups across Oahu.',
+    metaDescription: 'Aloha Salads catering trays for offices, meetings, events, and large groups across Oahu.',
     heading: 'Catering',
     lede: 'Trays for the table, priced as they are on the current menu. Servings, minimums, lead time, and delivery radius will fill in once the shops confirm them.',
     sections: [
@@ -311,7 +307,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
   '/catering/corporate': {
     path: '/catering/corporate',
     title: 'Corporate Catering',
-    metaDescription: 'Corporate catering from Aloha Salads — trays for teams across Oahu.',
+    metaDescription: 'Corporate catering from Aloha Salads: trays for teams across Oahu.',
     heading: 'Corporate catering',
     lede: 'Fresh trays for the office, the boardroom, and the all-hands. See the catering hub for the full priced list.',
     sections: [{ links: [{ text: 'View all catering', href: CATERING_CTA_HREF }] }],
@@ -321,7 +317,7 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     title: 'Office Lunch Catering',
     metaDescription: 'Office lunch catering from Aloha Salads.',
     heading: 'Office lunch catering',
-    lede: 'Lunch that shows up ready — salads, wraps, and trays for the workday.',
+    lede: 'Lunch that shows up ready: salads, wraps, and trays for the workday.',
     sections: [{ links: [{ text: 'View all catering', href: CATERING_CTA_HREF }] }],
   },
   '/catering/meetings': {
@@ -380,20 +376,18 @@ export const interiorPages: Record<string, InteriorPageContent> = {
     title: 'Gift Cards',
     metaDescription: 'Buy Aloha Salads gift cards and check your balance through Heartland.',
     heading: 'Gift cards',
-    lede: 'Purchase a card or check a balance through Heartland. This page will link out once the live Heartland URL is confirmed.',
+    lede: 'Give the gift of a fresh, local meal. Purchase a card or check a balance through Heartland.',
     sections: [
       {
-        items: [
-          { title: 'Buy a gift card', description: 'Heartland checkout — URL pending.' },
-          { title: 'Check balance', description: 'Heartland balance check — URL pending.' },
-        ],
+        links: [{ text: 'Buy or check a gift card', href: 'https://alohasaladskailua.hrpos.heartland.us/gift' }],
       },
     ],
   },
   '/nutrition-allergens': {
     path: '/nutrition-allergens',
     title: 'Nutrition & Allergen Information',
-    metaDescription: 'Nutrition and allergen information for Aloha Salads. Data will be published after business sign-off.',
+    metaDescription:
+      'Nutrition and allergen information for Aloha Salads. Data will be published after business sign-off.',
     heading: 'Nutrition & allergen information',
     lede: 'This page is a shell until the business signs off the data. We will not invent nutritional values, allergen status, or cross-contamination claims.',
     sections: [

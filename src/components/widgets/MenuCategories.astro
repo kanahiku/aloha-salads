@@ -9,7 +9,7 @@
  *   - Three-tier size hierarchy:
  *       Row 1 (hero):   Salads (6/12) + Design Your Own (6/12)
  *       Row 2 (medium): Wraps & Subs · Soups · Drinks  (4/12 each)
- *       Row 3 (small):  Keiki · Vegan · Vegetarian · Healthy (3/12 each)
+ *       Row 3 (small):  Vegetarian · Healthy · Misc (3/12 each)
  */
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
@@ -95,18 +95,6 @@ const CATEGORIES: MenuCategory[] = [
   },
   // ── Row 3 ────────────────────────────────────────────────────────────
   {
-    href: '/menu/kids',
-    colSpan: 'md:col-span-3',
-    row: 3,
-    img: null,
-  },
-  {
-    href: '/menu/vegan',
-    colSpan: 'md:col-span-3',
-    row: 3,
-    img: null,
-  },
-  {
     href: '/menu/vegetarian',
     colSpan: 'md:col-span-3',
     row: 3,
@@ -132,6 +120,7 @@ const isGrid = excludedCategoryHrefs.size > 0;
 const cardCopy = await getMenuCardCopy();
 const cmsCategories = await getMenuCategories();
 const designYourOwnImage = await getMenuItemImage('Design Your Own Salad');
+const healthyFoodImage = await getMenuItemImage('Ono Island Ahi');
 const cmsCategoryByHref = new Map(cmsCategories.map((category) => [category.href, category]));
 
 const categories = CATEGORIES.map((cat) => {
@@ -139,7 +128,9 @@ const categories = CATEGORIES.map((cat) => {
   const image =
     cat.href === '/menu/design-your-own-salad'
       ? designYourOwnImage
-      : cmsCategory?.items.find((item) => item.image?.src)?.image;
+      : cat.href === '/menu/healthy-options'
+        ? healthyFoodImage
+        : cmsCategory?.items.find((item) => item.image?.src)?.image;
 
   const copy = cardCopy.get(cat.href.replace('/menu/', ''));
 
@@ -214,19 +205,18 @@ const visibleCategories = categories
   >
     {
       visibleCategories.map((cat) => (
-        <a
-          href={cat.href}
-          class:list={['group relative flex h-full flex-col overflow-hidden rounded-sm', cat.colSpan]}
-        >
+        <a href={cat.href} class:list={['group relative flex h-full flex-col overflow-hidden rounded-sm', cat.colSpan]}>
           {/* ── Photo ── */}
           <div class="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-section-grey">
             {cat.img?.src ? (
               <Image
                 src={cat.img.src}
                 alt={cat.img.alt || ''}
+                title={cat.img.title || cat.img.alt || undefined}
                 width={900}
                 height={675}
                 layout="cover"
+                format="webp"
                 loading="lazy"
                 decoding="async"
                 class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"

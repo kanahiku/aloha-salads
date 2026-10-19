@@ -68,7 +68,8 @@ const asContentImage = (value: unknown): ContentImage | undefined => {
   const src = 'src' in value && typeof value.src === 'string' ? value.src.trim() : '';
   if (!src) return undefined;
   const alt = 'alt' in value && typeof value.alt === 'string' ? value.alt : '';
-  return { src, alt };
+  const title = 'title' in value && typeof value.title === 'string' && value.title.trim() ? value.title : alt;
+  return { src, alt, title };
 };
 
 const imageRecord =
@@ -232,7 +233,9 @@ const isLocalOverlayImage =
               withImage ? 'items-stretch gap-6 md:gap-[72px]' : 'items-start gap-6',
             ]}
           >
-            {tagline && <Heading variant="eyebrow" color="inherit" class="mb-2 text-heading/60 md:mb-4" html={tagline} />}
+            {tagline && (
+              <Heading variant="eyebrow" color="inherit" class="mb-2 text-heading/60 md:mb-4" html={tagline} />
+            )}
             <div
               class:list={[
                 'flex w-full flex-col items-start',
@@ -289,7 +292,12 @@ const isLocalOverlayImage =
               ]}
             >
               {tagline && <Heading variant="eyebrow" color="inherit" class="text-page/55" html={tagline} />}
-              {title && <h1 class="font-rough text-h1 font-normal leading-[1.05] text-page" set:html={title} />}
+              {title && (
+                <div class="flex flex-col gap-3">
+                  <h1 class="font-rough text-h1 font-normal leading-[1.05] text-page" set:html={title} />
+                  {subtitle && <Heading variant="eyebrow" color="inherit" class="text-page/70" html={subtitle} />}
+                </div>
+              )}
               {content && (
                 <div class="font-sans text-[16px] leading-[1.55] text-page/60 max-w-[480px]" set:html={content} />
               )}
@@ -316,6 +324,7 @@ const isLocalOverlayImage =
                       <Image
                         src={contentImage?.src}
                         alt={contentImage?.alt ?? ''}
+                        title={contentImage?.title || contentImage?.alt || undefined}
                         class:list={[
                           'h-full w-full object-center',
                           isContainImage ? 'object-contain bg-section-dark' : 'object-cover',
@@ -430,6 +439,7 @@ const isLocalOverlayImage =
                   <Image
                     src={contentImage?.src}
                     alt={contentImage?.alt ?? ''}
+                    title={contentImage?.title || contentImage?.alt || undefined}
                     class="w-full h-full object-cover"
                     widths={[400, 768, 1200]}
                     sizes="(max-width: 768px) 100vw, 50vw"
@@ -448,4 +458,3 @@ const isLocalOverlayImage =
     </section>
   )
 }
-

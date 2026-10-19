@@ -3,6 +3,8 @@
 export interface ContentImage {
   src: string;
   alt: string;
+  /** Image title attribute. Renderers fall back to `alt` when this is omitted. */
+  title?: string;
 }
 
 /** Looping hero video served from the Sanity CDN. Only set when every required piece exists. */
@@ -59,6 +61,39 @@ export interface CareersImages {
 export interface IngredientsImages {
   hero?: ContentImage;
   freshLocalProduce?: ContentImage;
+}
+
+export interface MenuPagesImages {
+  // Menu Hub
+  menuHubHero?: ContentImage;
+  menuHubIngredients?: ContentImage;
+  // Salads
+  saladsHero?: ContentImage;
+  saladsIngredients?: ContentImage;
+  // Wraps & Subs
+  wrapsHero?: ContentImage;
+  wrapsIngredients?: ContentImage;
+  // Soups
+  soupsHero?: ContentImage;
+  soupsIngredients?: ContentImage;
+  // Drinks
+  drinksHero?: ContentImage;
+  drinksIngredients?: ContentImage;
+  // Vegan
+  veganIngredients?: ContentImage;
+  // Vegetarian
+  vegetarianHero?: ContentImage;
+  vegetarianIngredients?: ContentImage;
+  // Healthy Options
+  healthyOptionsHero?: ContentImage;
+  healthyOptionsIngredients?: ContentImage;
+  // Kids
+  kidsIngredients?: ContentImage;
+  kidsHero?: ContentImage;
+  // Design Your Own
+  designYourOwnHero?: ContentImage;
+  designYourOwnBuild?: ContentImage;
+  designYourOwnQuality?: ContentImage;
 }
 
 // ─── Navigation ───────────────────────────────────────────────────────────────
@@ -633,6 +668,7 @@ export interface MenuSourcingContent {
   title: string;
   subtitle: string;
   ctaLabel: string;
+  image?: ContentImage;
 }
 
 /** Menu landing page (/menu). The dishes come from Menu categories and items. */

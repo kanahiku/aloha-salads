@@ -1,12 +1,4 @@
 ---
-import PageLayout from '~/layouts/PageLayout.astro';
-import MenuPage from '~/components/widgets/MenuPage.astro';
-import { getMenuPageData } from '~/lib/content/menuContent';
-
-const { page, shared, items } = await getMenuPageData('vegan');
-const metadata = { ...page.meta, ignoreTitleTemplate: true };
+// Hub stays hidden until the vegan item photos are ready. Restore this page with those cards.
+return Astro.redirect('/menu');
 ---
-
-<PageLayout metadata={metadata}>
-  <MenuPage page={page} shared={shared} items={items} />
-</PageLayout>

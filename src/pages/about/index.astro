@@ -3,8 +3,8 @@ import PageLayout from '~/layouts/PageLayout.astro';
 import Hero2 from '~/components/widgets/Hero2.astro';
 import TextSplit from '~/components/widgets/TextSplit.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
+import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
-import Button from '~/components/ui/Button.astro';
 import { getSanityAboutImages } from '~/lib/content/sanity';
 import { getSanityAboutContent } from '~/lib/content/pageContent';
 import { inlineToHtml, textToHtml } from '~/lib/content/richText';
@@ -12,16 +12,16 @@ import { inlineToHtml, textToHtml } from '~/lib/content/richText';
 const [aboutImages, content] = await Promise.all([getSanityAboutImages(), getSanityAboutContent()]);
 const { mission, story, sustainability, vendors } = content;
 
+const [storyLead, ...storyRest] = story.paragraphs;
+const [sustainabilityLead, ...sustainabilityRest] = sustainability.paragraphs;
+const [vendorsLead, ...vendorsRest] = vendors.paragraphs;
+
 const metadata = {
   title: content.meta.title,
   description: content.meta.description,
   ignoreTitleTemplate: true,
 };
 
-// First paragraph is the lead (larger); the rest are body copy.
-const [storyLead, ...storyRest] = story.paragraphs;
-const [sustainabilityLead, ...sustainabilityRest] = sustainability.paragraphs;
-const [vendorsLead, ...vendorsRest] = vendors.paragraphs;
 ---
 
 <PageLayout metadata={metadata}>
@@ -30,13 +30,8 @@ const [vendorsLead, ...vendorsRest] = vendors.paragraphs;
     variant="split-dark"
     overlapHeader={false}
     title={textToHtml(content.hero.title)}
-    content={textToHtml(content.hero.content)}
+    subtitle="Fresh From Hawaii. Rooted in Aloha."
     image={aboutImages.hero}
-    imageFit="contain"
-    actions={[
-      { variant: 'primary', text: content.hero.primaryCtaLabel, href: '/menu' },
-      { variant: 'ghost-dark', text: content.hero.secondaryCtaLabel, href: '/locations' },
-    ]}
   />
 
   {/* ── 1. Our Mission ────────────────────────────────────── */}
@@ -45,7 +40,6 @@ const [vendorsLead, ...vendorsRest] = vendors.paragraphs;
       <blockquote class="border-l-4 border-accent pl-6">
         <Text variant="body-lg" color="default" class="italic">"{mission.quote}"</Text>
       </blockquote>
-      <Text variant="body" color="muted">{mission.body}</Text>
     </div>
   </TextSplit>
 
@@ -53,18 +47,66 @@ const [vendorsLead, ...vendorsRest] = vendors.paragraphs;
   <TextSplit heading={story.heading} withImage image={aboutImages.story} imageAspect="4 / 5" class="bg-card">
     <div class="flex flex-col gap-6">
       {storyLead && <Text variant="body-lg" color="default" html={inlineToHtml(storyLead)} />}
-      {storyRest.map((paragraph) => <Text variant="body" color="default" html={inlineToHtml(paragraph)} />)}
-      {
-        story.note && (
-          <Text variant="body-lg" color="muted" class="text-sm italic">
-            {story.note}
-          </Text>
-        )
-      }
+      {storyRest.map((p) => <Text variant="body" color="default" html={inlineToHtml(p)} />)}
+      {story.note && <Text variant="body" color="muted" class="text-sm italic">{story.note}</Text>}
     </div>
   </TextSplit>
 
-  {/* ── 3. Sustainability — image left / text right ──────────── */}
+  {/* ── 3. Founder Story ─────────────────────────────────────── */}
+  <section class="not-prose w-full bg-section-grey">
+    <div class="mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 lg:px-[120px] lg:py-[120px]">
+      <div class="flex max-w-3xl flex-col gap-8">
+        {/* Heading */}
+        <div class="flex flex-col gap-3">
+          <Heading variant="h2">Founder Story</Heading>
+          <p class="font-heading text-[18px] italic leading-snug text-accent">From a Simple Idea to a Family Legacy</p>
+        </div>
+
+        {/* Body */}
+        <div class="flex flex-col gap-5">
+          <Text variant="body" color="default">
+            Twenty years ago, Sara Lufrano moved back home to Hawaii after living in Chicago. She missed being able
+            to grab a fresh, healthy salad on the go, and at the time there wasn't much like it here. So she and her
+            husband asked themselves, why don't we create it ourselves?
+          </Text>
+          <Text variant="body" color="default">
+            With a credit card, a lot of hope and plenty of hard work, they opened the very first Aloha Salads in
+            Kailua. Living at Sara's parents' house, they stayed up late creating the menu and spent their days
+            chopping, prepping and getting everything ready. On opening day it was just the two of them behind the
+            counter. Then came a moment they will never forget: a line out the door.
+          </Text>
+          <Text variant="body" color="default">
+            What started as a small idea soon became a family business. Their children grew up in the restaurants,
+            with their youngest just a newborn when they opened. Over the years both boys worked alongside their
+            friends, becoming part of the family business their parents built from the ground up.
+          </Text>
+        </div>
+
+        {/* Quotes */}
+        <div class="flex flex-col gap-6">
+          <blockquote class="border-l-4 border-accent pl-6">
+            <Text variant="body" color="default" class="mb-3 italic">
+              "It's wonderful to have the whole family be a part of this business."
+            </Text>
+            <Heading variant="eyebrow" as="cite" class="not-italic">Sara Lufrano</Heading>
+          </blockquote>
+          <blockquote class="border-l-4 border-accent pl-6">
+            <Text variant="body" color="default" class="mb-3 italic">
+              "Growing up, the restaurant's always been such a big part of our family. I can't remember a time when it wasn't."
+            </Text>
+            <Heading variant="eyebrow" as="cite" class="not-italic">Kekoa Lufrano</Heading>
+          </blockquote>
+        </div>
+
+        {/* Closing */}
+        <Text variant="body" color="muted">
+          Mahalo for being part of our story. Here's to many more years of sharing fresh food and aloha.
+        </Text>
+      </div>
+    </div>
+  </section>
+
+  {/* ── 4. Sustainability — image left / text right ──────────── */}
   <TextSplit
     heading={sustainability.heading}
     withImage
@@ -74,21 +116,11 @@ const [vendorsLead, ...vendorsRest] = vendors.paragraphs;
   >
     <div class="flex flex-col gap-6">
       {sustainabilityLead && <Text variant="body-lg" color="default" html={inlineToHtml(sustainabilityLead)} />}
-      {sustainabilityRest.map((paragraph) => <Text variant="body" color="default" html={inlineToHtml(paragraph)} />)}
-      {
-        sustainability.note && (
-          <Text variant="body" color="muted" class="text-sm italic">
-            {sustainability.note}
-          </Text>
-        )
-      }
-      <div>
-        <Button variant="primary" text={sustainability.ctaLabel} href="/ingredients" hideNote={true} />
-      </div>
+      {sustainabilityRest.map((p) => <Text variant="body" color="default" html={inlineToHtml(p)} />)}
     </div>
   </TextSplit>
 
-  {/* ── 4. Our Vendors — text left / image right ─────────── */}
+  {/* ── 5. Our Vendors — text left / image right ─────────── */}
   <TextSplit
     heading={vendors.heading}
     withImage
@@ -98,10 +130,7 @@ const [vendorsLead, ...vendorsRest] = vendors.paragraphs;
   >
     <div class="flex flex-col gap-6">
       {vendorsLead && <Text variant="body-lg" color="default" html={inlineToHtml(vendorsLead)} />}
-      {vendorsRest.map((paragraph) => <Text variant="body" color="default" html={inlineToHtml(paragraph)} />)}
-      <div>
-        <Button variant="primary" text={vendors.ctaLabel} href="/ingredients" hideNote={true} />
-      </div>
+      {vendorsRest.map((p) => <Text variant="body" color="default" html={inlineToHtml(p)} />)}
     </div>
   </TextSplit>
 

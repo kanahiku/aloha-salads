@@ -117,18 +117,22 @@ export async function getSanityAboutContent(): Promise<AboutContent> {
     },
     story: {
       heading: textOr(doc.storyHeading, d.story.heading),
-      paragraphs: cleanList(doc.storyParagraphs),
+      paragraphs: cleanList(doc.storyParagraphs).length > 0 ? cleanList(doc.storyParagraphs) : d.story.paragraphs,
       note: clean(doc.storyNote),
     },
     sustainability: {
       heading: textOr(doc.sustainabilityHeading, d.sustainability.heading),
-      paragraphs: cleanList(doc.sustainabilityParagraphs),
+      paragraphs:
+        cleanList(doc.sustainabilityParagraphs).length > 0
+          ? cleanList(doc.sustainabilityParagraphs)
+          : d.sustainability.paragraphs,
       note: clean(doc.sustainabilityNote),
       ctaLabel: textOr(doc.sustainabilityCtaLabel, d.sustainability.ctaLabel),
     },
     vendors: {
       heading: textOr(doc.vendorsHeading, d.vendors.heading),
-      paragraphs: cleanList(doc.vendorsParagraphs),
+      paragraphs:
+        cleanList(doc.vendorsParagraphs).length > 0 ? cleanList(doc.vendorsParagraphs) : d.vendors.paragraphs,
       ctaLabel: textOr(doc.vendorsCtaLabel, d.vendors.ctaLabel),
     },
     cta: { title: textOr(doc.ctaTitle, d.cta.title), subtitle: textOr(doc.ctaSubtitle, d.cta.subtitle) },
@@ -209,8 +213,9 @@ function resolveMain(doc: FetchedCateringMain | null): CateringMainContent {
   const d = CATERING_MAIN_DEFAULTS;
   if (!doc) return d;
 
+  const HIDDEN_TRAYS = new Set(['Aloha Caesar with Chicken Tray', 'Tray of Pita Bread']);
   const trays: CateringTray[] = (doc.trays ?? [])
-    .filter((tray) => tray.name?.trim())
+    .filter((tray) => tray.name?.trim() && !HIDDEN_TRAYS.has(tray.name.trim()))
     .map((tray) => {
       const image = resolveContentImage(tray.image);
       return { name: clean(tray.name), price: clean(tray.price), ...(image ? { image } : {}) };

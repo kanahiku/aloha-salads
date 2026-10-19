@@ -4,9 +4,18 @@ import MenuPage from '~/components/widgets/MenuPage.astro';
 import { getMenuPageData } from '~/lib/content/menuContent';
 
 const { page, shared, items } = await getMenuPageData('misc');
+
+// Use the acai bowl local asset as hero; Sanity image takes over once uploaded there.
+// The ~/assets/images/ path is resolved to ImageMetadata by findImage() inside Image.astro.
+const heroImage = page.hero.image ?? {
+  src: '~/assets/images/misc-hero-acai-bowl.png',
+  alt: 'Acai bowl with strawberries, blueberries and banana — Aloha Salads',
+};
+const pageWithHero = { ...page, hero: { ...page.hero, image: heroImage } };
+
 const metadata = { ...page.meta, ignoreTitleTemplate: true };
 ---
 
 <PageLayout metadata={metadata}>
-  <MenuPage page={page} shared={shared} items={items} />
+  <MenuPage page={pageWithHero} shared={shared} items={items} />
 </PageLayout>

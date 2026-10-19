@@ -3,6 +3,7 @@ import {
   getSanityBlogPost,
   getSanityBlogPosts,
   getSanityBlogPostSlugs,
+  getSanitySitemapContent,
   getSanityTestimonials,
   getSanityNavigationContent,
   getSanityMenuCategories,
@@ -10,7 +11,6 @@ import {
 } from './sanity';
 import { blogPosts as localBlogPosts } from '../../data/pages/blogPosts';
 import { navigationData } from '../../data/navigation';
-import { interiorPaths } from '../../data/pages/interior';
 
 const LEGAL_FOOTER_LINKS = [
   { text: 'Privacy Policy', href: '/privacy-policy' },
@@ -18,8 +18,16 @@ const LEGAL_FOOTER_LINKS = [
   { text: 'Accessibility', href: '/accessibility' },
 ];
 
-const HIDDEN_NAV_HREFS = new Set(['/chapters', '/guidebooks']);
-const HIDDEN_NAV_LABELS = new Set(['chapters', 'guidebooks', 'guidebook series']);
+const HIDDEN_NAV_HREFS = new Set(['/chapters', '/guidebooks', '/menu/vegan', '/menu/kids']);
+const HIDDEN_NAV_LABELS = new Set([
+  'chapters',
+  'guidebooks',
+  'guidebook series',
+  'vegan options',
+  'keiki / kids',
+  'keiki / kids menu',
+  'kids menu',
+]);
 
 function isHiddenNavLink(link: { text: string; href?: string }): boolean {
   return (link.href != null && HIDDEN_NAV_HREFS.has(link.href)) || HIDDEN_NAV_LABELS.has(link.text.toLowerCase());
@@ -30,7 +38,20 @@ function hidePagesFromUi(nav: NavigationContent): NavigationContent {
     ...nav,
     header: {
       ...nav.header,
-      links: nav.header.links.filter((link) => !isHiddenNavLink(link)),
+      links: nav.header.links
+        .filter((link) => !isHiddenNavLink(link))
+        .map((link) => ({
+          ...link,
+          ...(link.links ? { links: link.links.filter((child) => !isHiddenNavLink(child)) } : {}),
+          ...(link.columns
+            ? {
+                columns: link.columns.map((column) => ({
+                  ...column,
+                  links: column.links.filter((child) => !isHiddenNavLink(child)),
+                })),
+              }
+            : {}),
+        })),
     },
     footer: {
       ...nav.footer,
@@ -88,20 +109,49 @@ export async function getBlogPostSlugs(): Promise<string[]> {
   return [...new Set([...localSlugs, ...sanitySlugs])];
 }
 
-const STATIC_PATHS = [
-  '/',
-  '/blog',
-  '/reviews',
-  '/privacy-policy',
-  '/terms',
-  '/accessibility',
-  '/contact',
-  ...interiorPaths,
-];
+const SITEMAP_EXCLUDED_PATHS = new Set(['/menu/vegan', '/menu/kids', '/404']);
+
+const pageModules = import.meta.glob('/src/pages/**/*.astro');
+
+function getDiscoveredStaticPaths(): string[] {
+  const paths: string[] = [];
+  for (const file of Object.keys(pageModules)) {
+    if (file.includes('/[') || file.endsWith('/404.astro') || file.includes('/api/')) continue;
+    let route = file
+      .replace(/^.*\/src\/pages/, '')
+      .replace(/\/index\.astro$/, '')
+      .replace(/\.astro$/, '');
+    if (route === '') route = '/';
+    if (!SITEMAP_EXCLUDED_PATHS.has(route) && !HIDDEN_NAV_HREFS.has(route)) paths.push(route);
+  }
+  return paths;
+}
+
+export interface SitemapEntry {
+  path: string;
+  lastmod?: string;
+}
+
+export async function getSitemapEntries(): Promise<SitemapEntry[]> {
+  const [sanityEntries, staticPaths] = await Promise.all([
+    getSanitySitemapContent().catch(() => []),
+    Promise.resolve(getDiscoveredStaticPaths()),
+  ]);
+
+  const map = new Map<string, string | undefined>();
+  for (const path of staticPaths) map.set(path, undefined);
+
+  for (const entry of sanityEntries) {
+    if (SITEMAP_EXCLUDED_PATHS.has(entry.path) || HIDDEN_NAV_HREFS.has(entry.path)) continue;
+    map.set(entry.path, entry.lastmod);
+  }
+
+  return [...map.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([path, lastmod]) => ({ path, lastmod }));
+}
 
 export async function getPublicContentPaths(): Promise<string[]> {
-  const postSlugs = await getBlogPostSlugs();
-  return [...STATIC_PATHS, ...postSlugs.map((slug) => `/blog/${slug.replace(/^\/+/, '')}`)];
+  const entries = await getSitemapEntries();
+  return entries.map((entry) => entry.path);
 }
 
 export function getBlogPermalink(slug: string): string {
@@ -198,7 +248,28 @@ export async function getTestimonials(): Promise<Testimonial[]> {
   }
 }
 
-const HIDDEN_MENU_ITEM_TITLES = new Set(['red bull']);
+const HIDDEN_MENU_ITEM_TITLES = new Set([
+  'red bull',
+  // Pre-launch: hide these cards until a photo exists. Remove a title here to show it again.
+  'extra pita',
+  'keiki combo',
+  'cookies',
+  'fountain drink',
+  'bottle water',
+  'vegan aloha mediterranean',
+  'vegan mandarin ginger',
+  'vegan hummus pita wrap',
+  'sides',
+]);
+
+export function omitHiddenMenuItems<T extends { title: string }>(items: T[]): T[] {
+  return items.filter((item) => !HIDDEN_MENU_ITEM_TITLES.has(normalizeMenuTitle(item.title)));
+}
+
+export function isHiddenMenuHub(href?: string): boolean {
+  return href === '/menu/vegan';
+}
+
 const MENU_PHOTO_DONOR_TO_BASE_TITLE = new Map([
   ['aloha caesar (with shrimp)', 'aloha caesar'],
   ['the paniolo (with gyro meat)', 'the paniolo'],
@@ -208,12 +279,46 @@ const MENU_PHOTO_DONOR_TO_BASE_TITLE = new Map([
   ['spicy ahi salad (styling b)', 'poke salad'],
 ]);
 
-const MENU_TITLE_RENAMES = new Map([['maui mozzarella salad', 'Maui Mozzarella']]);
+const MENU_TITLE_RENAMES = new Map([
+  ['maui mozzarella salad', 'Maui Mozzarella'],
+  ['poke wrap', 'Aloha Poke Wrap'],
+  ['spicy ahi poke wrap', 'Aloha Poke Wrap'],
+  ['tutus chicken salad wrap', "Tutu's Chicken Salad Wrap"],
+  ["tutu's chicken salad wrap", "Tutu's Chicken Salad Wrap"],
+  ["tutu's chicken salad tortilla wrap", "Tutu's Chicken Salad Wrap"],
+  ['tutus chicken salad tortilla wrap', "Tutu's Chicken Salad Wrap"],
+]);
 const MENU_IMAGE_ALT_RENAMES = new Map([
   ['hummis pita wrap', 'Hummus Pita Wrap'],
   ['grilled cheese combo', 'Grilled Cheese Soup Combo'],
   ['maui mozzarella salad', 'Maui Mozzarella'],
+  ['poke wrap', 'Aloha Poke Wrap'],
+  ['tutus chicken salad wrap', "Tutu's Chicken Salad Wrap"],
+  ["tutu's chicken salad wrap", "Tutu's Chicken Salad Wrap"],
 ]);
+const MENU_DESCRIPTION_OVERRIDES = new Map([
+  [
+    'maui mozzarella',
+    'Mixed greens, tomatoes, fresh mozzarella, red onions, basil, balsamic glaze, and balsamic vinaigrette.',
+  ],
+  [
+    'maui mozzarella salad',
+    'Mixed greens, tomatoes, fresh mozzarella, red onions, basil, balsamic glaze, and balsamic vinaigrette.',
+  ],
+  ['caprese sub', 'Fresh mozzarella, tomatoes, basil, red onion, mixed greens, and balsamic vinaigrette.'],
+]);
+const WRAP_SERVED_ON = 'served on warmed pita bread.';
+
+function withWarmedPita(description: string): string {
+  const withoutServing = description
+    .replace(
+      /,?\s*served on (?:a |an )?(?:warmed pita bread|warmed pita|spinach tortilla wrap|pita bread|pita)\.?$/i,
+      ''
+    )
+    .trim()
+    .replace(/[,\s]+$/, '');
+  return `${withoutServing}, ${WRAP_SERVED_ON}`;
+}
 
 function normalizeMenuTitle(title: string): string {
   return title.trim().toLowerCase().replace(/\s+/g, ' ');
@@ -221,14 +326,23 @@ function normalizeMenuTitle(title: string): string {
 
 function applyMenuItemTextCorrections(item: MenuItem): MenuItem {
   const title = MENU_TITLE_RENAMES.get(normalizeMenuTitle(item.title)) ?? item.title;
+  const descriptionOverride = MENU_DESCRIPTION_OVERRIDES.get(normalizeMenuTitle(title));
+  let description = descriptionOverride ?? item.description;
+  if (description && /\bwrap\b/i.test(title)) description = withWarmedPita(description);
+
+  const renamedAlt = item.image
+    ? (MENU_IMAGE_ALT_RENAMES.get(normalizeMenuTitle(item.image.alt)) ??
+      (title !== item.title ? title : item.image.alt))
+    : undefined;
   const image = item.image
     ? {
         ...item.image,
-        alt: MENU_IMAGE_ALT_RENAMES.get(normalizeMenuTitle(item.image.alt)) ?? item.image.alt,
+        alt: renamedAlt ?? item.image.alt,
+        title: item.image.title || renamedAlt || item.image.alt,
       }
     : undefined;
 
-  return { ...item, title, ...(image ? { image } : {}) };
+  return { ...item, title, ...(description ? { description } : {}), ...(image ? { image } : {}) };
 }
 
 const REQUESTED_MENU_ITEMS: Array<{
@@ -279,7 +393,8 @@ const REQUESTED_MENU_ITEMS: Array<{
     categoryDescription: 'Hearty wraps and sandwiches made with the same fresh components as our bowls.',
     title: 'Poke Wrap',
     insertAfter: 'Hummus Pita Wrap',
-    description: 'Bean sprouts, avocado, cucumber, crispy onion, spicy ahi, and unagi sauce, served on warmed pita.',
+    description:
+      'Bean sprouts, avocado, cucumber, crispy onion, spicy ahi, and unagi sauce, served on warmed pita bread.',
     badge: 'Coming soon',
   },
   {
@@ -313,24 +428,30 @@ const REQUESTED_MENU_ITEMS: Array<{
   },
 ];
 
+function canonicalMenuTitle(title: string): string {
+  const normalized = normalizeMenuTitle(title);
+  return normalizeMenuTitle(MENU_TITLE_RENAMES.get(normalized) ?? title);
+}
+
 function upsertRequestedMenuItem(
   items: MenuItem[],
   requested: (typeof REQUESTED_MENU_ITEMS)[number],
   image?: MenuItem['image']
 ) {
-  const requestedTitle = normalizeMenuTitle(requested.title);
-  const existingIndex = items.findIndex((item) => normalizeMenuTitle(item.title) === requestedTitle);
+  const requestedTitle = canonicalMenuTitle(requested.title);
+  const displayTitle = MENU_TITLE_RENAMES.get(normalizeMenuTitle(requested.title)) ?? requested.title;
+  const existingIndex = items.findIndex((item) => canonicalMenuTitle(item.title) === requestedTitle);
   const requestedFields = {
     ...(requested.description ? { description: requested.description } : {}),
     ...(requested.badge ? { badge: requested.badge } : {}),
     ...(requested.note ? { note: requested.note } : {}),
-    ...(image?.src ? { image: { ...image, alt: requested.title } } : {}),
+    ...(image?.src ? { image: { ...image, alt: displayTitle, title: displayTitle } } : {}),
   };
 
   if (existingIndex === -1) {
-    const newItem = { title: requested.title, ...requestedFields };
+    const newItem = { title: displayTitle, ...requestedFields };
     const afterIndex = requested.insertAfter
-      ? items.findIndex((item) => normalizeMenuTitle(item.title) === normalizeMenuTitle(requested.insertAfter!))
+      ? items.findIndex((item) => canonicalMenuTitle(item.title) === canonicalMenuTitle(requested.insertAfter!))
       : -1;
     if (afterIndex === -1) return [...items, newItem];
     return [...items.slice(0, afterIndex + 1), newItem, ...items.slice(afterIndex + 1)];
@@ -340,11 +461,12 @@ function upsertRequestedMenuItem(
     index === existingIndex
       ? {
           ...item,
+          title: displayTitle,
           ...requestedFields,
           description: requested.description ?? item.description,
           badge: requested.badge ?? item.badge,
           note: requested.note ?? item.note,
-          image: image?.src ? { ...image, alt: requested.title } : item.image,
+          image: image?.src ? { ...image, alt: displayTitle, title: displayTitle } : item.image,
         }
       : item
   );
@@ -399,10 +521,12 @@ function applyMenuDisplayOverrides(categories: MenuCategory[]): MenuCategory[] {
     };
   }
 
-  return nextCategories.map((category) => ({
-    ...category,
-    items: category.items.map(applyMenuItemTextCorrections),
-  }));
+  return nextCategories
+    .filter((category) => category.slug !== 'vegan' && category.href !== '/menu/vegan')
+    .map((category) => ({
+      ...category,
+      items: category.items.map(applyMenuItemTextCorrections),
+    }));
 }
 
 export async function getMenuCategories(): Promise<MenuCategory[]> {

@@ -72,7 +72,7 @@ export const menuHub = defineType({
     textField('sourcing', 'sourcingTitle', 'Heading'),
     textField('sourcing', 'sourcingSubtitle', 'Text', { rows: 4 }),
     textField('sourcing', 'sourcingCtaLabel', 'Button label', { description: 'Links to the Ingredients page.' }),
-    imageField('sourcing', 'sourcingImage', 'Photo', 'Not shown on the site yet — a grey placeholder stays here until the image pass.'),
+    imageField('sourcing', 'sourcingImage', 'Photo', 'Photo shown beside the Quality Ingredients text on the Menu page.'),
 
     textField('cta', 'ctaSubtitle', 'Text', {
       description: 'The heading is shared — see "Shared with menu pages".',

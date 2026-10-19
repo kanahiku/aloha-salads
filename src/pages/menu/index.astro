@@ -7,9 +7,13 @@ import FAQs from '~/components/widgets/FAQs.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { PRIMARY_CTA_HREF, LOCATION_CTA_HREF } from '~/config/cta';
 import { getMenuHubData } from '~/lib/content/menuContent';
+import { getSanityMenuPagesImages } from '~/lib/content/sanity';
 import { textToHtml } from '~/lib/content/richText';
 
-const { hub, shared, categories } = await getMenuHubData();
+const [{ hub, shared, categories }, menuPagesImages] = await Promise.all([
+  getMenuHubData(),
+  getSanityMenuPagesImages().catch(() => ({}) as Awaited<ReturnType<typeof getSanityMenuPagesImages>>),
+]);
 const metadata = { ...hub.meta, ignoreTitleTemplate: true };
 const faqs = hub.faqs.map((faq) => ({ title: faq.question, description: faq.answer }));
 ---
@@ -41,8 +45,8 @@ const faqs = hub.faqs.map((faq) => ({ title: faq.question, description: faq.answ
     subtitle={hub.sourcing.subtitle}
     ctaText={hub.sourcing.ctaLabel}
     ctaHref="/ingredients"
+    image={menuPagesImages.menuHubIngredients ?? hub.sourcing.image}
     withPhoto={true}
-    image={hub.sourcing.image}
   />
 
   <CTABanner

@@ -7,8 +7,10 @@
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
+import Image from '~/components/common/Image.astro';
 import basketIcon from '~/assets/icons/Shopping-Basket-Like--Streamline-Freehand.svg?url';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
+import type { ContentImage } from '~/lib/content/types';
 export interface SourcingFact {
   title: string;
   description: string;
@@ -26,6 +28,8 @@ export interface Props {
    * The intro panel becomes a split layout: text+CTA left / photo right.
    */
   withPhoto?: boolean;
+  /** Photo for the split layout. Below-the-fold, so it loads lazy. */
+  image?: ContentImage;
   /**
    * Controls the facts card layout.
    * 'grid-4'    — 4-column grid (default, homepage style, overlaps the intro panel)
@@ -33,24 +37,39 @@ export interface Props {
    * 'featured'  — full-width first card + 3-col grid for the remaining items
    */
   factsLayout?: 'grid-4' | 'grid-2' | 'featured';
+  /** Tighter vertical space. Use when another section sits directly underneath. */
+  compact?: boolean;
   id?: string;
+  /**
+   * Optional extra card appended after the last fact card (featured layout only).
+   * Use to surface a related section (e.g. "Our Packaging") inside the facts grid.
+   */
+  appendCard?: { title: string; description?: string; href?: string };
 }
 
 const {
   eyebrow = 'We Support Local',
   title = 'Sourced close to home, on purpose.',
-  subtitle = "We have bought from local farmers and fishermen since day one in Kailua. Heres what that actually means on your plate — in specifics, not adjectives.",
+  subtitle = "We have bought from local farmers and fishermen since day one in Kailua. Heres what that actually means on your plate, in specifics, not adjectives.",
   ctaText = 'See where our food comes from',
   ctaHref = '/ingredients',
   withPhoto = false,
+  image,
   facts = [],
   factsLayout = 'grid-4',
+  compact = false,
   id,
+  appendCard,
 } = Astro.props;
 ---
 
 <section {...id ? { id } : {}} class="not-prose relative w-full">
-  <div class="mx-auto flex w-full max-w-container flex-col px-5 py-16 sm:px-8 md:px-16 md:py-[120px]">
+  <div
+    class:list={[
+      'mx-auto flex w-full max-w-container flex-col px-5 sm:px-8 md:px-16',
+      compact ? 'py-8 md:pt-16 md:pb-4' : 'py-16 md:py-[120px]',
+    ]}
+  >
     {/* ── Standard intro panel (grid-4 and grid-2 only) ─────────── */}
     {
       factsLayout !== 'featured' && (
@@ -73,13 +92,29 @@ const {
                 {ctaText && <Button variant="primary" text={ctaText} href={ctaHref} hideNote={true} />}
               </div>
               <div class="relative min-h-[280px] flex-1 overflow-hidden md:min-h-0">
-                {/* TODO: replace with <Image> when approved client photography is ready */}
-                <HeroImagePlaceholder fill class="absolute inset-0" />
+                {image?.src ? (
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    title={image.title || image.alt}
+                    width={960}
+                    height={1200}
+                    layout="cover"
+                    format="webp"
+                    widths={[480, 768, 960, 1200]}
+                    sizes="(max-width: 768px) 100vw, 48vw"
+                    loading="lazy"
+                    decoding="async"
+                    class="absolute inset-0 h-full w-full object-cover"
+                  />
+                ) : (
+                  <HeroImagePlaceholder fill class="absolute inset-0" />
+                )}
               </div>
             </div>
           ) : (
             /* default: 2-col text split */
-            <div class="flex w-full flex-col bg-card px-6 pb-10 pt-10 backdrop-blur-sm md:px-16 md:pb-[92px] md:pr-[100px] md:pt-16">
+            <div class="flex w-full flex-col bg-card px-6 pb-10 pt-10 backdrop-blur-sm md:px-16 md:pb-16 md:pr-[100px] md:pt-16">
               <div class="flex w-full flex-col items-start gap-8 md:flex-row md:gap-16">
                 <div class="flex min-w-0 flex-1 flex-col items-start gap-6">
                   {eyebrow && (
@@ -158,25 +193,16 @@ const {
     {
       factsLayout === 'featured' && facts.length > 0 && (
         <div class="flex w-full flex-col gap-6">
-          {/* ── Split panel — eyebrow + facts[0] heading + sub-points | image ── */}
-          <div class="flex w-full flex-col overflow-hidden bg-card md:flex-row">
-            {/* Left: text */}
-            <div class="flex flex-col items-start gap-6 px-8 py-10 md:w-[52%] md:px-14 md:py-16">
-              {eyebrow && (
-                <Heading variant="eyebrow" color="inherit" class="text-heading opacity-80">
-                  {eyebrow}
-                </Heading>
-              )}
-              <Heading variant="h2">{facts[0].title}</Heading>
+          {/* ── Text panel — eyebrow + facts[0] heading | body, no photo ── */}
+          <div class="flex w-full flex-col bg-card px-6 pb-10 pt-10 md:px-16 md:pb-16 md:pr-[100px] md:pt-16">
+            <div class="flex w-full flex-col items-start gap-8 md:flex-row md:gap-16">
+              <div class="flex min-w-0 flex-1 flex-col items-start gap-6">
+                <Heading variant="h2">{facts[0].title}</Heading>
+              </div>
               <div
-                class="sourcing-featured-body w-full font-sans text-[15px] leading-relaxed text-heading"
+                class="sourcing-featured-body flex min-w-0 flex-1 flex-col font-sans text-[15px] leading-relaxed text-heading"
                 set:html={facts[0].description}
               />
-            </div>
-            {/* Right: image placeholder */}
-            <div class="relative min-h-[280px] flex-1 overflow-hidden md:min-h-0">
-              {/* TODO: replace with <Image> when approved client photography is ready */}
-              <HeroImagePlaceholder fill class="absolute inset-0" />
             </div>
           </div>
 
@@ -204,6 +230,29 @@ const {
               ))}
             </div>
           )}
+
+          {/* ── full-width append card (e.g. Our Packaging) — sits below the 3-col grid ── */}
+          {appendCard && (
+            <div class="flex w-full flex-col bg-card px-6 pb-10 pt-10 md:px-16 md:pb-16 md:pt-16">
+              <div class="flex w-full flex-col items-start gap-6">
+                <div class="flex items-center gap-3">
+                  <Heading variant="h2">
+                    {appendCard.href ? (
+                      <a href={appendCard.href} class="hover:text-accent transition-colors">{appendCard.title}</a>
+                    ) : (
+                      appendCard.title
+                    )}
+                  </Heading>
+                </div>
+                {appendCard.description && (
+                  <div
+                    class="append-card-body w-full font-sans text-[15px] leading-relaxed text-heading"
+                    set:html={appendCard.description}
+                  />
+                )}
+              </div>
+            </div>
+          )}
         </div>
       )
     }
@@ -213,14 +262,17 @@ const {
 <style is:global>
   /* Paragraph + bold styling for the featured panels set:html content.
      Must be is:global — Astro scoped styles cant reach set:html children. */
-  .sourcing-featured-body p {
+  .sourcing-featured-body p,
+  .append-card-body p {
     line-height: 1.65;
     margin-bottom: 0.875rem;
   }
-  .sourcing-featured-body p:last-child {
+  .sourcing-featured-body p:last-child,
+  .append-card-body p:last-child {
     margin-bottom: 0;
   }
-  .sourcing-featured-body strong {
+  .sourcing-featured-body strong,
+  .append-card-body strong {
     font-weight: 600;
   }
 </style>

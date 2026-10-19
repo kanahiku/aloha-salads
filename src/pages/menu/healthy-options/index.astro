@@ -2,11 +2,24 @@
 import PageLayout from '~/layouts/PageLayout.astro';
 import MenuPage from '~/components/widgets/MenuPage.astro';
 import { getMenuPageData } from '~/lib/content/menuContent';
+import { getMenuItemImage } from '~/lib/content';
 
-const { page, shared, items } = await getMenuPageData('healthy-options');
+const [{ page, shared, items }, kamuelaCobb, alohaPassion] = await Promise.all([
+  getMenuPageData('healthy-options'),
+  getMenuItemImage('Kamuela Cobb'),
+  getMenuItemImage('Aloha Passion'),
+]);
+
+// Inject card photos: "Signature Salads" → Kamuela Cobb, "Plant-Based Meals" → Aloha Passion
+const enrichedItems = items.map((item) => {
+  if (item.title === 'Signature Salads' && kamuelaCobb) return { ...item, image: kamuelaCobb };
+  if (item.title === 'Plant-Based Meals' && alohaPassion) return { ...item, image: alohaPassion };
+  return item;
+});
+
 const metadata = { ...page.meta, ignoreTitleTemplate: true };
 ---
 
 <PageLayout metadata={metadata}>
-  <MenuPage page={page} shared={shared} items={items} />
+  <MenuPage page={page} shared={shared} items={enrichedItems} />
 </PageLayout>

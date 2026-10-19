@@ -4,18 +4,11 @@ import type { APIRoute } from 'astro';
 import { canonicalSiteOrigin, isIndexableHost } from '~/lib/indexing';
 
 export const GET: APIRoute = ({ request }) => {
-  const indexable = isIndexableHost(request.headers.get('host'));
+  const indexable = import.meta.env.DEV || isIndexableHost(request.headers.get('host'));
   const origin = canonicalSiteOrigin();
 
   const body = indexable
-    ? [
-        'User-agent: *',
-        'Allow: /',
-        '',
-        `Sitemap: ${origin}/sitemap.xml`,
-        `Sitemap: ${origin}/sitemap-index.xml`,
-        '',
-      ].join('\n')
+    ? ['User-agent: *', 'Allow: /', '', `Sitemap: ${origin}/sitemap.xml`, ''].join('\n')
     : ['User-agent: *', 'Disallow: /', ''].join('\n');
 
   return new Response(body, {

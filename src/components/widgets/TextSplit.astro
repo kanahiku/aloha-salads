@@ -110,7 +110,7 @@ const useNarrowGap = imageUnderHeading || (imageAside && isLandscape);
               {image ? (
                 <Image
                   {...image}
-                  class="h-full w-full rounded-[32px] object-cover"
+                  class="h-full w-full object-cover"
                   widths={[400, 768, 1200]}
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   loading="lazy"
@@ -123,7 +123,7 @@ const useNarrowGap = imageUnderHeading || (imageAside && isLandscape);
               ) : imageSlotHtml ? (
                 <Fragment set:html={imageSlotHtml} />
               ) : (
-                <HeroImagePlaceholder fill class="w-full rounded-[32px]" style={`aspect-ratio: ${imageAspect};`} />
+                <HeroImagePlaceholder fill class="w-full" style={`aspect-ratio: ${imageAspect};`} />
               )}
             </div>
           )
@@ -137,7 +137,7 @@ const useNarrowGap = imageUnderHeading || (imageAside && isLandscape);
             {image ? (
               <Image
                 {...image}
-                class="h-full w-full rounded-[32px] object-cover"
+                class="h-full w-full object-cover"
                 widths={[400, 768, 1200]}
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 loading="lazy"
@@ -150,7 +150,7 @@ const useNarrowGap = imageUnderHeading || (imageAside && isLandscape);
             ) : imageSlotHtml ? (
               <Fragment set:html={imageSlotHtml} />
             ) : (
-              <HeroImagePlaceholder fill class="w-full rounded-[32px]" style={`aspect-ratio: ${imageAspect};`} />
+              <HeroImagePlaceholder fill class="w-full" style={`aspect-ratio: ${imageAspect};`} />
             )}
           </div>
         ) : (
