@@ -722,6 +722,20 @@ function isPlaceholderEmail(value: string): boolean {
   return /@example\.com$/i.test(value.trim());
 }
 
+/** notify_email may be one address or several, separated by commas or semicolons. */
+function recipientList(value: string): string[] {
+  const seen = new Set<string>();
+  const recipients: string[] = [];
+  for (const part of value.split(/[,;]+/)) {
+    const email = part.trim();
+    const key = email.toLowerCase();
+    if (!email || isPlaceholderEmail(email) || seen.has(key)) continue;
+    seen.add(key);
+    recipients.push(email);
+  }
+  return recipients;
+}
+
 async function sendResend(
   apiKey: string | undefined,
   email: ResendEmail
@@ -731,14 +745,21 @@ async function sendResend(
     return { ok: false, error: 'Unable to send email right now. Download or print instead.' };
   }
 
+  const to = recipientList(email.to);
+  if (to.length === 0) {
+    console.error('Resend skipped: no recipient');
+    return { ok: false, error: 'Unable to send email right now. Download or print instead.' };
+  }
+
   const payload: Record<string, unknown> = {
     from: email.from,
-    to: [email.to],
+    to,
     subject: email.subject,
     html: email.html,
     text: email.text,
   };
-  if (email.replyTo && !isPlaceholderEmail(email.replyTo)) payload.reply_to = email.replyTo;
+  const replyTo = email.replyTo ? recipientList(email.replyTo)[0] : undefined;
+  if (replyTo) payload.reply_to = replyTo;
   if (email.attachments?.length) payload.attachments = email.attachments;
 
   const headers: Record<string, string> = {
