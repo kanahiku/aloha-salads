@@ -242,6 +242,35 @@ export const blogPost = defineType({
         }),
         defineArrayMember({
           type: 'object',
+          name: 'imageRow',
+          title: 'Images side by side',
+          fields: [
+            defineField({
+              name: 'images',
+              title: 'Images',
+              type: 'array',
+              of: [
+                defineArrayMember({
+                  type: 'image',
+                  options: { hotspot: true },
+                  fields: [
+                    defineField({ name: 'alt', title: 'Alt text', type: 'string' }),
+                    defineField({ name: 'caption', title: 'Title below image', type: 'string' }),
+                  ],
+                }),
+              ],
+              validation: (r) => r.min(2).max(4),
+            }),
+          ],
+          preview: {
+            select: { images: 'images', media: 'images.0' },
+            prepare({ images, media }: { images?: unknown[]; media?: unknown }) {
+              return { title: `Images side by side (${images?.length ?? 0})`, media: media as never };
+            },
+          },
+        }),
+        defineArrayMember({
+          type: 'object',
           name: 'embed',
           title: 'Map / video embed',
           fields: [

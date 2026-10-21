@@ -757,6 +757,9 @@ function portableTextToContentBlocks(body: SanityPortableBlock[] | null | undefi
   let listBuffer: { _key: string; html: string; level: number }[] = [];
   let listType: 'bullet' | 'number' | null = null;
   let listStartKey = '';
+  let inFaqSection = false;
+  let faqSectionStartKey = '';
+  let faqSectionItems: { _key?: string; question: string; answer: string }[] = [];
 
   function flushList() {
     if (!listBuffer.length || !listType) return;
@@ -766,12 +769,28 @@ function portableTextToContentBlocks(body: SanityPortableBlock[] | null | undefi
     listStartKey = '';
   }
 
+  function flushFaqSection() {
+    if (faqSectionItems.length) {
+      result.push({ _type: 'faq', _key: `faq-${faqSectionStartKey}`, items: faqSectionItems });
+    }
+    faqSectionItems = [];
+    inFaqSection = false;
+    faqSectionStartKey = '';
+  }
+
+  function appendFaqAnswer(html: string) {
+    const last = faqSectionItems[faqSectionItems.length - 1];
+    const chunk = `<p class="text-[16px] md:text-[17px] font-normal leading-[160%]">${html}</p>`;
+    last.answer = last.answer ? `${last.answer}${chunk}` : chunk;
+  }
+
   body.forEach((block, index) => {
     const key = block._key || `block-${index}`;
 
     // ── Image ─────────────────────────────────────────────────────────────────
     if (block._type === 'image') {
       flushList();
+      flushFaqSection();
       const image = resolveContentImage({
         src: block.src,
         alt: block.alt,
@@ -785,9 +804,10 @@ function portableTextToContentBlocks(body: SanityPortableBlock[] | null | undefi
       return;
     }
 
-    // ── Image carousel ────────────────────────────────────────────────────────
-    if (block._type === 'imageCarousel') {
+    // ── Image carousel / side-by-side image row ───────────────────────────────
+    if (block._type === 'imageCarousel' || block._type === 'imageRow') {
       flushList();
+      flushFaqSection();
       const images = (block.images ?? []).flatMap((item, ii) => {
         const image = resolveContentImage({
           src: item.src,
@@ -801,13 +821,15 @@ function portableTextToContentBlocks(body: SanityPortableBlock[] | null | undefi
         return [{ _key: item._key || `${key}-img-${ii}`, image, ...(caption ? { caption } : {}) }];
       });
       if (!images.length) return;
-      result.push({ _type: 'imageCarousel', _key: key, images });
+      if (block._type === 'imageRow') result.push({ _type: 'imageRow', _key: key, images });
+      else result.push({ _type: 'imageCarousel', _key: key, images });
       return;
     }
 
     // ── Embed (map / video iframe) ────────────────────────────────────────────
     if (block._type === 'embed') {
       flushList();
+      flushFaqSection();
       const url = safeEmbedUrl(block.url);
       if (!url) return;
       const height = typeof block.height === 'number' && block.height >= 200 && block.height <= 1200 ? block.height : 450;
@@ -818,6 +840,7 @@ function portableTextToContentBlocks(body: SanityPortableBlock[] | null | undefi
     // ── HTML embed (pasted widget / social embed code) ───────────────────────
     if (block._type === 'htmlEmbed') {
       flushList();
+      flushFaqSection();
       const code = typeof block.code === 'string' ? block.code.trim() : '';
       if (!code) return;
       result.push({ _type: 'htmlEmbed', _key: key, title: block.title?.trim() || 'Embedded content', code });
@@ -827,6 +850,7 @@ function portableTextToContentBlocks(body: SanityPortableBlock[] | null | undefi
     // ── Table ─────────────────────────────────────────────────────────────────
     if (block._type === 'table') {
       flushList();
+      flushFaqSection();
       // Empty header cells are real columns (e.g. a blank corner cell); keep them so columns stay aligned.
       const headerRow = (block.headerRow ?? []).map((cell) => cell ?? '');
       if (headerRow.length < 2 || !headerRow.some((cell) => cell.trim())) return;
@@ -846,6 +870,7 @@ function portableTextToContentBlocks(body: SanityPortableBlock[] | null | undefi
     // ── Callout ───────────────────────────────────────────────────────────────
     if (block._type === 'callout') {
       flushList();
+      flushFaqSection();
       if (!block.text?.trim()) return;
       const calloutType = (['tip', 'info', 'warning', 'note'] as const).includes(
         block.calloutType as 'tip' | 'info' | 'warning' | 'note'
@@ -867,13 +892,40 @@ function portableTextToContentBlocks(body: SanityPortableBlock[] | null | undefi
     // Headings
     if (block.style === 'h1' || block.style === 'h2') {
       flushList();
+      flushFaqSection();
+      const startsFaq = /frequently asked questions|\bfaqs?\b/i.test(text);
       result.push({ _type: 'heading', _key: key, level: 2, text });
+      if (startsFaq) {
+        inFaqSection = true;
+        faqSectionStartKey = key;
+      }
       return;
     }
     if (block.style === 'h3' || block.style === 'h4') {
       flushList();
+      if (inFaqSection) {
+        faqSectionItems.push({ _key: key, question: text, answer: '' });
+        return;
+      }
       result.push({ _type: 'heading', _key: key, level: block.style === 'h4' ? 4 : 3, text });
       return;
+    }
+
+    // A bold line or a line ending in "?" under the FAQ heading is a question (some docs use bold, not Heading 3).
+    if (inFaqSection) {
+      flushList();
+      const spans = block.children ?? [];
+      const allBold =
+        spans.some((span) => (span.marks ?? []).includes('strong')) &&
+        spans.every((span) => !(span.text ?? '').trim() || (span.marks ?? []).includes('strong'));
+      if ((allBold || text.endsWith('?')) && text.length < 200) {
+        faqSectionItems.push({ _key: key, question: text, answer: '' });
+        return;
+      }
+      if (faqSectionItems.length) {
+        appendFaqAnswer(html);
+        return;
+      }
     }
 
     // List items
@@ -899,6 +951,7 @@ function portableTextToContentBlocks(body: SanityPortableBlock[] | null | undefi
   });
 
   flushList();
+  flushFaqSection();
   return result;
 }
 
@@ -990,7 +1043,7 @@ const BLOG_POST_PROJECTION = /* groq */ `
       headerRow,
       "rows": rows[] { _key, cells }
     },
-    _type == "imageCarousel" => {
+    _type in ["imageCarousel", "imageRow"] => {
       _type,
       _key,
       "images": images[] {

@@ -7,6 +7,7 @@ import ServiceDirectory from '~/components/ui/ServiceDirectory.astro';
 import ReviewsGrid from '~/components/widgets/ReviewsGrid.astro';
 import BlogArticleImage from '~/components/blog/BlogArticleImage.astro';
 import BlogImageCarousel from '~/components/blog/BlogImageCarousel.astro';
+import BlogImageRow from '~/components/blog/BlogImageRow.astro';
 import BlogHtmlEmbed from '~/components/blog/BlogHtmlEmbed.astro';
 import {
   getArticleBlocks,
@@ -93,6 +94,37 @@ const closingCtaKey = closingCta ? lastLinkedParagraph?._key : undefined;
             <h3 id={getPortableHeadingId(post, block._key)} class={h3Class}>
               {block.text}
             </h3>
+          );
+        }
+
+        if (block._type === 'faq') {
+          return (
+            <div class="mt-2 mb-4">
+              {block.items.map((item, index) => (
+                <details class:list={['group py-1', index > 0 && 'border-t border-faq-light']} name="faq-accordion">
+                  <summary class="flex cursor-pointer select-none list-none items-center justify-between gap-4 py-4">
+                    <span class="pr-4 text-[20px] font-sans font-semibold leading-snug text-faq-question-light">
+                      {item.question}
+                    </span>
+                    <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-faq-toggle-light text-faq-toggle-light transition-colors duration-200 group-open:border-accent group-open:text-accent">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-3.5 w-3.5 transition-transform duration-300 group-open:rotate-45"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                      >
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                      </svg>
+                    </span>
+                  </summary>
+                  {item.answer && (
+                    <div class="space-y-3 pb-5 pr-10 text-faq-answer-light" set:html={item.answer} />
+                  )}
+                </details>
+              ))}
+            </div>
           );
         }
 
@@ -187,6 +219,9 @@ const closingCtaKey = closingCta ? lastLinkedParagraph?._key : undefined;
           );
         }
 
+        if (block._type === 'imageRow') {
+          return <BlogImageRow images={block.images} />;
+        }
         if (block._type === 'imageCarousel') {
           return <BlogImageCarousel images={block.images} />;
         }
@@ -513,6 +548,9 @@ const closingCtaKey = closingCta ? lastLinkedParagraph?._key : undefined;
   }
   div :global(thead strong) {
     color: inherit;
+  }
+  div :global(details > summary::-webkit-details-marker) {
+    display: none;
   }
   div :global(code) {
     background-color: rgb(237 217 116 / 50%);

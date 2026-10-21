@@ -11,7 +11,7 @@ export interface Props {
   fit?: 'cover' | 'contain';
 }
 
-const { image, caption, eager = false, class: className = 'my-8', fit = 'cover' } = Astro.props;
+const { image, caption, eager = false, class: className = 'my-4', fit = 'cover' } = Astro.props;
 const contained = fit === 'contain';
 ---
 

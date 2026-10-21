@@ -1,0 +1,45 @@
+---
+/**
+ * Images authored side by side in the document. Whole photo visible (object-contain),
+ * optional bold title under each one. Up to three stay in one row at every width; four go 2×2 on mobile.
+ */
+import Image from '~/components/common/Image.astro';
+import type { ContentImage } from '~/lib/content/types';
+
+export interface Props {
+  images: { _key: string; image: ContentImage; caption?: string }[];
+}
+
+const { images } = Astro.props;
+const columns = Math.min(images.length, 4);
+const mobileCols = ['', 'grid-cols-1', 'grid-cols-2', 'grid-cols-3', 'grid-cols-2'][columns];
+const desktopCols = ['', 'sm:grid-cols-1', 'sm:grid-cols-2', 'sm:grid-cols-3', 'sm:grid-cols-4'][columns];
+---
+
+{
+  images.length > 0 && (
+    <div class:list={['my-4 grid gap-3 sm:gap-4', mobileCols, desktopCols]}>
+      {images.map((item) => (
+        <figure class="m-0 flex flex-col">
+          <Image
+            src={item.image.src}
+            alt={item.caption || item.image.alt}
+            class="h-auto w-full rounded-md object-contain"
+            widths={[300, 600, 900]}
+            sizes={`(max-width: 640px) ${Math.round(100 / (columns === 4 ? 2 : columns))}vw, ${Math.round(70 / columns)}vw`}
+            width={900}
+            layout="constrained"
+            format="webp"
+            loading="lazy"
+            decoding="async"
+          />
+          {item.caption && (
+            <figcaption class="mt-2 text-center text-[15px] font-semibold leading-[140%] text-heading md:text-[16px]">
+              {item.caption}
+            </figcaption>
+          )}
+        </figure>
+      ))}
+    </div>
+  )
+}

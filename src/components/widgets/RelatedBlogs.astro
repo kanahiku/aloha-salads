@@ -13,6 +13,8 @@ export interface Props {
   excludeSlug?: string;
   surface?: SectionSurface;
   title?: string;
+  /** Render the section and card titles as paragraphs, e.g. below a blog article whose headings must match its document. */
+  plainHeadings?: boolean;
 }
 
 const RELATED_LIMIT = 3;
@@ -23,6 +25,7 @@ const {
   excludeSlug,
   surface = 'grey',
   title = 'Related Blogs',
+  plainHeadings = false,
 } = Astro.props;
 
 const related = post
@@ -39,10 +42,15 @@ const isDark = isDarkSurface(surface);
 {
   related.length > 0 && (
     <WidgetWrapper containerClass="max-w-container mx-auto" isDark={isDark}>
-      <Headline isDark={isDark} title={title} classes={{ container: 'mb-[30px]' }} />
+      <Headline
+        isDark={isDark}
+        title={title}
+        titleTag={plainHeadings ? 'p' : 'h2'}
+        classes={{ container: 'mb-[30px]' }}
+      />
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {related.map((item) => (
-          <BlogCard post={item} variant="outlined" />
+          <BlogCard post={item} variant="outlined" titleTag={plainHeadings ? 'p' : 'h3'} />
         ))}
       </div>
       <Fragment slot="bg">

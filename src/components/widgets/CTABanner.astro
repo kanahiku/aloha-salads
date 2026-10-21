@@ -26,6 +26,8 @@ export interface Props {
   title: string;
   subtitle?: string;
   id?: string;
+  /** Semantic element for the title; visual scale stays h2. */
+  headingAs?: 'h2' | 'p';
 
   /** @deprecated Legacy template props — accepted but ignored. */
   ctaText?: string;
@@ -48,6 +50,7 @@ const {
   title,
   subtitle,
   id,
+  headingAs = 'h2',
 } = Astro.props;
 
 const conversionLinks = [
@@ -86,6 +89,7 @@ const conversionLinks = [
       {/* ── Display headline — h2 scale (semantic: not a page title) ─── */}
       <Heading
         variant="h2"
+        as={headingAs}
         color="inherit"
         class="max-w-3xl text-balance text-page"
       >

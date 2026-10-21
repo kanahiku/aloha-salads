@@ -8,9 +8,10 @@ import type { BlogPost } from '~/lib/content/types';
 export interface Props {
   post: BlogPost;
   variant?: 'dark' | 'light' | 'outlined';
+  titleTag?: 'h3' | 'p';
 }
 
-const { post, variant = 'outlined' } = Astro.props;
+const { post, variant = 'outlined', titleTag: TitleTag = 'h3' } = Astro.props;
 const href = getBlogPermalink(post.slug);
 const headingClass = variant === 'dark' ? 'text-card-heading-dark' : 'text-card-heading-light';
 const bodyClass = variant === 'dark' ? 'text-card-body-dark' : 'text-card-body-light';
@@ -57,9 +58,9 @@ const thumbnail = post.image?.src ? post.image : undefined;
   >
     {getFormattedDate(publishDate)}
   </time>
-  <h3 class:list={['text-[18px] md:text-[20px] font-sans font-medium leading-[130%] mb-2', headingClass]}>
+  <TitleTag class:list={['text-[18px] md:text-[20px] font-sans font-medium leading-[130%] mb-2', headingClass]}>
     {post.title}
-  </h3>
+  </TitleTag>
   <p class:list={['text-[14px] md:text-[15px] font-normal leading-[160%] flex-1', bodyClass]}>
     {post.excerpt}
   </p>

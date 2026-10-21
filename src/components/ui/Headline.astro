@@ -4,6 +4,8 @@ import { twMerge } from 'tailwind-merge';
 
 interface ExtendedProps extends Props {
   isDark?: boolean;
+  /** Use 'p' where the title is decoration, not part of the page outline. */
+  titleTag?: 'h2' | 'p';
 }
 
 const {
@@ -12,6 +14,7 @@ const {
   tagline,
   isDark = false,
   classes = {},
+  titleTag: TitleTag = 'h2',
 } = Astro.props as ExtendedProps;
 
 const {
@@ -35,7 +38,7 @@ const subtitleColor = isDark ? 'text-headline-subtitle-dark' : 'text-headline-su
         <p class="type-eyebrow text-accent font-script mb-3" set:html={tagline} />
       )}
       {title && (
-        <h2
+        <TitleTag
           class={twMerge(titleTypography, titleColor, titleClass)}
           set:html={title}
         />

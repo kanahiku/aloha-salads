@@ -382,7 +382,9 @@ export type BlogContentBlock =
   | BlogContentCallout
   | BlogContentEmbed
   | BlogContentHtmlEmbed
-  | BlogContentCarousel;
+  | BlogContentCarousel
+  | BlogContentImageRow
+  | BlogContentFaq;
 
 export interface BlogContentParagraph {
   _type: 'paragraph';
@@ -399,6 +401,8 @@ export interface BlogContentHeading {
   _key: string;
   level: 2 | 3 | 4;
   text: string;
+  /** Question inside a "Frequently Asked Questions" section. */
+  faq?: boolean;
 }
 
 export interface BlogContentImage {
@@ -458,6 +462,27 @@ export interface BlogContentCarousel {
   _type: 'imageCarousel';
   _key: string;
   images: { _key: string; image: ContentImage; caption?: string }[];
+}
+
+/** Images placed side by side in one Word paragraph, each with an optional title below. */
+export interface BlogContentImageRow {
+  _type: 'imageRow';
+  _key: string;
+  images: { _key: string; image: ContentImage; caption?: string }[];
+}
+
+export interface BlogContentFaqItem {
+  _key?: string;
+  question: string;
+  /** Answer HTML. Several paragraphs are separate `<p>` elements. */
+  answer: string;
+}
+
+/** Questions under a "Frequently Asked Questions" heading, rendered as an accordion. */
+export interface BlogContentFaq {
+  _type: 'faq';
+  _key: string;
+  items: BlogContentFaqItem[];
 }
 
 // ─── Testimonials ─────────────────────────────────────────────────────────────
