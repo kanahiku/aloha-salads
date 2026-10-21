@@ -107,7 +107,9 @@ export default {
     }
 
     if (request.method === 'OPTIONS') {
-      if (!originAllowed(origin, defaultPatterns(env))) {
+      // The real allowlist is checked on POST, after the site row is loaded.
+      // A JSON contact post cannot send that body during preflight.
+      if (!isHttpOrigin(origin)) {
         return json({ ok: false, error: 'Origin not allowed' }, 403);
       }
       return cors(origin, new Response(null, { status: 204 }));
@@ -541,6 +543,15 @@ function originMatches(origin: string, pattern: string): boolean {
 
 function originAllowed(origin: string, patterns: string[]): boolean {
   return patterns.some((pattern) => originMatches(origin, pattern));
+}
+
+function isHttpOrigin(origin: string): boolean {
+  try {
+    const protocol = new URL(origin).protocol;
+    return protocol === 'http:' || protocol === 'https:';
+  } catch {
+    return false;
+  }
 }
 
 function parseEnvOrigins(raw?: string): string[] {
