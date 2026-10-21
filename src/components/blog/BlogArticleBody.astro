@@ -6,6 +6,8 @@ import IconPoint from '~/components/ui/IconPoint.astro';
 import ServiceDirectory from '~/components/ui/ServiceDirectory.astro';
 import ReviewsGrid from '~/components/widgets/ReviewsGrid.astro';
 import BlogArticleImage from '~/components/blog/BlogArticleImage.astro';
+import BlogImageCarousel from '~/components/blog/BlogImageCarousel.astro';
+import BlogHtmlEmbed from '~/components/blog/BlogHtmlEmbed.astro';
 import {
   getArticleBlocks,
   getPortableHeadingId,
@@ -42,6 +44,16 @@ function reviewSources(section: ServiceSection): ReviewSource[] {
 const h3Class =
   'text-[22px] md:text-[28px] font-normal leading-[115%] tracking-tighter font-heading text-heading mt-8 md:mt-10 scroll-mt-28';
 const h4Class = 'text-[18px] md:text-[20px] font-sans font-semibold leading-[130%] text-heading mt-6';
+
+/** Table cells are plain strings in Sanity; `**bold**` and `*italic*` carry the Word formatting. */
+function cellHtml(cell: string): string {
+  return cell
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[^*])\*(?!\s)(.+?)\*(?!\*)/g, '$1<em>$2</em>');
+}
 
 function standaloneLink(html: string): { href: string; text: string } | null {
   const anchors = [...html.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi)];
@@ -131,13 +143,12 @@ const closingCtaKey = closingCta ? lastLinkedParagraph?._key : undefined;
                     {block.headerRow.map((header, hi) => (
                       <th
                         class:list={[
-                          'bg-primary text-white font-medium leading-[160%] px-4 py-3 border-r border-accent last:border-r-0',
+                          'bg-primary text-white font-semibold leading-[160%] px-4 py-3 border-r border-accent last:border-r-0',
                           hi === 0 && 'rounded-tl-lg',
                           hi === block.headerRow.length - 1 && 'rounded-tr-lg text-white border-r-0',
                         ]}
-                      >
-                        {header}
-                      </th>
+                        set:html={cellHtml(header)}
+                      />
                     ))}
                   </tr>
                 </thead>
@@ -160,9 +171,8 @@ const closingCtaKey = closingCta ? lastLinkedParagraph?._key : undefined;
                                 isLast && isFirstCol && 'rounded-bl-lg',
                                 isLast && isLastCol && 'rounded-br-lg',
                               ]}
-                            >
-                              {cell}
-                            </CellTag>
+                              set:html={cellHtml(cell)}
+                            />
                           );
                         })}
                       </tr>
@@ -174,6 +184,35 @@ const closingCtaKey = closingCta ? lastLinkedParagraph?._key : undefined;
                 <figcaption class="mt-2 text-[13px] text-muted/70 text-center">{block.caption}</figcaption>
               )}
             </figure>
+          );
+        }
+
+        if (block._type === 'imageCarousel') {
+          return <BlogImageCarousel images={block.images} />;
+        }
+
+        if (block._type === 'htmlEmbed') {
+          return <BlogHtmlEmbed title={block.title} code={block.code} />;
+        }
+
+        if (block._type === 'embed') {
+          return (
+            <div
+              class:list={[
+                'mt-8 w-full overflow-hidden rounded-md bg-[#EFEFEF]',
+                block.url.includes('instagram.com') && 'mx-auto max-w-[540px] bg-white',
+              ]}
+            >
+              <iframe
+                src={block.url}
+                title={block.title}
+                class="block w-full border-0"
+                style={`height: ${block.height}px`}
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                allowfullscreen
+              />
+            </div>
           );
         }
 
@@ -471,6 +510,9 @@ const closingCtaKey = closingCta ? lastLinkedParagraph?._key : undefined;
   div :global(strong) {
     font-weight: 600;
     color: var(--aw-color-text-heading);
+  }
+  div :global(thead strong) {
+    color: inherit;
   }
   div :global(code) {
     background-color: rgb(237 217 116 / 50%);

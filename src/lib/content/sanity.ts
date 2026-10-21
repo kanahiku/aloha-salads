@@ -666,6 +666,14 @@ type SanityPortableBlock = {
   // callout fields (projected as calloutType from the "type" Sanity field)
   calloutType?: string;
   text?: string;
+  // embed fields
+  url?: string;
+  title?: string;
+  height?: number;
+  // htmlEmbed fields
+  code?: string;
+  // imageCarousel fields
+  images?: Array<{ _key?: string; src?: string; alt?: string; caption?: string } & SanityImageFields>;
 } & SanityImageFields;
 
 type SanityBlogPost = Omit<BlogPost, 'image' | 'relatedPages' | 'body' | 'contentBlocks'> & {
@@ -686,6 +694,28 @@ function portableBlockText(block: SanityPortableBlock): string {
 
 function escapeHtml(str: string): string {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+const EMBED_HOSTS = [
+  'www.google.com',
+  'maps.google.com',
+  'www.youtube.com',
+  'www.youtube-nocookie.com',
+  'player.vimeo.com',
+  'www.instagram.com',
+];
+
+function safeEmbedUrl(value: string | undefined): string | null {
+  if (!value) return null;
+  try {
+    const url = new URL(value.trim());
+    if (url.protocol !== 'https:' || !EMBED_HOSTS.includes(url.hostname)) return null;
+    if (url.hostname.endsWith('google.com') && !url.pathname.startsWith('/maps/embed')) return null;
+    if (url.hostname === 'www.instagram.com' && !/^\/(p|reel)\/[\w-]+\/embed/.test(url.pathname)) return null;
+    return url.toString();
+  } catch {
+    return null;
+  }
 }
 
 function spansToHtml(children: SanitySpan[] | undefined, markDefs: SanityMarkDef[] | undefined): string {
@@ -755,11 +785,51 @@ function portableTextToContentBlocks(body: SanityPortableBlock[] | null | undefi
       return;
     }
 
+    // ── Image carousel ────────────────────────────────────────────────────────
+    if (block._type === 'imageCarousel') {
+      flushList();
+      const images = (block.images ?? []).flatMap((item, ii) => {
+        const image = resolveContentImage({
+          src: item.src,
+          alt: item.alt,
+          crop: item.crop,
+          hotspot: item.hotspot,
+          asset: item.asset,
+        });
+        if (!image?.src) return [];
+        const caption = typeof item.caption === 'string' ? item.caption.trim() : '';
+        return [{ _key: item._key || `${key}-img-${ii}`, image, ...(caption ? { caption } : {}) }];
+      });
+      if (!images.length) return;
+      result.push({ _type: 'imageCarousel', _key: key, images });
+      return;
+    }
+
+    // ── Embed (map / video iframe) ────────────────────────────────────────────
+    if (block._type === 'embed') {
+      flushList();
+      const url = safeEmbedUrl(block.url);
+      if (!url) return;
+      const height = typeof block.height === 'number' && block.height >= 200 && block.height <= 1200 ? block.height : 450;
+      result.push({ _type: 'embed', _key: key, url, title: block.title?.trim() || 'Embedded map', height });
+      return;
+    }
+
+    // ── HTML embed (pasted widget / social embed code) ───────────────────────
+    if (block._type === 'htmlEmbed') {
+      flushList();
+      const code = typeof block.code === 'string' ? block.code.trim() : '';
+      if (!code) return;
+      result.push({ _type: 'htmlEmbed', _key: key, title: block.title?.trim() || 'Embedded content', code });
+      return;
+    }
+
     // ── Table ─────────────────────────────────────────────────────────────────
     if (block._type === 'table') {
       flushList();
-      const headerRow = (block.headerRow ?? []).filter(Boolean);
-      if (headerRow.length < 2) return;
+      // Empty header cells are real columns (e.g. a blank corner cell); keep them so columns stay aligned.
+      const headerRow = (block.headerRow ?? []).map((cell) => cell ?? '');
+      if (headerRow.length < 2 || !headerRow.some((cell) => cell.trim())) return;
       result.push({
         _type: 'table',
         _key: key,
@@ -919,6 +989,19 @@ const BLOG_POST_PROJECTION = /* groq */ `
       caption,
       headerRow,
       "rows": rows[] { _key, cells }
+    },
+    _type == "imageCarousel" => {
+      _type,
+      _key,
+      "images": images[] {
+        _key,
+        "src": asset->url,
+        "alt": coalesce(alt, ""),
+        caption,
+        crop,
+        hotspot,
+        asset
+      }
     }
   }
 `;

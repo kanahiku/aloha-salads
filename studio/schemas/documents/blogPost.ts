@@ -213,6 +213,79 @@ export const blogPost = defineType({
         }),
         defineArrayMember({
           type: 'object',
+          name: 'imageCarousel',
+          title: 'Image carousel',
+          fields: [
+            defineField({
+              name: 'images',
+              title: 'Images',
+              type: 'array',
+              of: [
+                defineArrayMember({
+                  type: 'image',
+                  options: { hotspot: true },
+                  fields: [
+                    defineField({ name: 'alt', title: 'Alt text', type: 'string' }),
+                    defineField({ name: 'caption', title: 'Caption', type: 'string' }),
+                  ],
+                }),
+              ],
+              validation: (r) => r.min(2),
+            }),
+          ],
+          preview: {
+            select: { images: 'images', media: 'images.0' },
+            prepare({ images, media }: { images?: unknown[]; media?: unknown }) {
+              return { title: `Image carousel (${images?.length ?? 0} images)`, media: media as never };
+            },
+          },
+        }),
+        defineArrayMember({
+          type: 'object',
+          name: 'embed',
+          title: 'Map / video embed',
+          fields: [
+            defineField({
+              name: 'url',
+              title: 'Embed URL',
+              type: 'url',
+              description: 'The iframe src. Google Maps embed, YouTube, Vimeo, or Instagram post embed only.',
+              validation: (r) => r.required().uri({ scheme: ['https'] }),
+            }),
+            defineField({ name: 'title', title: 'Title (accessibility)', type: 'string' }),
+            defineField({ name: 'height', title: 'Height (px)', type: 'number', initialValue: 450 }),
+          ],
+          preview: {
+            select: { title: 'title', url: 'url' },
+            prepare({ title, url }: { title?: string; url?: string }) {
+              return { title: title || 'Embed', subtitle: url };
+            },
+          },
+        }),
+        defineArrayMember({
+          type: 'object',
+          name: 'htmlEmbed',
+          title: 'HTML embed',
+          description: 'Pasted embed code (Instagram post, interactive widget). Shown in an isolated frame.',
+          fields: [
+            defineField({ name: 'title', title: 'Title (accessibility)', type: 'string' }),
+            defineField({
+              name: 'code',
+              title: 'HTML code',
+              type: 'text',
+              rows: 12,
+              validation: (r) => r.required(),
+            }),
+          ],
+          preview: {
+            select: { title: 'title' },
+            prepare({ title }: { title?: string }) {
+              return { title: title || 'HTML embed', subtitle: 'HTML embed' };
+            },
+          },
+        }),
+        defineArrayMember({
+          type: 'object',
           name: 'callout',
           title: 'Callout box',
           fields: [

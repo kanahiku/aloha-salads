@@ -61,7 +61,7 @@ const metadata = {
             {post.author ? ` · ${post.author}` : ''}
           </p>
 
-          {post.image?.src && <BlogArticleImage image={post.image} eager class="mb-8 mt-0" />}
+          {post.image?.src && <BlogArticleImage image={post.image} eager class="mb-8 mt-0" fit="contain" />}
 
           {
             leadParagraphs.length > 0 && (

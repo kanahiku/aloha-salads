@@ -1,0 +1,100 @@
+---
+/**
+ * Inline blog image carousel. Each slide shows the whole photo (object-contain),
+ * scroll-snap track with prev/next buttons; works without JS as a swipeable row.
+ */
+import { Icon } from 'astro-icon/components';
+import Image from '~/components/common/Image.astro';
+import type { ContentImage } from '~/lib/content/types';
+
+export interface Props {
+  images: { _key: string; image: ContentImage; caption?: string }[];
+}
+
+const { images } = Astro.props;
+---
+
+{
+  images.length > 0 && (
+    <figure class="blog-carousel relative mt-8" data-blog-carousel>
+      <div
+        class="flex snap-x snap-mandatory overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        data-carousel-track
+        tabindex="0"
+        aria-label="Image carousel"
+      >
+        {images.map((item, idx) => (
+          <div
+            class="flex w-full shrink-0 snap-center flex-col items-center justify-center rounded-md bg-[#EFEFEF]"
+            aria-roledescription="slide"
+            aria-label={`${idx + 1} of ${images.length}`}
+          >
+            <Image
+              src={item.image.src}
+              alt={item.image.alt}
+              class="h-auto max-h-[520px] w-full object-contain"
+              widths={[400, 768, 1200]}
+              sizes="(max-width: 768px) 100vw, 70vw"
+              width={1200}
+              layout="constrained"
+              format="webp"
+              loading="lazy"
+              decoding="async"
+            />
+            {item.caption && <p class="px-3 py-2 text-center text-[13px] text-muted/70">{item.caption}</p>}
+          </div>
+        ))}
+      </div>
+      {
+        images.length > 1 && (
+          <div class="mt-3 flex items-center justify-between gap-4">
+            <button
+              type="button"
+              class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white transition-opacity hover:opacity-85"
+              data-carousel-prev
+              aria-label="Previous image"
+            >
+              <Icon name="tabler:chevron-left" class="h-5 w-5" />
+            </button>
+            <p class="text-[14px] font-sans text-muted" data-carousel-status aria-live="polite">
+              1 / {images.length}
+            </p>
+            <button
+              type="button"
+              class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white transition-opacity hover:opacity-85"
+              data-carousel-next
+              aria-label="Next image"
+            >
+              <Icon name="tabler:chevron-right" class="h-5 w-5" />
+            </button>
+          </div>
+        )
+      }
+    </figure>
+  )
+}
+
+<script>
+  function initBlogCarousels() {
+    document.querySelectorAll<HTMLElement>('[data-blog-carousel]').forEach((root) => {
+      if (root.dataset.ready) return;
+      root.dataset.ready = 'true';
+      const track = root.querySelector<HTMLElement>('[data-carousel-track]');
+      const status = root.querySelector<HTMLElement>('[data-carousel-status]');
+      if (!track) return;
+      const count = track.children.length;
+      const current = () => Math.round(track.scrollLeft / Math.max(track.clientWidth, 1));
+      const go = (index: number) => {
+        const next = (index + count) % count;
+        track.scrollTo({ left: next * track.clientWidth, behavior: 'smooth' });
+      };
+      root.querySelector('[data-carousel-prev]')?.addEventListener('click', () => go(current() - 1));
+      root.querySelector('[data-carousel-next]')?.addEventListener('click', () => go(current() + 1));
+      track.addEventListener('scroll', () => {
+        if (status) status.textContent = `${current() + 1} / ${count}`;
+      }, { passive: true });
+    });
+  }
+  initBlogCarousels();
+  document.addEventListener('astro:page-load', initBlogCarousels);
+</script>

@@ -25,8 +25,9 @@ export const brand = {
       name: 'Host Grotesk',
       cssVariable: '--font-host-grotesk',
       provider: 'google' as const,
-      weights: ['400'] as string[],
-      styles: ['normal'] as string[],
+      // 600 + italic are required: font-synthesis is off, so <strong>/<em> in blog bodies need real faces.
+      weights: ['400', '600'] as string[],
+      styles: ['normal', 'italic'] as string[],
       subsets: ['latin'] as string[],
       fallbacks: ['sans-serif'] as string[],
     },

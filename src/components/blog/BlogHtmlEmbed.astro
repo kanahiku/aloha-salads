@@ -1,0 +1,64 @@
+---
+/**
+ * Author-pasted HTML from a blog document (Instagram embed, interactive checklist page).
+ * Rendered in a sandboxed srcdoc iframe without allow-same-origin, so its CSS/JS cannot
+ * touch the site. The frame reports its content height so it sizes to fit.
+ */
+export interface Props {
+  title: string;
+  code: string;
+}
+
+const { title, code } = Astro.props;
+
+// Opaque-origin frames throw on localStorage; widgets that save state get an in-memory store.
+const shim = `<script>(function(){
+  function mem(){var d={};return{getItem:function(k){return Object.prototype.hasOwnProperty.call(d,k)?d[k]:null},setItem:function(k,v){d[k]=String(v)},removeItem:function(k){delete d[k]},clear:function(){d={}},key:function(i){return Object.keys(d)[i]||null},get length(){return Object.keys(d).length}}}
+  ['localStorage','sessionStorage'].forEach(function(n){try{window[n].getItem('x')}catch(e){try{Object.defineProperty(window,n,{value:mem(),configurable:true})}catch(_){}}});
+  function send(){var h=Math.ceil(document.documentElement.getBoundingClientRect().height);parent.postMessage({type:'aloha-embed-height',height:h},'*')}
+  addEventListener('load',send);
+  document.addEventListener('DOMContentLoaded',function(){send();if(window.ResizeObserver){new ResizeObserver(send).observe(document.documentElement)}});
+  setInterval(send,1500);
+})();</script><base target="_blank">`;
+
+const isFullDocument = /<!doctype|<html[\s>]/i.test(code);
+let srcdoc: string;
+if (isFullDocument) {
+  const headOpen = code.match(/<head[^>]*>/i);
+  if (headOpen?.index !== undefined) {
+    const at = headOpen.index + headOpen[0].length;
+    srcdoc = code.slice(0, at) + shim + code.slice(at);
+  } else {
+    srcdoc = code.replace(/<html[^>]*>/i, (m) => `${m}<head>${shim}</head>`);
+  }
+} else {
+  srcdoc = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">${shim}<style>html,body{margin:0;padding:0;background:transparent}</style></head><body>${code}</body></html>`;
+}
+---
+
+<div class="mt-8 w-full">
+  <iframe
+    srcdoc={srcdoc}
+    title={title}
+    class="block w-full border-0"
+    style={`height: ${isFullDocument ? 400 : 480}px`}
+    loading="lazy"
+    sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms"
+    data-html-embed
+  ></iframe>
+</div>
+
+<script>
+  if (!(window as unknown as { __alohaEmbedResize?: boolean }).__alohaEmbedResize) {
+    (window as unknown as { __alohaEmbedResize?: boolean }).__alohaEmbedResize = true;
+    window.addEventListener('message', (event) => {
+      const data = event.data as { type?: string; height?: number } | null;
+      if (!data || data.type !== 'aloha-embed-height' || typeof data.height !== 'number') return;
+      document.querySelectorAll<HTMLIFrameElement>('iframe[data-html-embed]').forEach((frame) => {
+        if (frame.contentWindow !== event.source) return;
+        const height = Math.min(Math.max(Math.round(data.height as number), 120), 4000);
+        if (Math.abs(frame.offsetHeight - height) > 2) frame.style.height = `${height}px`;
+      });
+    });
+  }
+</script>

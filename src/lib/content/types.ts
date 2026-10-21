@@ -379,7 +379,10 @@ export type BlogContentBlock =
   | BlogContentImage
   | BlogContentList
   | BlogContentTable
-  | BlogContentCallout;
+  | BlogContentCallout
+  | BlogContentEmbed
+  | BlogContentHtmlEmbed
+  | BlogContentCarousel;
 
 export interface BlogContentParagraph {
   _type: 'paragraph';
@@ -432,6 +435,29 @@ export interface BlogContentCallout {
   _key: string;
   calloutType: 'tip' | 'info' | 'warning' | 'note';
   text: string;
+}
+
+export interface BlogContentEmbed {
+  _type: 'embed';
+  _key: string;
+  /** Only allow-listed hosts (Google Maps, YouTube, Vimeo) reach the renderer. */
+  url: string;
+  title: string;
+  height: number;
+}
+
+/** Author-pasted HTML (Instagram embed, interactive widget). Rendered in a sandboxed iframe, never inline. */
+export interface BlogContentHtmlEmbed {
+  _type: 'htmlEmbed';
+  _key: string;
+  title: string;
+  code: string;
+}
+
+export interface BlogContentCarousel {
+  _type: 'imageCarousel';
+  _key: string;
+  images: { _key: string; image: ContentImage; caption?: string }[];
 }
 
 // ─── Testimonials ─────────────────────────────────────────────────────────────
