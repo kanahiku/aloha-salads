@@ -8,7 +8,8 @@ export const blogPost = defineType({
   type: 'document',
   icon: ComposeIcon,
   groups: [
-    { name: 'content', title: 'Content' },
+    { name: 'content', title: 'Content', default: true },
+    { name: 'seo', title: 'SEO' },
     { name: 'related', title: 'Related pages' },
   ],
   fields: [
@@ -36,6 +37,21 @@ export const blogPost = defineType({
       group: 'content',
       description: 'Short summary shown on listing cards and related-blog sections.',
       validation: (r) => r.required().max(280),
+    }),
+    defineField({
+      name: 'metaTitle',
+      title: 'Meta title',
+      type: 'string',
+      group: 'seo',
+      description: 'Browser tab and search result title. Leave empty to use the article title.',
+    }),
+    defineField({
+      name: 'metaDescription',
+      title: 'Meta description',
+      type: 'text',
+      rows: 3,
+      group: 'seo',
+      description: 'Search result snippet. Leave empty to use the excerpt.',
     }),
     defineField({
       name: 'publishDate',

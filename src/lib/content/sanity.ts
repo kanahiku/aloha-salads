@@ -672,7 +672,13 @@ type SanityBlogPost = Omit<BlogPost, 'image' | 'relatedPages' | 'body' | 'conten
   image?: ContentImage;
   relatedPages?: string[] | null;
   body?: SanityPortableBlock[] | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
 };
+
+function authoredText(value: string | null | undefined): string {
+  return typeof value === 'string' ? value.trim() : '';
+}
 
 function portableBlockText(block: SanityPortableBlock): string {
   return Array.isArray(block.children) ? block.children.map((child) => child.text ?? '').join('') : '';
@@ -845,8 +851,8 @@ function normalizeBlogPost(post: SanityBlogPost): BlogPost {
     image: resolveContentImage(post.image as FetchedImage | undefined),
     relatedPages: (post.relatedPages ?? []).map((key) => key.replace(/^\/+/, '')).filter(Boolean),
     meta: {
-      title: post.title,
-      description: excerpt,
+      title: authoredText(post.metaTitle) || post.title,
+      description: authoredText(post.metaDescription) || excerpt,
     },
     heroParagraphs: body.slice(0, 2),
     sections:
@@ -888,6 +894,8 @@ const BLOG_POST_CARD_PROJECTION = /* groq */ `
 
 const BLOG_POST_PROJECTION = /* groq */ `
   ${BLOG_POST_CARD_PROJECTION},
+  metaTitle,
+  metaDescription,
   body[] {
     ...,
     _type == "image" => {
