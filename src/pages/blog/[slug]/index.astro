@@ -9,7 +9,7 @@ import { Icon } from 'astro-icon/components';
 import { getFormattedDate } from '~/utils/utils';
 import { getBlogPost } from '~/lib/content';
 import { getArticleToc, getLeadInlineImages, shouldUsePortableBody } from '~/lib/content/blogArticle';
-import { PRIMARY_CTA_LABEL } from '~/config/cta';
+import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from '~/config/cta';
 
 export const prerender = false;
 
@@ -41,7 +41,7 @@ const metadata = {
         <BlogSidebar
           toc={toc}
           ctaTitle={post.ctaBanner.title}
-          ctaHref={post.ctaBanner.ctaHref}
+          ctaHref={PRIMARY_CTA_HREF}
         />
 
         <article class="min-w-0">
