@@ -7,10 +7,10 @@ import type { BlogPost } from '~/lib/content/types';
 
 export interface Props {
   post: BlogPost;
-  variant?: 'dark' | 'light';
+  variant?: 'dark' | 'light' | 'outlined';
 }
 
-const { post, variant = 'dark' } = Astro.props;
+const { post, variant = 'outlined' } = Astro.props;
 const href = getBlogPermalink(post.slug);
 const headingClass = variant === 'dark' ? 'text-card-heading-dark' : 'text-card-heading-light';
 const bodyClass = variant === 'dark' ? 'text-card-body-dark' : 'text-card-body-light';

@@ -7,24 +7,27 @@ export interface Props {
   caption?: string;
   eager?: boolean;
   class?: string;
+  /** Hero uses cover. Inline photos use contain so the full picture stays visible. */
+  fit?: 'cover' | 'contain';
 }
 
-const { image, caption, eager = false, class: className = 'my-8' } = Astro.props;
+const { image, caption, eager = false, class: className = 'my-8', fit = 'cover' } = Astro.props;
+const contained = fit === 'contain';
 ---
 
 {
   image?.src && (
     <figure class={className}>
-      <div class="relative w-full aspect-[16/9] overflow-hidden rounded-md bg-[#EFEFEF]">
+      <div class:list={[contained ? 'w-full' : 'relative w-full aspect-[16/9] overflow-hidden rounded-md bg-[#EFEFEF]']}>
         <Image
           src={image.src}
           alt={image.alt}
-          class="w-full h-full object-cover"
+          class:list={[contained ? 'w-full h-auto object-contain' : 'w-full h-full object-cover']}
           widths={[400, 768, 1200]}
           sizes="(max-width: 768px) 100vw, 70vw"
           width={1200}
-          height={675}
-          layout="cover"
+          height={contained ? undefined : 675}
+          layout={contained ? 'constrained' : 'cover'}
           format="webp"
           loading={eager ? 'eager' : 'lazy'}
           decoding="async"

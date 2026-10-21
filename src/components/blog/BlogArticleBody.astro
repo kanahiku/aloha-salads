@@ -42,6 +42,25 @@ function reviewSources(section: ServiceSection): ReviewSource[] {
 const h3Class =
   'text-[22px] md:text-[28px] font-normal leading-[115%] tracking-tighter font-heading text-heading mt-8 md:mt-10 scroll-mt-28';
 const h4Class = 'text-[18px] md:text-[20px] font-sans font-semibold leading-[130%] text-heading mt-6';
+
+function standaloneLink(html: string): { href: string; text: string } | null {
+  const anchors = [...html.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi)];
+  if (anchors.length !== 1) return null;
+  const outside = html.replace(/<a\b[^>]*href="[^"]+"[^>]*>[\s\S]*?<\/a>/i, '').replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim();
+  if (outside) return null;
+  const text = anchors[0][2]
+    .replace(/<[^>]+>/g, '')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .trim();
+  if (!text) return null;
+  return { href: anchors[0][1].replace(/&amp;/g, '&'), text };
+}
+
+const lastLinkedParagraph = [...contentBlocks].reverse().find((block) => block._type === 'paragraph' && /<a\b/i.test(block.html));
+const closingCta = lastLinkedParagraph?._type === 'paragraph' ? standaloneLink(lastLinkedParagraph.html) : null;
+const closingCtaKey = closingCta ? lastLinkedParagraph?._key : undefined;
 ---
 
 <div class="min-w-0">
@@ -70,7 +89,15 @@ const h4Class = 'text-[18px] md:text-[20px] font-sans font-semibold leading-[130
         }
 
         if (block._type === 'image') {
-          return <BlogArticleImage image={block.image} caption={block.caption} />;
+          return <BlogArticleImage image={block.image} caption={block.caption} fit="contain" />;
+        }
+
+        if (block._type === 'paragraph' && block._key === closingCtaKey && closingCta) {
+          return (
+            <p class="mt-8">
+              <Button variant="primary" text={closingCta.text} href={closingCta.href} hideNote={true} />
+            </p>
+          );
         }
 
         if (block._type === 'list') {
@@ -199,7 +226,7 @@ const h4Class = 'text-[18px] md:text-[20px] font-sans font-semibold leading-[130
                 <p class={paragraphClass}>{paragraph}</p>
               ))}
             </div>
-            {section.image?.src && <BlogArticleImage image={section.image} />}
+            {section.image?.src && <BlogArticleImage image={section.image} fit="contain" />}
             {section.ctaText && (
               <p class="mt-6">
                 <Button variant="ghost" tone="light" text={section.ctaText} href={section.ctaHref || '/form'} />
@@ -411,7 +438,7 @@ const h4Class = 'text-[18px] md:text-[20px] font-sans font-semibold leading-[130
         )}
 
         {images.map((imageBlock) => (
-          <BlogArticleImage image={imageBlock.image} caption={imageBlock.caption} />
+          <BlogArticleImage image={imageBlock.image} caption={imageBlock.caption} fit="contain" />
         ))}
       </section>
     ))
@@ -419,7 +446,7 @@ const h4Class = 'text-[18px] md:text-[20px] font-sans font-semibold leading-[130
 
   {
     unmatchedImages.map((imageBlock) => (
-      <BlogArticleImage image={imageBlock.image} caption={imageBlock.caption} />
+      <BlogArticleImage image={imageBlock.image} caption={imageBlock.caption} fit="contain" />
     ))
   }
 </div>
@@ -430,14 +457,14 @@ const h4Class = 'text-[18px] md:text-[20px] font-sans font-semibold leading-[130
    * Scoped Tailwind classes dont apply to dynamically injected markup,
    * so we target these with plain CSS inside the article wrapper.
    */
-  div :global(a) {
+  div :global(a:not([class*='btn-'])) {
     color: var(--aw-color-btn-link);
     font-weight: 600;
     text-decoration: none;
     text-underline-offset: 2px;
     transition: color 0.2s cubic-bezier(0.22, 1, 0.36, 1);
   }
-  div :global(a:hover) {
+  div :global(a:not([class*='btn-']):hover) {
     color: var(--aw-color-btn-link-hover);
     text-decoration: underline;
   }

@@ -4,7 +4,7 @@ import Headline from '~/components/ui/Headline.astro';
 import SectionBg from '~/components/ui/SectionBg.astro';
 import BlogCard from '~/components/ui/BlogCard.astro';
 import { getBlogPostsRelatedTo, getRelatedBlogPosts } from '~/lib/content';
-import { cardVariant, isDarkSurface, type SectionSurface } from '~/lib/content/sectionTheme';
+import { isDarkSurface, type SectionSurface } from '~/lib/content/sectionTheme';
 import type { BlogPost } from '~/lib/content/types';
 
 export interface Props {
@@ -34,7 +34,6 @@ const related = post
     : [];
 
 const isDark = isDarkSurface(surface);
-const variant = cardVariant(surface);
 ---
 
 {
@@ -43,7 +42,7 @@ const variant = cardVariant(surface);
       <Headline isDark={isDark} title={title} classes={{ container: 'mb-[30px]' }} />
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {related.map((item) => (
-          <BlogCard post={item} variant={variant} />
+          <BlogCard post={item} variant="outlined" />
         ))}
       </div>
       <Fragment slot="bg">
