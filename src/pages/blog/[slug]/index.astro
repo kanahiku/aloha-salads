@@ -1,6 +1,5 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import SectionBg from '~/components/ui/SectionBg.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import RelatedBlogs from '~/components/widgets/RelatedBlogs.astro';
 import BlogArticleImage from '~/components/blog/BlogArticleImage.astro';
@@ -36,10 +35,7 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <section class="relative">
-    <div class="absolute inset-0 overflow-hidden pointer-events-none -z-[1]" aria-hidden="true">
-      <SectionBg variant="white" />
-    </div>
+  <section class="relative bg-page">
     <div class="relative max-w-container mx-auto px-4 md:px-6 py-8 md:py-16 lg:py-20">
       <div class="lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-12 xl:gap-16 lg:items-start">
         <BlogSidebar

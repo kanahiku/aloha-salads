@@ -42,11 +42,14 @@ const isSticky = variant === 'sticky';
             </summary>
             <ol class="space-y-2.5 mt-3">
               {toc.map((item) => (
-                <li>
+                <li class:list={[item.level === 3 && 'pl-4']}>
                   <a
                     href={`#${item.id}`}
                     data-toc-link
-                    class="block text-[14px] md:text-[15px] font-normal leading-[150%] text-muted hover:text-heading"
+                    class:list={[
+                      'block font-normal leading-[150%] text-muted hover:text-heading',
+                      item.level === 3 ? 'text-[13px] md:text-[14px]' : 'text-[14px] md:text-[15px]',
+                    ]}
                   >
                     {item.title}
                   </a>
@@ -58,11 +61,14 @@ const isSticky = variant === 'sticky';
         {isSticky && (
           <ol class="space-y-2.5">
             {toc.map((item) => (
-              <li>
+              <li class:list={[item.level === 3 && 'pl-4']}>
                 <a
                   href={`#${item.id}`}
                   data-toc-link
-                  class="block text-[14px] md:text-[15px] font-normal leading-[150%] text-muted hover:text-heading"
+                  class:list={[
+                    'block font-normal leading-[150%] text-muted hover:text-heading',
+                    item.level === 3 ? 'text-[13px] md:text-[14px]' : 'text-[14px] md:text-[15px]',
+                  ]}
                 >
                   {item.title}
                 </a>

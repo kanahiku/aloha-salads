@@ -39,7 +39,9 @@ function reviewSources(section: ServiceSection): ReviewSource[] {
   return ['google', 'yelp'];
 }
 
-const h3Class = 'text-[16px] md:text-[18px] font-sans font-medium leading-[130%] text-heading mb-3 mt-8';
+const h3Class =
+  'text-[22px] md:text-[28px] font-normal leading-[115%] tracking-tighter font-heading text-heading mt-8 md:mt-10 scroll-mt-28';
+const h4Class = 'text-[18px] md:text-[20px] font-sans font-semibold leading-[130%] text-heading mt-6';
 ---
 
 <div class="min-w-0">
@@ -55,8 +57,16 @@ const h3Class = 'text-[16px] md:text-[18px] font-sans font-medium leading-[130%]
           );
         }
 
+        if (block._type === 'heading' && block.level === 3) {
+          return (
+            <h3 id={getPortableHeadingId(post, block._key)} class={h3Class}>
+              {block.text}
+            </h3>
+          );
+        }
+
         if (block._type === 'heading') {
-          return <h3 class={h3Class}>{block.text}</h3>;
+          return <h4 class={h4Class}>{block.text}</h4>;
         }
 
         if (block._type === 'image') {
@@ -94,7 +104,7 @@ const h3Class = 'text-[16px] md:text-[18px] font-sans font-medium leading-[130%]
                     {block.headerRow.map((header, hi) => (
                       <th
                         class:list={[
-                          'bg-card-dark text-white font-medium leading-[160%] px-4 py-3 border-r border-accent last:border-r-0',
+                          'bg-primary text-white font-medium leading-[160%] px-4 py-3 border-r border-accent last:border-r-0',
                           hi === 0 && 'rounded-tl-lg',
                           hi === block.headerRow.length - 1 && 'rounded-tr-lg text-white border-r-0',
                         ]}

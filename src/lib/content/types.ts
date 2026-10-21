@@ -394,7 +394,7 @@ export interface BlogContentParagraph {
 export interface BlogContentHeading {
   _type: 'heading';
   _key: string;
-  level: 2 | 3;
+  level: 2 | 3 | 4;
   text: string;
 }
 

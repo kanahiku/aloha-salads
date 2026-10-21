@@ -802,7 +802,7 @@ function portableTextToContentBlocks(body: SanityPortableBlock[] | null | undefi
     }
     if (block.style === 'h3' || block.style === 'h4') {
       flushList();
-      result.push({ _type: 'heading', _key: key, level: 3, text });
+      result.push({ _type: 'heading', _key: key, level: block.style === 'h4' ? 4 : 3, text });
       return;
     }
 
