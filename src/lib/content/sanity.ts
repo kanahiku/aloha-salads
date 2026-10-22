@@ -757,7 +757,7 @@ function portableTextToContentBlocks(body: SanityPortableBlock[] | null | undefi
   let listBuffer: { _key: string; html: string; level: number }[] = [];
   let listType: 'bullet' | 'number' | null = null;
   let listStartKey = '';
-  let inFaqSection = false;
+  let faqMode: 'off' | 'faq' | 'questions' = 'off';
   let faqSectionStartKey = '';
   let faqSectionItems: { _key?: string; question: string; answer: string }[] = [];
 
@@ -774,8 +774,29 @@ function portableTextToContentBlocks(body: SanityPortableBlock[] | null | undefi
       result.push({ _type: 'faq', _key: `faq-${faqSectionStartKey}`, items: faqSectionItems });
     }
     faqSectionItems = [];
-    inFaqSection = false;
+    faqMode = 'off';
     faqSectionStartKey = '';
+  }
+
+  /** A short question line, including "1. Will guests…?", not a prompt like "Craving something savory?". */
+  function isAccordionQuestion(value: string): boolean {
+    const stripped = value.replace(/^\d+\.\s*/, '');
+    return (
+      value.endsWith('?') &&
+      value.length < 180 &&
+      /^(is|does|do|can|could|will|would|what|how|where|when|why|are|who|which)\b/i.test(stripped)
+    );
+  }
+
+  function upcomingQuestionCount(start: number): number {
+    let count = 0;
+    for (let i = start; i < body.length; i++) {
+      const next = body[i];
+      if (next?._type === 'block' && (next.style === 'h1' || next.style === 'h2')) break;
+      if (next?._type !== 'block' || next.style === 'h3' || next.style === 'h4' || next.listItem) continue;
+      if (isAccordionQuestion(portableBlockText(next).trim())) count++;
+    }
+    return count;
   }
 
   function appendFaqAnswer(html: string) {
@@ -896,14 +917,17 @@ function portableTextToContentBlocks(body: SanityPortableBlock[] | null | undefi
       const startsFaq = /frequently asked questions|\bfaqs?\b/i.test(text);
       result.push({ _type: 'heading', _key: key, level: 2, text });
       if (startsFaq) {
-        inFaqSection = true;
+        faqMode = 'faq';
+        faqSectionStartKey = key;
+      } else if (upcomingQuestionCount(index + 1) >= 2) {
+        faqMode = 'questions';
         faqSectionStartKey = key;
       }
       return;
     }
     if (block.style === 'h3' || block.style === 'h4') {
       flushList();
-      if (inFaqSection) {
+      if (faqMode === 'faq') {
         faqSectionItems.push({ _key: key, question: text, answer: '' });
         return;
       }
@@ -911,14 +935,18 @@ function portableTextToContentBlocks(body: SanityPortableBlock[] | null | undefi
       return;
     }
 
-    // A bold line or a line ending in "?" under the FAQ heading is a question (some docs use bold, not Heading 3).
-    if (inFaqSection) {
+    // FAQ heading: a bold line or a line ending in "?" is a question.
+    // Any other heading with two or more real questions: those questions become the accordion.
+    if (faqMode !== 'off') {
       flushList();
       const spans = block.children ?? [];
       const allBold =
         spans.some((span) => (span.marks ?? []).includes('strong')) &&
         spans.every((span) => !(span.text ?? '').trim() || (span.marks ?? []).includes('strong'));
-      if ((allBold || text.endsWith('?')) && text.length < 200) {
+      const isQuestion = faqMode === 'faq'
+        ? (allBold || text.endsWith('?')) && text.length < 200
+        : isAccordionQuestion(text);
+      if (isQuestion) {
         faqSectionItems.push({ _key: key, question: text, answer: '' });
         return;
       }
