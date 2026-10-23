@@ -1018,7 +1018,7 @@ function normalizeBlogPost(post: SanityBlogPost): BlogPost {
         : [],
     ctaBanner: {
       title: 'Get in touch',
-      subtitle: 'Replace this banner copy from the Figma file.',
+      subtitle: '',
       ctaText: 'Start the assessment',
       ctaHref: '/order-online',
     },
