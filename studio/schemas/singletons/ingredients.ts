@@ -1,5 +1,6 @@
 import { DocumentTextIcon } from '@sanity/icons';
 import { defineArrayMember, defineField, defineType } from 'sanity';
+import { altField, imageWeightWarning } from '../lib/imageChecks';
 
 const GROUPS = [
   { name: 'seo', title: 'SEO' },
@@ -7,7 +8,6 @@ const GROUPS = [
   { name: 'sourcing', title: 'What we source' },
   { name: 'cta', title: 'Closing banner' },
   { name: 'faqs', title: 'FAQs' },
-  { name: 'images', title: 'Images' },
 ];
 
 const textField = (group: string, name: string, title: string, options: { description?: string; rows?: number } = {}) =>
@@ -20,22 +20,16 @@ const textField = (group: string, name: string, title: string, options: { descri
     ...(options.rows ? { rows: options.rows } : {}),
   });
 
-const imageField = (name: string, title: string, description?: string) =>
+const imageField = (group: string, name: string, title: string, description?: string) =>
   defineField({
     name,
     title,
-    group: 'images',
+    group,
     description,
     type: 'image',
+    validation: imageWeightWarning,
     options: { hotspot: true },
-    fields: [
-      defineField({
-        name: 'alt',
-        title: 'Alt text',
-        type: 'string',
-        validation: (r) => r.required().warning('Describe the image for accessibility and SEO.'),
-      }),
-    ],
+    fields: [altField()],
   });
 
 export const ingredientsContent = defineType({
@@ -103,12 +97,13 @@ export const ingredientsContent = defineType({
       of: [defineArrayMember({ type: 'faqItem' })],
     }),
 
-    // ── Images ──
-    imageField('heroImage', 'Hero image', 'Hero image for the ingredients page.'),
+    // ── Images (each sits in the tab of the section it appears in) ──
+    imageField('hero', 'heroImage', 'Hero image', 'Hero image for the ingredients page.'),
     imageField(
+      'sourcing',
       'freshLocalProduceImage',
       'Fresh Local Produce image',
-      'Image beside the Fresh Local Produce sourcing section.'
+      'Not shown on the site yet — the sourcing section is text-only for now.'
     ),
   ],
   preview: {

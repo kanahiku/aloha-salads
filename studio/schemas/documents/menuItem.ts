@@ -1,5 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
 import { ComposeIcon } from '@sanity/icons';
+import { altField, imageWeightWarning } from '../lib/imageChecks';
 
 export const menuItem = defineType({
   name: 'menuItem',
@@ -35,19 +36,20 @@ export const menuItem = defineType({
       validation: (r) => r.required(),
     }),
     defineField({
+      name: 'note',
+      title: 'Small note',
+      type: 'string',
+      group: 'content',
+      description: 'Optional line shown on the dish card, e.g. "Not available at Kaneohe". Leave empty for none.',
+    }),
+    defineField({
       name: 'photo',
       title: 'Photo',
       type: 'image',
+      validation: imageWeightWarning,
       group: 'content',
       options: { hotspot: true },
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt text',
-          type: 'string',
-          validation: (r) => r.required().warning('Describe the menu item photo for accessibility and SEO.'),
-        }),
-      ],
+      fields: [altField()],
     }),
     defineField({
       name: 'categoryPlacements',

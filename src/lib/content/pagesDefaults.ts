@@ -1,5 +1,11 @@
 import { pressContent } from '~/data/pages/press';
-import type { CareersContent, IngredientsContent, InteriorPageCopy, PressPageContent, ReviewsPageContent } from './types';
+import type {
+  CareersContent,
+  IngredientsContent,
+  InteriorPageCopy,
+  PressPageContent,
+  ReviewsPageContent,
+} from './types';
 
 /**
  * Copy for Careers, Ingredients and the simple interior pages (Gift Cards, Nutrition & Allergens)

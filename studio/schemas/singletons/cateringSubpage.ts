@@ -1,5 +1,6 @@
 import { DocumentTextIcon } from '@sanity/icons';
 import { defineArrayMember, defineField, defineType } from 'sanity';
+import { altField, imageWeightWarning } from '../lib/imageChecks';
 
 const GROUPS = [
   { name: 'seo', title: 'SEO' },
@@ -29,6 +30,7 @@ export const cateringSubpage = defineType({
       description: 'Fixed — set by the site code (/catering/<this>).',
       type: 'string',
       readOnly: true,
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'order',
@@ -71,15 +73,9 @@ export const cateringSubpage = defineType({
       title: 'Hero image',
       group: 'hero',
       type: 'image',
+      validation: imageWeightWarning,
       options: { hotspot: true },
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt text',
-          type: 'string',
-          validation: (r) => r.required().warning('Describe the image for accessibility and SEO.'),
-        }),
-      ],
+      fields: [altField()],
     }),
 
     // ── Cards ──

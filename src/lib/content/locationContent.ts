@@ -34,6 +34,8 @@ type FetchedHub = {
   sharedMoreTitle?: string | null;
   sharedMoreSubtitle?: string | null;
   sharedViewLabel?: string | null;
+  sharedMenuCtaLabel?: string | null;
+  sharedOrderCtaLabel?: string | null;
   sharedFaqTitle?: string | null;
 };
 
@@ -72,7 +74,7 @@ const HUB_QUERY = /* groq */ `
     "faqs": faqs[]{ question, answer },
     ctaTitle, ctaSubtitle,
     sharedHeroPrimaryCtaLabel, sharedHeroSecondaryCtaLabel, sharedVisitTitle, sharedPickupLabel,
-    sharedDeliveryLabel, sharedDirectionsLabel, sharedMoreTitle, sharedMoreSubtitle, sharedViewLabel, sharedFaqTitle
+    sharedDeliveryLabel, sharedDirectionsLabel, sharedMoreTitle, sharedMoreSubtitle, sharedViewLabel, sharedMenuCtaLabel, sharedOrderCtaLabel, sharedFaqTitle
   }
 `;
 
@@ -173,6 +175,8 @@ function resolveHub(doc: FetchedHub | null): { hub: LocationsHubContent; shared:
       deliveryLabel: textOr(doc.sharedDeliveryLabel, s.deliveryLabel),
       directionsLabel: textOr(doc.sharedDirectionsLabel, s.directionsLabel),
       viewLabel: textOr(doc.sharedViewLabel, s.viewLabel),
+      menuCtaLabel: textOr(doc.sharedMenuCtaLabel, s.menuCtaLabel),
+      orderCtaLabel: textOr(doc.sharedOrderCtaLabel, s.orderCtaLabel),
       faqTitle: textOr(doc.sharedFaqTitle, s.faqTitle),
     },
   };

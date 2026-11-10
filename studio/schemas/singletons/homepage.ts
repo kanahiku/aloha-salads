@@ -1,5 +1,6 @@
 import { ImageIcon } from '@sanity/icons';
 import { defineArrayMember, defineField, defineType } from 'sanity';
+import { altField, imageWeightWarning } from '../lib/imageChecks';
 
 const textField = (
   group: string,
@@ -17,22 +18,16 @@ const textField = (
     validation: options.required ? (r) => r.required() : undefined,
   });
 
-const imageField = (name: string, title: string, description?: string) =>
+const imageField = (group: string, name: string, title: string, description?: string) =>
   defineField({
     name,
     title,
-    group: 'images',
+    group,
     description,
     type: 'image',
+    validation: imageWeightWarning,
     options: { hotspot: true },
-    fields: [
-      defineField({
-        name: 'alt',
-        title: 'Alt text',
-        type: 'string',
-        validation: (r) => r.required().warning('Describe the image for accessibility and SEO.'),
-      }),
-    ],
+    fields: [altField()],
   });
 
 /**
@@ -59,7 +54,7 @@ const videoFile = (name: string, title: string, description: string, maxMb: numb
     name,
     title,
     description,
-    group: 'images',
+    group: 'hero',
     type: 'file',
     options: { accept: 'video/mp4' },
     hidden: ({ document }) => document?.heroMedia !== 'video',
@@ -79,7 +74,6 @@ export const homepageContent = defineType({
     { name: 'localSourcing', title: 'Local sourcing' },
     { name: 'reviews', title: 'Reviews' },
     { name: 'locations', title: 'Locations' },
-    { name: 'images', title: 'Images & video' },
   ],
   fields: [
     // ── SEO ──
@@ -166,13 +160,13 @@ export const homepageContent = defineType({
       description: 'Button on each store card. {name} is replaced with the store name, e.g. "View Kailua".',
     }),
 
-    // ── Images & video ──
+    // ── Hero media (shown in the Hero tab) ──
     defineField({
       name: 'heroMedia',
       title: 'Hero background',
       description:
         'Choose what sits behind the homepage headline. If "Looping video" is selected but the video or poster is missing, the site falls back to the hero image automatically.',
-      group: 'images',
+      group: 'hero',
       type: 'string',
       options: {
         list: [
@@ -184,6 +178,7 @@ export const homepageContent = defineType({
       initialValue: 'image',
     }),
     imageField(
+      'hero',
       'heroImage',
       'Hero image',
       'Homepage hero background image. Used when "Hero background" is Photo, and as the fallback.'
@@ -203,15 +198,27 @@ export const homepageContent = defineType({
     defineField({
       name: 'heroVideoPoster',
       title: 'Hero video poster',
-      group: 'images',
+      group: 'hero',
       description:
         'The first frame of the video, as a WebP/JPEG at 1440×760. This is what shows instantly while the page loads (and for visitors who skip the video), so keep it under about 60 KB.',
       type: 'image',
+      validation: imageWeightWarning,
       options: { accept: 'image/webp,image/jpeg,image/png' },
+      fields: [altField()],
       hidden: ({ document }) => document?.heroMedia !== 'video',
     }),
-    imageField('localSourcingImage', 'Our Local Sourcing image', 'Not shown on the site yet — a grey placeholder stays here until the image pass.'),
-    imageField('locationsImage', 'Visit a Store Near You image', 'Image beside the homepage locations section.'),
+    imageField(
+      'localSourcing',
+      'localSourcingImage',
+      'Our Local Sourcing image',
+      'Not shown on the site yet — the Local sourcing section is text-only for now.'
+    ),
+    imageField(
+      'locations',
+      'locationsImage',
+      'Visit a Store Near You image',
+      'Image beside the homepage locations section.'
+    ),
   ],
   preview: {
     select: { media: 'heroImage', heroMedia: 'heroMedia' },

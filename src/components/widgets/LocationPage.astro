@@ -75,8 +75,8 @@ const faqs = page.faqs.map((faq) => ({ title: faq.question, description: faq.ans
 <CTABanner
   title={page.cta.title}
   subtitle={page.cta.subtitle}
-  ctaText="View Full Menu"
+  ctaText={shared.menuCtaLabel}
   ctaHref="/menu"
-  secondaryCtaText="Order Online"
+  secondaryCtaText={shared.orderCtaLabel}
   secondaryCtaHref={PRIMARY_CTA_HREF}
 />

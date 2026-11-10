@@ -1,5 +1,6 @@
 import { ComposeIcon } from '@sanity/icons';
 import { defineArrayMember, defineField, defineType } from 'sanity';
+import { altField, imageWeightWarning } from '../lib/imageChecks';
 
 const GROUPS = [
   { name: 'seo', title: 'SEO' },
@@ -29,15 +30,9 @@ const imageField = (group: string | undefined, name: string, title: string, desc
     group,
     description,
     type: 'image',
+    validation: imageWeightWarning,
     options: { hotspot: true },
-    fields: [
-      defineField({
-        name: 'alt',
-        title: 'Alt text',
-        type: 'string',
-        validation: (r) => r.required().warning('Describe the image for accessibility and SEO.'),
-      }),
-    ],
+    fields: [altField()],
   });
 
 /** Only the Design Your Own Salad page has a "how to build" guide in place of a dish list. */
@@ -148,7 +143,12 @@ export const menuSubpage = defineType({
     textField('sourcing', 'sourcingTitle', 'Heading'),
     textField('sourcing', 'sourcingSubtitle', 'Text', { rows: 4 }),
     textField('sourcing', 'sourcingCtaLabel', 'Button label', { description: 'Links to the Ingredients page.' }),
-    imageField('sourcing', 'sourcingImage', 'Photo', 'Not shown on the site yet — a grey placeholder stays here until the image pass.'),
+    imageField(
+      'sourcing',
+      'sourcingImage',
+      'Photo',
+      'Not shown on the site yet — a grey placeholder stays here until the image pass.'
+    ),
 
     textField('explore', 'exploreSubtitle', 'Text', {
       description: 'The heading is shared — see Menu page → "Shared with menu pages".',

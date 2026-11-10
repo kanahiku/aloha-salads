@@ -62,10 +62,10 @@ const metadata = {
 
   {/* ── 4. Local sourcing — text only, same layout as menu subpages ── */}
   <LocalSourcing
-    eyebrow="Local sourcing"
-    title="Our Local Sourcing"
-    subtitle="We partner with Hawaii growers and suppliers to bring quality ingredients into our kitchens. We feature vine-ripe tomatoes from Hauula and exclusively use never-frozen local ahi sourced through a Honolulu seafood supplier with vessel-level catch traceability."
-    ctaText="Our Ingredients"
+    eyebrow={content.localSourcing.eyebrow}
+    title={content.localSourcing.title}
+    subtitle={content.localSourcing.body}
+    ctaText={content.localSourcing.ctaLabel}
     ctaHref="/ingredients"
     withPhoto={false}
   />

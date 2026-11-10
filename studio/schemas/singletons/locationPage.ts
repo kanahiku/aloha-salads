@@ -1,5 +1,6 @@
 import { PinIcon } from '@sanity/icons';
 import { defineArrayMember, defineField, defineType } from 'sanity';
+import { altField, imageWeightWarning } from '../lib/imageChecks';
 
 const GROUPS = [
   { name: 'store', title: 'Store details' },
@@ -56,6 +57,7 @@ export const locationPage = defineType({
       description: 'Fixed — set by the site code (/locations/<this>).',
       type: 'string',
       readOnly: true,
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'order',
@@ -116,15 +118,9 @@ export const locationPage = defineType({
       title: 'Hero image',
       group: 'hero',
       type: 'image',
+      validation: imageWeightWarning,
       options: { hotspot: true },
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt text',
-          type: 'string',
-          validation: (r) => r.required().warning('Describe the image for accessibility and SEO.'),
-        }),
-      ],
+      fields: [altField()],
     }),
 
     // ── About ──

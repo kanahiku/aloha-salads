@@ -1,6 +1,7 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
 import { ComposeIcon } from '@sanity/icons';
 import { relatedPageOptions } from '../objects/relatedPageOptions';
+import { altField, imageWeightWarning } from '../lib/imageChecks';
 
 export const blogPost = defineType({
   name: 'blogPost',
@@ -27,7 +28,11 @@ export const blogPost = defineType({
       group: 'content',
       description: 'Used in the URL: /blog/your-slug. Publish to make the article live — no code deploy needed.',
       options: { source: 'title' },
-      validation: (r) => r.required(),
+      validation: (r) =>
+        r.required().custom((value) => {
+          const slug = (value as { current?: string } | undefined)?.current ?? '';
+          return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || 'Use lowercase letters, numbers and single hyphens only.';
+        }),
     }),
     defineField({
       name: 'excerpt',
@@ -71,10 +76,11 @@ export const blogPost = defineType({
       name: 'image',
       title: 'Cover image (upload)',
       type: 'image',
+      validation: imageWeightWarning,
       group: 'content',
       description: 'Listing card and the photo at the top of the article. Extra photos go in the article body below.',
       options: { hotspot: true },
-      fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+      fields: [altField()],
     }),
     defineField({
       name: 'imageUrl',
@@ -127,8 +133,7 @@ export const blogPost = defineType({
                     name: 'href',
                     title: 'URL',
                     type: 'string',
-                    validation: (r) =>
-                      r.uri({ scheme: ['http', 'https', 'mailto', 'tel'], allowRelative: true }),
+                    validation: (r) => r.uri({ scheme: ['http', 'https', 'mailto', 'tel'], allowRelative: true }),
                   }),
                   defineField({
                     name: 'blank',
@@ -143,14 +148,10 @@ export const blogPost = defineType({
         }),
         defineArrayMember({
           type: 'image',
+          validation: imageWeightWarning,
           options: { hotspot: true },
           fields: [
-            defineField({
-              name: 'alt',
-              title: 'Alt text',
-              type: 'string',
-              validation: (r) => r.required().warning('Describe the photo for accessibility and SEO.'),
-            }),
+            altField(),
             defineField({
               name: 'caption',
               title: 'Caption',
@@ -223,11 +224,9 @@ export const blogPost = defineType({
               of: [
                 defineArrayMember({
                   type: 'image',
+                  validation: imageWeightWarning,
                   options: { hotspot: true },
-                  fields: [
-                    defineField({ name: 'alt', title: 'Alt text', type: 'string' }),
-                    defineField({ name: 'caption', title: 'Caption', type: 'string' }),
-                  ],
+                  fields: [altField(), defineField({ name: 'caption', title: 'Caption', type: 'string' })],
                 }),
               ],
               validation: (r) => r.min(2),
@@ -252,11 +251,9 @@ export const blogPost = defineType({
               of: [
                 defineArrayMember({
                   type: 'image',
+                  validation: imageWeightWarning,
                   options: { hotspot: true },
-                  fields: [
-                    defineField({ name: 'alt', title: 'Alt text', type: 'string' }),
-                    defineField({ name: 'caption', title: 'Title below image', type: 'string' }),
-                  ],
+                  fields: [altField(), defineField({ name: 'caption', title: 'Title below image', type: 'string' })],
                 }),
               ],
               validation: (r) => r.min(2).max(4),

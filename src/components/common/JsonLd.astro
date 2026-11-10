@@ -1,11 +1,13 @@
 ---
 import { getJsonLdBlocks } from '~/config/schema';
 
-const blocks = getJsonLdBlocks(Astro.url.pathname);
+export interface Props {
+  /** Page-specific nodes (e.g. BlogPosting) added after the path-based blocks. */
+  extra?: Array<Record<string, unknown>>;
+}
+
+const { extra = [] } = Astro.props;
+const blocks = [...getJsonLdBlocks(Astro.url.pathname), ...extra];
 ---
 
-{
-  blocks.map((block) => (
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(block)} />
-  ))
-}
+{blocks.map((block) => <script type="application/ld+json" is:inline set:html={JSON.stringify(block)} />)}

@@ -10,7 +10,7 @@ import { getSanityAboutContent } from '~/lib/content/pageContent';
 import { inlineToHtml, textToHtml } from '~/lib/content/richText';
 
 const [aboutImages, content] = await Promise.all([getSanityAboutImages(), getSanityAboutContent()]);
-const { mission, story, sustainability, vendors } = content;
+const { mission, story, founder, sustainability, vendors } = content;
 
 const [storyLead, ...storyRest] = story.paragraphs;
 const [sustainabilityLead, ...sustainabilityRest] = sustainability.paragraphs;
@@ -21,7 +21,6 @@ const metadata = {
   description: content.meta.description,
   ignoreTitleTemplate: true,
 };
-
 ---
 
 <PageLayout metadata={metadata}>
@@ -30,7 +29,7 @@ const metadata = {
     variant="split-dark"
     overlapHeader={false}
     title={textToHtml(content.hero.title)}
-    subtitle="Fresh From Hawaii. Rooted in Aloha."
+    subtitle={content.hero.subtitle}
     image={aboutImages.hero}
   />
 
@@ -48,7 +47,13 @@ const metadata = {
     <div class="flex flex-col gap-6">
       {storyLead && <Text variant="body-lg" color="default" html={inlineToHtml(storyLead)} />}
       {storyRest.map((p) => <Text variant="body" color="default" html={inlineToHtml(p)} />)}
-      {story.note && <Text variant="body" color="muted" class="text-sm italic">{story.note}</Text>}
+      {
+        story.note && (
+          <Text variant="body" color="muted" class="text-sm italic">
+            {story.note}
+          </Text>
+        )
+      }
     </div>
   </TextSplit>
 
@@ -58,50 +63,43 @@ const metadata = {
       <div class="flex max-w-3xl flex-col gap-8">
         {/* Heading */}
         <div class="flex flex-col gap-3">
-          <Heading variant="h2">Founder Story</Heading>
-          <p class="font-heading text-[18px] italic leading-snug text-accent">From a Simple Idea to a Family Legacy</p>
+          <Heading variant="h2">{founder.heading}</Heading>
+          {founder.tagline && <p class="font-heading text-[18px] italic leading-snug text-accent">{founder.tagline}</p>}
         </div>
 
         {/* Body */}
         <div class="flex flex-col gap-5">
-          <Text variant="body" color="default">
-            Twenty years ago, Sara Lufrano moved back home to Hawaii after living in Chicago. She missed being able
-            to grab a fresh, healthy salad on the go, and at the time there wasn't much like it here. So she and her
-            husband asked themselves, why don't we create it ourselves?
-          </Text>
-          <Text variant="body" color="default">
-            With a credit card, a lot of hope and plenty of hard work, they opened the very first Aloha Salads in
-            Kailua. Living at Sara's parents' house, they stayed up late creating the menu and spent their days
-            chopping, prepping and getting everything ready. On opening day it was just the two of them behind the
-            counter. Then came a moment they will never forget: a line out the door.
-          </Text>
-          <Text variant="body" color="default">
-            What started as a small idea soon became a family business. Their children grew up in the restaurants,
-            with their youngest just a newborn when they opened. Over the years both boys worked alongside their
-            friends, becoming part of the family business their parents built from the ground up.
-          </Text>
+          {founder.paragraphs.map((p) => <Text variant="body" color="default" html={inlineToHtml(p)} />)}
         </div>
 
         {/* Quotes */}
-        <div class="flex flex-col gap-6">
-          <blockquote class="border-l-4 border-accent pl-6">
-            <Text variant="body" color="default" class="mb-3 italic">
-              "It's wonderful to have the whole family be a part of this business."
-            </Text>
-            <Heading variant="eyebrow" as="cite" class="not-italic">Sara Lufrano</Heading>
-          </blockquote>
-          <blockquote class="border-l-4 border-accent pl-6">
-            <Text variant="body" color="default" class="mb-3 italic">
-              "Growing up, the restaurant's always been such a big part of our family. I can't remember a time when it wasn't."
-            </Text>
-            <Heading variant="eyebrow" as="cite" class="not-italic">Kekoa Lufrano</Heading>
-          </blockquote>
-        </div>
+        {
+          founder.quotes.length > 0 && (
+            <div class="flex flex-col gap-6">
+              {founder.quotes.map((q) => (
+                <blockquote class="border-l-4 border-accent pl-6">
+                  <Text variant="body" color="default" class="mb-3 italic">
+                    "{q.quote}"
+                  </Text>
+                  {q.attribution && (
+                    <Heading variant="eyebrow" as="cite" class="not-italic">
+                      {q.attribution}
+                    </Heading>
+                  )}
+                </blockquote>
+              ))}
+            </div>
+          )
+        }
 
         {/* Closing */}
-        <Text variant="body" color="muted">
-          Mahalo for being part of our story. Here's to many more years of sharing fresh food and aloha.
-        </Text>
+        {
+          founder.closing && (
+            <Text variant="body" color="muted">
+              {founder.closing}
+            </Text>
+          )
+        }
       </div>
     </div>
   </section>

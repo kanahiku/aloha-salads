@@ -1,15 +1,16 @@
 import { DocumentTextIcon } from '@sanity/icons';
 import { defineArrayMember, defineField, defineType } from 'sanity';
+import { altField, imageWeightWarning } from '../lib/imageChecks';
 
 const GROUPS = [
   { name: 'seo', title: 'SEO' },
   { name: 'hero', title: 'Hero' },
   { name: 'mission', title: 'Our Mission' },
   { name: 'story', title: 'Our Story' },
+  { name: 'founder', title: 'Founder Story' },
   { name: 'sustainability', title: 'Sustainability' },
   { name: 'vendors', title: 'Our Vendors' },
   { name: 'cta', title: 'Find a Location' },
-  { name: 'images', title: 'Images' },
 ];
 
 const textField = (group: string, name: string, title: string, options: { description?: string; rows?: number } = {}) =>
@@ -35,22 +36,16 @@ const paragraphs = (group: string, name: string, title: string, description?: st
     validation: (r) => r.min(1),
   });
 
-const imageField = (name: string, title: string, description?: string) =>
+const imageField = (group: string, name: string, title: string, description?: string) =>
   defineField({
     name,
     title,
-    group: 'images',
+    group,
     description,
     type: 'image',
+    validation: imageWeightWarning,
     options: { hotspot: true },
-    fields: [
-      defineField({
-        name: 'alt',
-        title: 'Alt text',
-        type: 'string',
-        validation: (r) => r.required().warning('Describe the image for accessibility and SEO.'),
-      }),
-    ],
+    fields: [altField()],
   });
 
 export const aboutContent = defineType({
@@ -71,6 +66,7 @@ export const aboutContent = defineType({
 
     // ── Hero ──
     textField('hero', 'heroTitle', 'Headline'),
+    textField('hero', 'heroSubtitle', 'Subtitle', { description: 'Line shown under the headline.' }),
     textField('hero', 'heroContent', 'Intro text', { rows: 3 }),
     textField('hero', 'heroPrimaryCtaLabel', 'Primary button label', { description: 'Links to the menu.' }),
     textField('hero', 'heroSecondaryCtaLabel', 'Secondary button label', { description: 'Links to Locations.' }),
@@ -90,6 +86,30 @@ export const aboutContent = defineType({
       description: 'Optional line shown under the story. Leave empty to hide it.',
     }),
 
+    // ── Founder Story ──
+    textField('founder', 'founderHeading', 'Heading'),
+    textField('founder', 'founderTagline', 'Tagline', { description: 'Italic line under the heading.' }),
+    paragraphs('founder', 'founderParagraphs', 'Story', 'One entry per paragraph.'),
+    defineField({
+      name: 'founderQuotes',
+      title: 'Quotes',
+      group: 'founder',
+      description: 'Family quotes shown under the story. Do not type the quotation marks.',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'founderQuote',
+          fields: [
+            defineField({ name: 'quote', title: 'Quote', type: 'text', rows: 3, validation: (r) => r.required() }),
+            defineField({ name: 'attribution', title: 'Name', type: 'string' }),
+          ],
+          preview: { select: { title: 'attribution', subtitle: 'quote' } },
+        }),
+      ],
+    }),
+    textField('founder', 'founderClosing', 'Closing line', { rows: 2 }),
+
     // ── Sustainability ──
     textField('sustainability', 'sustainabilityHeading', 'Heading'),
     paragraphs('sustainability', 'sustainabilityParagraphs', 'Text'),
@@ -107,11 +127,16 @@ export const aboutContent = defineType({
     textField('cta', 'ctaTitle', 'Heading'),
     textField('cta', 'ctaSubtitle', 'Text', { rows: 2 }),
 
-    // ── Images ──
-    imageField('heroImage', 'Hero image', 'About page hero image.'),
-    imageField('storyImage', 'Our Story image', 'Image beside the Our Story section.'),
-    imageField('sustainabilityImage', 'Sustainability image', 'Image beside the Sustainability section.'),
-    imageField('vendorsImage', 'Our Vendors image', 'Image beside the Our Vendors section.'),
+    // ── Images (each sits in the tab of the section it appears in) ──
+    imageField('hero', 'heroImage', 'Hero image', 'About page hero image.'),
+    imageField('story', 'storyImage', 'Our Story image', 'Image beside the Our Story section.'),
+    imageField(
+      'sustainability',
+      'sustainabilityImage',
+      'Sustainability image',
+      'Image beside the Sustainability section.'
+    ),
+    imageField('vendors', 'vendorsImage', 'Our Vendors image', 'Image beside the Our Vendors section.'),
   ],
   preview: {
     select: { media: 'heroImage' },

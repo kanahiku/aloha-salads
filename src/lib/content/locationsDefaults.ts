@@ -20,6 +20,8 @@ export const LOCATIONS_SHARED_DEFAULTS: LocationsSharedContent = {
   deliveryLabel: 'Order Delivery',
   directionsLabel: 'Get Directions',
   viewLabel: 'View Location',
+  menuCtaLabel: 'View Full Menu',
+  orderCtaLabel: 'Order Online',
   faqTitle: 'Frequently Asked Questions',
 };
 

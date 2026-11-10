@@ -49,6 +49,9 @@ export interface MetaData {
 
   openGraph?: MetaDataOpenGraph;
   twitter?: MetaDataTwitter;
+
+  /** Extra JSON-LD nodes for this page (e.g. BlogPosting), rendered after the path-based ones. */
+  jsonLd?: Array<Record<string, unknown>>;
 }
 
 export interface MetaDataRobots {

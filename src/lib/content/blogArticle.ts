@@ -84,9 +84,7 @@ function imagesForHeading(groups: Map<string, BlogContentImage[]>, heading?: str
 export function getUnmatchedInlineImages(post: BlogPost): BlogContentImage[] {
   if (shouldUsePortableBody(post)) return [];
   const groups = groupInlineImages(post.contentBlocks);
-  const matched = new Set(
-    post.sections.map((section) => normalizeHeading(section.heading ?? '')).filter(Boolean)
-  );
+  const matched = new Set(post.sections.map((section) => normalizeHeading(section.heading ?? '')).filter(Boolean));
   const leftover: BlogContentImage[] = [];
 
   for (const [heading, images] of groups) {

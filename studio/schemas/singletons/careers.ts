@@ -1,5 +1,6 @@
 import { DocumentTextIcon } from '@sanity/icons';
 import { defineArrayMember, defineField, defineType } from 'sanity';
+import { altField, imageWeightWarning } from '../lib/imageChecks';
 
 const GROUPS = [
   { name: 'seo', title: 'SEO' },
@@ -44,15 +45,9 @@ export const careersContent = defineType({
       group: 'hero',
       description: 'Shown beside the headline.',
       type: 'image',
+      validation: imageWeightWarning,
       options: { hotspot: true },
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt text',
-          type: 'string',
-          validation: (r) => r.required().warning('Describe the image for accessibility and SEO.'),
-        }),
-      ],
+      fields: [altField()],
     }),
 
     // ── Benefits ──

@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity';
+import { altField, imageWeightWarning } from '../lib/imageChecks';
 
 export const navSubLink = defineType({
   name: 'navSubLink',
@@ -18,9 +19,10 @@ export const navSubLink = defineType({
       name: 'image',
       title: 'Image',
       type: 'image',
+      validation: imageWeightWarning,
       description: 'Optional thumbnail shown in rich dropdown menu cards.',
       options: { hotspot: true },
-      fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+      fields: [altField()],
     }),
   ],
   preview: { select: { title: 'text', subtitle: 'href', media: 'image' } },
@@ -44,9 +46,10 @@ export const navLink = defineType({
       name: 'image',
       title: 'Image',
       type: 'image',
+      validation: imageWeightWarning,
       description: 'Optional image for future rich menu displays.',
       options: { hotspot: true },
-      fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+      fields: [altField()],
     }),
     defineField({
       name: 'subLinks',

@@ -44,7 +44,7 @@ const fonts = brandFontConfig();
     <Metadata {...metadata} />
     <SiteVerification />
     <Analytics />
-    <JsonLd />
+    <JsonLd extra={metadata.jsonLd} />
 
     <!-- Comment the line below to disable View Transitions -->
     <ClientRouter fallback="swap" />

@@ -28,6 +28,30 @@ const interiorSchemas: PageSchema[] = Object.values(interiorPages).map((page) =>
   breadcrumb: crumbsFor(page.path, page.title),
 }));
 
+/** Catering occasion pages whose copy comes from Sanity and so are not in `interiorPages`. */
+const cateringOccasionSchemas: PageSchema[] = [
+  {
+    name: 'Party Catering',
+    path: '/catering/parties',
+    schemaType: 'Service',
+    serviceType: 'Party catering',
+    description:
+      'Order fresh party catering for your next event. Salad trays and wrap platters for birthdays, graduations, baby showers, and sports banquets across our six Oahu locations.',
+    faq: [],
+    breadcrumb: crumbsFor('/catering/parties', 'Party Catering'),
+  },
+  {
+    name: 'School Catering',
+    path: '/catering/schools',
+    schemaType: 'Service',
+    serviceType: 'School catering',
+    description:
+      'Order fresh school catering for your campus. Salad trays, wrap platters, fresh soups, and beverages for pickup across our six Oahu locations.',
+    faq: [],
+    breadcrumb: crumbsFor('/catering/schools', 'School Catering'),
+  },
+];
+
 /**
  * Per-page schema.org data. Add an entry when Figma MCP creates a new route.
  * System routes below ship with every site (contact, reviews, blog, legal).
@@ -42,6 +66,7 @@ export const pages: PageSchema[] = [
     breadcrumb: [HOME],
   },
   ...interiorSchemas,
+  ...cateringOccasionSchemas,
   {
     name: 'Contact',
     path: '/contact',

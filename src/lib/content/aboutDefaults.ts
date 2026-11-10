@@ -17,6 +17,7 @@ export const ABOUT_DEFAULTS: AboutContent = {
   },
   hero: {
     title: 'About Aloha Salads',
+    subtitle: 'Fresh From Hawaii. Rooted in Aloha.',
     content: '',
     primaryCtaLabel: 'View Menu',
     secondaryCtaLabel: 'Find a Location',
@@ -35,9 +36,27 @@ export const ABOUT_DEFAULTS: AboutContent = {
       'Since then we have opened at Kahala Mall, Kapolei Commons, Pearlridge Center, Windward Mall in Kaneohe and Mililani Town Center. The menu has grown over those twenty years, but the dishes people come back for have not changed. The Aloha Passion and the Ono Island Ahi have been on it since the start.',
       'Twenty years later, our mission remains the same. We are proud to serve food made with quality ingredients, support local farmers and fishermen, and bring a little more aloha to every meal.',
       'Today, with six locations across Oahu, Aloha Salads is still a family affair. Our roots are in Kailua, our heart is in Hawaii, and we are committed to keeping fresh, healthy and affordable food accessible to everyone.',
-      'We are honored to be recognized as First Place, Hawaii\'s Best 2024, People\'s Choice Awards, Star-Advertiser.',
+      "We are honored to be recognized as First Place, Hawaii's Best 2024, People's Choice Awards, Star-Advertiser.",
     ],
     note: '',
+  },
+  founder: {
+    heading: 'Founder Story',
+    tagline: 'From a Simple Idea to a Family Legacy',
+    paragraphs: [
+      "Twenty years ago, Sara Lufrano moved back home to Hawaii after living in Chicago. She missed being able to grab a fresh, healthy salad on the go, and at the time there wasn't much like it here. So she and her husband asked themselves, why don't we create it ourselves?",
+      "With a credit card, a lot of hope and plenty of hard work, they opened the very first Aloha Salads in Kailua. Living at Sara's parents' house, they stayed up late creating the menu and spent their days chopping, prepping and getting everything ready. On opening day it was just the two of them behind the counter. Then came a moment they will never forget: a line out the door.",
+      'What started as a small idea soon became a family business. Their children grew up in the restaurants, with their youngest just a newborn when they opened. Over the years both boys worked alongside their friends, becoming part of the family business their parents built from the ground up.',
+    ],
+    quotes: [
+      { quote: "It's wonderful to have the whole family be a part of this business.", attribution: 'Sara Lufrano' },
+      {
+        quote:
+          "Growing up, the restaurant's always been such a big part of our family. I can't remember a time when it wasn't.",
+        attribution: 'Kekoa Lufrano',
+      },
+    ],
+    closing: "Mahalo for being part of our story. Here's to many more years of sharing fresh food and aloha.",
   },
   sustainability: {
     heading: 'Sustainability',

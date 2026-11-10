@@ -32,6 +32,7 @@ type FetchedHub = {
   heroImage?: FetchedImage | null;
   fullMenuTitle?: string | null;
   fullMenuSubtitle?: string | null;
+  fullMenuCategoryLinkLabel?: string | null;
   sourcingTitle?: string | null;
   sourcingSubtitle?: string | null;
   sourcingCtaLabel?: string | null;
@@ -80,7 +81,7 @@ const HUB_QUERY = /* groq */ `
   *[_type == "menuHub" && _id == "singleton-menu"][0] {
     metaTitle, metaDescription, heroTitle, heroContent,
     ${IMAGE_PROJECTION('heroImage', 'Fresh salad bowls from Aloha Salads')},
-    fullMenuTitle, fullMenuSubtitle,
+    fullMenuTitle, fullMenuSubtitle, fullMenuCategoryLinkLabel,
     sourcingTitle, sourcingSubtitle, sourcingCtaLabel,
     ${IMAGE_PROJECTION('sourcingImage', 'Fresh local ingredients at Aloha Salads')},
     ctaSubtitle,
@@ -147,6 +148,7 @@ function resolveHub(doc: FetchedHub | null): MenuHubContent {
     fullMenu: {
       title: textOr(doc.fullMenuTitle, d.fullMenu.title),
       subtitle: textOr(doc.fullMenuSubtitle, d.fullMenu.subtitle),
+      categoryLinkLabel: textOr(doc.fullMenuCategoryLinkLabel, d.fullMenu.categoryLinkLabel),
     },
     sourcing: resolveSourcing(doc, d.sourcing),
     cta: { subtitle: textOr(doc.ctaSubtitle, d.cta.subtitle) },

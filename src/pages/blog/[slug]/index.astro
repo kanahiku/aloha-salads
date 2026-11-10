@@ -9,6 +9,7 @@ import { Icon } from 'astro-icon/components';
 import { getFormattedDate } from '~/utils/utils';
 import { getBlogPost } from '~/lib/content';
 import { getArticleToc, getLeadInlineImages, shouldUsePortableBody } from '~/lib/content/blogArticle';
+import { getBlogPostingJsonLd } from '~/config/schema';
 import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from '~/config/cta';
 
 export const prerender = false;
@@ -31,6 +32,7 @@ const metadata = {
   title: post.meta.title,
   description: post.meta.description,
   ignoreTitleTemplate: true,
+  jsonLd: getBlogPostingJsonLd(post),
 };
 ---
 

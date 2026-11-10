@@ -27,6 +27,7 @@ export const legalPage = defineType({
       description: 'Fixed — set by the site code.',
       type: 'string',
       readOnly: true,
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'metaTitle',

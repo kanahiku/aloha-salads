@@ -5,7 +5,6 @@ import Button from '~/components/ui/Button.astro';
 import Image from '~/components/common/Image.astro';
 import HeroImagePlaceholder from '~/components/ui/HeroImagePlaceholder.astro';
 import type { ContentImage } from '~/lib/content/types';
-import { isHiddenMenuHub, omitHiddenMenuItems } from '~/lib/content';
 import peach from '~/assets/images/peach-motif.webp';
 import bigLeaf from '~/assets/images/big-leaf.webp';
 
@@ -31,6 +30,8 @@ export interface Props {
   categories?: FullMenuCategory[];
   ctaText?: string;
   ctaHref?: string;
+  /** Link next to each category heading. */
+  categoryLinkLabel?: string;
   id?: string;
 }
 
@@ -41,13 +42,11 @@ const {
   categories: menuCategories = [],
   ctaText,
   ctaHref,
+  categoryLinkLabel = 'View category',
   id,
 } = Astro.props;
 
-const categories = menuCategories
-  .filter((category) => !isHiddenMenuHub(category.href))
-  .map((category) => ({ ...category, items: omitHiddenMenuItems(category.items) }))
-  .filter((category) => category.items.length > 0);
+const categories = menuCategories.filter((category) => category.items.length > 0);
 
 const slugify = (value: string) =>
   value
@@ -156,7 +155,7 @@ const slugify = (value: string) =>
                   href={category.href}
                   class="font-heading text-button leading-none text-accent hover:text-accent-hover"
                 >
-                  View category
+                  {categoryLinkLabel}
                 </a>
               )}
             </div>

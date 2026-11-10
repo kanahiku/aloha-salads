@@ -2,7 +2,6 @@ import { sanityClient } from '../sanity/client';
 import { resolveContentImage, type SanityImageFields } from '../sanity/image';
 import { IMAGE_PROJECTION, normalizeWebsiteCopy, textOr } from './sanity';
 import { ABOUT_DEFAULTS } from './aboutDefaults';
-import { CATERING_MAIN_DEFAULTS, CATERING_SUBPAGE_DEFAULTS } from './cateringDefaults';
 import {
   CAREERS_DEFAULTS,
   INGREDIENTS_DEFAULTS,
@@ -24,6 +23,11 @@ import type {
   PressPageContent,
   ReviewsPageContent,
 } from './types';
+import { clean, cleanList, cleanFaqs, fetchOrNull } from './pageShared';
+
+export { clean, cleanList, cleanFaqs, fetchOrNull } from './pageShared';
+export type { FetchedImage } from './pageShared';
+export { getCateringContent } from './cateringContent';
 
 /**
  * About + Catering page copy from Sanity.
@@ -35,36 +39,13 @@ import type {
  *    document exists, so an editor can remove an item or clear a note to hide it.
  */
 
-export type FetchedImage = ContentImage & SanityImageFields;
-
-export const clean = (value: string | null | undefined) => normalizeWebsiteCopy((value ?? '').trim());
-
-/** Authored list → cleaned strings, dropping blanks. */
-export const cleanList = (values: Array<string | null> | null | undefined) =>
-  (values ?? []).map((value) => clean(value)).filter(Boolean);
-
-export const cleanFaqs = (
-  faqs: Array<{ question?: string | null; answer?: string | null }> | null | undefined
-): FaqEntry[] =>
-  (faqs ?? [])
-    .filter((faq) => faq.question?.trim() && faq.answer?.trim())
-    .map((faq) => ({ question: clean(faq.question), answer: clean(faq.answer) }));
-
-export async function fetchOrNull<T>(label: string, query: string): Promise<T | null> {
-  try {
-    return (await sanityClient.fetch<T | null>(query)) ?? null;
-  } catch (error) {
-    console.warn(`[${label}] Sanity text fetch failed, using defaults:`, (error as Error).message);
-    return null;
-  }
-}
-
 // ─── About ────────────────────────────────────────────────────────────────────
 
 type FetchedAbout = {
   metaTitle?: string | null;
   metaDescription?: string | null;
   heroTitle?: string | null;
+  heroSubtitle?: string | null;
   heroContent?: string | null;
   heroPrimaryCtaLabel?: string | null;
   heroSecondaryCtaLabel?: string | null;
@@ -74,6 +55,11 @@ type FetchedAbout = {
   storyHeading?: string | null;
   storyParagraphs?: Array<string | null> | null;
   storyNote?: string | null;
+  founderHeading?: string | null;
+  founderTagline?: string | null;
+  founderParagraphs?: Array<string | null> | null;
+  founderQuotes?: Array<{ quote?: string | null; attribution?: string | null } | null> | null;
+  founderClosing?: string | null;
   sustainabilityHeading?: string | null;
   sustainabilityParagraphs?: Array<string | null> | null;
   sustainabilityNote?: string | null;
@@ -88,9 +74,10 @@ type FetchedAbout = {
 const ABOUT_QUERY = /* groq */ `
   *[_type == "aboutContent" && _id == "singleton-about"][0] {
     metaTitle, metaDescription,
-    heroTitle, heroContent, heroPrimaryCtaLabel, heroSecondaryCtaLabel,
+    heroTitle, heroSubtitle, heroContent, heroPrimaryCtaLabel, heroSecondaryCtaLabel,
     missionHeading, missionQuote, missionBody,
     storyHeading, storyParagraphs, storyNote,
+    founderHeading, founderTagline, founderParagraphs, founderQuotes[]{quote, attribution}, founderClosing,
     sustainabilityHeading, sustainabilityParagraphs, sustainabilityNote, sustainabilityCtaLabel,
     vendorsHeading, vendorsParagraphs, vendorsCtaLabel,
     ctaTitle, ctaSubtitle
@@ -102,10 +89,19 @@ export async function getSanityAboutContent(): Promise<AboutContent> {
   const doc = await fetchOrNull<FetchedAbout>('about', ABOUT_QUERY);
   if (!doc) return d;
 
+  // Founder Story keeps its punctuation exactly as written (apostrophes included), so it is trimmed but not
+  // run through normalizeWebsiteCopy like the rest of the page.
+  const verbatim = (value: string | null | undefined) => value?.trim() ?? '';
+  const founderQuotes = (doc.founderQuotes ?? [])
+    .map((q) => ({ quote: verbatim(q?.quote), attribution: verbatim(q?.attribution) }))
+    .filter((q) => q.quote);
+  const founderParagraphs = (doc.founderParagraphs ?? []).map(verbatim).filter(Boolean);
+
   return {
     meta: { title: textOr(doc.metaTitle, d.meta.title), description: textOr(doc.metaDescription, d.meta.description) },
     hero: {
       title: textOr(doc.heroTitle, d.hero.title),
+      subtitle: textOr(doc.heroSubtitle, d.hero.subtitle),
       content: textOr(doc.heroContent, d.hero.content),
       primaryCtaLabel: textOr(doc.heroPrimaryCtaLabel, d.hero.primaryCtaLabel),
       secondaryCtaLabel: textOr(doc.heroSecondaryCtaLabel, d.hero.secondaryCtaLabel),
@@ -120,6 +116,13 @@ export async function getSanityAboutContent(): Promise<AboutContent> {
       paragraphs: cleanList(doc.storyParagraphs).length > 0 ? cleanList(doc.storyParagraphs) : d.story.paragraphs,
       note: clean(doc.storyNote),
     },
+    founder: {
+      heading: verbatim(doc.founderHeading) || d.founder.heading,
+      tagline: verbatim(doc.founderTagline) || d.founder.tagline,
+      paragraphs: founderParagraphs.length > 0 ? founderParagraphs : d.founder.paragraphs,
+      quotes: founderQuotes.length > 0 ? founderQuotes : d.founder.quotes,
+      closing: verbatim(doc.founderClosing) || d.founder.closing,
+    },
     sustainability: {
       heading: textOr(doc.sustainabilityHeading, d.sustainability.heading),
       paragraphs:
@@ -131,170 +134,11 @@ export async function getSanityAboutContent(): Promise<AboutContent> {
     },
     vendors: {
       heading: textOr(doc.vendorsHeading, d.vendors.heading),
-      paragraphs:
-        cleanList(doc.vendorsParagraphs).length > 0 ? cleanList(doc.vendorsParagraphs) : d.vendors.paragraphs,
+      paragraphs: cleanList(doc.vendorsParagraphs).length > 0 ? cleanList(doc.vendorsParagraphs) : d.vendors.paragraphs,
       ctaLabel: textOr(doc.vendorsCtaLabel, d.vendors.ctaLabel),
     },
     cta: { title: textOr(doc.ctaTitle, d.cta.title), subtitle: textOr(doc.ctaSubtitle, d.cta.subtitle) },
   };
-}
-
-// ─── Catering ─────────────────────────────────────────────────────────────────
-
-type FetchedCateringMain = {
-  metaTitle?: string | null;
-  metaDescription?: string | null;
-  heroTagline?: string | null;
-  heroTitle?: string | null;
-  heroContent?: string | null;
-  menuImage?: FetchedImage | null;
-  pricingTitle?: string | null;
-  pricingIntro?: string | null;
-  orderingTitle?: string | null;
-  orderingText?: string | null;
-  trays?: Array<{ name?: string | null; price?: string | null; image?: FetchedImage | null }> | null;
-  occasionsEyebrow?: string | null;
-  occasionsTitle?: string | null;
-  occasionsIntro?: string | null;
-  occasionsLinkLabel?: string | null;
-  ctaSubtitle?: string | null;
-  faqs?: Array<{ question?: string | null; answer?: string | null }> | null;
-  sharedOrderLabel?: string | null;
-  sharedMenuLabel?: string | null;
-  sharedLocationLabel?: string | null;
-  sharedReadyTitle?: string | null;
-  sharedFaqTitle?: string | null;
-  sharedSubNavEyebrow?: string | null;
-  sharedSubNavTitle?: string | null;
-  sharedSubNavSubtitle?: string | null;
-};
-
-const CATERING_MAIN_QUERY = /* groq */ `
-  *[_type == "cateringContent" && _id == "singleton-catering"][0] {
-    metaTitle, metaDescription,
-    heroTagline, heroTitle, heroContent,
-    ${IMAGE_PROJECTION('menuImage', 'Aloha Salads catering trays')},
-    pricingTitle, pricingIntro, orderingTitle, orderingText,
-    "trays": trays[]{ name, price, ${IMAGE_PROJECTION('image', 'Aloha Salads catering tray')} },
-    occasionsEyebrow, occasionsTitle, occasionsIntro, occasionsLinkLabel,
-    ctaSubtitle,
-    "faqs": faqs[]{ question, answer },
-    sharedOrderLabel, sharedMenuLabel, sharedLocationLabel, sharedReadyTitle, sharedFaqTitle,
-    sharedSubNavEyebrow, sharedSubNavTitle, sharedSubNavSubtitle
-  }
-`;
-
-type FetchedCateringSubpage = {
-  slug?: string | null;
-  order?: number | null;
-  title?: string | null;
-  metaTitle?: string | null;
-  metaDescription?: string | null;
-  heroContent?: string | null;
-  heroImage?: FetchedImage | null;
-  occasions?: Array<{ title?: string | null; description?: string | null }> | null;
-  faqs?: Array<{ question?: string | null; answer?: string | null }> | null;
-  ctaSubtitle?: string | null;
-  cardDescription?: string | null;
-  showOnCateringPage?: boolean | null;
-};
-
-const CATERING_SUBPAGES_QUERY = /* groq */ `
-  *[_type == "cateringSubpage" && defined(slug)] | order(order asc) {
-    slug, order, title, metaTitle, metaDescription, heroContent,
-    ${IMAGE_PROJECTION('heroImage', 'Aloha Salads catering')},
-    "occasions": occasions[]{ title, description },
-    "faqs": faqs[]{ question, answer },
-    ctaSubtitle, cardDescription, showOnCateringPage
-  }
-`;
-
-function resolveMain(doc: FetchedCateringMain | null): CateringMainContent {
-  const d = CATERING_MAIN_DEFAULTS;
-  if (!doc) return d;
-
-  const HIDDEN_TRAYS = new Set(['Aloha Caesar with Chicken Tray', 'Tray of Pita Bread']);
-  const trays: CateringTray[] = (doc.trays ?? [])
-    .filter((tray) => tray.name?.trim() && !HIDDEN_TRAYS.has(tray.name.trim()))
-    .map((tray) => {
-      const image = resolveContentImage(tray.image);
-      return { name: clean(tray.name), price: clean(tray.price), ...(image ? { image } : {}) };
-    });
-
-  return {
-    meta: { title: textOr(doc.metaTitle, d.meta.title), description: textOr(doc.metaDescription, d.meta.description) },
-    hero: {
-      tagline: textOr(doc.heroTagline, d.hero.tagline),
-      title: textOr(doc.heroTitle, d.hero.title),
-      content: textOr(doc.heroContent, d.hero.content),
-      image: resolveContentImage(doc.menuImage),
-    },
-    pricing: {
-      title: textOr(doc.pricingTitle, d.pricing.title),
-      intro: textOr(doc.pricingIntro, d.pricing.intro),
-      orderingTitle: textOr(doc.orderingTitle, d.pricing.orderingTitle),
-      orderingText: textOr(doc.orderingText, d.pricing.orderingText),
-    },
-    trays,
-    occasions: {
-      eyebrow: textOr(doc.occasionsEyebrow, d.occasions.eyebrow),
-      title: textOr(doc.occasionsTitle, d.occasions.title),
-      intro: textOr(doc.occasionsIntro, d.occasions.intro),
-      linkLabel: textOr(doc.occasionsLinkLabel, d.occasions.linkLabel),
-    },
-    cta: { subtitle: textOr(doc.ctaSubtitle, d.cta.subtitle) },
-    faqs: cleanFaqs(doc.faqs),
-    shared: {
-      orderLabel: textOr(doc.sharedOrderLabel, d.shared.orderLabel),
-      menuLabel: textOr(doc.sharedMenuLabel, d.shared.menuLabel),
-      locationLabel: textOr(doc.sharedLocationLabel, d.shared.locationLabel),
-      readyTitle: textOr(doc.sharedReadyTitle, d.shared.readyTitle),
-      faqTitle: textOr(doc.sharedFaqTitle, d.shared.faqTitle),
-      subNavEyebrow: textOr(doc.sharedSubNavEyebrow, d.shared.subNavEyebrow),
-      subNavTitle: textOr(doc.sharedSubNavTitle, d.shared.subNavTitle),
-      subNavSubtitle: textOr(doc.sharedSubNavSubtitle, d.shared.subNavSubtitle),
-    },
-  };
-}
-
-function resolveSubpages(docs: FetchedCateringSubpage[] | null): CateringSubpageContent[] {
-  const bySlug = new Map((docs ?? []).map((doc) => [doc.slug, doc]));
-
-  return CATERING_SUBPAGE_DEFAULTS.map((d) => {
-    const doc = bySlug.get(d.slug);
-    if (!doc) return d;
-
-    return {
-      slug: d.slug,
-      order: doc.order ?? d.order,
-      title: textOr(doc.title, d.title),
-      meta: {
-        title: textOr(doc.metaTitle, d.meta.title),
-        description: textOr(doc.metaDescription, d.meta.description),
-      },
-      heroContent: textOr(doc.heroContent, d.heroContent),
-      heroImage: resolveContentImage(doc.heroImage),
-      occasions: (doc.occasions ?? [])
-        .filter((card) => card.title?.trim())
-        .map((card) => ({ title: clean(card.title), description: clean(card.description) })),
-      faqs: cleanFaqs(doc.faqs),
-      ctaSubtitle: textOr(doc.ctaSubtitle, d.ctaSubtitle),
-      cardDescription: clean(doc.cardDescription),
-      showOnCateringPage: doc.showOnCateringPage ?? false,
-    };
-  }).sort((a, b) => a.order - b.order);
-}
-
-export async function getCateringContent(): Promise<{
-  main: CateringMainContent;
-  subpages: CateringSubpageContent[];
-}> {
-  const [mainDoc, subpageDocs] = await Promise.all([
-    fetchOrNull<FetchedCateringMain>('catering', CATERING_MAIN_QUERY),
-    fetchOrNull<FetchedCateringSubpage[]>('catering sub-pages', CATERING_SUBPAGES_QUERY),
-  ]);
-
-  return { main: resolveMain(mainDoc), subpages: resolveSubpages(subpageDocs) };
 }
 
 // ─── Careers ──────────────────────────────────────────────────────────────────
@@ -447,7 +291,10 @@ export async function getPressPageContent(): Promise<PressPageContent> {
     metaDescription?: string | null;
     heading?: string | null;
     lede?: string | null;
-  }>('press page', `*[_type == "pressPage" && _id == "singleton-press"][0]{ metaTitle, metaDescription, heading, lede }`);
+  }>(
+    'press page',
+    `*[_type == "pressPage" && _id == "singleton-press"][0]{ metaTitle, metaDescription, heading, lede }`
+  );
   if (!doc) return d;
 
   return {

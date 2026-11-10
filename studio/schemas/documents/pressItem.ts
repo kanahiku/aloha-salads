@@ -1,5 +1,6 @@
 import { defineField, defineType } from 'sanity';
 import { BookIcon } from '@sanity/icons';
+import { altField, imageWeightWarning } from '../lib/imageChecks';
 
 /**
  * One card on the /press page. Every field the card shows lives here, so the
@@ -57,16 +58,10 @@ export const pressItem = defineType({
       name: 'photo',
       title: 'Photo',
       type: 'image',
+      validation: imageWeightWarning,
       options: { hotspot: true },
       description: 'Shown at the top of the card (16:10). If empty, a grey placeholder is shown.',
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt text',
-          type: 'string',
-          validation: (r) => r.required().warning('Describe the photo for accessibility and SEO.'),
-        }),
-      ],
+      fields: [altField()],
     }),
     defineField({
       name: 'order',

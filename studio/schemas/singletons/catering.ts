@@ -1,5 +1,6 @@
 import { DocumentTextIcon } from '@sanity/icons';
 import { defineArrayMember, defineField, defineType } from 'sanity';
+import { altField, imageWeightWarning } from '../lib/imageChecks';
 
 const GROUPS = [
   { name: 'seo', title: 'SEO' },
@@ -48,15 +49,9 @@ export const cateringContent = defineType({
       group: 'hero',
       description: 'Hero image for the main catering page.',
       type: 'image',
+      validation: imageWeightWarning,
       options: { hotspot: true },
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt text',
-          type: 'string',
-          validation: (r) => r.required().warning('Describe the image for accessibility and SEO.'),
-        }),
-      ],
+      fields: [altField()],
     }),
 
     // ── Menu & pricing ──
@@ -88,8 +83,9 @@ export const cateringContent = defineType({
               name: 'image',
               title: 'Photo',
               type: 'image',
+              validation: imageWeightWarning,
               options: { hotspot: true },
-              fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+              fields: [altField()],
             }),
           ],
           preview: { select: { title: 'name', subtitle: 'price', media: 'image' } },

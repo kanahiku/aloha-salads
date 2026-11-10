@@ -1,5 +1,6 @@
 import { DocumentTextIcon } from '@sanity/icons';
 import { defineArrayMember, defineField, defineType } from 'sanity';
+import { altField, imageWeightWarning } from '../lib/imageChecks';
 
 const GROUPS = [
   { name: 'seo', title: 'SEO' },
@@ -46,15 +47,9 @@ export const locationsContent = defineType({
       title: 'Hero image',
       group: 'hero',
       type: 'image',
+      validation: imageWeightWarning,
       options: { hotspot: true },
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt text',
-          type: 'string',
-          validation: (r) => r.required().warning('Describe the image for accessibility and SEO.'),
-        }),
-      ],
+      fields: [altField()],
     }),
 
     // ── Store list ──
@@ -90,6 +85,10 @@ export const locationsContent = defineType({
     textField('shared', 'sharedMoreSubtitle', 'Store page — "other locations" text', { rows: 2 }),
     textField('shared', 'sharedViewLabel', 'Store card link label', {
       description: 'The "View Location" link on each store card.',
+    }),
+    textField('shared', 'sharedMenuCtaLabel', 'Closing banner — menu button', { description: 'Links to the menu.' }),
+    textField('shared', 'sharedOrderCtaLabel', 'Closing banner — order button', {
+      description: 'Links to online ordering.',
     }),
     textField('shared', 'sharedFaqTitle', 'FAQ section heading'),
   ],

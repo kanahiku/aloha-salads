@@ -1,5 +1,6 @@
 import { DocumentTextIcon } from '@sanity/icons';
 import { defineArrayMember, defineField, defineType } from 'sanity';
+import { altField, imageWeightWarning } from '../lib/imageChecks';
 
 const GROUPS = [
   { name: 'seo', title: 'SEO' },
@@ -29,15 +30,9 @@ const imageField = (group: string, name: string, title: string, description?: st
     group,
     description,
     type: 'image',
+    validation: imageWeightWarning,
     options: { hotspot: true },
-    fields: [
-      defineField({
-        name: 'alt',
-        title: 'Alt text',
-        type: 'string',
-        validation: (r) => r.required().warning('Describe the image for accessibility and SEO.'),
-      }),
-    ],
+    fields: [altField()],
   });
 
 /**
@@ -69,10 +64,19 @@ export const menuHub = defineType({
       rows: 2,
     }),
 
+    textField('menu', 'fullMenuCategoryLinkLabel', 'Category link label', {
+      description: 'The link shown next to each category heading.',
+    }),
+
     textField('sourcing', 'sourcingTitle', 'Heading'),
     textField('sourcing', 'sourcingSubtitle', 'Text', { rows: 4 }),
     textField('sourcing', 'sourcingCtaLabel', 'Button label', { description: 'Links to the Ingredients page.' }),
-    imageField('sourcing', 'sourcingImage', 'Photo', 'Photo shown beside the Quality Ingredients text on the Menu page.'),
+    imageField(
+      'sourcing',
+      'sourcingImage',
+      'Photo',
+      'Photo shown beside the Quality Ingredients text on the Menu page.'
+    ),
 
     textField('cta', 'ctaSubtitle', 'Text', {
       description: 'The heading is shared — see "Shared with menu pages".',
