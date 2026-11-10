@@ -59,13 +59,11 @@ export const MENU_FALLBACK_ITEMS: Record<string, MenuListItem[]> = {
     },
     {
       title: 'Poke Bowl',
-      badge: 'Coming soon',
     },
     {
       title: 'Poke Salad',
       description:
         'Romaine, carrots, cucumbers, avocado, wonton strips, green onion, crispy onion, spicy ahi, and unagi sauce.',
-      badge: 'Coming soon',
     },
   ],
   'wraps-subs': [
@@ -102,7 +100,6 @@ export const MENU_FALLBACK_ITEMS: Record<string, MenuListItem[]> = {
     {
       title: 'Poke Wrap',
       description: 'Bean sprouts, avocado, cucumber, crispy onion, spicy ahi, and unagi sauce, served on warmed pita.',
-      badge: 'Coming soon',
     },
     {
       title: 'Club Sub',
@@ -323,13 +320,11 @@ export const MENU_FALLBACK_CATEGORIES: Array<{
       },
       {
         title: 'Poke Bowl',
-        badge: 'Coming soon',
       },
       {
         title: 'Poke Salad',
         description:
           'Romaine, carrots, cucumbers, avocado, wonton strips, green onion, crispy onion, spicy ahi, and unagi sauce.',
-        badge: 'Coming soon',
       },
     ],
   },
@@ -372,7 +367,6 @@ export const MENU_FALLBACK_CATEGORIES: Array<{
         title: 'Poke Wrap',
         description:
           'Bean sprouts, avocado, cucumber, crispy onion, spicy ahi, and unagi sauce, served on warmed pita.',
-        badge: 'Coming soon',
       },
       {
         title: 'Club Sub',

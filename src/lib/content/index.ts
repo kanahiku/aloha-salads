@@ -253,7 +253,6 @@ const HIDDEN_MENU_ITEM_TITLES = new Set([
   // Pre-launch: hide these cards until a photo exists. Remove a title here to show it again.
   'extra pita',
   'keiki combo',
-  'cookies',
   'fountain drink',
   'bottle water',
   'vegan aloha mediterranean',
@@ -369,7 +368,6 @@ const REQUESTED_MENU_ITEMS: Array<{
     categoryTitle: 'Signature Salads',
     categoryDescription: 'Fresh bowls built with crisp greens, local ahi, and house-made dressings.',
     title: 'Poke Bowl',
-    badge: 'Coming soon',
   },
   {
     categorySlug: 'salads',
@@ -378,7 +376,6 @@ const REQUESTED_MENU_ITEMS: Array<{
     title: 'Poke Salad',
     description:
       'Romaine, carrots, cucumbers, avocado, wonton strips, green onion, crispy onion, spicy ahi, and unagi sauce.',
-    badge: 'Coming soon',
   },
   {
     categorySlug: 'wraps-subs',
@@ -395,7 +392,6 @@ const REQUESTED_MENU_ITEMS: Array<{
     insertAfter: 'Hummus Pita Wrap',
     description:
       'Bean sprouts, avocado, cucumber, crispy onion, spicy ahi, and unagi sauce, served on warmed pita bread.',
-    badge: 'Coming soon',
   },
   {
     categorySlug: 'misc',
