@@ -8,7 +8,7 @@ export const MENU_SUBPAGES_FOOD: MenuSubpageContent[] = [
     meta: {
       title: 'Signature Salads & Bowls | Aloha Salads Oahu',
       description:
-        'Explore our signature salads including the Ono Island Ahi and Kamuela Cobb. Built with fresh ingredients and house-made dressings across our six Oahu locations.',
+        'Explore our signature salads including the Ono Island Ahi and Kamuela Cobb. Built with fresh ingredients and house-made dressings across our seven Oahu locations.',
     },
     hero: {
       title: 'Signature Salads',
@@ -46,7 +46,7 @@ export const MENU_SUBPAGES_FOOD: MenuSubpageContent[] = [
       },
       {
         question: 'Where can I order a salad for pickup?',
-        answer: 'You can order online for fast pickup at any of our six neighborhood restaurants across Oahu.',
+        answer: 'You can order online for fast pickup at any of our seven neighborhood restaurants across Oahu.',
       },
     ],
     explore: {
@@ -62,12 +62,12 @@ export const MENU_SUBPAGES_FOOD: MenuSubpageContent[] = [
     meta: {
       title: 'Build Your Own Salad | Custom Bowls | Aloha Salads Oahu',
       description:
-        'Build your own salad at Aloha Salads with your choice of fresh lettuce, toppings, cheese, and house-made dressing. Order online across our six Oahu locations.',
+        'Build your own salad at Aloha Salads with your choice of fresh lettuce, toppings, cheese, and house-made dressing. Order online across our seven Oahu locations.',
     },
     hero: {
       title: 'Design Your Own Salad at Aloha Salads',
       content:
-        'Build your own salad using our daily selection of fresh ingredients. You get to choose exactly what goes into your bowl, backed by the same quality standards we use across our six Oahu locations.',
+        'Build your own salad using our daily selection of fresh ingredients. You get to choose exactly what goes into your bowl, backed by the same quality standards we use across our seven Oahu locations.',
     },
     sourcing: {
       title: 'Quality Ingredients',
@@ -99,7 +99,7 @@ export const MENU_SUBPAGES_FOOD: MenuSubpageContent[] = [
       },
       {
         question: 'Where can I pick up my custom order?',
-        answer: 'You can order ahead for fast pickup at any of our six neighborhood restaurants across Oahu.',
+        answer: 'You can order ahead for fast pickup at any of our seven neighborhood restaurants across Oahu.',
       },
     ],
     explore: {
@@ -136,7 +136,7 @@ export const MENU_SUBPAGES_FOOD: MenuSubpageContent[] = [
     meta: {
       title: 'Fresh Wraps & Subs | Aloha Salads Oahu',
       description:
-        'Explore our hearty wraps and subs, including the Grilled Steak Wrap, Fresh Island Ahi Wrap, and Club Sub. Order online for pickup across our six Oahu locations.',
+        'Explore our hearty wraps and subs, including the Grilled Steak Wrap, Fresh Island Ahi Wrap, and Club Sub. Order online for pickup across our seven Oahu locations.',
     },
     hero: {
       title: 'Wraps and Subs',
@@ -175,7 +175,7 @@ export const MENU_SUBPAGES_FOOD: MenuSubpageContent[] = [
       },
       {
         question: 'Where can I pick up my order?',
-        answer: 'You can order online for fast pickup at any of our six neighborhood restaurants across Oahu.',
+        answer: 'You can order online for fast pickup at any of our seven neighborhood restaurants across Oahu.',
       },
     ],
     explore: {
@@ -191,7 +191,7 @@ export const MENU_SUBPAGES_FOOD: MenuSubpageContent[] = [
     meta: {
       title: 'Fresh Soups & Tomato Bisque | Aloha Salads Oahu',
       description:
-        'Warm up with our signature thick and creamy Tomato Bisque, available daily across our six Oahu locations. Order online for fast pickup.',
+        'Warm up with our signature thick and creamy Tomato Bisque, available daily across our seven Oahu locations. Order online for fast pickup.',
     },
     hero: {
       title: 'Soups',
@@ -222,7 +222,7 @@ export const MENU_SUBPAGES_FOOD: MenuSubpageContent[] = [
       },
       {
         question: 'Is the soup available at all locations?',
-        answer: 'Yes. Our menu is available across all six of our neighborhood restaurants on Oahu.',
+        answer: 'Yes. Our menu is available across all seven of our neighborhood restaurants on Oahu.',
       },
       {
         question: 'Can I order soup for takeout?',

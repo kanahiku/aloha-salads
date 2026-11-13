@@ -39,12 +39,12 @@ export interface Props {
 
 const {
   eyebrow = 'Locations',
-  title = 'Six spots across O\u2019ahu.',
+  title = 'Seven spots across O\u2019ahu.',
   subtitle = 'Dine in, grab and go, or order ahead. There\u2019s an Aloha Salads closer than you think.',
   ctaText = 'view all locations',
   ctaHref = '/locations',
   viewLabel = 'View {name}',
-  locations = storeLocations.slice(0, 4).map((store) => ({
+  locations = storeLocations.map((store) => ({
     name: store.name,
     shopName: store.shopName,
     addressLine1: store.addressLine1,

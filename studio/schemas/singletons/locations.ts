@@ -95,7 +95,7 @@ export const locationsContent = defineType({
   preview: {
     select: { media: 'directoryImage' },
     prepare({ media }) {
-      return { title: 'Locations', subtitle: 'Locations page (the six stores are listed inside)', media };
+      return { title: 'Locations', subtitle: 'Locations page (the seven stores are listed inside)', media };
     },
   },
 });

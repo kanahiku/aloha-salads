@@ -8,12 +8,12 @@ export const MENU_SUBPAGES_MORE: MenuSubpageContent[] = [
     meta: {
       title: 'Drinks, Beverages & Local Mamaki Tea | Aloha Salads Oahu',
       description:
-        'Complete your meal with our beverage selection, featuring Guava Lemonade and Big Island mamaki mint tea. Order online across our six Oahu locations.',
+        'Complete your meal with our beverage selection, featuring Guava Lemonade and Big Island mamaki mint tea. Order online across our seven Oahu locations.',
     },
     hero: {
       title: 'Drinks and Beverages',
       content:
-        'Pair your meal with our selection of chilled beverages. We offer a variety of refreshing options available for pickup across our six Oahu locations.',
+        'Pair your meal with our selection of chilled beverages. We offer a variety of refreshing options available for pickup across our seven Oahu locations.',
     },
     sourcing: {
       title: 'Big Island Mamaki',
@@ -45,7 +45,7 @@ export const MENU_SUBPAGES_MORE: MenuSubpageContent[] = [
       },
       {
         question: 'Where can I pick up my order?',
-        answer: 'Our full beverage menu is available at our six neighborhood restaurants across Oahu.',
+        answer: 'Our full beverage menu is available at our seven neighborhood restaurants across Oahu.',
       },
     ],
     explore: {
@@ -61,7 +61,7 @@ export const MENU_SUBPAGES_MORE: MenuSubpageContent[] = [
     meta: {
       title: 'Keiki Menu & Kids Meals | Aloha Salads Oahu',
       description:
-        'Discover our Keiki Combo, featuring a wholesome pita sandwich, fresh fruit, a drink, and an organic lollipop. Available across our six Oahu locations.',
+        'Discover our Keiki Combo, featuring a wholesome pita sandwich, fresh fruit, a drink, and an organic lollipop. Available across our seven Oahu locations.',
     },
     hero: {
       title: 'Keiki Menu',
@@ -92,12 +92,12 @@ export const MENU_SUBPAGES_MORE: MenuSubpageContent[] = [
       },
       {
         question: 'Is the Keiki Menu available at all restaurants?',
-        answer: 'Yes. Our keiki options are available across all six of our neighborhood restaurants on Oahu.',
+        answer: 'Yes. Our keiki options are available across all seven of our neighborhood restaurants on Oahu.',
       },
       {
         question: 'Where are your Oahu locations?',
         answer:
-          'We operate six neighborhood restaurants located in Kailua, Kahala, Kaneohe, Kapolei, Mililani, and Pearlridge.',
+          'We operate seven neighborhood restaurants located in Kailua, Kahala, Kaneohe, Kapolei, Mililani, Pearlridge, and Keʻeaumoku.',
       },
     ],
     explore: {
@@ -113,7 +113,7 @@ export const MENU_SUBPAGES_MORE: MenuSubpageContent[] = [
     meta: {
       title: 'Vegan Salads & Bowls | Aloha Salads Oahu',
       description:
-        'Explore dedicated plant-based options including the Vegan Aloha Mediterranean. Order online across our six Oahu locations.',
+        'Explore dedicated plant-based options including the Vegan Aloha Mediterranean. Order online across our seven Oahu locations.',
     },
     hero: {
       title: 'Vegan Menu Options',
@@ -146,7 +146,7 @@ export const MENU_SUBPAGES_MORE: MenuSubpageContent[] = [
       },
       {
         question: 'Can I order a vegan meal for takeout?',
-        answer: 'Yes. You can order online for fast pickup at any of our six neighborhood restaurants across Oahu.',
+        answer: 'Yes. You can order online for fast pickup at any of our seven neighborhood restaurants across Oahu.',
       },
       {
         question: 'Do you offer catering for vegan diets?',
@@ -166,7 +166,7 @@ export const MENU_SUBPAGES_MORE: MenuSubpageContent[] = [
     meta: {
       title: 'Vegetarian Salads & Wraps | Aloha Salads Oahu',
       description:
-        'Discover our meatless meal selections including the Aloha Passion salad, Hummus Pita Wrap, and Caprese Sub. Order online for fast pickup across our six Oahu locations.',
+        'Discover our meatless meal selections including the Aloha Passion salad, Hummus Pita Wrap, and Caprese Sub. Order online for fast pickup across our seven Oahu locations.',
     },
     hero: {
       title: 'Vegetarian Menu Options',
@@ -205,7 +205,7 @@ export const MENU_SUBPAGES_MORE: MenuSubpageContent[] = [
       {
         question: 'Where can I order vegetarian meals for takeout?',
         answer:
-          'Our full vegetarian menu is available to order online for fast pickup at all six of our neighborhood restaurants across Oahu.',
+          'Our full vegetarian menu is available to order online for fast pickup at all seven of our neighborhood restaurants across Oahu.',
       },
     ],
     explore: {
@@ -221,12 +221,12 @@ export const MENU_SUBPAGES_MORE: MenuSubpageContent[] = [
     meta: {
       title: 'Healthy Food & Menu Options | Aloha Salads Oahu',
       description:
-        'Looking for a healthy meal? Discover fresh salads, lean proteins, and custom bowls at Aloha Salads. Order online across our six Oahu locations.',
+        'Looking for a healthy meal? Discover fresh salads, lean proteins, and custom bowls at Aloha Salads. Order online across our seven Oahu locations.',
     },
     hero: {
       title: 'Healthy Food and Menu Options',
       content:
-        'Finding a healthy meal should be simple. We serve fresh, nutrient-dense bowls and wraps made from quality ingredients across our six Oahu locations.',
+        'Finding a healthy meal should be simple. We serve fresh, nutrient-dense bowls and wraps made from quality ingredients across our seven Oahu locations.',
     },
     sourcing: {
       title: 'Quality Ingredients',
@@ -261,7 +261,7 @@ export const MENU_SUBPAGES_MORE: MenuSubpageContent[] = [
       {
         question: 'Where can I pick up a healthy meal?',
         answer:
-          'Our full menu is available to order online for fast pickup at all six of our neighborhood restaurants across Oahu.',
+          'Our full menu is available to order online for fast pickup at all seven of our neighborhood restaurants across Oahu.',
       },
     ],
     explore: {

@@ -30,7 +30,7 @@ import { specToPortableText } from '../src/lib/content/legalPortableText';
 
 /**
  * Seeds page copy into Sanity: About, Catering (main + the seven sub-pages), Careers, Ingredients,
- * the simple pages (Gift Cards, Nutrition & Allergens), Locations (hub + the six stores), and the Menu pages
+ * the simple pages (Gift Cards, Nutrition & Allergens), Locations (hub + the seven stores), and the Menu pages
  * (landing page + the ten category pages), the site chrome (announcement bar, header navigation, footer),
  * the Press and Reviews page text, and the legal pages (Privacy Policy, Terms, Accessibility).
  *
@@ -434,8 +434,9 @@ function storeFields(slug: string, order: number, oldLocations: Doc | null): Doc
     phoneDisplay: store.phoneDisplay,
     hours: store.hours.split(' · ').map((line) => line.trim()),
     intro: store.intro,
-    orderPickupHref: store.orderPickupHref,
-    orderDeliveryHref: store.orderDeliveryHref,
+    // Only absolute links go in Sanity (the field is a URL); a relative placeholder stays in code.
+    ...(store.orderPickupHref.startsWith('http') ? { orderPickupHref: store.orderPickupHref } : {}),
+    ...(store.orderDeliveryHref?.startsWith('http') ? { orderDeliveryHref: store.orderDeliveryHref } : {}),
     ...(store.mapsEmbedSrc ? { mapsEmbedSrc: store.mapsEmbedSrc } : {}),
     metaTitle: page.meta.title,
     metaDescription: page.meta.description,

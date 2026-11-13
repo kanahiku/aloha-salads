@@ -21,7 +21,7 @@ export const CATERING_MAIN_DEFAULTS: CateringMainContent = {
     tagline: 'Order Now',
     title: 'Catering Menu',
     content:
-      'Provide fresh meals for your next gathering with our catering trays. We prepare scaled-up versions of our signature salads and wraps for pickup across our six Oahu locations.',
+      'Provide fresh meals for your next gathering with our catering trays. We prepare scaled-up versions of our signature salads and wraps for pickup across our seven Oahu locations.',
   },
   pricing: {
     title: 'Catering Menu and Pricing',
@@ -69,7 +69,7 @@ export const CATERING_MAIN_DEFAULTS: CateringMainContent = {
   },
   cta: {
     subtitle:
-      'Order online for pickup at any of our six Oahu stores. For serving sizes, minimums or lead times, call the store you want to collect from.',
+      'Order online for pickup at any of our seven Oahu stores. For serving sizes, minimums or lead times, call the store you want to collect from.',
   },
   faqs: [
     {
@@ -91,7 +91,7 @@ export const CATERING_MAIN_DEFAULTS: CateringMainContent = {
     },
     {
       question: 'Where do I pick up my catering order?',
-      answer: 'You can pick up your catering order at any of our six neighborhood restaurants across Oahu.',
+      answer: 'You can pick up your catering order at any of our seven neighborhood restaurants across Oahu.',
     },
   ],
   shared: {

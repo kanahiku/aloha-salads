@@ -1,7 +1,7 @@
 import type { LocationPageCopy, LocationsHubContent, LocationsSharedContent } from './types';
 
 /**
- * Locations page copy as originally approved (the hub and the six store pages).
+ * Locations page copy as originally approved (the hub and the seven store pages).
  * Store facts — address, phone, hours, order and map links — live in `~/data/locations.ts`.
  *
  * Two jobs:
@@ -27,21 +27,21 @@ export const LOCATIONS_SHARED_DEFAULTS: LocationsSharedContent = {
 
 export const LOCATIONS_HUB_DEFAULTS: LocationsHubContent = {
   meta: {
-    title: 'Aloha Salads Locations | Find Our 6 Oahu Restaurants',
+    title: 'Aloha Salads Locations | Find Our 7 Oahu Restaurants',
     description:
-      'Find an Aloha Salads location near you. We operate six restaurants across Oahu offering fresh meals for dine-in or fast pickup.',
+      'Find an Aloha Salads location near you. We operate seven restaurants across Oahu offering fresh meals for dine-in or fast pickup.',
   },
   hero: {
     tagline: 'Visit Now',
     title: 'Aloha Salads Locations\non Oahu',
     content:
-      'Find your nearest Aloha Salads. We operate six neighborhood restaurants across Oahu. Every location offers online ordering for fast pickup and convenient dine-in seating.',
+      'Find your nearest Aloha Salads. We operate seven neighborhood restaurants across Oahu. Every location offers online ordering for fast pickup and convenient dine-in seating.',
   },
   directoryTitle: 'Find a Fresh, Local Meal Near You',
   faqs: [
     {
       question: 'Do all locations offer dine-in seating?',
-      answer: 'Yes. All six of our Oahu restaurants feature dedicated dining areas for guests who prefer to eat in.',
+      answer: 'Yes. All seven of our Oahu restaurants feature dedicated dining areas for guests who prefer to eat in.',
     },
     {
       question: 'Is parking available at your restaurants?',
@@ -315,6 +315,51 @@ export const LOCATION_PAGE_DEFAULTS: LocationPageCopy[] = [
     cta: {
       title: 'Visit Us in Pearlridge',
       subtitle: 'Stop by Pearlridge Center for a fresh meal or place your order online to skip the line.',
+    },
+  },
+  {
+    slug: 'keeaumoku',
+    meta: {
+      title: 'Aloha Salads Keʻeaumoku | Fresh Salads and Wraps at Midtown Eats, Honolulu',
+      description:
+        'Visit Aloha Salads inside Midtown Eats on Liona Street. Fresh salads, wraps and local drinks, open every day from 10:30 AM to 8 PM. Order ahead online.',
+    },
+    heroTitle: 'Aloha Salads Keʻeaumoku',
+    heroContent:
+      'Our newest shop is inside Midtown Eats, the food hall at The Park on Keʻeaumoku. Stop by for a fresh salad, a warm pita wrap, or a cold mamaki mint tea, right in the middle of Honolulu.',
+    aboutHeading: 'Fresh Food in the Heart of Honolulu',
+    aboutParagraphs: [
+      'Aloha Salads started in Kailua in 2006. Twenty years later, we are happy to bring the same food to town. You will find us at Suite 108 inside Midtown Eats, a short walk from Ala Moana.',
+      'We make every salad and wrap to order with crisp greens, house-made dressings, and never-frozen local ahi. Come by on your lunch break, grab dinner on the way home, or meet friends at the food hall and let everyone pick what they like.',
+    ],
+    faqs: [
+      {
+        question: 'Where is Aloha Salads inside Midtown Eats?',
+        answer: 'We are in Suite 108 on the ground floor of the food hall at 1515 Liona Street.',
+      },
+      {
+        question: 'Is parking available?',
+        answer:
+          'Yes. You can park in the building garage. Drive in from Liona Street and follow the Midtown Eats signs down to the food hall.',
+      },
+      {
+        question: 'Can I sit and eat there?',
+        answer:
+          'Yes. Midtown Eats has shared tables inside and outside, so you can eat with friends even if they order from another shop.',
+      },
+      {
+        question: 'Can I order ahead?',
+        answer: 'Yes. Order online and pick up your food at our counter.',
+      },
+      {
+        question: 'Do you take cash?',
+        answer: 'Midtown Eats is a cashless food hall. Please pay with a card or your phone.',
+      },
+    ],
+    cta: {
+      title: 'Visit Us on Keʻeaumoku',
+      subtitle:
+        'We are open every day from 10:30 AM to 8 PM. Order ahead or walk up to the counter. We would love to see you.',
     },
   },
 ];

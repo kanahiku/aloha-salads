@@ -21,12 +21,12 @@ export const MENU_HUB_DEFAULTS: MenuHubContent = {
   meta: {
     title: 'Menu | Fresh Salads, Wraps & Local Ahi | Aloha Salads',
     description:
-      'Explore the Aloha Salads menu featuring fresh salads, wraps, subs, soups, and Big Island mamaki tea across six Oahu locations. Order online for pickup.',
+      'Explore the Aloha Salads menu featuring fresh salads, wraps, subs, soups, and Big Island mamaki tea across seven Oahu locations. Order online for pickup.',
   },
   hero: {
     title: 'Our Menu:\nFreshly Crafted on Oahu',
     content:
-      'We serve fresh, locally grown food prepared daily across our six Oahu locations. Explore our selection of salads, wraps, subs, and local favorites below, or order ahead for fast pickup.',
+      'We serve fresh, locally grown food prepared daily across our seven Oahu locations. Explore our selection of salads, wraps, subs, and local favorites below, or order ahead for fast pickup.',
   },
   sourcing: {
     title: 'Quality Ingredients',
@@ -40,7 +40,7 @@ export const MENU_HUB_DEFAULTS: MenuHubContent = {
   faqs: [
     {
       question: 'Can I order online for pickup?',
-      answer: 'Yes. You can order ahead online for fast pickup at any of our six neighborhood restaurants across Oahu.',
+      answer: 'Yes. You can order ahead online for fast pickup at any of our seven neighborhood restaurants across Oahu.',
     },
     {
       question: 'Do you offer catering trays?',
@@ -58,7 +58,7 @@ export const MENU_HUB_DEFAULTS: MenuHubContent = {
     {
       question: 'Where are your locations?',
       answer:
-        'We operate six neighborhood restaurants across Oahu, located in Kailua, Kahala, Kaneohe, Kapolei, Mililani, and Pearlridge.',
+        'We operate seven neighborhood restaurants across Oahu, located in Kailua, Kahala, Kaneohe, Kapolei, Mililani, Pearlridge, and Keʻeaumoku.',
     },
   ],
   fullMenu: {

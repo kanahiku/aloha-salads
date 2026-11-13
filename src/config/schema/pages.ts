@@ -36,7 +36,7 @@ const cateringOccasionSchemas: PageSchema[] = [
     schemaType: 'Service',
     serviceType: 'Party catering',
     description:
-      'Order fresh party catering for your next event. Salad trays and wrap platters for birthdays, graduations, baby showers, and sports banquets across our six Oahu locations.',
+      'Order fresh party catering for your next event. Salad trays and wrap platters for birthdays, graduations, baby showers, and sports banquets across our seven Oahu locations.',
     faq: [],
     breadcrumb: crumbsFor('/catering/parties', 'Party Catering'),
   },
@@ -46,7 +46,7 @@ const cateringOccasionSchemas: PageSchema[] = [
     schemaType: 'Service',
     serviceType: 'School catering',
     description:
-      'Order fresh school catering for your campus. Salad trays, wrap platters, fresh soups, and beverages for pickup across our six Oahu locations.',
+      'Order fresh school catering for your campus. Salad trays, wrap platters, fresh soups, and beverages for pickup across our seven Oahu locations.',
     faq: [],
     breadcrumb: crumbsFor('/catering/schools', 'School Catering'),
   },

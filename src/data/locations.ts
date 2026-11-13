@@ -18,7 +18,7 @@ export interface StoreLocation {
   /** Direct Heartland POS pickup ordering URL for this location. */
   orderPickupHref: string;
   /** Direct delivery ordering URL (order.online) for this location. */
-  orderDeliveryHref: string;
+  orderDeliveryHref?: string;
 }
 
 export function storeMapsQuery(store: StoreLocation): string {
@@ -144,6 +144,22 @@ export const storeLocations: StoreLocation[] = [
       'Pearlridge / Aiea features custom salad bowls packed with fresh ingredients and local flavors right in the heart of the community.',
     orderPickupHref: 'https://alohasaladspearlridge.hrpos.heartland.us/menu',
     orderDeliveryHref: 'https://order.online/store/aloha-salads-aiea-605768/?delivery=true&hideModal=true',
+  },
+  {
+    slug: 'keeaumoku',
+    name: 'Keʻeaumoku',
+    heading: 'Keʻeaumoku',
+    shopName: 'Midtown Eats',
+    addressLine1: '1515 Liona St Ste 108',
+    addressLine2: 'Honolulu, HI 96814',
+    phoneDisplay: '(808) 200-5193',
+    phoneHref: 'tel:+18082005193',
+    hours: 'Every day: 10:30 AM to 8:00 PM',
+    href: '/locations/keeaumoku',
+    intro:
+      'Our newest shop is inside Midtown Eats, the food hall at The Park on Keʻeaumoku, a short walk from Ala Moana.',
+    // Midtown Eats is cashless; pickup orders go through Cash App. No delivery link, so no delivery button.
+    orderPickupHref: 'https://cash.app/$alohasalads',
   },
 ];
 

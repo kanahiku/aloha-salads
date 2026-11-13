@@ -14,13 +14,13 @@ export const HOMEPAGE_DEFAULTS: HomepageContent = {
   meta: {
     title: 'Aloha Salads | Fresh Salads & Local Ahi on Oahu',
     description:
-      'Founded in Kailua in 2006, Aloha Salads serves fresh island-grown produce and never-frozen local ahi across six Oahu locations. Order online for pickup.',
+      'Founded in Kailua in 2006, Aloha Salads serves fresh island-grown produce and never-frozen local ahi across seven Oahu locations. Order online for pickup.',
   },
   hero: {
-    tagline: 'Kailua-born since 2006 · Six spots on Oahu',
+    tagline: 'Kailua-born since 2006 · Seven spots on Oahu',
     title: 'Aloha Salads: Fresh Food\nCrafted Daily on Oahu.',
     subtitle:
-      'Founded in Kailua in May 2006, Aloha Salads provides fresh, locally grown food tailored to active island lifestyles. Voted First Place Hawaiis Best 2024 in the Peoples Choice Awards by the Star Advertiser, we operate six neighborhood restaurants across Oahu.',
+      'Founded in Kailua in May 2006, Aloha Salads provides fresh, locally grown food tailored to active island lifestyles. Voted First Place Hawaiis Best 2024 in the Peoples Choice Awards by the Star Advertiser, we operate seven neighborhood restaurants across Oahu.',
     primaryCtaLabel: 'Order Online',
     secondaryCtaLabel: 'Order Catering',
   },
@@ -29,7 +29,7 @@ export const HOMEPAGE_DEFAULTS: HomepageContent = {
     eyebrow: 'Order Now',
     title: 'Explore Our Full Menu',
     subtitle:
-      'We prepare fresh meals daily across our six Oahu locations. Browse our core categories below to find your meal or order ahead for fast pickup.',
+      'We prepare fresh meals daily across our seven Oahu locations. Browse our core categories below to find your meal or order ahead for fast pickup.',
     ctaLabel: 'View Full Menu',
   },
   localSourcing: {
@@ -45,7 +45,7 @@ export const HOMEPAGE_DEFAULTS: HomepageContent = {
   locations: {
     eyebrow: 'Visit Now',
     title: 'Visit a Store Near You',
-    subtitle: 'Stop by any of our six Oahu locations in Kailua, Kahala, Kaneohe, Kapolei, Mililani, or Pearlridge.',
+    subtitle: 'Stop by any of our seven Oahu locations in Kailua, Kahala, Kaneohe, Kapolei, Mililani, Pearlridge, or Keʻeaumoku.',
     ctaLabel: 'View All Locations',
     viewLabel: 'View {name}',
   },

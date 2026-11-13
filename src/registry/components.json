@@ -791,7 +791,7 @@
         "shared": "LocationsSharedContent — labels shared by the hub and every store page",
         "stores": "all stores, for the More Oahu Locations list"
       },
-      "notes": "One widget for all 6 routes under src/pages/locations/<slug>/. Data from getLocationPageData(slug) in ~/lib/content/locationContent. Stores are Sanity documents (Locations folder in the Studio)."
+      "notes": "One widget for all 7 routes under src/pages/locations/<slug>/. Data from getLocationPageData(slug) in ~/lib/content/locationContent. Stores are Sanity documents (Locations folder in the Studio)."
     },
     {
       "id": "P-53",

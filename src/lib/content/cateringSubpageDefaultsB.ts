@@ -9,10 +9,10 @@ export const CATERING_SUBPAGES_B: CateringSubpageContent[] = [
     meta: {
       title: 'Event Catering Oahu | Large Gatherings & Banquets | Aloha Salads',
       description:
-        'Order fresh event catering for your gathering. We prepare salad trays, wrap platters, fresh soups, and beverages for pickup across our six Oahu locations.',
+        'Order fresh event catering for your gathering. We prepare salad trays, wrap platters, fresh soups, and beverages for pickup across our seven Oahu locations.',
     },
     heroContent:
-      'Provide fresh food for your next gathering. We prepare large-format catering trays and wrap platters for events of all sizes. All event orders are available for pickup across our six Oahu locations.',
+      'Provide fresh food for your next gathering. We prepare large-format catering trays and wrap platters for events of all sizes. All event orders are available for pickup across our seven Oahu locations.',
     occasions: [
       {
         title: 'Community Gatherings',
@@ -56,7 +56,7 @@ export const CATERING_SUBPAGES_B: CateringSubpageContent[] = [
       },
       {
         question: 'Where do I pick up my event catering order?',
-        answer: 'You can pick up your catering order at any of our six neighborhood restaurants across Oahu.',
+        answer: 'You can pick up your catering order at any of our seven neighborhood restaurants across Oahu.',
       },
     ],
     ctaSubtitle: 'Order online for pickup. For a large event, call the store to talk through quantities and timing.',
@@ -70,10 +70,10 @@ export const CATERING_SUBPAGES_B: CateringSubpageContent[] = [
     meta: {
       title: 'Party Catering Oahu | Birthdays, Graduations & Showers | Aloha Salads',
       description:
-        'Order fresh party catering for your next event. We provide salad trays and wrap platters for birthdays, graduations, baby showers, and sports banquets across our six Oahu locations.',
+        'Order fresh party catering for your next event. We provide salad trays and wrap platters for birthdays, graduations, baby showers, and sports banquets across our seven Oahu locations.',
     },
     heroContent:
-      'Provide fresh food for your next celebration. We prepare large-format catering trays and wrap platters for parties of all sizes. All party orders are available for pickup across our six Oahu locations.',
+      'Provide fresh food for your next celebration. We prepare large-format catering trays and wrap platters for parties of all sizes. All party orders are available for pickup across our seven Oahu locations.',
     occasions: [
       {
         title: 'Birthday Party Catering',
@@ -131,10 +131,10 @@ export const CATERING_SUBPAGES_B: CateringSubpageContent[] = [
     meta: {
       title: 'School Catering Oahu | Teachers & Athletics | Aloha Salads',
       description:
-        'Order fresh school catering for your campus. We prepare salad trays, wrap platters, fresh soups, and beverages for pickup across our six Oahu locations.',
+        'Order fresh school catering for your campus. We prepare salad trays, wrap platters, fresh soups, and beverages for pickup across our seven Oahu locations.',
     },
     heroContent:
-      'Provide fresh food for your campus. We prepare large-format catering trays and wrap platters for school events and faculty lunches. All school orders are available for pickup across our six Oahu locations.',
+      'Provide fresh food for your campus. We prepare large-format catering trays and wrap platters for school events and faculty lunches. All school orders are available for pickup across our seven Oahu locations.',
     occasions: [
       {
         title: 'Faculty and Staff Lunches',
@@ -194,10 +194,10 @@ export const CATERING_SUBPAGES_B: CateringSubpageContent[] = [
     meta: {
       title: 'Large Group Catering Oahu | Salads & Wraps | Aloha Salads',
       description:
-        'Order fresh catering for your large group. We prepare salad trays, wrap platters, fresh soups, and beverages for pickup across our six Oahu locations.',
+        'Order fresh catering for your large group. We prepare salad trays, wrap platters, fresh soups, and beverages for pickup across our seven Oahu locations.',
     },
     heroContent:
-      'Provide fresh food for your large gathering. We prepare large-format catering trays and wrap platters for groups of all sizes. All large group orders are available for pickup across our six Oahu locations.',
+      'Provide fresh food for your large gathering. We prepare large-format catering trays and wrap platters for groups of all sizes. All large group orders are available for pickup across our seven Oahu locations.',
     occasions: [
       {
         title: 'Flexible Menu Options',
@@ -217,7 +217,7 @@ export const CATERING_SUBPAGES_B: CateringSubpageContent[] = [
       {
         title: 'Seamless Pickup',
         description:
-          'We package large orders efficiently so you can transport your food safely. You can retrieve your catering trays from any of our six neighborhood restaurants.',
+          'We package large orders efficiently so you can transport your food safely. You can retrieve your catering trays from any of our seven neighborhood restaurants.',
       },
     ],
     faqs: [

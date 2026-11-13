@@ -55,6 +55,7 @@ const STORES = [
   { slug: 'kapolei', title: 'Kapolei' },
   { slug: 'mililani', title: 'Mililani' },
   { slug: 'pearlridge', title: 'Pearlridge' },
+  { slug: 'keeaumoku', title: 'Keʻeaumoku' },
 ];
 
 export const structure = (S: StructureBuilder) =>

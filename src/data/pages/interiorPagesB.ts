@@ -69,9 +69,9 @@ export const interiorPagesB: Record<string, InteriorPageContent> = {
     path: '/locations',
     title: 'Locations',
     metaDescription:
-      'Find an Aloha Salads location near you. We operate six restaurants across Oahu offering fresh meals for dine-in or fast pickup.',
+      'Find an Aloha Salads location near you. We operate seven restaurants across Oahu offering fresh meals for dine-in or fast pickup.',
     heading: 'Aloha Salads Locations on Oahu',
-    lede: 'Find your nearest Aloha Salads. We operate six neighborhood restaurants across Oahu. Every location offers online ordering for fast pickup and convenient dine-in seating.',
+    lede: 'Find your nearest Aloha Salads. We operate seven neighborhood restaurants across Oahu. Every location offers online ordering for fast pickup and convenient dine-in seating.',
     sections: [
       {
         heading: 'Find a shop',
@@ -82,9 +82,9 @@ export const interiorPagesB: Record<string, InteriorPageContent> = {
   '/order-online': {
     path: '/order-online',
     title: 'Order Online',
-    metaDescription: 'Order Aloha Salads online for pickup or delivery from any of our six Oahu locations.',
+    metaDescription: 'Order Aloha Salads online for pickup or delivery from any of our seven Oahu locations.',
     heading: 'Order online',
-    lede: 'Pickup or delivery from any of our six stores. Choose a location to start an order.',
+    lede: 'Pickup or delivery from any of our seven stores. Choose a location to start an order.',
     sections: [
       {
         heading: 'Order from a store',
@@ -132,9 +132,9 @@ export const interiorPagesB: Record<string, InteriorPageContent> = {
     path: '/careers',
     title: 'Work With Us',
     metaDescription:
-      'Apply to work at Aloha Salads. Tell us which of our six Oahu locations you would like to join and send your resume.',
+      'Apply to work at Aloha Salads. Tell us which of our seven Oahu locations you would like to join and send your resume.',
     heading: 'Work With Us',
-    lede: 'Aloha Salads has been hiring from the neighborhoods we serve since our first store opened in Kailua in 2006. We have six locations across Oahu and we are always glad to hear from people who want to join a team that cares about fresh food and looking after customers. Fill in the form below and tell us which store you would like to work at. There are no individual job postings, we review every application that comes in.',
+    lede: 'Aloha Salads has been hiring from the neighborhoods we serve since our first store opened in Kailua in 2006. We have seven locations across Oahu and we are always glad to hear from people who want to join a team that cares about fresh food and looking after customers. Fill in the form below and tell us which store you would like to work at. There are no individual job postings, we review every application that comes in.',
     sections: [
       {
         heading: 'Benefits',

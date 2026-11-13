@@ -11,7 +11,7 @@ const storeLocations = await getStoreLocations();
 const metadata = {
   title: 'Order Online | Aloha Salads',
   description:
-    "Order Aloha Salads online for pickup or delivery from any of our six Oahu locations.",
+    "Order Aloha Salads online for pickup or delivery from any of our seven Oahu locations.",
   ignoreTitleTemplate: true,
 };
 
@@ -72,7 +72,7 @@ const ArrowRight = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" 
             </div>
 
             <!-- Two action buttons -->
-            <div class="grid grid-cols-2 gap-3 px-5 pb-5 pt-2">
+            <div class={`grid gap-3 px-5 pb-5 pt-2 ${store.orderDeliveryHref ? "grid-cols-2" : "grid-cols-1"}`}>
               <a
                 href={store.orderPickupHref}
                 target="_blank"
@@ -85,6 +85,7 @@ const ArrowRight = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" 
                   <Fragment set:html={ArrowRight} />
                 </span>
               </a>
+              {store.orderDeliveryHref && (
               <a
                 href={store.orderDeliveryHref}
                 target="_blank"
@@ -97,6 +98,7 @@ const ArrowRight = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" 
                   <Fragment set:html={ArrowRight} />
                 </span>
               </a>
+              )}
             </div>
           </div>
         ))}

@@ -22,12 +22,12 @@ export const CAREERS_DEFAULTS: CareersContent = {
   meta: {
     title: 'Work With Us | Aloha Salads',
     description:
-      'Apply to work at Aloha Salads. Tell us which of our six Oahu locations you would like to join and send your resume.',
+      'Apply to work at Aloha Salads. Tell us which of our seven Oahu locations you would like to join and send your resume.',
   },
   hero: {
     title: 'Work With Us',
     content:
-      'Aloha Salads has been hiring from the neighborhoods we serve since our first store opened in Kailua in 2006. We have six locations across Oahu and we are always glad to hear from people who want to join a team that cares about fresh food and looking after customers. Fill in the form below and tell us which store you would like to work at. There are no individual job postings, we review every application that comes in.',
+      'Aloha Salads has been hiring from the neighborhoods we serve since our first store opened in Kailua in 2006. We have seven locations across Oahu and we are always glad to hear from people who want to join a team that cares about fresh food and looking after customers. Fill in the form below and tell us which store you would like to work at. There are no individual job postings, we review every application that comes in.',
   },
   benefits: {
     heading: 'Benefits',
@@ -85,7 +85,7 @@ export const INGREDIENTS_DEFAULTS: IngredientsContent = {
   ],
   cta: {
     title: 'Ready to Taste the Difference?',
-    subtitle: 'Order your favorite salad or bowl online for fast pickup at any of our six Oahu locations.',
+    subtitle: 'Order your favorite salad or bowl online for fast pickup at any of our seven Oahu locations.',
   },
   faqTitle: 'Frequently Asked Questions',
   faqs: [
@@ -96,7 +96,7 @@ export const INGREDIENTS_DEFAULTS: IngredientsContent = {
     {
       question: 'Where can I pick up an online order?',
       answer:
-        'You can order ahead for fast pickup at any of our six neighborhood restaurants across Oahu, located in Kailua, Kahala, Kaneohe, Kapolei, Mililani, and Pearlridge.',
+        'You can order ahead for fast pickup at any of our seven neighborhood restaurants across Oahu, located in Kailua, Kahala, Kaneohe, Kapolei, Mililani, Pearlridge, and Keʻeaumoku.',
     },
     {
       question: 'Do you offer catering services?',
@@ -165,6 +165,6 @@ export const REVIEWS_PAGE_DEFAULTS: ReviewsPageContent = {
   listTitle: 'Recent reviews',
   cta: {
     title: 'Find a Location',
-    subtitle: 'Six neighborhood restaurants across Oahu. Come see us.',
+    subtitle: 'Seven neighborhood restaurants across Oahu. Come see us.',
   },
 };

@@ -1,0 +1,12 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import LocationPage from '~/components/widgets/LocationPage.astro';
+import { getLocationPageData } from '~/lib/content/locationContent';
+
+const { store, page, shared, stores } = await getLocationPageData('keeaumoku');
+const metadata = { ...page.meta, ignoreTitleTemplate: true };
+---
+
+<PageLayout metadata={metadata}>
+  <LocationPage store={store} page={page} shared={shared} stores={stores} />
+</PageLayout>

@@ -13,7 +13,7 @@ export const ABOUT_DEFAULTS: AboutContent = {
   meta: {
     title: 'About Aloha Salads | Our Story & Local Sourcing on Oahu',
     description:
-      'Learn about Aloha Salads. Founded in Kailua in 2006, we serve fresh, locally sourced food across six Oahu locations. Read our story.',
+      'Learn about Aloha Salads. Founded in Kailua in 2006, we serve fresh, locally sourced food across seven Oahu locations. Read our story.',
   },
   hero: {
     title: 'About Aloha Salads',
@@ -33,9 +33,9 @@ export const ABOUT_DEFAULTS: AboutContent = {
     paragraphs: [
       'It started with a simple idea: Hawaii deserved a place where eating healthy could be fresh, delicious and convenient.',
       'In May 2006 we opened the doors to our first Aloha Salads in Kailua, bringing locally grown ingredients to our community. What started as a small family business quickly became a neighborhood favorite.',
-      'Since then we have opened at Kahala Mall, Kapolei Commons, Pearlridge Center, Windward Mall in Kaneohe and Mililani Town Center. The menu has grown over those twenty years, but the dishes people come back for have not changed. The Aloha Passion and the Ono Island Ahi have been on it since the start.',
+      'Since then we have opened at Kahala Mall, Kapolei Commons, Pearlridge Center, Windward Mall in Kaneohe, Mililani Town Center and Midtown Eats on Keʻeaumoku. The menu has grown over those twenty years, but the dishes people come back for have not changed. The Aloha Passion and the Ono Island Ahi have been on it since the start.',
       'Twenty years later, our mission remains the same. We are proud to serve food made with quality ingredients, support local farmers and fishermen, and bring a little more aloha to every meal.',
-      'Today, with six locations across Oahu, Aloha Salads is still a family affair. Our roots are in Kailua, our heart is in Hawaii, and we are committed to keeping fresh, healthy and affordable food accessible to everyone.',
+      'Today, with seven locations across Oahu, Aloha Salads is still a family affair. Our roots are in Kailua, our heart is in Hawaii, and we are committed to keeping fresh, healthy and affordable food accessible to everyone.',
       "We are honored to be recognized as First Place, Hawaii's Best 2024, People's Choice Awards, Star-Advertiser.",
     ],
     note: '',
@@ -77,6 +77,6 @@ export const ABOUT_DEFAULTS: AboutContent = {
   },
   cta: {
     title: 'Find a Location',
-    subtitle: 'Six neighborhood restaurants across Oahu. Come see us.',
+    subtitle: 'Seven neighborhood restaurants across Oahu. Come see us.',
   },
 };

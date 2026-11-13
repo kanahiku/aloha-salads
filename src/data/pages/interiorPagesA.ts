@@ -6,9 +6,9 @@ export const interiorPagesA: Record<string, InteriorPageContent> = {
   '/about': {
     path: '/about',
     title: 'Our Story',
-    metaDescription: 'Aloha Salads opened in Kailua in 2006. Fresh, healthy, local food, now at six spots across Oahu.',
+    metaDescription: 'Aloha Salads opened in Kailua in 2006. Fresh, healthy, local food, now at seven spots across Oahu.',
     heading: 'Our story',
-    lede: 'We opened in Kailua in 2006 with one idea: fresh, healthy food should taste worth coming back for, and feel like home. Six locations later, thats still the whole plan.',
+    lede: 'We opened in Kailua in 2006 with one idea: fresh, healthy food should taste worth coming back for, and feel like home. Seven locations later, thats still the whole plan.',
     sections: [
       {
         heading: 'From Kailua to Oahu',
@@ -92,7 +92,7 @@ export const interiorPagesA: Record<string, InteriorPageContent> = {
     path: '/menu/design-your-own-salad',
     title: 'Build Your Own Salad',
     metaDescription:
-      'Build your own salad at Aloha Salads with your choice of fresh lettuce, toppings, cheese, and house-made dressing. Order online across our six Oahu locations.',
+      'Build your own salad at Aloha Salads with your choice of fresh lettuce, toppings, cheese, and house-made dressing. Order online across our seven Oahu locations.',
     heading: 'Design Your Own Salad',
     lede: 'Skip the menu and build your own salad: greens, toppings, extras, and a dressing, the way you like it.',
     sections: [

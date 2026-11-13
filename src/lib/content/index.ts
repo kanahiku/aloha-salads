@@ -11,6 +11,7 @@ import {
 } from './sanity';
 import { blogPosts as localBlogPosts } from '../../data/pages/blogPosts';
 import { navigationData } from '../../data/navigation';
+import { storeLocations } from '../../data/locations';
 import { applyMenuDisplayOverrides, normalizeMenuTitle } from './menuDisplay';
 
 
@@ -82,6 +83,34 @@ function ensureLegalFooterLinks(nav: NavigationContent): NavigationContent {
   };
 }
 
+/** Every store page appears under "locations" (header and footer), even if the Sanity menu predates it. */
+function ensureStoreLinks(nav: NavigationContent): NavigationContent {
+  const addMissing = <T extends { text?: string; href?: string }>(links: T[] | undefined): T[] | undefined => {
+    if (!links) return links;
+    const missing = storeLocations
+      .filter((store) => !links.some((link) => link.href === store.href))
+      .map((store) => ({ text: store.name, href: store.href }) as T);
+    return [...links, ...missing];
+  };
+  const isLocations = (label?: string) => label?.trim().toLowerCase() === 'locations';
+
+  return {
+    ...nav,
+    header: {
+      ...nav.header,
+      links: nav.header.links.map((link) =>
+        isLocations(link.text) && link.links ? { ...link, links: addMissing(link.links) } : link
+      ),
+    },
+    footer: {
+      ...nav.footer,
+      links: nav.footer.links.map((group) =>
+        isLocations(group.title) ? { ...group, links: addMissing(group.links) ?? group.links } : group
+      ),
+    },
+  } as NavigationContent;
+}
+
 /** `{year}` in the copyright line becomes the current year, so the line never goes stale. */
 function fillFootNoteYear(nav: NavigationContent): NavigationContent {
   return {
@@ -95,12 +124,12 @@ export async function getNavigationContent(): Promise<NavigationContent> {
   try {
     const nav = await getSanityNavigationContent();
     if (nav?.header && nav?.footer) {
-      return fillFootNoteYear(hidePagesFromUi(ensureLegalFooterLinks(nav)));
+      return fillFootNoteYear(hidePagesFromUi(ensureStoreLinks(ensureLegalFooterLinks(nav))));
     }
   } catch (error) {
     console.warn('Sanity navigation unavailable; using local fallback.', error);
   }
-  return fillFootNoteYear(hidePagesFromUi(ensureLegalFooterLinks(navigationData)));
+  return fillFootNoteYear(hidePagesFromUi(ensureStoreLinks(ensureLegalFooterLinks(navigationData))));
 }
 
 export async function getBlogPostSlugs(): Promise<string[]> {

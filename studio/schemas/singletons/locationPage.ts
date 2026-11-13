@@ -63,7 +63,7 @@ export const locationPage = defineType({
       name: 'order',
       title: 'Order',
       group: 'store',
-      description: 'Position in the store lists (1 = first). The homepage shows the first four.',
+      description: 'Position in the store lists (1 = first). The homepage shows all stores.',
       type: 'number',
       validation: (r) => r.required().integer().min(1),
     }),

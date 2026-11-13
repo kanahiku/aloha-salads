@@ -12,7 +12,7 @@ export const CATERING_SUBPAGES_A: CateringSubpageContent[] = [
         'Order fresh corporate catering for your Oahu business. We prepare salad trays and wrap platters for seminars, training days, client presentations, and company milestones.',
     },
     heroContent:
-      'Provide fresh meals for your next business event. We prepare large-format catering trays and wrap platters designed for corporate groups. All corporate orders are available for pickup across our six Oahu locations.',
+      'Provide fresh meals for your next business event. We prepare large-format catering trays and wrap platters designed for corporate groups. All corporate orders are available for pickup across our seven Oahu locations.',
     occasions: [
       {
         title: 'Seminars and Conferences',
@@ -71,10 +71,10 @@ export const CATERING_SUBPAGES_A: CateringSubpageContent[] = [
     meta: {
       title: 'Office Lunch Catering Oahu | Team Meals | Aloha Salads',
       description:
-        'Order fresh office lunch catering for your team. We prepare salad trays, wrap platters, fresh soups, and beverages for pickup across our six Oahu locations.',
+        'Order fresh office lunch catering for your team. We prepare salad trays, wrap platters, fresh soups, and beverages for pickup across our seven Oahu locations.',
     },
     heroContent:
-      'Provide fresh meals for your coworkers. We prepare scaled-up versions of our signature salads and wraps for daily team lunches. All office catering orders are available for pickup across our six Oahu locations.',
+      'Provide fresh meals for your coworkers. We prepare scaled-up versions of our signature salads and wraps for daily team lunches. All office catering orders are available for pickup across our seven Oahu locations.',
     occasions: [
       {
         title: 'Team Lunch Platters',
@@ -134,10 +134,10 @@ export const CATERING_SUBPAGES_A: CateringSubpageContent[] = [
     meta: {
       title: 'Meeting Catering Oahu | Boardroom Meals | Aloha Salads',
       description:
-        'Order fresh meeting catering for your business. We prepare salad trays, wrap platters, fresh soups, and beverages for pickup across our six Oahu locations.',
+        'Order fresh meeting catering for your business. We prepare salad trays, wrap platters, fresh soups, and beverages for pickup across our seven Oahu locations.',
     },
     heroContent:
-      'Provide fresh food for your next business discussion. We prepare large-format catering trays and wrap platters for board meetings and planning sessions. All meeting orders are available for pickup across our six Oahu locations.',
+      'Provide fresh food for your next business discussion. We prepare large-format catering trays and wrap platters for board meetings and planning sessions. All meeting orders are available for pickup across our seven Oahu locations.',
     occasions: [
       {
         title: 'Working Lunches',

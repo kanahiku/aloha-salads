@@ -44,6 +44,7 @@ export const navigationData: NavigationContent = {
           { text: 'Kapolei', href: '/locations/kapolei' },
           { text: 'Mililani', href: '/locations/mililani' },
           { text: 'Pearlridge', href: '/locations/pearlridge' },
+          { text: 'Keʻeaumoku', href: '/locations/keeaumoku' },
         ],
       },
       {
@@ -89,6 +90,7 @@ export const navigationData: NavigationContent = {
           { text: 'Kapolei', href: '/locations/kapolei' },
           { text: 'Mililani', href: '/locations/mililani' },
           { text: 'Pearlridge', href: '/locations/pearlridge' },
+          { text: 'Keʻeaumoku', href: '/locations/keeaumoku' },
         ],
       },
       {
