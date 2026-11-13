@@ -277,6 +277,53 @@
           "item": "https://www.alohasalads.com/locations/kailua"
         }
       ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/locations/kailua",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is parking available at the Kailua location?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The Kailua Shopping Center provides ample free parking for our restaurant guests."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I dine in at Aloha Salads Kailua?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We offer a dedicated dining area for guests who prefer to eat their meals on site."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I pick up catering orders in Kailua?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can schedule large party trays and corporate catering orders for pickup at this location."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I collect a catering order from Kailua?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Catering trays can be collected from this store. Call ahead to arrange it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you deliver to the Kailua area?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We partner with third-party delivery services to bring our meals to local residents. Delivery availability depends on your exact address."
+          }
+        }
+      ]
     }
   ],
   "/locations/kahala": [
@@ -458,6 +505,53 @@
           "position": 3,
           "name": "Kaneohe",
           "item": "https://www.alohasalads.com/locations/kaneohe"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/locations/kaneohe",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is parking available at the Kaneohe location?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Windward Mall provides ample free parking for our restaurant guests."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I dine in at Aloha Salads Kaneohe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We offer a dedicated dining area for guests who prefer to eat their meals on site."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I pick up catering orders in Kaneohe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can schedule large party trays and corporate catering orders for pickup at this location."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I collect a catering order from Kaneohe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Catering trays can be collected from this store. Call ahead to arrange it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you deliver to the Kaneohe area?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We partner with third-party delivery services to bring our meals to local residents. Delivery availability depends on your exact address."
+          }
         }
       ]
     }
@@ -1899,6 +1993,53 @@
           "item": "https://www.alohasalads.com/catering/office-lunches"
         }
       ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/catering/office-lunches",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How much food do I need for my office?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Please contact your nearest location to confirm specific serving sizes and tray yields for your headcount."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does office catering include serving utensils?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ask the store when you order and they will let you know what is included."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I accommodate vegetarian coworkers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We prepare dedicated meatless options including the Aloha Mediterranean Tray and the Aloha Passion Tray."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can we add drinks to our office lunch order?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can include bottled beverages and our refreshing Big Island mamaki mint tea to complete your team meal."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can individuals customize their own bowls?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our large catering trays are built to set recipes. Employees who need highly specific modifications can use our Design Your Own Salad option through individual ordering."
+          }
+        }
+      ]
     }
   ],
   "/catering/schools": [
@@ -2310,6 +2451,53 @@
           "position": 3,
           "name": "Party Catering",
           "item": "https://www.alohasalads.com/catering/parties"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/catering/parties",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can I order vegetarian trays for a party?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The Aloha Passion Tray and Aloha Mediterranean Tray are both meatless."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you provide plates and napkins for parties?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ask the store when you order and they will let you know what is included."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How far in advance should I order for a large party?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Please contact your nearest location to confirm the required lead time for your specific party size."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I pick up a party order at the weekend?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Weekend collection is available. Check your stores hours and call ahead to arrange the time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you offer beverages for party catering?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can add bottled drinks and our refreshing Big Island māmaki mint tea to complete your party menu."
+          }
         }
       ]
     }

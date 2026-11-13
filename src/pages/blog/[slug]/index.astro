@@ -9,7 +9,6 @@ import { Icon } from 'astro-icon/components';
 import { getFormattedDate } from '~/utils/utils';
 import { getBlogPost } from '~/lib/content';
 import { getArticleToc, getLeadInlineImages, shouldUsePortableBody } from '~/lib/content/blogArticle';
-import { getBlogPostingJsonLd } from '~/config/schema';
 import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from '~/config/cta';
 
 export const prerender = false;
@@ -32,7 +31,6 @@ const metadata = {
   title: post.meta.title,
   description: post.meta.description,
   ignoreTitleTemplate: true,
-  jsonLd: getBlogPostingJsonLd(post),
 };
 ---
 
@@ -40,22 +38,17 @@ const metadata = {
   <section class="relative bg-page">
     <div class="relative max-w-container mx-auto px-4 md:px-6 py-8 md:py-16 lg:py-20">
       <div class="lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-12 xl:gap-16 lg:items-start">
-        <BlogSidebar
-          toc={toc}
-          ctaTitle={post.ctaBanner.title}
-          ctaHref={PRIMARY_CTA_HREF}
-        />
+        <BlogSidebar toc={toc} ctaTitle={post.ctaBanner.title} ctaHref={PRIMARY_CTA_HREF} />
 
         <article class="min-w-0">
-          <a
-            href="/blog"
-            class="btn-link gap-1 mb-6"
-          >
+          <a href="/blog" class="btn-link gap-1 mb-6">
             <Icon name="tabler:chevron-left" class="w-4 h-4" aria-hidden="true" />
             All articles
           </a>
 
-          <h1 class="text-[42px] md:text-[56px] font-normal leading-[105%] tracking-tighter font-heading text-heading mb-4">
+          <h1
+            class="text-[42px] md:text-[56px] font-normal leading-[105%] tracking-tighter font-heading text-heading mb-4"
+          >
             {post.title}
           </h1>
           <p class="text-[14px] md:text-[15px] font-medium text-muted mb-8">
