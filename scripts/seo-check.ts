@@ -8,7 +8,10 @@
  *   npm run seo:check -- --url=https://xyz.vercel.app
  *   CHECK_URL=http://localhost:4321 npm run seo:check
  */
+import { SCHEMA_FREE_PATHS } from '../src/config/schema/customOverrides';
 import { BASE, IS_PRODUCTION_BASE, PRODUCTION_ORIGIN, crawlPages, describeBase, get, type Page } from './lib/crawl';
+
+const schemaFreePaths = new Set<string>(SCHEMA_FREE_PATHS);
 
 interface SEOIssue {
   file: string;
@@ -90,7 +93,10 @@ function checkPage(page: Page) {
   if (!findTag(html, 'meta', 'name', 'twitter:card')) add(file, 'Missing twitter:card', 'warning');
 
   const schemas = [...html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
-  if (schemas.length === 0) add(file, 'Missing JSON-LD schema', 'warning');
+  const schemaPath = file.split('?')[0].replace(/\/+$/, '') || '/';
+  if (schemaFreePaths.has(schemaPath)) {
+    if (schemas.length > 0) add(file, 'JSON-LD should be omitted on this page', 'warning');
+  } else if (schemas.length === 0) add(file, 'Missing JSON-LD schema', 'warning');
   for (const s of schemas) {
     try {
       JSON.parse(s[1]);

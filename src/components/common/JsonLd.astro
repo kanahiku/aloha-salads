@@ -1,13 +1,22 @@
 ---
 import { getJsonLdBlocks } from '~/config/schema';
+import { getCustomSchema, isSchemaFreePath } from '~/config/schema/customOverrides';
 
 export interface Props {
-  /** Page-specific nodes (e.g. BlogPosting) added after the path-based blocks. */
+  /** Page-specific nodes (blog posts) used only when the document has no block for this path. */
   extra?: Array<Record<string, unknown>>;
 }
 
 const { extra = [] } = Astro.props;
-const blocks = [...getJsonLdBlocks(Astro.url.pathname), ...extra];
+const pathname = Astro.url.pathname;
+const custom = getCustomSchema(pathname);
+const generated = custom || isSchemaFreePath(pathname) ? [] : [...getJsonLdBlocks(pathname), ...extra];
 ---
 
-{blocks.map((block) => <script type="application/ld+json" is:inline set:html={JSON.stringify(block)} />)}
+{
+  custom ? (
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(custom)} />
+  ) : (
+    generated.map((block) => <script type="application/ld+json" is:inline set:html={JSON.stringify(block)} />)
+  )
+}

@@ -1,6 +1,5 @@
-import { business } from './business';
 import type { JsonLdNode } from './types';
-import { absoluteUrl, businessId } from './urls';
+import { absoluteUrl, siteOrigin } from './urls';
 
 interface BlogPostInput {
   title: string;
@@ -14,7 +13,7 @@ interface BlogPostInput {
 /** BlogPosting + breadcrumb nodes for one article. */
 export function getBlogPostingJsonLd(post: BlogPostInput): JsonLdNode[] {
   const url = absoluteUrl(`/blog/${post.slug}`);
-  const publisher = { '@id': businessId(business.idFragment) };
+  const publisher = { '@id': `${siteOrigin()}/#organization` };
 
   const article: JsonLdNode = {
     '@context': 'https://schema.org',
