@@ -1,13 +1,11 @@
 ---
-import { getJsonLdBlocks } from '~/config/schema';
+import { getCustomSchema } from '~/config/schema/customOverrides';
 
-export interface Props {
-  /** Page-specific nodes (e.g. BlogPosting) added after the path-based blocks. */
-  extra?: Array<Record<string, unknown>>;
-}
-
-const { extra = [] } = Astro.props;
-const blocks = [...getJsonLdBlocks(Astro.url.pathname), ...extra];
+/**
+ * Document blocks only. The old generator (placeholder phone, brand Restaurant,
+ * price range) is not rendered. Pages the document leaves blank emit nothing.
+ */
+const custom = getCustomSchema(Astro.url.pathname);
 ---
 
-{blocks.map((block) => <script type="application/ld+json" is:inline set:html={JSON.stringify(block)} />)}
+{custom && <script type="application/ld+json" is:inline set:html={JSON.stringify(custom)} />}

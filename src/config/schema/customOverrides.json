@@ -1,0 +1,2778 @@
+{
+  "/": [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://www.alohasalads.com/#website",
+      "name": "Aloha Salads",
+      "url": "https://www.alohasalads.com/",
+      "publisher": {
+        "@id": "https://www.alohasalads.com/#organization"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://www.alohasalads.com/#organization",
+      "name": "Aloha Salads",
+      "url": "https://www.alohasalads.com/",
+      "description": "Founded in Kailua in May 2006, Aloha Salads provides fresh, locally grown food tailored to active island lifestyles.",
+      "foundingDate": "2006-05",
+      "foundingLocation": {
+        "@type": "Place",
+        "name": "Kailua, Hawaii"
+      },
+      "founder": {
+        "@type": "Person",
+        "name": "Sara Lufrano"
+      },
+      "award": "First Place, Hawaii's Best 2024, People's Choice Awards, Star-Advertiser",
+      "areaServed": {
+        "@type": "Place",
+        "name": "Oahu, Hawaii"
+      },
+      "sameAs": [
+        "https://www.facebook.com/AlohaSalads",
+        "https://www.instagram.com/alohasalads/",
+        "https://twitter.com/AlohaSalads"
+      ],
+      "subOrganization": [
+        {
+          "@type": "Restaurant",
+          "@id": "https://www.alohasalads.com/locations/kailua#restaurant",
+          "name": "Aloha Salads Kailua",
+          "url": "https://www.alohasalads.com/locations/kailua"
+        },
+        {
+          "@type": "Restaurant",
+          "@id": "https://www.alohasalads.com/locations/kahala#restaurant",
+          "name": "Aloha Salads Kahala",
+          "url": "https://www.alohasalads.com/locations/kahala"
+        },
+        {
+          "@type": "Restaurant",
+          "@id": "https://www.alohasalads.com/locations/kaneohe#restaurant",
+          "name": "Aloha Salads Kaneohe",
+          "url": "https://www.alohasalads.com/locations/kaneohe"
+        },
+        {
+          "@type": "Restaurant",
+          "@id": "https://www.alohasalads.com/locations/kapolei#restaurant",
+          "name": "Aloha Salads Kapolei",
+          "url": "https://www.alohasalads.com/locations/kapolei"
+        },
+        {
+          "@type": "Restaurant",
+          "@id": "https://www.alohasalads.com/locations/mililani#restaurant",
+          "name": "Aloha Salads Mililani",
+          "url": "https://www.alohasalads.com/locations/mililani"
+        },
+        {
+          "@type": "Restaurant",
+          "@id": "https://www.alohasalads.com/locations/pearlridge#restaurant",
+          "name": "Aloha Salads Pearlridge",
+          "url": "https://www.alohasalads.com/locations/pearlridge"
+        }
+      ]
+    }
+  ],
+  "/about": [
+    {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      "name": "About Aloha Salads",
+      "url": "https://www.alohasalads.com/about",
+      "about": {
+        "@type": "Organization",
+        "@id": "https://www.alohasalads.com/#organization",
+        "name": "Aloha Salads",
+        "url": "https://www.alohasalads.com/"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "About",
+          "item": "https://www.alohasalads.com/about"
+        }
+      ]
+    }
+  ],
+  "/locations": [
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Aloha Salads Locations on Oahu",
+      "url": "https://www.alohasalads.com/locations",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Aloha Salads Kailua",
+          "url": "https://www.alohasalads.com/locations/kailua"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Aloha Salads Kahala",
+          "url": "https://www.alohasalads.com/locations/kahala"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Aloha Salads Kaneohe",
+          "url": "https://www.alohasalads.com/locations/kaneohe"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Aloha Salads Kapolei",
+          "url": "https://www.alohasalads.com/locations/kapolei"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Aloha Salads Mililani",
+          "url": "https://www.alohasalads.com/locations/mililani"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "Aloha Salads Pearlridge",
+          "url": "https://www.alohasalads.com/locations/pearlridge"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Locations",
+          "item": "https://www.alohasalads.com/locations"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/locations",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do all locations offer dine-in seating?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. All six of our Oahu restaurants feature dedicated dining areas for guests who prefer to eat in."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is parking available at your restaurants?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Each of our mall and shopping center locations provides ample free parking for our guests."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I collect a catering order from the stores?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Catering trays can be collected from this store. Call ahead to arrange it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you offer delivery from these locations?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We partner with third-party delivery services to bring our meals directly to you. Delivery availability depends on your proximity to a specific restaurant."
+          }
+        }
+      ]
+    }
+  ],
+  "/locations/kailua": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "@id": "https://www.alohasalads.com/locations/kailua#restaurant",
+      "name": "Aloha Salads Kailua",
+      "url": "https://www.alohasalads.com/locations/kailua",
+      "telephone": "+1-808-262-2016",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "600 Kailua Road #103",
+        "addressLocality": "Kailua",
+        "addressRegion": "HI",
+        "postalCode": "96734",
+        "addressCountry": "US"
+      },
+      "containedInPlace": {
+        "@type": "ShoppingCenter",
+        "name": "Kailua Shopping Center"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          "opens": "10:00",
+          "closes": "20:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Sunday"],
+          "opens": "11:00",
+          "closes": "20:00"
+        }
+      ],
+      "servesCuisine": "Salads",
+      "hasMenu": "https://www.alohasalads.com/menu",
+      "parentOrganization": {
+        "@type": "Organization",
+        "@id": "https://www.alohasalads.com/#organization",
+        "name": "Aloha Salads",
+        "url": "https://www.alohasalads.com/"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Locations",
+          "item": "https://www.alohasalads.com/locations"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Kailua",
+          "item": "https://www.alohasalads.com/locations/kailua"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/locations/kailua",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is parking available at the Kailua location?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The Kailua Shopping Center provides ample free parking for our restaurant guests."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I dine in at Aloha Salads Kailua?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We offer a dedicated dining area for guests who prefer to eat their meals on site."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I pick up catering orders in Kailua?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can schedule large party trays and corporate catering orders for pickup at this location."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I collect a catering order from Kailua?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Catering trays can be collected from this store. Call ahead to arrange it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you deliver to the Kailua area?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We partner with third-party delivery services to bring our meals to local residents. Delivery availability depends on your exact address."
+          }
+        }
+      ]
+    }
+  ],
+  "/locations/kahala": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "@id": "https://www.alohasalads.com/locations/kahala#restaurant",
+      "name": "Aloha Salads Kahala",
+      "url": "https://www.alohasalads.com/locations/kahala",
+      "telephone": "+1-808-735-8334",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "4211 Waialae Avenue",
+        "addressLocality": "Honolulu",
+        "addressRegion": "HI",
+        "postalCode": "96816",
+        "addressCountry": "US"
+      },
+      "containedInPlace": {
+        "@type": "ShoppingCenter",
+        "name": "Kahala Mall"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          "opens": "10:00",
+          "closes": "20:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Sunday"],
+          "opens": "11:00",
+          "closes": "19:00"
+        }
+      ],
+      "servesCuisine": "Salads",
+      "hasMenu": "https://www.alohasalads.com/menu",
+      "parentOrganization": {
+        "@type": "Organization",
+        "@id": "https://www.alohasalads.com/#organization",
+        "name": "Aloha Salads",
+        "url": "https://www.alohasalads.com/"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Locations",
+          "item": "https://www.alohasalads.com/locations"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Kahala",
+          "item": "https://www.alohasalads.com/locations/kahala"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/locations/kahala",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is parking available at the Kahala location?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Kahala Mall provides ample free parking for our restaurant guests."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I dine in at Aloha Salads Kahala?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We offer a dedicated dining area for guests who prefer to eat their meals on site."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I pick up catering orders in Kahala?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can schedule large party trays and corporate catering orders for pickup at this location."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I collect a catering order from Kahala?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Catering trays can be collected from this store. Call ahead to arrange it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you deliver to the Kahala area?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We partner with third-party delivery services to bring our meals to local residents. Delivery availability depends on your exact address."
+          }
+        }
+      ]
+    }
+  ],
+  "/locations/kaneohe": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "@id": "https://www.alohasalads.com/locations/kaneohe#restaurant",
+      "name": "Aloha Salads Kaneohe",
+      "url": "https://www.alohasalads.com/locations/kaneohe",
+      "telephone": "+1-808-234-6414",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "46-056 Kamehameha Hwy #F-2",
+        "addressLocality": "Kaneohe",
+        "addressRegion": "HI",
+        "postalCode": "96744",
+        "addressCountry": "US"
+      },
+      "containedInPlace": {
+        "@type": "ShoppingCenter",
+        "name": "Windward Mall"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          "opens": "11:00",
+          "closes": "19:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Sunday"],
+          "opens": "11:00",
+          "closes": "18:00"
+        }
+      ],
+      "servesCuisine": "Salads",
+      "hasMenu": "https://www.alohasalads.com/menu",
+      "parentOrganization": {
+        "@type": "Organization",
+        "@id": "https://www.alohasalads.com/#organization",
+        "name": "Aloha Salads",
+        "url": "https://www.alohasalads.com/"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Locations",
+          "item": "https://www.alohasalads.com/locations"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Kaneohe",
+          "item": "https://www.alohasalads.com/locations/kaneohe"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/locations/kaneohe",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is parking available at the Kaneohe location?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Windward Mall provides ample free parking for our restaurant guests."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I dine in at Aloha Salads Kaneohe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We offer a dedicated dining area for guests who prefer to eat their meals on site."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I pick up catering orders in Kaneohe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can schedule large party trays and corporate catering orders for pickup at this location."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I collect a catering order from Kaneohe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Catering trays can be collected from this store. Call ahead to arrange it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you deliver to the Kaneohe area?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We partner with third-party delivery services to bring our meals to local residents. Delivery availability depends on your exact address."
+          }
+        }
+      ]
+    }
+  ],
+  "/locations/kapolei": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "@id": "https://www.alohasalads.com/locations/kapolei#restaurant",
+      "name": "Aloha Salads Kapolei",
+      "url": "https://www.alohasalads.com/locations/kapolei",
+      "telephone": "+1-808-692-9829",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "4450 Kapolei Parkway",
+        "addressLocality": "Kapolei",
+        "addressRegion": "HI",
+        "postalCode": "96707",
+        "addressCountry": "US"
+      },
+      "containedInPlace": {
+        "@type": "ShoppingCenter",
+        "name": "Kapolei Commons"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          "opens": "10:00",
+          "closes": "20:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Sunday"],
+          "opens": "11:00",
+          "closes": "19:00"
+        }
+      ],
+      "servesCuisine": "Salads",
+      "hasMenu": "https://www.alohasalads.com/menu",
+      "parentOrganization": {
+        "@type": "Organization",
+        "@id": "https://www.alohasalads.com/#organization",
+        "name": "Aloha Salads",
+        "url": "https://www.alohasalads.com/"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Locations",
+          "item": "https://www.alohasalads.com/locations"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Kapolei",
+          "item": "https://www.alohasalads.com/locations/kapolei"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/locations/kapolei",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is parking available at the Kapolei location?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Kapolei Commons provides ample free parking for our restaurant guests."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I dine in at Aloha Salads Kapolei?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We offer a dedicated dining area for guests who prefer to eat their meals on site."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I pick up catering orders in Kapolei?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can schedule large party trays and corporate catering orders for pickup at this location."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I collect a catering order from Kapolei?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Catering trays can be collected from this store. Call ahead to arrange it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you deliver to the Kapolei area?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We partner with third-party delivery services to bring our meals to local residents. Delivery availability depends on your exact address."
+          }
+        }
+      ]
+    }
+  ],
+  "/locations/mililani": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "@id": "https://www.alohasalads.com/locations/mililani#restaurant",
+      "name": "Aloha Salads Mililani",
+      "url": "https://www.alohasalads.com/locations/mililani",
+      "telephone": "+1-808-623-1122",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "95-1249 Meheula Parkway, Suite No. A107",
+        "addressLocality": "Mililani",
+        "addressRegion": "HI",
+        "postalCode": "96789",
+        "addressCountry": "US"
+      },
+      "containedInPlace": {
+        "@type": "ShoppingCenter",
+        "name": "Mililani Town Center"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          "opens": "11:00",
+          "closes": "20:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Sunday"],
+          "opens": "11:00",
+          "closes": "19:00"
+        }
+      ],
+      "servesCuisine": "Salads",
+      "hasMenu": "https://www.alohasalads.com/menu",
+      "parentOrganization": {
+        "@type": "Organization",
+        "@id": "https://www.alohasalads.com/#organization",
+        "name": "Aloha Salads",
+        "url": "https://www.alohasalads.com/"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Locations",
+          "item": "https://www.alohasalads.com/locations"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Mililani",
+          "item": "https://www.alohasalads.com/locations/mililani"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/locations/mililani",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is parking available at the Mililani location?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Mililani Town Center provides ample free parking for our restaurant guests."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I dine in at Aloha Salads Mililani?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We offer a dedicated dining area for guests who prefer to eat their meals on site."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I pick up catering orders in Mililani?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can schedule large party trays and corporate catering orders for pickup at this location."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I collect a catering order from Mililani?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Catering trays can be collected from this store. Call ahead to arrange it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you deliver to the Mililani area?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We partner with third-party delivery services to bring our meals to local residents. Delivery availability depends on your exact address."
+          }
+        }
+      ]
+    }
+  ],
+  "/locations/pearlridge": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "@id": "https://www.alohasalads.com/locations/pearlridge#restaurant",
+      "name": "Aloha Salads Pearlridge",
+      "url": "https://www.alohasalads.com/locations/pearlridge",
+      "telephone": "+1-808-484-7811",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "98-1008 Moanalua Rd",
+        "addressLocality": "Aiea",
+        "addressRegion": "HI",
+        "postalCode": "96701",
+        "addressCountry": "US"
+      },
+      "containedInPlace": {
+        "@type": "ShoppingCenter",
+        "name": "Pearlridge Center Downtown"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "10:00",
+          "closes": "20:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Saturday"],
+          "opens": "11:00",
+          "closes": "19:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Sunday"],
+          "opens": "11:00",
+          "closes": "18:00"
+        }
+      ],
+      "servesCuisine": "Salads",
+      "hasMenu": "https://www.alohasalads.com/menu",
+      "parentOrganization": {
+        "@type": "Organization",
+        "@id": "https://www.alohasalads.com/#organization",
+        "name": "Aloha Salads",
+        "url": "https://www.alohasalads.com/"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Locations",
+          "item": "https://www.alohasalads.com/locations"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Pearlridge",
+          "item": "https://www.alohasalads.com/locations/pearlridge"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/locations/pearlridge",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is parking available at the Pearlridge location?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Pearlridge Center provides ample free parking for our restaurant guests."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I dine in at Aloha Salads Pearlridge?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We offer a dedicated dining area for guests who prefer to eat their meals on site."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I pick up catering orders in Pearlridge?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can schedule large party trays and corporate catering orders for pickup at this location."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I collect a catering order from Pearlridge?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Catering trays can be collected from this store. Call ahead to arrange it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you deliver to the Pearlridge area?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We partner with third-party delivery services to bring our meals to local residents. Delivery availability depends on your exact address."
+          }
+        }
+      ]
+    }
+  ],
+  "/menu": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Menu",
+      "@id": "https://www.alohasalads.com/menu#menu",
+      "name": "Aloha Salads Menu",
+      "url": "https://www.alohasalads.com/menu",
+      "hasMenuSection": [
+        {
+          "@type": "MenuSection",
+          "@id": "https://www.alohasalads.com/menu/salads#section",
+          "name": "Salads",
+          "url": "https://www.alohasalads.com/menu/salads"
+        },
+        {
+          "@type": "MenuSection",
+          "@id": "https://www.alohasalads.com/menu/wraps-subs#section",
+          "name": "Wraps & Subs",
+          "url": "https://www.alohasalads.com/menu/wraps-subs"
+        },
+        {
+          "@type": "MenuSection",
+          "@id": "https://www.alohasalads.com/menu/soups#section",
+          "name": "Soups",
+          "url": "https://www.alohasalads.com/menu/soups"
+        },
+        {
+          "@type": "MenuSection",
+          "@id": "https://www.alohasalads.com/menu/drinks#section",
+          "name": "Drinks",
+          "url": "https://www.alohasalads.com/menu/drinks"
+        },
+        {
+          "@type": "MenuSection",
+          "@id": "https://www.alohasalads.com/menu/vegetarian#section",
+          "name": "Vegetarian Options",
+          "url": "https://www.alohasalads.com/menu/vegetarian"
+        },
+        {
+          "@type": "MenuSection",
+          "@id": "https://www.alohasalads.com/menu/misc#section",
+          "name": "Misc",
+          "url": "https://www.alohasalads.com/menu/misc"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Menu",
+          "item": "https://www.alohasalads.com/menu"
+        }
+      ]
+    }
+  ],
+  "/menu/salads": [
+    {
+      "@context": "https://schema.org",
+      "@type": "MenuSection",
+      "@id": "https://www.alohasalads.com/menu/salads#section",
+      "name": "Salads",
+      "url": "https://www.alohasalads.com/menu/salads",
+      "isPartOf": {
+        "@type": "Menu",
+        "@id": "https://www.alohasalads.com/menu#menu",
+        "name": "Aloha Salads Menu",
+        "url": "https://www.alohasalads.com/menu"
+      },
+      "hasMenuItem": [
+        {
+          "@type": "MenuItem",
+          "name": "Aloha Passion",
+          "description": "Mixed greens, mango, apples, red grapes, cranberries, blue cheese, candied walnuts, and passion orange vinaigrette.",
+          "suitableForDiet": "https://schema.org/VegetarianDiet"
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Ono Island Ahi",
+          "description": "Mixed greens, never-frozen local ahi, mango, avocado, coconut, strawberries, green onions, bean sprouts, and passion orange vinaigrette."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Kamuela Cobb",
+          "description": "Mixed greens, avocado, grape tomatoes, egg, bacon, blue cheese, chicken, and herb ranch."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Big Island Beet",
+          "description": "Mixed greens, roasted beets, mangoes, craisins, candied walnuts, goat cheese, balsamic glaze, and passion orange vinaigrette."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Aloha Caesar",
+          "description": "Romaine, parmesan, croutons, Caesar dressing, and your choice of protein."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Mandarin Ginger",
+          "description": "Mixed greens, mandarin oranges, carrots, cilantro, green onions, wontons, almonds, chicken, and Asian ginger dressing."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Aloha Mediterranean",
+          "description": "Romaine, grape tomatoes, kalamata olives, feta, bell peppers, red onion, cucumbers, garbanzo beans, dill, and Mediterranean dressing.",
+          "suitableForDiet": "https://schema.org/VegetarianDiet"
+        },
+        {
+          "@type": "MenuItem",
+          "name": "The Paniolo",
+          "description": "Romaine, grape tomatoes, avocado, jicama, corn, black beans, green onions, cheddar cheese, cilantro, and BBQ ranch.",
+          "suitableForDiet": "https://schema.org/VegetarianDiet"
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Maui Mozzarella",
+          "description": "Mixed greens, tomatoes, fresh mozzarella, red onions, basil, balsamic glaze, and balsamic vinaigrette.",
+          "suitableForDiet": "https://schema.org/VegetarianDiet"
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Design Your Own Salad",
+          "description": "Includes your choice of lettuce, four regular toppings, one cheese, and one dressing."
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Menu",
+          "item": "https://www.alohasalads.com/menu"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Salads",
+          "item": "https://www.alohasalads.com/menu/salads"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/menu/salads",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can I customize my salad?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can use the Design Your Own Salad option to choose your preferred lettuce, four regular toppings, one cheese, and one dressing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where does your ahi come from?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We exclusively feature never-frozen local ahi sourced through a Honolulu seafood supplier with full vessel-level traceability."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are your salad dressings made in-house?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most of them, yes. Our signature dressings are made in house in small batches through the week."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do your salads contain local produce?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We feature local produce including vine-ripe tomatoes grown in Hauula."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where can I order a salad for pickup?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can order online for fast pickup at any of our six neighborhood restaurants across Oahu."
+          }
+        }
+      ]
+    }
+  ],
+  "/menu/wraps-subs": [
+    {
+      "@context": "https://schema.org",
+      "@type": "MenuSection",
+      "@id": "https://www.alohasalads.com/menu/wraps-subs#section",
+      "name": "Wraps & Subs",
+      "url": "https://www.alohasalads.com/menu/wraps-subs",
+      "isPartOf": {
+        "@type": "Menu",
+        "@id": "https://www.alohasalads.com/menu#menu",
+        "name": "Aloha Salads Menu",
+        "url": "https://www.alohasalads.com/menu"
+      },
+      "hasMenuItem": [
+        {
+          "@type": "MenuItem",
+          "name": "Grilled Steak Wrap",
+          "description": "Grilled steak, mushrooms, red onion, provolone, romaine, sundried tomatoes, and goddess dressing, served on warmed pita bread."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Aloha Gyro Wrap",
+          "description": "Thinly sliced Mediterranean seasoned lamb and beef with grilled onions, feta cheese, dill, mixed greens, and our famous goddess dressing, served on warmed pita bread."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Curried Chicken Wrap",
+          "description": "Curried chicken, mango chutney, carrots, cranberries, grapes, coconut, and romaine, served on warmed pita bread."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Tutu's Chicken Salad Wrap",
+          "description": "Chicken breast, romaine, red onions, red grapes, envy apples, celery, and mayo, served on warmed pita bread."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Fresh Island Ahi Wrap",
+          "description": "Never-frozen local ahi, grape tomatoes, red onion, mixed greens, capers, and champagne dressing, served on warmed pita bread."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Hummus Pita Wrap",
+          "description": "Hummus, feta, kalamata olives, cucumbers, sundried tomatoes, red and green bell peppers, red onions, dill, grape tomatoes, romaine, and Mediterranean dressing, served on warmed pita bread.",
+          "suitableForDiet": "https://schema.org/VegetarianDiet"
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Club Sub",
+          "description": "Turkey, bacon, avocado, lettuce, tomato, and mayo on your choice of bread."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Chicken Pesto Sandwich",
+          "description": "Grilled chicken, pesto, basil, mixed greens, tomatoes, and mayo on your choice of bread."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Caprese Sub",
+          "description": "Fresh mozzarella, tomatoes, basil, red onion, mixed greens, and balsamic vinaigrette.",
+          "suitableForDiet": "https://schema.org/VegetarianDiet"
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Grilled Cheese Soup Combo",
+          "description": "Havarti, cheddar, and fresh mozzarella on sourdough bread, served with a 6oz tomato bisque."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Pastrami Melt",
+          "description": "Grilled pastrami, provolone cheese, and spicy slaw on grilled sourdough."
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Menu",
+          "item": "https://www.alohasalads.com/menu"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Wraps & Subs",
+          "item": "https://www.alohasalads.com/menu/wraps-subs"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/menu/wraps-subs",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can I choose the bread for my sub?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Items like our Club Sub and Chicken Pesto Sandwich are prepared on your choice of bread."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the Fresh Island Ahi Wrap use local seafood?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We exclusively feature never-frozen local ahi sourced through a Honolulu seafood supplier with full vessel-level traceability."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What comes with the Grilled Cheese Soup Combo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The combo includes a grilled cheese sandwich made with havarti, cheddar, and fresh mozzarella on sourdough bread, paired with a 6oz serving of our tomato bisque."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are there vegetarian wrap options?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Our Hummus Pita Wrap and Caprese Sub are excellent meatless options packed with fresh vegetables and cheeses."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where can I pick up my order?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can order online for fast pickup at any of our six neighborhood restaurants across Oahu."
+          }
+        }
+      ]
+    }
+  ],
+  "/menu/soups": [
+    {
+      "@context": "https://schema.org",
+      "@type": "MenuSection",
+      "@id": "https://www.alohasalads.com/menu/soups#section",
+      "name": "Soups",
+      "url": "https://www.alohasalads.com/menu/soups",
+      "isPartOf": {
+        "@type": "Menu",
+        "@id": "https://www.alohasalads.com/menu#menu",
+        "name": "Aloha Salads Menu",
+        "url": "https://www.alohasalads.com/menu"
+      },
+      "hasMenuItem": [
+        {
+          "@type": "MenuItem",
+          "name": "Tomato Bisque",
+          "description": "Our signature thick and creamy soup."
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Menu",
+          "item": "https://www.alohasalads.com/menu"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Soups",
+          "item": "https://www.alohasalads.com/menu/soups"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/menu/soups",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What kind of soup do you serve?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We serve our signature Tomato Bisque, which is a thick and creamy classic."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I pair my soup with a sandwich?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can order our Grilled Cheese Soup Combo from the Wraps and Subs menu, which includes havarti, cheddar, and fresh mozzarella on sourdough bread served alongside a 6oz portion of Tomato Bisque."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you offer sides with the soup?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can order an extra side of pita bread to accompany your soup."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the soup available at all locations?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Our menu is available across all six of our neighborhood restaurants on Oahu."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I order soup for takeout?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can place your order online for fast pickup at your nearest location."
+          }
+        }
+      ]
+    }
+  ],
+  "/menu/drinks": [
+    {
+      "@context": "https://schema.org",
+      "@type": "MenuSection",
+      "@id": "https://www.alohasalads.com/menu/drinks#section",
+      "name": "Drinks",
+      "url": "https://www.alohasalads.com/menu/drinks",
+      "isPartOf": {
+        "@type": "Menu",
+        "@id": "https://www.alohasalads.com/menu#menu",
+        "name": "Aloha Salads Menu",
+        "url": "https://www.alohasalads.com/menu"
+      },
+      "hasMenuItem": [
+        {
+          "@type": "MenuItem",
+          "name": "Big Island Mamaki Mint Tea",
+          "description": "Chilled mamaki mint tea brewed fresh in-store using mamaki sourced from Hilo on the Big Island."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Kona Cold Brew Coffee",
+          "description": "Kona coffee and condensed milk."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Guava Lemonade",
+          "description": "A sweet and tart island favorite."
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Menu",
+          "item": "https://www.alohasalads.com/menu"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Drinks",
+          "item": "https://www.alohasalads.com/menu/drinks"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/menu/drinks",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do you serve local Hawaiian tea?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We serve freshly brewed mamaki mint tea sourced directly from the Big Island."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is mamaki?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Mamaki is a plant native to Hawaii. Its leaves are traditionally brewed to create a mild, caffeine-free herbal tea."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I order drinks online?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can add any of our beverages to your online order for fast pickup."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are drinks included with kids meals?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Our Keiki Combo includes a designated keiki drink."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where can I pick up my order?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our full beverage menu is available at our six neighborhood restaurants across Oahu."
+          }
+        }
+      ]
+    }
+  ],
+  "/menu/vegetarian": [
+    {
+      "@context": "https://schema.org",
+      "@type": "MenuSection",
+      "@id": "https://www.alohasalads.com/menu/vegetarian#section",
+      "name": "Vegetarian Options",
+      "url": "https://www.alohasalads.com/menu/vegetarian",
+      "isPartOf": {
+        "@type": "Menu",
+        "@id": "https://www.alohasalads.com/menu#menu",
+        "name": "Aloha Salads Menu",
+        "url": "https://www.alohasalads.com/menu"
+      },
+      "hasMenuItem": [
+        {
+          "@type": "MenuItem",
+          "name": "Aloha Passion",
+          "description": "Mixed greens, mango, apples, red grapes, cranberries, blue cheese, candied walnuts, and passion orange vinaigrette.",
+          "suitableForDiet": "https://schema.org/VegetarianDiet"
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Aloha Mediterranean",
+          "description": "Romaine, grape tomatoes, kalamata olives, feta, bell peppers, red onion, cucumbers, garbanzo beans, dill, and Mediterranean dressing.",
+          "suitableForDiet": "https://schema.org/VegetarianDiet"
+        },
+        {
+          "@type": "MenuItem",
+          "name": "The Paniolo",
+          "description": "Romaine, grape tomatoes, avocado, jicama, corn, black beans, green onions, cheddar cheese, cilantro, and BBQ ranch.",
+          "suitableForDiet": "https://schema.org/VegetarianDiet"
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Maui Mozzarella",
+          "description": "Mixed greens, tomatoes, fresh mozzarella, red onions, basil, balsamic glaze, and balsamic vinaigrette.",
+          "suitableForDiet": "https://schema.org/VegetarianDiet"
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Hummus Pita Wrap",
+          "description": "Hummus, feta, kalamata olives, cucumbers, sundried tomatoes, red and green bell peppers, red onions, dill, grape tomatoes, romaine, and Mediterranean dressing, served on warmed pita bread.",
+          "suitableForDiet": "https://schema.org/VegetarianDiet"
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Caprese Sub",
+          "description": "Fresh mozzarella, tomatoes, basil, red onion, mixed greens, and balsamic vinaigrette.",
+          "suitableForDiet": "https://schema.org/VegetarianDiet"
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Design Your Own Salad",
+          "description": "Includes your choice of lettuce, four regular toppings, one cheese, and one dressing."
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Menu",
+          "item": "https://www.alohasalads.com/menu"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Vegetarian Options",
+          "item": "https://www.alohasalads.com/menu/vegetarian"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/menu/vegetarian",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What kind of vegetarian wraps do you serve?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We serve a Hummus Pita Wrap packed with feta, kalamata olives, and fresh vegetables."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I adapt a regular menu item to be vegetarian?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Some of our signature dishes can be adapted by leaving out the protein. Ask our team when you order and we will talk you through the options."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I customize my vegetarian salad?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can use the Design Your Own Salad option to build a bowl exactly how you want it using our vegetarian ingredients and cheeses."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do your vegetarian salads contain local produce?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We feature local produce including vine-ripe tomatoes grown in Hauula."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where can I order vegetarian meals for takeout?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our full vegetarian menu is available to order online for fast pickup at all six of our neighborhood restaurants across Oahu."
+          }
+        }
+      ]
+    }
+  ],
+  "/menu/misc": [
+    {
+      "@context": "https://schema.org",
+      "@type": "MenuSection",
+      "@id": "https://www.alohasalads.com/menu/misc#section",
+      "name": "Misc",
+      "url": "https://www.alohasalads.com/menu/misc",
+      "isPartOf": {
+        "@type": "Menu",
+        "@id": "https://www.alohasalads.com/menu#menu",
+        "name": "Aloha Salads Menu",
+        "url": "https://www.alohasalads.com/menu"
+      },
+      "hasMenuItem": [
+        {
+          "@type": "MenuItem",
+          "name": "Avocado Toast",
+          "description": "Toasted sourdough, avocado, tomatoes, basil, balsamic glaze, sea salt, and black pepper."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Dessert Toast",
+          "description": "Toasted sourdough, your choice of Nutella or peanut butter, strawberry, banana, blueberry, and honey."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Acai Bowl",
+          "description": "Acai, granola, strawberry, banana, blueberry, and honey."
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Menu",
+          "item": "https://www.alohasalads.com/menu"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Misc",
+          "item": "https://www.alohasalads.com/menu/misc"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/menu/misc",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Where can I find these menu items?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Availability may vary by location. Order online or contact your neighborhood Aloha Salads to confirm what is available today."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I order these items online?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Available items can be added to your online order for fast pickup."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are these items available for catering?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Some menu favorites may be available for group orders. Contact us to plan your catering menu."
+          }
+        }
+      ]
+    }
+  ],
+  "/menu/design-your-own-salad": [
+    {
+      "@context": "https://schema.org",
+      "@type": "MenuItem",
+      "name": "Design Your Own Salad",
+      "description": "Includes your choice of lettuce, four regular toppings, one cheese, and one dressing.",
+      "url": "https://www.alohasalads.com/menu/design-your-own-salad"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Menu",
+          "item": "https://www.alohasalads.com/menu"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Design Your Own Salad",
+          "item": "https://www.alohasalads.com/menu/design-your-own-salad"
+        }
+      ]
+    }
+  ],
+  "/menu/healthy-options": [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Menu",
+          "item": "https://www.alohasalads.com/menu"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Healthy Options",
+          "item": "https://www.alohasalads.com/menu/healthy-options"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/menu/healthy-options",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What are your healthiest menu options?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our signature salads and custom-built bowls offer the highest concentration of fresh vegetables and lean proteins."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I customize a meal to fit my diet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Our Design Your Own Salad option allows you to select every ingredient to perfectly match your specific nutritional requirements."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are your dressings made in-house?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most of them, yes. Our signature dressings are made in house in small batches through the week."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you serve local ingredients?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We feature local produce including vine-ripe tomatoes from Hauula, as well as fresh, vessel-tracked local ahi."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where can I pick up a healthy meal?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our full menu is available to order online for fast pickup at all six of our neighborhood restaurants across Oahu."
+          }
+        }
+      ]
+    }
+  ],
+  "/catering": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": "https://www.alohasalads.com/catering#service",
+      "name": "Catering",
+      "serviceType": "Catering",
+      "description": "Provide fresh meals for your next gathering with our catering trays. We prepare scaled-up versions of our signature salads and wraps for pickup across our six Oahu locations.",
+      "url": "https://www.alohasalads.com/catering",
+      "provider": {
+        "@type": "Organization",
+        "@id": "https://www.alohasalads.com/#organization",
+        "name": "Aloha Salads",
+        "url": "https://www.alohasalads.com/"
+      },
+      "areaServed": {
+        "@type": "Place",
+        "name": "Oahu, Hawaii"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Catering Menu",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "price": "85.00",
+            "priceCurrency": "USD",
+            "itemOffered": {
+              "@type": "MenuItem",
+              "name": "Sandwich Platter"
+            }
+          },
+          {
+            "@type": "Offer",
+            "price": "60.00",
+            "priceCurrency": "USD",
+            "itemOffered": {
+              "@type": "MenuItem",
+              "name": "Ono Island Ahi Tray"
+            }
+          },
+          {
+            "@type": "Offer",
+            "price": "55.00",
+            "priceCurrency": "USD",
+            "itemOffered": {
+              "@type": "MenuItem",
+              "name": "Kamuela Cobb Tray"
+            }
+          },
+          {
+            "@type": "Offer",
+            "price": "52.00",
+            "priceCurrency": "USD",
+            "itemOffered": {
+              "@type": "MenuItem",
+              "name": "Mandarin Ginger Tray"
+            }
+          },
+          {
+            "@type": "Offer",
+            "price": "42.00",
+            "priceCurrency": "USD",
+            "itemOffered": {
+              "@type": "MenuItem",
+              "name": "Aloha Passion Tray"
+            }
+          },
+          {
+            "@type": "Offer",
+            "price": "42.00",
+            "priceCurrency": "USD",
+            "itemOffered": {
+              "@type": "MenuItem",
+              "name": "Aloha Mediterranean Tray"
+            }
+          },
+          {
+            "@type": "Offer",
+            "price": "42.00",
+            "priceCurrency": "USD",
+            "itemOffered": {
+              "@type": "MenuItem",
+              "name": "The Paniolo Tray"
+            }
+          },
+          {
+            "@type": "Offer",
+            "price": "45.00",
+            "priceCurrency": "USD",
+            "itemOffered": {
+              "@type": "MenuItem",
+              "name": "Aloha Caesar with Chicken Tray"
+            }
+          },
+          {
+            "@type": "Offer",
+            "price": "24.00",
+            "priceCurrency": "USD",
+            "itemOffered": {
+              "@type": "MenuItem",
+              "name": "Tray of Pita Bread"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Catering",
+          "item": "https://www.alohasalads.com/catering"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/catering",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do you offer vegetarian catering options?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We prepare meatless options including the Aloha Passion Tray and Aloha Mediterranean Tray."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does catering include serving utensils?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ask the store when you order and they will let you know what is included."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I place a catering order?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can place your catering order directly through our online ordering system or by calling your nearest location."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I customize the catering trays?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Trays are built to set recipes. Call the store to talk through anything specific."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do I pick up my catering order?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can pick up your catering order at any of our six neighborhood restaurants across Oahu."
+          }
+        }
+      ]
+    }
+  ],
+  "/catering/office-lunches": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": "https://www.alohasalads.com/catering/office-lunches#service",
+      "name": "Office Lunch Catering",
+      "serviceType": "Catering",
+      "description": "Healthy lunch options delivered to your workplace.",
+      "url": "https://www.alohasalads.com/catering/office-lunches",
+      "provider": {
+        "@type": "Organization",
+        "@id": "https://www.alohasalads.com/#organization",
+        "name": "Aloha Salads",
+        "url": "https://www.alohasalads.com/"
+      },
+      "areaServed": {
+        "@type": "Place",
+        "name": "Oahu, Hawaii"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Catering",
+          "item": "https://www.alohasalads.com/catering"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Office Lunch Catering",
+          "item": "https://www.alohasalads.com/catering/office-lunches"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/catering/office-lunches",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How much food do I need for my office?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Please contact your nearest location to confirm specific serving sizes and tray yields for your headcount."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does office catering include serving utensils?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ask the store when you order and they will let you know what is included."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I accommodate vegetarian coworkers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We prepare dedicated meatless options including the Aloha Mediterranean Tray and the Aloha Passion Tray."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can we add drinks to our office lunch order?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can include bottled beverages and our refreshing Big Island mamaki mint tea to complete your team meal."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can individuals customize their own bowls?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our large catering trays are built to set recipes. Employees who need highly specific modifications can use our Design Your Own Salad option through individual ordering."
+          }
+        }
+      ]
+    }
+  ],
+  "/catering/schools": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": "https://www.alohasalads.com/catering/schools#service",
+      "name": "School Catering",
+      "serviceType": "Catering",
+      "description": "We prepare large-format catering trays and wrap platters for school events and faculty lunches.",
+      "url": "https://www.alohasalads.com/catering/schools",
+      "provider": {
+        "@type": "Organization",
+        "@id": "https://www.alohasalads.com/#organization",
+        "name": "Aloha Salads",
+        "url": "https://www.alohasalads.com/"
+      },
+      "areaServed": {
+        "@type": "Place",
+        "name": "Oahu, Hawaii"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Catering",
+          "item": "https://www.alohasalads.com/catering"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "School Catering",
+          "item": "https://www.alohasalads.com/catering/schools"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/catering/schools",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How far in advance should I order for a school event?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Please contact your nearest location to confirm the required lead time for your specific campus headcount."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are serving utensils included for school orders?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ask the store when you order and they will let you know what is included."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you offer meatless options for students and staff?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We prepare dedicated plant-based items including the Aloha Mediterranean Tray and the Aloha Passion Tray."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can we accommodate specific food allergies?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We can modify our catering trays to accommodate specific dietary requirements for your school group."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you provide drinks for school catering?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can include bottled beverages and our refreshing Big Island māmaki mint tea with your catering order."
+          }
+        }
+      ]
+    }
+  ],
+  "/catering/corporate": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": "https://www.alohasalads.com/catering/corporate#service",
+      "name": "Corporate Catering",
+      "serviceType": "Catering",
+      "description": "We prepare large-format catering trays and wrap platters designed for corporate groups. All corporate orders are available for pickup across our six Oahu locations.",
+      "url": "https://www.alohasalads.com/catering/corporate",
+      "provider": {
+        "@type": "Organization",
+        "@id": "https://www.alohasalads.com/#organization",
+        "name": "Aloha Salads",
+        "url": "https://www.alohasalads.com/"
+      },
+      "areaServed": {
+        "@type": "Place",
+        "name": "Oahu, Hawaii"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Catering",
+          "item": "https://www.alohasalads.com/catering"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Corporate Catering",
+          "item": "https://www.alohasalads.com/catering/corporate"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/catering/corporate",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do you provide corporate catering for multiple days?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We can schedule pickup orders for multi-day seminars and training events."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I accommodate vegetarian and vegan employees?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We prepare dedicated plant-based options including the meatless Aloha Passion Tray."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are serving utensils included for office setups?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ask the store when you order and they will let you know what is included."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I request an invoice for corporate billing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Please contact your nearest location directly to discuss payment options and receipt requirements for your accounting department."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can we add individual drinks to a corporate order?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can include bottled beverages and our refreshing Big Island mamaki mint tea with your catering trays."
+          }
+        }
+      ]
+    }
+  ],
+  "/catering/meetings": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": "https://www.alohasalads.com/catering/meetings#service",
+      "name": "Meeting Catering",
+      "serviceType": "Catering",
+      "description": "We prepare large-format catering trays and wrap platters for board meetings and planning sessions. All meeting orders are available for pickup across our six Oahu locations.",
+      "url": "https://www.alohasalads.com/catering/meetings",
+      "provider": {
+        "@type": "Organization",
+        "@id": "https://www.alohasalads.com/#organization",
+        "name": "Aloha Salads",
+        "url": "https://www.alohasalads.com/"
+      },
+      "areaServed": {
+        "@type": "Place",
+        "name": "Oahu, Hawaii"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Catering",
+          "item": "https://www.alohasalads.com/catering"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Meeting Catering",
+          "item": "https://www.alohasalads.com/catering/meetings"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/catering/meetings",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How much notice is required for a morning meeting?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Please contact your nearest location to confirm specific lead times for early pickup orders."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are serving utensils included for boardrooms?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ask the store when you order and they will let you know what is included."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I provide meatless options for my attendees?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We prepare dedicated plant-based items including the Aloha Mediterranean Tray and the Aloha Passion Tray."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much food do I need for a board meeting?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Please contact your nearest location to confirm specific serving sizes and tray yields based on your total headcount."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I add individual drinks to the meeting order?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can include bottled beverages and our refreshing Big Island mamaki mint tea to complete your boardroom setup."
+          }
+        }
+      ]
+    }
+  ],
+  "/catering/events": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": "https://www.alohasalads.com/catering/events#service",
+      "name": "Event Catering",
+      "serviceType": "Catering",
+      "description": "We prepare large-format catering trays and wrap platters for events of all sizes. All event orders are available for pickup across our six Oahu locations.",
+      "url": "https://www.alohasalads.com/catering/events",
+      "provider": {
+        "@type": "Organization",
+        "@id": "https://www.alohasalads.com/#organization",
+        "name": "Aloha Salads",
+        "url": "https://www.alohasalads.com/"
+      },
+      "areaServed": {
+        "@type": "Place",
+        "name": "Oahu, Hawaii"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Catering",
+          "item": "https://www.alohasalads.com/catering"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Event Catering",
+          "item": "https://www.alohasalads.com/catering/events"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/catering/events",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How far in advance should I order for a large event?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Please contact your nearest location to confirm the required lead time for your specific event size."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you provide serving utensils for events?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ask the store when you order and they will let you know what is included."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I customize event catering trays?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We can modify our catering trays to accommodate specific dietary requirements for your event guests."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you offer meatless event catering options?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We prepare dedicated plant-based items including the Aloha Mediterranean Tray and the Aloha Passion Tray."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do I pick up my event catering order?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can pick up your catering order at any of our six neighborhood restaurants across Oahu."
+          }
+        }
+      ]
+    }
+  ],
+  "/catering/parties": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": "https://www.alohasalads.com/catering/parties#service",
+      "name": "Party Catering",
+      "serviceType": "Catering",
+      "description": "Salad trays and wrap platters for birthdays, graduations, and banquets.",
+      "url": "https://www.alohasalads.com/catering/parties",
+      "provider": {
+        "@type": "Organization",
+        "@id": "https://www.alohasalads.com/#organization",
+        "name": "Aloha Salads",
+        "url": "https://www.alohasalads.com/"
+      },
+      "areaServed": {
+        "@type": "Place",
+        "name": "Oahu, Hawaii"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Catering",
+          "item": "https://www.alohasalads.com/catering"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Party Catering",
+          "item": "https://www.alohasalads.com/catering/parties"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/catering/parties",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can I order vegetarian trays for a party?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The Aloha Passion Tray and Aloha Mediterranean Tray are both meatless."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you provide plates and napkins for parties?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ask the store when you order and they will let you know what is included."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How far in advance should I order for a large party?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Please contact your nearest location to confirm the required lead time for your specific party size."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I pick up a party order at the weekend?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Weekend collection is available. Check your stores hours and call ahead to arrange the time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you offer beverages for party catering?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can add bottled drinks and our refreshing Big Island māmaki mint tea to complete your party menu."
+          }
+        }
+      ]
+    }
+  ],
+  "/catering/large-groups": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": "https://www.alohasalads.com/catering/large-groups#service",
+      "name": "Large Group Catering",
+      "serviceType": "Catering",
+      "description": "We prepare large-format catering trays and wrap platters for groups of all sizes. All large group orders are available for pickup across our six Oahu locations.",
+      "url": "https://www.alohasalads.com/catering/large-groups",
+      "provider": {
+        "@type": "Organization",
+        "@id": "https://www.alohasalads.com/#organization",
+        "name": "Aloha Salads",
+        "url": "https://www.alohasalads.com/"
+      },
+      "areaServed": {
+        "@type": "Place",
+        "name": "Oahu, Hawaii"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Catering",
+          "item": "https://www.alohasalads.com/catering"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Large Group Catering",
+          "item": "https://www.alohasalads.com/catering/large-groups"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/catering/large-groups",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How much notice is required for a large group order?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Please contact your nearest location to confirm the required lead time for your specific headcount."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I calculate serving sizes for a large crowd?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Please contact your nearest location to confirm specific serving sizes and tray yields based on your total guest count."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are serving utensils included for large orders?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ask the store when you order and they will let you know what is included."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I order meatless options for a large group?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We prepare dedicated plant-based items including the Aloha Mediterranean Tray and the Aloha Passion Tray."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you provide drinks for large group catering?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can include bottled beverages and our refreshing Big Island mamaki mint tea with your catering order."
+          }
+        }
+      ]
+    }
+  ],
+  "/ingredients": [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Our Ingredients",
+          "item": "https://www.alohasalads.com/ingredients"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "url": "https://www.alohasalads.com/ingredients",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can I view the full menu before ordering?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can explore our complete selection of salads, wraps, subs, and soups on our main menu page."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where can I pick up an online order?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can order ahead for fast pickup at any of our six neighborhood restaurants across Oahu, located in Kailua, Kahala, Kaneohe, Kapolei, Mililani, and Pearlridge."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you offer catering services?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We offer a variety of priced catering trays and sandwich platters for group gatherings."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are your dressings made in house?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most of them, yes. Our signature dressings are made in house in small batches through the week."
+          }
+        }
+      ]
+    }
+  ],
+  "/contact": [
+    {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      "name": "Contact Aloha Salads",
+      "url": "https://www.alohasalads.com/contact",
+      "about": {
+        "@type": "Organization",
+        "@id": "https://www.alohasalads.com/#organization",
+        "name": "Aloha Salads",
+        "url": "https://www.alohasalads.com/"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.alohasalads.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Contact",
+          "item": "https://www.alohasalads.com/contact"
+        }
+      ]
+    }
+  ],
+  "/order-online": {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.alohasalads.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Order Online",
+        "item": "https://www.alohasalads.com/order-online"
+      }
+    ]
+  },
+  "/gift-cards": {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.alohasalads.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Gift Cards",
+        "item": "https://www.alohasalads.com/gift-cards"
+      }
+    ]
+  },
+  "/press": {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.alohasalads.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Press & Media",
+        "item": "https://www.alohasalads.com/press"
+      }
+    ]
+  },
+  "/careers": {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.alohasalads.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Work With Us",
+        "item": "https://www.alohasalads.com/careers"
+      }
+    ]
+  },
+  "/blog": {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.alohasalads.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://www.alohasalads.com/blog"
+      }
+    ]
+  }
+}
