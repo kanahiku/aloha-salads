@@ -38,9 +38,9 @@ export default defineConfig({
   }),
 
   redirects: {
-    '/our-locations': '/locations',
-    '/work-with-us': '/careers',
-    '/terms-of-service': '/terms',
+    '/our-locations': { status: 301, destination: '/locations' },
+    '/work-with-us': { status: 301, destination: '/careers' },
+    '/terms-of-service': { status: 301, destination: '/terms' },
   },
 
   // Hover/tap only. Prefetching every nav + footer URL on load contended with

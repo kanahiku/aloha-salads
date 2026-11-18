@@ -55,7 +55,10 @@ export default ({ config: _themeConfig = 'src/config.yaml' } = {}): AstroIntegra
           site: SITE.site,
           base: SITE.base,
 
-          trailingSlash: SITE.trailingSlash ? 'always' : 'never',
+          // `false` still builds slashless links and canonicals. `ignore` serves
+          // /about and /about/ as the same page, so Search Console does not
+          // treat the trailing-slash URL as a redirect.
+          trailingSlash: SITE.trailingSlash ? 'always' : 'ignore',
 
           vite: {
             plugins: [

@@ -1,6 +1,52 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/work-with-us",
+      "destination": "/careers",
+      "statusCode": 301
+    },
+    {
+      "source": "/work-with-us/",
+      "destination": "/careers",
+      "statusCode": 301
+    },
+    {
+      "source": "/our-locations",
+      "destination": "/locations",
+      "statusCode": 301
+    },
+    {
+      "source": "/our-locations/",
+      "destination": "/locations",
+      "statusCode": 301
+    },
+    {
+      "source": "/terms-of-service",
+      "destination": "/terms",
+      "statusCode": 301
+    },
+    {
+      "source": "/terms-of-service/",
+      "destination": "/terms",
+      "statusCode": 301
+    },
+    {
+      "source": "/page-data/:path*",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/manifest.webmanifest",
+      "destination": "/",
+      "statusCode": 301
+    }
+  ],
   "crons": [
     {
       "path": "/api/reviews",

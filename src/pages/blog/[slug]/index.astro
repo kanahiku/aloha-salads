@@ -17,8 +17,7 @@ const slug = Astro.params.slug;
 const post = typeof slug === 'string' ? await getBlogPost(slug) : undefined;
 
 if (!post) {
-  Astro.response.status = 404;
-  return Astro.rewrite('/404');
+  return Astro.redirect('/blog', 301);
 }
 
 const publishDate = new Date(post.publishDate);
