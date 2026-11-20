@@ -147,8 +147,8 @@ export const storeLocations: StoreLocation[] = [
   },
   {
     slug: 'keeaumoku',
-    name: 'Keʻeaumoku',
-    heading: 'Keʻeaumoku',
+    name: 'Keeaumoku',
+    heading: 'Keeaumoku',
     shopName: 'Midtown Eats',
     addressLine1: '1515 Liona St Ste 108',
     addressLine2: 'Honolulu, HI 96814',
@@ -157,7 +157,7 @@ export const storeLocations: StoreLocation[] = [
     hours: 'Every day: 10:30 AM to 8:00 PM',
     href: '/locations/keeaumoku',
     intro:
-      'Our newest shop is inside Midtown Eats, the food hall at The Park on Keʻeaumoku, a short walk from Ala Moana.',
+      'Our newest shop is inside Midtown Eats, the food hall at The Park on Keeaumoku, a short walk from Ala Moana.',
     // Midtown Eats is cashless; pickup orders go through Cash App. No delivery link, so no delivery button.
     orderPickupHref: 'https://cash.app/$alohasalads',
   },

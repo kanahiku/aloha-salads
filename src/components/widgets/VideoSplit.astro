@@ -1,0 +1,109 @@
+---
+/**
+ * VideoSplit — text on one side, a muted looping video on the other.
+ * Homepage "Now Open on Keeaumoku" band. One widget for any text + video split.
+ *
+ * Performance: `preload="none"`, poster paints first, playback starts only when the
+ * block scrolls into view (and never for reduced-motion / data-saver visitors).
+ */
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+import Button from '~/components/ui/Button.astro';
+
+export interface Props {
+  eyebrow?: string;
+  title?: string;
+  subtitle?: string;
+  ctaText?: string;
+  ctaHref?: string;
+  /** Compressed MP4 (public/ path or absolute URL). */
+  video: string;
+  poster?: string;
+  videoLabel?: string;
+  /** true → video on the left, text on the right (desktop). */
+  reverse?: boolean;
+  id?: string;
+}
+
+const { eyebrow, title, subtitle, ctaText, ctaHref, video, poster, videoLabel = '', reverse = false, id } = Astro.props;
+---
+
+<section {...id ? { id } : {}} class="not-prose relative w-full bg-section-grey">
+  <div class="mx-auto w-full max-w-container px-5 py-16 sm:px-8 md:px-16 md:py-[120px]">
+    <div
+      class:list={[
+        'flex w-full flex-col items-center gap-10 md:gap-16',
+        reverse ? 'md:flex-row-reverse' : 'md:flex-row',
+      ]}
+    >
+      <div class="flex min-w-0 flex-1 flex-col items-start gap-6">
+        {
+          eyebrow && (
+            <Heading variant="eyebrow" color="inherit" class="text-heading opacity-80">
+              {eyebrow}
+            </Heading>
+          )
+        }
+        {title && <Heading variant="h2">{title}</Heading>}
+        {
+          subtitle && (
+            <Text variant="body-lg" color="default">
+              {subtitle}
+            </Text>
+          )
+        }
+        {ctaText && ctaHref && <Button variant="primary" text={ctaText} href={ctaHref} hideNote={true} />}
+      </div>
+
+      <div class="w-full max-w-[420px] shrink-0 md:w-[42%] md:max-w-none">
+        <video
+          data-video-split
+          src={video}
+          poster={poster}
+          width="520"
+          height="650"
+          muted
+          loop
+          playsinline
+          preload="none"
+          disablepictureinpicture
+          disableremoteplayback
+          aria-label={videoLabel || undefined}
+          aria-hidden={videoLabel ? undefined : 'true'}
+          tabindex="-1"
+          class="aspect-[4/5] w-full bg-section-grey object-cover"
+        >
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  type NetworkInformation = { saveData?: boolean; effectiveType?: string };
+
+  function skip(): boolean {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return true;
+    const c = (navigator as Navigator & { connection?: NetworkInformation }).connection;
+    return Boolean(c?.saveData || (c?.effectiveType && /^(slow-2g|2g|3g)$/.test(c.effectiveType)));
+  }
+
+  function init() {
+    if (skip()) return;
+    document.querySelectorAll<HTMLVideoElement>('video[data-video-split]').forEach((video) => {
+      if (video.dataset.observed === 'true') return;
+      video.dataset.observed = 'true';
+      video.muted = true;
+      new IntersectionObserver(
+        ([entry]) => {
+          if (entry?.isIntersecting) video.play().catch(() => {});
+          else video.pause();
+        },
+        { threshold: 0.25 }
+      ).observe(video);
+    });
+  }
+
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

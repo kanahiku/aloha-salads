@@ -25,6 +25,8 @@ export interface HomepageImages {
   heroMedia?: 'image' | 'video';
   /** Present only when heroMedia is 'video' AND the video + poster are uploaded. */
   heroVideo?: HomepageHeroVideo;
+  /** "Now open" video split. Present only when the video + poster are uploaded in Sanity. */
+  newLocationVideo?: { video: string; poster: string };
 }
 
 /** Every piece of homepage text. Authored in Sanity (Homepage singleton). */
@@ -40,6 +42,7 @@ export interface HomepageContent {
   };
   brandBar: Array<{ text: string; tilt?: boolean }>;
   menu: { eyebrow: string; title: string; subtitle: string; ctaLabel: string };
+  newLocation: { eyebrow: string; title: string; body: string; ctaLabel: string };
   localSourcing: { eyebrow: string; title: string; body: string; ctaLabel: string };
   reviews: { eyebrow: string; title: string };
   locations: { eyebrow: string; title: string; subtitle: string; ctaLabel: string; viewLabel: string };

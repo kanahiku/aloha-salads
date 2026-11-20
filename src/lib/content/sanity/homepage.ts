@@ -9,6 +9,8 @@ type FetchedHomepageImages = {
   localSourcingImage?: FetchedImage | null;
   locationsImage?: FetchedImage | null;
   heroMedia?: string | null;
+  newLocationVideoUrl?: string | null;
+  newLocationVideoPosterRef?: string | null;
   heroVideoUrl?: string | null;
   heroVideoMobileUrl?: string | null;
   heroVideoPosterRef?: string | null;
@@ -21,6 +23,8 @@ const HOMEPAGE_IMAGES_QUERY = /* groq */ `
     ${IMAGE_PROJECTION('localSourcingImage', 'Local ingredients used by Aloha Salads')},
     ${IMAGE_PROJECTION('locationsImage', 'Aloha Salads store location')},
     heroMedia,
+    "newLocationVideoUrl": newLocationVideo.asset->url,
+    "newLocationVideoPosterRef": newLocationVideoPoster.asset._ref,
     "heroVideoUrl": heroVideo.asset->url,
     "heroVideoMobileUrl": heroVideoMobile.asset->url,
     "heroVideoPosterRef": heroVideoPoster.asset._ref,
@@ -50,6 +54,16 @@ function resolveHomepageHeroVideo(doc: FetchedHomepageImages | null): HomepageHe
   };
 }
 
+function resolveNewLocationVideo(doc: FetchedHomepageImages | null): HomepageImages['newLocationVideo'] {
+  if (!doc?.newLocationVideoUrl || !doc.newLocationVideoPosterRef) return undefined;
+  const poster = urlFor({ _type: 'image', asset: { _type: 'reference', _ref: doc.newLocationVideoPosterRef } })
+    .width(1040)
+    .format('webp')
+    .quality(85)
+    .url();
+  return { video: doc.newLocationVideoUrl, poster };
+}
+
 export async function getSanityHomepageImages(): Promise<HomepageImages> {
   const doc = await sanityClient.fetch<FetchedHomepageImages | null>(HOMEPAGE_IMAGES_QUERY);
 
@@ -59,6 +73,7 @@ export async function getSanityHomepageImages(): Promise<HomepageImages> {
     locations: resolveContentImage(doc?.locationsImage),
     heroMedia: doc?.heroMedia === 'video' ? 'video' : 'image',
     heroVideo: resolveHomepageHeroVideo(doc ?? null),
+    newLocationVideo: resolveNewLocationVideo(doc ?? null),
   };
 }
 
@@ -73,6 +88,10 @@ type FetchedHomepageText = {
   heroPrimaryCtaLabel?: string | null;
   heroSecondaryCtaLabel?: string | null;
   brandBarItems?: Array<{ text?: string | null; tilt?: boolean | null }> | null;
+  newLocationEyebrow?: string | null;
+  newLocationTitle?: string | null;
+  newLocationBody?: string | null;
+  newLocationCtaLabel?: string | null;
   menuEyebrow?: string | null;
   menuTitle?: string | null;
   menuSubtitle?: string | null;
@@ -95,6 +114,7 @@ const HOMEPAGE_TEXT_QUERY = /* groq */ `
     metaTitle, metaDescription,
     heroTagline, heroTitle, heroSubtitle, heroPrimaryCtaLabel, heroSecondaryCtaLabel,
     brandBarItems[]{ text, tilt },
+    newLocationEyebrow, newLocationTitle, newLocationBody, newLocationCtaLabel,
     menuEyebrow, menuTitle, menuSubtitle, menuCtaLabel,
     localSourcingEyebrow, localSourcingTitle, localSourcingBody, localSourcingCtaLabel,
     reviewsEyebrow, reviewsTitle,
@@ -132,6 +152,12 @@ export async function getSanityHomepageContent(): Promise<HomepageContent> {
       secondaryCtaLabel: textOr(doc?.heroSecondaryCtaLabel, d.hero.secondaryCtaLabel),
     },
     brandBar: brandBar.length > 0 ? brandBar : d.brandBar,
+    newLocation: {
+      eyebrow: textOr(doc?.newLocationEyebrow, d.newLocation.eyebrow),
+      title: textOr(doc?.newLocationTitle, d.newLocation.title),
+      body: textOr(doc?.newLocationBody, d.newLocation.body),
+      ctaLabel: textOr(doc?.newLocationCtaLabel, d.newLocation.ctaLabel),
+    },
     menu: {
       eyebrow: textOr(doc?.menuEyebrow, d.menu.eyebrow),
       title: textOr(doc?.menuTitle, d.menu.title),

@@ -97,7 +97,7 @@ export const MENU_SUBPAGES_MORE: MenuSubpageContent[] = [
       {
         question: 'Where are your Oahu locations?',
         answer:
-          'We operate seven neighborhood restaurants located in Kailua, Kahala, Kaneohe, Kapolei, Mililani, Pearlridge, and Keʻeaumoku.',
+          'We operate seven neighborhood restaurants located in Kailua, Kahala, Kaneohe, Kapolei, Mililani, Pearlridge, and Keeaumoku.',
       },
     ],
     explore: {

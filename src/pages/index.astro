@@ -1,6 +1,7 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 import Hero2 from '~/components/widgets/Hero2.astro';
+import VideoSplit from '~/components/widgets/VideoSplit.astro';
 import BrandBar from '~/components/widgets/BrandBar.astro';
 import MenuCategories from '~/components/widgets/MenuCategories.astro';
 import Locations from '~/components/widgets/Locations.astro';
@@ -49,6 +50,20 @@ const metadata = {
 
   {/* ── 2. Brand bar ─────────────────────────────────────── */}
   <BrandBar items={content.brandBar} />
+
+  {/* ── 2b. New location — text + video split ───────────── */}
+  {homepageImages.newLocationVideo && (
+  <VideoSplit
+    id="keeaumoku"
+    eyebrow={content.newLocation.eyebrow}
+    title={content.newLocation.title}
+    subtitle={content.newLocation.body}
+    ctaText={content.newLocation.ctaLabel}
+    ctaHref="/locations/keeaumoku"
+    video={homepageImages.newLocationVideo.video}
+    poster={homepageImages.newLocationVideo.poster}
+  />
+  )}
 
   {/* ── 3. Menu categories ───────────────────────────────── */}
   <MenuCategories

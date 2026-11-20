@@ -96,7 +96,7 @@ export const INGREDIENTS_DEFAULTS: IngredientsContent = {
     {
       question: 'Where can I pick up an online order?',
       answer:
-        'You can order ahead for fast pickup at any of our seven neighborhood restaurants across Oahu, located in Kailua, Kahala, Kaneohe, Kapolei, Mililani, Pearlridge, and Keʻeaumoku.',
+        'You can order ahead for fast pickup at any of our seven neighborhood restaurants across Oahu, located in Kailua, Kahala, Kaneohe, Kapolei, Mililani, Pearlridge, and Keeaumoku.',
     },
     {
       question: 'Do you offer catering services?',

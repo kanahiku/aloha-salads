@@ -25,6 +25,12 @@ export const HOMEPAGE_DEFAULTS: HomepageContent = {
     secondaryCtaLabel: 'Order Catering',
   },
   brandBar: [{ text: 'Healthy', tilt: true }, { text: 'Fresh' }, { text: 'Local', tilt: true }],
+  newLocation: {
+    eyebrow: 'Now Open on Keeaumoku',
+    title: 'You Asked. We Delivered.',
+    body: 'Our newest spot is inside Midtown Eats at The Park on Keeaumoku. Grab a fresh salad, wrap, or mamaki mint tea any day from 10:30 AM to 8 PM. Parking is free, and we’re just an escalator ride down from the garage.',
+    ctaLabel: 'Visit Keeaumoku',
+  },
   menu: {
     eyebrow: 'Order Now',
     title: 'Explore Our Full Menu',
@@ -45,7 +51,7 @@ export const HOMEPAGE_DEFAULTS: HomepageContent = {
   locations: {
     eyebrow: 'Visit Now',
     title: 'Visit a Store Near You',
-    subtitle: 'Stop by any of our seven Oahu locations in Kailua, Kahala, Kaneohe, Kapolei, Mililani, Pearlridge, or Keʻeaumoku.',
+    subtitle: 'Stop by any of our seven Oahu locations in Kailua, Kahala, Kaneohe, Kapolei, Mililani, Pearlridge, or Keeaumoku.',
     ctaLabel: 'View All Locations',
     viewLabel: 'View {name}',
   },

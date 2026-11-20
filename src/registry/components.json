@@ -544,6 +544,25 @@
       "notes": "Homepage 59:66. Cream bg-page, 64px pad, 120/64 vertical. Cards 457×514 grey placeholders, black/30 + blur overlay, cream h3 + body. Decorative leaf vectors omitted (image pass). Do not fork per page."
     },
     {
+      "id": "P-VS",
+      "name": "Video split",
+      "figmaNames": ["Now Open on Keeaumoku"],
+      "shape": "Text column (eyebrow, h2, body-lg, primary CTA) beside a 4:5 muted looping video; reverse flips sides",
+      "component": "VideoSplit",
+      "import": "~/components/widgets/VideoSplit.astro",
+      "props": {
+        "eyebrow": "label",
+        "title": "h2",
+        "subtitle": "body-lg",
+        "ctaText": "button label",
+        "ctaHref": "button href",
+        "video": "compressed MP4 (public/videos, under 1 MB)",
+        "poster": "first-frame webp",
+        "reverse": "video left / text right"
+      },
+      "notes": "Homepage, directly under BrandBar. Copy from Sanity (Homepage → New location). Video is lazy: poster first, plays in view."
+    },
+    {
       "id": "P-44",
       "name": "Local sourcing",
       "figmaNames": ["Our ingredients & local sourcing", "Sourced close to home, on purpose.", "Frame 35"],

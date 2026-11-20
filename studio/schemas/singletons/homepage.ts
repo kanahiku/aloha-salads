@@ -49,15 +49,15 @@ const maxVideoSize =
     return true;
   };
 
-const videoFile = (name: string, title: string, description: string, maxMb: number) =>
+const videoFile = (name: string, title: string, description: string, maxMb: number, group = 'hero') =>
   defineField({
     name,
     title,
     description,
-    group: 'hero',
+    group,
     type: 'file',
     options: { accept: 'video/mp4' },
-    hidden: ({ document }) => document?.heroMedia !== 'video',
+    hidden: group === 'hero' ? ({ document }) => document?.heroMedia !== 'video' : undefined,
     validation: (r) => r.custom(maxVideoSize(maxMb)),
   });
 
@@ -70,6 +70,7 @@ export const homepageContent = defineType({
     { name: 'seo', title: 'SEO' },
     { name: 'hero', title: 'Hero' },
     { name: 'brandBar', title: 'Brand bar' },
+    { name: 'newLocation', title: 'New location' },
     { name: 'menu', title: 'Menu' },
     { name: 'localSourcing', title: 'Local sourcing' },
     { name: 'reviews', title: 'Reviews' },
@@ -128,6 +129,31 @@ export const homepageContent = defineType({
         }),
       ],
       validation: (r) => r.min(1),
+    }),
+
+    // ── New location (video split) ──
+    textField('newLocation', 'newLocationEyebrow', 'Eyebrow'),
+    textField('newLocation', 'newLocationTitle', 'Heading'),
+    textField('newLocation', 'newLocationBody', 'Body text', {
+      multiline: 5,
+    }),
+    textField('newLocation', 'newLocationCtaLabel', 'Button label', { description: 'Links to the Keeaumoku location page.' }),
+    videoFile(
+      'newLocationVideo',
+      'Video',
+      'Muted looping MP4 (H.264), 4:5 (about 520×650), about 12 seconds, under 1 MB. Must be the compressed file, not the original footage. The section is hidden until a video and poster are uploaded.',
+      1,
+      'newLocation'
+    ),
+    defineField({
+      name: 'newLocationVideoPoster',
+      title: 'Video poster',
+      group: 'newLocation',
+      description: 'First frame of the video as WebP/JPEG at 520×650. Shows instantly while the page loads.',
+      type: 'image',
+      validation: imageWeightWarning,
+      options: { accept: 'image/webp,image/jpeg,image/png' },
+      fields: [altField()],
     }),
 
     // ── Menu ──

@@ -320,13 +320,13 @@ export const LOCATION_PAGE_DEFAULTS: LocationPageCopy[] = [
   {
     slug: 'keeaumoku',
     meta: {
-      title: 'Aloha Salads Keʻeaumoku | Fresh Salads and Wraps at Midtown Eats, Honolulu',
+      title: 'Aloha Salads Keeaumoku | Fresh Salads and Wraps at Midtown Eats, Honolulu',
       description:
         'Visit Aloha Salads inside Midtown Eats on Liona Street. Fresh salads, wraps and local drinks, open every day from 10:30 AM to 8 PM. Order ahead online.',
     },
-    heroTitle: 'Aloha Salads Keʻeaumoku',
+    heroTitle: 'Aloha Salads Keeaumoku',
     heroContent:
-      'Our newest shop is inside Midtown Eats, the food hall at The Park on Keʻeaumoku. Stop by for a fresh salad, a warm pita wrap, or a cold mamaki mint tea, right in the middle of Honolulu.',
+      'Our newest shop is inside Midtown Eats, the food hall at The Park on Keeaumoku. Stop by for a fresh salad, a warm pita wrap, or a cold mamaki mint tea, right in the middle of Honolulu.',
     aboutHeading: 'Fresh Food in the Heart of Honolulu',
     aboutParagraphs: [
       'Aloha Salads started in Kailua in 2006. Twenty years later, we are happy to bring the same food to town. You will find us at Suite 108 inside Midtown Eats, a short walk from Ala Moana.',
@@ -357,7 +357,7 @@ export const LOCATION_PAGE_DEFAULTS: LocationPageCopy[] = [
       },
     ],
     cta: {
-      title: 'Visit Us on Keʻeaumoku',
+      title: 'Visit Us on Keeaumoku',
       subtitle:
         'We are open every day from 10:30 AM to 8 PM. Order ahead or walk up to the counter. We would love to see you.',
     },
