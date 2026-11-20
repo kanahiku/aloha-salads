@@ -80,12 +80,15 @@ const { eyebrow, title, subtitle, ctaText, ctaHref, video, poster, videoLabel = 
 </section>
 
 <script>
-  type NetworkInformation = { saveData?: boolean; effectiveType?: string };
+  // The clip is under 1 MB, so only explicit opt-outs skip it. `effectiveType` is deliberately NOT
+  // checked: browsers report it unreliably (it flips between 3g/4g), which made playback randomly
+  // fail after client-side navigation.
+  type NetworkInformation = { saveData?: boolean };
 
   function skip(): boolean {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return true;
     const c = (navigator as Navigator & { connection?: NetworkInformation }).connection;
-    return Boolean(c?.saveData || (c?.effectiveType && /^(slow-2g|2g|3g)$/.test(c.effectiveType)));
+    return Boolean(c?.saveData);
   }
 
   function init() {
